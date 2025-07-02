@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 *,
 *::before,
 *::after {
@@ -15,29 +14,22 @@ body {
 
 @theme {
   --color-primary: #1A1A2E;
-  --color-primary-dark: #03122E;
-  --color-secondary: #0D4689;
-  --color-accent: #30BEF0;
-  --color-info: #515DA7;
-  --color-highlight: #652D87;
-  --color-muted: #484649;
-  --color-light: #D9D9D9;
+  --color-secondary: #1E90FF;
+  --color-secondary-light: #98CCFF;
   --color-white: #FFFFFF;
+  --color-gray: #8C93A1;
 }
 
 /* global.css */
-
 .scroll-x-thin {
   overflow-x: auto;
   overflow-y: hidden;
-  /* <- esto elimina el scroll vertical */
   scrollbar-width: thin;
   scrollbar-color: #999 transparent;
 }
 
 .scroll-x-thin::-webkit-scrollbar {
   height: 6px;
-  /* Altura del scrollbar horizontal */
 }
 
 .scroll-x-thin::-webkit-scrollbar-thumb {
