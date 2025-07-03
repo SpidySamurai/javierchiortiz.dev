@@ -2,16 +2,17 @@
 
 import { FaGithub, FaLinkedin, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import { SiReact, SiNextdotjs, SiTailwindcss, SiTypescript } from 'react-icons/si';
+import Cat from '../Cat';
 
 const Hero = () => {
   return (
     <section className="mt-8 flex items-center justify-center text-white px-4">
-      <div className="max-w-md text-center">
+      <div className="max-w-md ">
         <h1 className="text-4xl md:text-4xl font-bold">Javier Chi Ortíz</h1>
         <h2 className="text-2xl text-gray-300 mt-0.5">Front End Engineer</h2>
-
-        <p className="mt-4 text-lg text-gray-400 leading-relaxed">
-          lorem ipsum lorem ipsum lorem ipsum lorem ipsum
+        <Cat></Cat>
+        <p className="max-w-80 mt-4  text-lg text-gray-400 leading-relaxed">
+          I build scalable, mobile-first digital experiences for the web.
         </p>
 
         {/* Tech Stack */}
@@ -51,7 +52,7 @@ const Hero = () => {
         </div>
 
         {/* Contact Button */}
-        <div className="mt-6">
+        <div className="mt-6 flex justify-center">
           <a
             href="#contact"
             className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6 py-2 rounded-xl transition"

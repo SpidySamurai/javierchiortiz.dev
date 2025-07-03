@@ -1,12 +1,21 @@
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
+'use client';
+
+import Hero from "@/components/layout/Hero";
+import Navbar from "@/components/layout/Navbar";
+import MainContent from "@/components/sections/MainContent";
+import { useState } from "react";
 
 export default function Home() {
+  const [activeSection, setActiveSection] = useState<'About' | 'Experience' | 'Projects'>('About');
   return (
     <main>
-      <Header />
+      {/* <Header /> */}
       <Hero></Hero>
-      <h1 className="mt-6 text-3xl text-center text-white">
+      <Navbar activeSection={activeSection} setActiveSection={setActiveSection} />
+      <MainContent activeSection={activeSection} />
+
+
+      {/* <h1 className="mt-6 text-3xl text-center text-white">
         Página en construcción
       </h1 >
       <p className="text-lg text-center text-white mb-6">
@@ -18,7 +27,7 @@ export default function Home() {
           alt="Lluvia tranquila"
           className="w-72 h-auto rounded-lg shadow-md"
         />
-      </div>
+      </div> */}
     </main>
   );
 }
