@@ -16,7 +16,7 @@ const navLinks: { href: Section; label: string }[] = [
 
 const Navbar = ({ activeSection, setActiveSection }: Props) => {
   return (
-    <nav className="mt-10 p-4 flex justify-center gap-6 items-center text-white">
+    <nav className=" p-4 flex justify-center gap-6 items-center text-white">
       {navLinks.map((link) => (
         <button
           key={link.href}

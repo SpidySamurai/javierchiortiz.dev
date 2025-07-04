@@ -12,9 +12,6 @@ const About = () => {
 
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam repellendus praesentium vitae cum obcaecati at magnam ex facilis dolores. Expedita deserunt sapiente aperiam reiciendis laudantium natus cumque maxime inventore vitae!</p>
 
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam repellendus praesentium vitae cum obcaecati at magnam ex facilis dolores. Expedita deserunt sapiente aperiam reiciendis laudantium natus cumque maxime inventore vitae!</p>
-
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam repellendus praesentium vitae cum obcaecati at magnam ex facilis dolores. Expedita deserunt sapiente aperiam reiciendis laudantium natus cumque maxime inventore vitae!</p>
         </div>
 
 
