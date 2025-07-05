@@ -9,7 +9,7 @@ const WEB = ['HTML', 'CSS', 'JS'];
 const FRONTEND = ['Next', 'React', 'TypeScript'];
 const BACKEND = ['DotNet', 'CSharp', 'SQL'];
 const DATA = ['Scala', 'Spark'];
-const FULLSTACK = [...WEB, ...FRONTEND, ...BACKEND];
+// const FULLSTACK = [...WEB, ...FRONTEND, ...BACKEND];
 
 export const experiences: Experience[] = [
     {
