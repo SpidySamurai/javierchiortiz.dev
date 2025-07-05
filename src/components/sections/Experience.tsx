@@ -1,17 +1,22 @@
-'use client';
-
-const Experience = () => {
-    return <div className="pl-2 flex flex-col gap-2 text-white text-xl">
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam repellendus praesentium vitae cum obcaecati at magnam ex facilis dolores. Expedita deserunt sapiente aperiam reiciendis laudantium natus cumque maxime inventore vitae!</p>
-
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam repellendus praesentium vitae cum obcaecati at magnam ex facilis dolores. Expedita deserunt sapiente aperiam reiciendis laudantium natus cumque maxime inventore vitae!</p>
-
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam repellendus praesentium vitae cum obcaecati at magnam ex facilis dolores. Expedita deserunt sapiente aperiam reiciendis laudantium natus cumque maxime inventore vitae!</p>
-
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam repellendus praesentium vitae cum obcaecati at magnam ex facilis dolores. Expedita deserunt sapiente aperiam reiciendis laudantium natus cumque maxime inventore vitae!</p>
+import ExperienceItem from "@/components/items/ExperienceItem";
+import {experiences} from "@/data/experiences"
 
 
-    </div>
+function ExperienceSection() {
+  return (
+    <section>
+      <h2 className="text-xl font-bold mb-4 text-white">Experiencie</h2>
+      {experiences.map((exp, index) => (
+        <ExperienceItem
+          key={index}
+          title={exp.title}
+          date={exp.date}
+          description={exp.description}
+          stack ={exp.stack}
+        />
+      ))}
+    </section>
+  );
 }
 
-export default Experience;
+export default ExperienceSection;

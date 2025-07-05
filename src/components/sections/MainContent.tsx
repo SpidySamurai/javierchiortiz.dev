@@ -9,12 +9,14 @@ interface Props {
 
 const MainContent = ({ activeSection }: Props) => {
   return (
-      <div className="mt-6 w-full ">
-        <h2 className='text-white text-4xl mb-4'>{activeSection}</h2>
-        {activeSection === 'About' && <About />}
-        {activeSection === 'Experience' && <Experience />}
-        {activeSection === 'Projects' && <Projects />}
+    <div className="text-gray-400 mt-6 w-full ">
+      {/* <h2 className='text-white text-4xl mb-4'>{activeSection}</h2> */}
+      <div className='flex flex-col gap-10'>
+        <About />
+        <Experience />
+        <Projects />
       </div>
+    </div>
   );
 };
 

@@ -8,37 +8,22 @@ import { useState } from "react";
 export default function Home() {
   const [activeSection, setActiveSection] = useState<'About' | 'Experience' | 'Projects'>('About');
   return (
-    <main>
-      <div className="border flex flex-col lg:flex-row h-screen overflow-hidden">
-        {/* Hero Section */}
-        <div className=" lg:w-2/5 flex items-center justify-center">
+    <main className="flex justify-center">
+      <div className="flex flex-col lg:flex-row w-full max-w-screen-xl">
+
+        {/* Hero Section - Fijo en pantallas grandes */}
+        <div className="lg:w-1/2 lg:h-screen lg:sticky top-0 flex items-center justify-center flex-col gap-4">
           <Hero />
         </div>
 
-        {/* Main Content Section */}
-        <div className=" lg:w-3/5 px-4 py-8 flex flex-col items-center lg:overflow-y-auto h-full">
+        {/* Main Content Section - Genera scroll */}
+        <div className="lg:w-1/2 px-4 py-8 flex flex-col items-center">
           <Navbar activeSection={activeSection} setActiveSection={setActiveSection} />
           <MainContent activeSection={activeSection} />
         </div>
+
       </div>
-
-
-
-
-
-      {/* <h1 className="mt-6 text-3xl text-center text-white">
-        Página en construcción
-      </h1 >
-      <p className="text-lg text-center text-white mb-6">
-        Tomate un tecito o un cafecito, que ya está por llover 🌧️☕
-      </p>
-      <div className="flex justify-center ">
-        <img
-          src="https://i.gifer.com/7plP.gif" // puedes cambiar este gif por otro si quieres
-          alt="Lluvia tranquila"
-          className="w-72 h-auto rounded-lg shadow-md"
-        />
-      </div> */}
     </main>
+
   );
 }

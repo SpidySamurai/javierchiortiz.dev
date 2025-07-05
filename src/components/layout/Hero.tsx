@@ -6,12 +6,12 @@ import Cat from '../Cat';
 
 const Hero = () => {
   return (
-    <section className="mt-8 flex items-center text-center justify-center text-white px-4">
+    <section className="min-w-[320] mt-8 flex items-center  text-center justify-center text-white px-4 lg:text-left">
       <div className="max-w-md ">
         <h1 className="text-4xl md:text-4xl font-bold">Javier Chi Ortíz</h1>
         <h2 className="text-2xl text-gray-300 mt-0.5">Front End Engineer</h2>
         <Cat></Cat>
-        <p className="max-w-80 mt-4  text-left text-lg text-gray-400 leading-relaxed">
+        <p className="max-w-80 mt-4 text-lg text-gray-400 leading-relaxed">
           I build scalable, mobile-first digital experiences for the web.
         </p>
 
@@ -36,7 +36,7 @@ const Hero = () => {
         </div>
 
         {/* Social Icons */}
-        <div className="flex justify-center gap-4 mt-6 text-xl text-white">
+        <div className="flex justify-center gap-4 mt-6 text-xl text-white lg:justify-start">
           <a href="https://github.com/SpidySamurai" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition">
             <FaGithub />
           </a>
