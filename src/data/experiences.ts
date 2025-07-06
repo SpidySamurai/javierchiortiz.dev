@@ -5,7 +5,7 @@ export type Experience = {
     stack: string[];
 };
 
-const WEB = ['HTML', 'CSS', 'JS'];
+const WEB = ['JS', 'HTML', 'CSS'];
 const FRONTEND = ['Next', 'React', 'TypeScript'];
 const BACKEND = ['DotNet', 'CSharp', 'SQL'];
 const DATA = ['Scala', 'Spark'];
@@ -17,7 +17,7 @@ export const experiences: Experience[] = [
         date: 'Aug 2023 - Present',
         description:
             'Construcción de interfaces con Next.js y Tailwind. Implementación de autenticación, formularios dinámicos y despliegue continuo en Vercel.',
-        stack: [...FRONTEND, ...WEB, ...DATA, 'SQL','Django','Python'],
+        stack: [...FRONTEND, ...WEB, ...DATA, 'Superset', 'SQL', 'Django', 'Python'],
     },
     {
         title: 'Frontend Support Dev at Softtek',
@@ -29,13 +29,13 @@ export const experiences: Experience[] = [
         title: 'FrontEnd at Scandia',
         date: 'Jun 2021 - Dec 2022',
         description: 'Diseño de interfaces para dashboards y sistemas administrativos. Uso intensivo de Figma y colaboración en equipos ágiles.',
-        stack: [...FRONTEND,...WEB,'Shopify']
+        stack: [...FRONTEND, ...WEB, 'Shopify']
     },
     {
         title: 'FrontEnd at IOTAM',
         date: 'Jun 2021 - Dec 2022',
         description: 'Diseño de interfaces para dashboards y sistemas administrativos. Uso intensivo de Figma y colaboración en equipos ágiles.',
-        stack: [...WEB, 'React', 'SASS']
+        stack: ['React', 'SASS', ...WEB]
     },
     {
         title: 'FrontEnd Intership at BrightCoders ',
