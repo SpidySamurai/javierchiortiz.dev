@@ -9,7 +9,7 @@ type ExperienceItemProps = {
     stack: string[]
 };
 
-function ExperienceItem({ title, date, description, stack }: ExperienceItemProps) {
+function  ExperienceItem({ title, date, description, stack }: ExperienceItemProps) {
   return (
     <>
     <a href="#" className="block">
