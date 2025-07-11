@@ -20,7 +20,7 @@ export default function ProjectItem({
 }: ProjectItemProps) {
   return (
     <a href={projectUrl || '#'} target="_blank" rel="noopener noreferrer" className="block">
-      <div className="rounded-lg overflow-hidden transition-transform duration-300 p-4 space-y-4 hover:bg-white/5 hover:scale-[1.02] cursor-pointer">
+      <div className="rounded-lg overflow-hidden transition-transform duration-300 p-4 space-y-4 hover:bg-white/5 hover:scale-[1.01] cursor-pointer">
         <h3 className="text-xl font-bold text-white">{title}</h3>
 
         <div className="flex flex-col sm:flex-row gap-4 items-start">

@@ -12,7 +12,7 @@ export const projects: Project[] = [
   {
     title: 'Wallet App',
     imageUrl: imgPath,
-    description: 'Aplicación de billetera con autenticación, gráficos y manejo de transacciones.',
+    description: 'Aplicación de billetera con autenticación, enviar, recibir y manejo de transacciones.',
     stack: ['Next', 'Tailwind', 'TypeScript', 'React'],
     projectUrl: 'https://miwallet.com',
   },
