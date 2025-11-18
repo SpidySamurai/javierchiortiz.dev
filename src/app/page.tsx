@@ -1,15 +1,14 @@
 'use client';
 
-import Hero from "@/components/layout/Hero";
-import MainContent from "@/components/sections/MainContent";
-import { useState } from "react";
+import Hero from '@/components/layout/Hero';
+import MainContent from '@/components/sections/MainContent';
+import { useState } from 'react';
 
 export default function Home() {
   const [activeSection] = useState<'About' | 'Experience' | 'Projects'>('About');
   return (
     <main className="flex justify-center">
       <div className="flex flex-col lg:flex-row w-full max-w-screen-xl">
-
         {/* Hero Section - Fijo en pantallas grandes */}
         <div className="lg:w-1/2 lg:h-screen lg:sticky top-0 flex items-center justify-center flex-col gap-4">
           <Hero />
@@ -20,9 +19,7 @@ export default function Home() {
           {/* <Navbar activeSection={activeSection} setActiveSection={setActiveSection} /> */}
           <MainContent activeSection={activeSection} />
         </div>
-
       </div>
     </main>
-
   );
 }

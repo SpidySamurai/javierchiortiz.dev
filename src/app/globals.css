@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 *,
 *::before,
@@ -9,15 +9,15 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #1A1A2E;
+  background-color: #1a1a2e;
 }
 
 @theme {
-  --color-primary: #1A1A2E;
-  --color-secondary: #1E90FF;
-  --color-secondary-light: #98CCFF;
-  --color-white: #FFFFFF;
-  --color-gray: #8C93A1;
+  --color-primary: #1a1a2e;
+  --color-secondary: #1e90ff;
+  --color-secondary-light: #98ccff;
+  --color-white: #ffffff;
+  --color-gray: #8c93a1;
 }
 
 /* global.css */

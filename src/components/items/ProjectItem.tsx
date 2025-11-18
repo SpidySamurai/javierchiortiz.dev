@@ -25,12 +25,7 @@ export default function ProjectItem({
 
         <div className="flex flex-col sm:flex-row gap-4 items-start">
           <div className="w-full min-w-[220] max-w-[320] h-[100px] relative">
-            <Image
-              src={imageUrl}
-              alt={title}
-              fill
-              className="object-cover rounded-md"
-            />
+            <Image src={imageUrl} alt={title} fill className="object-cover rounded-md" />
           </div>
 
           <p className="text-sm text-gray-300">{description}</p>

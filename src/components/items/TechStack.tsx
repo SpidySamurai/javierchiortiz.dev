@@ -1,35 +1,38 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { techIcons } from '@/data/techStack';
+import TechPill from '@/components/ui/TechPill';
+import type { TechId } from '@/types';
 
 type TechStackProps = {
-  stack: string[];
+  stack: TechId[];
   previewRows?: number;
   rowHeight?: number;
 };
 
-export default function TechStack({
-  stack,
-  previewRows = 2,
-  rowHeight = 32,
-}: TechStackProps) {
+export default function TechStack({ stack, previewRows = 2, rowHeight = 32 }: TechStackProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [maxHeight, setMaxHeight] = useState('0px');
+  const [maxHeight, setMaxHeight] = useState(`${previewRows * rowHeight}px`);
   const [canOverflow, setCanOverflow] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const updateHeights = () => {
+  const updateHeights = useCallback(() => {
     if (contentRef.current) {
       const fullHeight = contentRef.current.scrollHeight;
       const limitedHeight = previewRows * rowHeight;
       setCanOverflow(fullHeight > limitedHeight);
       setMaxHeight(isExpanded ? `${fullHeight}px` : `${limitedHeight}px`);
     }
-  };
+  }, [isExpanded, previewRows, rowHeight]);
 
   useEffect(() => {
     updateHeights();
-  }, [isExpanded, stack]);
+  }, [updateHeights]);
+
+  // Recompute when the content (stack) changes
+  useEffect(() => {
+    updateHeights();
+  }, [stack, updateHeights]);
 
   useEffect(() => {
     if (!contentRef.current) return;
@@ -41,26 +44,25 @@ export default function TechStack({
     resizeObserver.observe(contentRef.current);
 
     return () => resizeObserver.disconnect();
-  }, []);
+  }, [updateHeights]);
 
   return (
     <>
       <div
-        className="mt-4 overflow-hidden transition-[max-height] duration-450 ease-[cubic-bezier(0.87,0,0.13,1)]"
+        className="mt-4 overflow-hidden transition-[max-height] duration-[450ms] ease-[cubic-bezier(0.87,0,0.13,1)]"
         style={{ maxHeight }}
       >
         <div ref={contentRef} className="flex flex-wrap gap-2">
-          {stack.map((tech, idx) => {
+          {stack.map((tech) => {
             const techInfo = techIcons[tech];
             const Icon = techInfo?.icon;
             return (
-              <span
-                key={idx}
-                className="flex items-center gap-2 bg-blue-800/40 text-blue-200 text-xs px-2 py-1 rounded-full font-mono"
-              >
-                {Icon && <Icon className="w-4 h-4" style={{ color: techInfo?.color }} />}
-                {techInfo?.label ?? tech}
-              </span>
+              <TechPill
+                key={tech}
+                label={techInfo?.label ?? tech}
+                Icon={Icon}
+                color={techInfo?.color}
+              />
             );
           })}
         </div>
@@ -70,7 +72,7 @@ export default function TechStack({
         <button
           onClick={(e) => {
             e.preventDefault();
-            setIsExpanded(prev => !prev);
+            setIsExpanded((prev) => !prev);
           }}
           className="text-xs text-blue-300 underline underline-offset-2 mt-2 inline-block"
         >

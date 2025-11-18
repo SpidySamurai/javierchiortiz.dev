@@ -1,7 +1,7 @@
 'use client';
 
-import ProjectItem from "../items/ProjectItem";
-import { projects } from "@/data/projects";
+import ProjectItem from '../items/ProjectItem';
+import { projects } from '@/data/projects';
 
 const Projects = () => {
   return (
