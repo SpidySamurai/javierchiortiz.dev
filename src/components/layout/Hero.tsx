@@ -37,16 +37,40 @@ const Hero = () => {
 
         {/* Social Icons */}
         <div className="flex justify-center gap-4 mt-6 text-xl text-white lg:justify-start">
-          <a href="https://github.com/SpidySamurai" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition">
+          <a
+            href="https://github.com/SpidySamurai"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub (opens in new tab)"
+            className="hover:text-secondary transition"
+          >
             <FaGithub />
           </a>
-          <a href="https://www.linkedin.com/in/javier-fernando-chi-ortiz/" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition">
+          <a
+            href="https://www.linkedin.com/in/javier-fernando-chi-ortiz/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn (opens in new tab)"
+            className="hover:text-secondary transition"
+          >
             <FaLinkedin />
           </a>
-          <a href="https://www.instagram.com/javi_spidy/" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition">
+          <a
+            href="https://www.instagram.com/javi_spidy/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram (opens in new tab)"
+            className="hover:text-secondary transition"
+          >
             <FaInstagram />
           </a>
-          <a href="https://wa.me/5219994875155" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition">
+          <a
+            href="https://wa.me/5219994875155"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WhatsApp (opens in new tab)"
+            className="hover:text-secondary transition"
+          >
             <FaWhatsapp />
           </a>
         </div>

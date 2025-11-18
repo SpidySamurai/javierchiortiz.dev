@@ -1,6 +1,5 @@
-import ExperienceItem from "@/components/items/ExperienceItem";
-import {experiences} from "@/data/experiences"
-
+import ExperienceItem from '@/components/items/ExperienceItem';
+import { experiences } from '@/data/experiences';
 
 function ExperienceSection() {
   return (
@@ -12,7 +11,7 @@ function ExperienceSection() {
           title={exp.title}
           date={exp.date}
           description={exp.description}
-          stack ={exp.stack}
+          stack={exp.stack}
         />
       ))}
     </section>

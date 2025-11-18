@@ -13,32 +13,19 @@
   height: 100%;
   background-color: transparent;
   background-image: linear-gradient(#d35400 0 1px, transparent 1px),
-                    linear-gradient(to right, #d35400 0 1px, transparent 1px);
+    linear-gradient(to right, #d35400 0 1px, transparent 1px);
   background-size: 4px 4px;
   position: relative;
-  box-shadow:
-    0 4px 0 #d35400,
-    4px 4px 0 #d35400,
-    8px 4px 0 #d35400,
-    12px 4px 0 #d35400,
-    16px 4px 0 #d35400,
-    0 8px 0 #d35400,
-    4px 8px 0 #d35400,
-    8px 8px 0 #f39c12,
-    12px 8px 0 #d35400,
-    16px 8px 0 #d35400,
-    20px 8px 0 #d35400,
-    4px 12px 0 #d35400,
-    8px 12px 0 #d35400,
-    12px 12px 0 #d35400,
-    16px 12px 0 #d35400,
-    8px 16px 0 #2c3e50, /* eye */
-    12px 16px 0 #2c3e50, /* eye */
-    10px 20px 0 #2c3e50; /* mouth */
+  box-shadow: 0 4px 0 #d35400, 4px 4px 0 #d35400, 8px 4px 0 #d35400, 12px 4px 0 #d35400,
+    16px 4px 0 #d35400, 0 8px 0 #d35400, 4px 8px 0 #d35400, 8px 8px 0 #f39c12, 12px 8px 0 #d35400,
+    16px 8px 0 #d35400, 20px 8px 0 #d35400, 4px 12px 0 #d35400, 8px 12px 0 #d35400,
+    12px 12px 0 #d35400, 16px 12px 0 #d35400, 8px 16px 0 #2c3e50, /* eye */ 12px 16px 0 #2c3e50,
+    /* eye */ 10px 20px 0 #2c3e50; /* mouth */
 }
 
 @keyframes floaty {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {

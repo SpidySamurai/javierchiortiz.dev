@@ -1,5 +1,4 @@
 // src/data/techIcons.ts
-import { IconType } from 'react-icons';
 import {
   SiReact,
   SiNextdotjs,
@@ -18,10 +17,9 @@ import {
   SiSharp,
 } from 'react-icons/si';
 
-export const techIcons: Record<
-  string,
-  { icon?: IconType; label: string; color: string }
-> = {
+import type { TechInfo } from '@/types';
+
+export const techIcons: Record<string, TechInfo> = {
   TypeScript: {
     icon: SiTypescript,
     label: 'TypeScript',
