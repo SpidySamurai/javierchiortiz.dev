@@ -3,8 +3,8 @@ import { experiences } from '@/data/experiences';
 
 function ExperienceSection() {
   return (
-    <section>
-      <h2 className="text-xl font-bold mb-4 text-white">Experiencie</h2>
+    <section id="experience">
+      <h2 className="text-xl font-bold mb-4 text-white">Experience</h2>
       {experiences.map((exp, index) => (
         <ExperienceItem
           key={index}

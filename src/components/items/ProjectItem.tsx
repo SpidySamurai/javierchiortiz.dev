@@ -24,11 +24,11 @@ export default function ProjectItem({
         <h3 className="text-xl font-bold text-white">{title}</h3>
 
         <div className="flex flex-col sm:flex-row gap-4 items-start">
-          <div className="w-full min-w-[220] max-w-[320] h-[100px] relative">
+          <div className="w-full sm:w-1/3 max-w-[320px] relative aspect-[16/9] rounded-md overflow-hidden">
             <Image src={imageUrl} alt={title} fill className="object-cover rounded-md" />
           </div>
 
-          <p className="text-sm text-gray-300">{description}</p>
+          <p className="text-sm text-gray-300 sm:flex-1">{description}</p>
         </div>
 
         <TechStack stack={stack} />
