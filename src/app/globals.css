@@ -12,6 +12,16 @@ body {
   background-color: #1a1a2e;
 }
 
+/* Smooth scrolling for in-page anchors */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Avoid anchored sections being hidden under the sticky header */
+section {
+  scroll-margin-top: 4.5rem; /* roughly header height */
+}
+
 @theme {
   --color-primary: #1a1a2e;
   --color-secondary: #1e90ff;

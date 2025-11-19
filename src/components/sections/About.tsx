@@ -2,7 +2,7 @@
 
 const About = () => {
   return (
-    <>
+    <section id="about">
       <div className="pl-2 flex flex-col gap-2 text-lg">
         <h2 className="text-xl font-bold mb-4 text-white">About</h2>
 
@@ -46,7 +46,7 @@ const About = () => {
           .
         </p>
       </div>
-    </>
+    </section>
   );
 };
 

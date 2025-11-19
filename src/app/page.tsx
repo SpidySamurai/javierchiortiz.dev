@@ -16,7 +16,6 @@ export default function Home() {
 
         {/* Main Content Section - Genera scroll */}
         <div className="lg:w-1/2 px-4 py-8 flex flex-col items-center">
-          {/* <Navbar activeSection={activeSection} setActiveSection={setActiveSection} /> */}
           <MainContent activeSection={activeSection} />
         </div>
       </div>
