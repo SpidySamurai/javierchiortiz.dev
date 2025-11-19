@@ -30,6 +30,11 @@ export const techIcons: Record<string, TechInfo> = {
     label: 'JavaScript',
     color: '#F7DF1E',
   },
+  JavaScript: {
+    icon: SiJavascript,
+    label: 'JavaScript',
+    color: '#F7DF1E',
+  },
   Next: {
     icon: SiNextdotjs,
     label: 'Next.js',

@@ -50,3 +50,35 @@ section {
 .scroll-x-thin::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* Project image hover pan */
+@media (hover: hover) and (pointer: fine) {
+  .project-image-wrapper {
+    /* ensure the cropping container hides overflow */
+    overflow: hidden;
+  }
+
+  .project-image-wrapper .project-image {
+    /* ensure images keep natural aspect and occupy width */
+    width: 100%;
+    height: auto;
+    display: block;
+    /* transition the transform for a smooth pan */
+    transition: transform 9s linear 0.2s;
+    transform-origin: top center;
+    will-change: transform;
+  }
+
+  /* trigger pan when hovering the whole project card */
+  .project-card:hover .project-image {
+    /* pan up to reveal lower parts using computed pixel amount */
+    transform: translateY(var(--pan-amount, -22%));
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .project-image-wrapper .project-image {
+    transition: none !important;
+  }
+}
