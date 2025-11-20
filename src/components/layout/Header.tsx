@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 
 const Header = () => {
   return (
-    <header className="sticky top-0 z-40 w-full px-4 py-2 shadow-md bg-primary/95">
+  <header className="sticky top-0 z-40 w-full px-4 py-2 shadow-md bg-primary">
       <div className="w-full max-w-screen-xl mx-auto flex items-center justify-between">
         {/* Left: logo */}
         <div className="flex items-center">
@@ -20,7 +20,7 @@ const Header = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="text-white"
+              className="text-default"
             >
               <path d="M17 3v10a4 4 0 0 1-8 0" />
             </svg>

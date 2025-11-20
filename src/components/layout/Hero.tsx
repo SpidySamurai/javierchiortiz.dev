@@ -6,31 +6,31 @@ import Cat from '../Cat';
 
 const Hero = () => {
   return (
-    <section className="min-w-[320] mt-8 flex items-center  text-center justify-center text-white px-4 lg:text-left">
+    <section className="min-w-[320] mt-8 flex items-center text-center justify-center text-default px-4 lg:text-left">
       <div className="max-w-md ">
         <h1 className="text-4xl md:text-4xl font-bold">Javier Chi Ortíz</h1>
-        <h2 className="text-2xl text-gray-300 mt-0.5">Front End Engineer</h2>
+        <h2 className="text-2xl text-muted mt-0.5">Front End Engineer</h2>
         <Cat></Cat>
-        <p className="max-w-80 mt-4 text-lg text-gray-400 leading-relaxed">
+        <p className="max-w-80 mt-4 text-lg text-muted leading-relaxed">
           I build scalable, mobile-first digital experiences for the web.
         </p>
 
         {/* Tech Stack */}
-        <div className="flex flex-wrap justify-center items-center gap-4 mt-4 text-gray-400 text-sm">
+        <div className="flex flex-wrap justify-center items-center gap-4 mt-4 text-muted text-sm">
           <div className="flex items-center gap-1">
-            <SiReact className="text-cyan-400" />
+            <SiReact className="text-secondary" />
             <span>React</span>
           </div>
           <div className="flex items-center gap-1">
-            <SiNextdotjs className="text-white" />
+            <SiNextdotjs className="text-default" />
             <span>Next.js</span>
           </div>
           <div className="flex items-center gap-1">
-            <SiTailwindcss className="text-sky-400" />
+            <SiTailwindcss className="text-secondary-light" />
             <span>Tailwind CSS</span>
           </div>
           <div className="flex items-center gap-1">
-            <SiTypescript className="text-blue-400" />
+            <SiTypescript className="text-secondary-light" />
             <span>TypeScript</span>
           </div>
         </div>
@@ -42,7 +42,7 @@ const Hero = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub (opens in new tab)"
-            className="hover:text-secondary transition"
+            className="text-white hover:text-blue-400 transition"
           >
             <FaGithub />
           </a>
@@ -51,7 +51,7 @@ const Hero = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn (opens in new tab)"
-            className="hover:text-secondary transition"
+            className="text-white hover:text-blue-400 transition"
           >
             <FaLinkedin />
           </a>
@@ -60,7 +60,7 @@ const Hero = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram (opens in new tab)"
-            className="hover:text-secondary transition"
+            className="text-white hover:text-blue-400 transition"
           >
             <FaInstagram />
           </a>
@@ -69,7 +69,7 @@ const Hero = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp (opens in new tab)"
-            className="hover:text-secondary transition"
+            className="text-white hover:text-blue-400 transition"
           >
             <FaWhatsapp />
           </a>
@@ -79,7 +79,7 @@ const Hero = () => {
         {/* <div className="mt-6 flex justify-center">
             <a
               href="#contact"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6 py-2 rounded-xl transition"
+              className="bg-secondary hover:bg-secondary-light text-default font-medium px-6 py-2 rounded-xl transition"
             >
               Contact me
             </a>

@@ -55,38 +55,38 @@ export default function ProjectItem({
 
   return (
     <div className="block">
-  <div className="rounded-lg overflow-hidden transition-transform duration-300 p-4 space-y-4 hover:bg-white/5 hover:scale-[1.01] project-card">
+      <div className="rounded-lg overflow-hidden transition-transform duration-300 p-4 space-y-4 hover:bg-surface/5 hover:scale-[1.01] project-card">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-bold text-white">{title}</h3>
+          <h3 className="text-xl font-bold text-default">{title}</h3>
           {category === 'entry' && (
-            <span className="text-xs px-2 py-0.5 rounded bg-white/5 text-gray-200">Entry • {status || 'wip'}</span>
+            <span className="text-xs px-2 py-0.5 rounded bg-surface/5 text-muted">Entry • {status || 'wip'}</span>
           )}
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 items-start">
-            <div ref={wrapperRef} className="w-full sm:w-1/3 max-w-[320px] relative aspect-[16/9] rounded-md overflow-hidden project-image-wrapper">
-              <img
-                src={imageUrl}
-                alt={title}
-                className="rounded-md project-image"
-                style={{ width: '100%', height: 'auto', display: 'block' }}
-                onLoad={(e) => {
-                  const imgEl = e.currentTarget as HTMLImageElement;
-                  if (!wrapperRef.current || !imgEl.naturalWidth) return;
-                  imgNatural.current = { w: imgEl.naturalWidth, h: imgEl.naturalHeight };
-                  const wrapper = wrapperRef.current;
-                  const wrapperWidth = wrapper.clientWidth;
-                  const scale = wrapperWidth / imgEl.naturalWidth;
-                  const scaledHeight = imgEl.naturalHeight * scale;
-                  const wrapperHeight = wrapper.clientHeight;
-                  const delta = Math.max(0, scaledHeight - wrapperHeight);
-                  wrapper.style.setProperty('--pan-amount', `-${Math.round(delta)}px`);
-                }}
-              />
-            </div>
+          <div ref={wrapperRef} className="w-full sm:w-1/3 max-w-[320px] relative aspect-[16/9] rounded-md overflow-hidden project-image-wrapper">
+            <img
+              src={imageUrl}
+              alt={title}
+              className="rounded-md project-image"
+              style={{ width: '100%', height: 'auto', display: 'block' }}
+              onLoad={(e) => {
+                const imgEl = e.currentTarget as HTMLImageElement;
+                if (!wrapperRef.current || !imgEl.naturalWidth) return;
+                imgNatural.current = { w: imgEl.naturalWidth, h: imgEl.naturalHeight };
+                const wrapper = wrapperRef.current;
+                const wrapperWidth = wrapper.clientWidth;
+                const scale = wrapperWidth / imgEl.naturalWidth;
+                const scaledHeight = imgEl.naturalHeight * scale;
+                const wrapperHeight = wrapper.clientHeight;
+                const delta = Math.max(0, scaledHeight - wrapperHeight);
+                wrapper.style.setProperty('--pan-amount', `-${Math.round(delta)}px`);
+              }}
+            />
+          </div>
 
           <div className="sm:flex-1">
-            <p className="text-sm text-gray-300">{description}</p>
+            <p className="text-sm text-muted">{description}</p>
 
             <div className="mt-4 flex items-center gap-3">
               {/* Live / Demo button */}
@@ -95,14 +95,14 @@ export default function ProjectItem({
                   href={liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium bg-cyan-500 text-white hover:bg-cyan-600"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium bg-secondary text-default hover:bg-secondary-light"
                   aria-label={`Abrir demo de ${title} (se abre en nueva pestaña)`}
                 >
                   Ver demo
                 </a>
               ) : (
                 <button
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium bg-gray-700 text-gray-300 cursor-not-allowed"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium bg-surface text-muted cursor-not-allowed"
                   aria-disabled
                   title="Demo no disponible"
                 >
@@ -116,7 +116,7 @@ export default function ProjectItem({
                   href={repoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-md border border-gray-700 text-gray-100 hover:bg-gray-800"
+                  className="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-md border border-surface text-default hover:bg-surface/80"
                   aria-label={`Ver código en GitHub de ${title} (se abre en nueva pestaña)`}
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
