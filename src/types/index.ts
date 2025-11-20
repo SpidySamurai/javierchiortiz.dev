@@ -28,3 +28,26 @@ export interface Experience {
   to?: string;
   details?: string[];
 }
+
+// Data shapes used by the local static data files (src/data/*)
+// These types match the shape used in src/data/projects.ts and src/data/experiences.ts
+export type DataProject = {
+  id?: string;
+  title: string;
+  imageUrl: string;
+  description?: string;
+  stack?: string[];
+  projectUrl?: string; // legacy
+  liveUrl?: string | null;
+  repoUrl?: string | null;
+  category?: 'featured' | 'entry' | 'other';
+  status?: 'complete' | 'wip' | 'planning' | 'archived';
+  hidden?: boolean;
+};
+
+export type DataExperience = {
+  title: string;
+  date: string;
+  description: string;
+  stack: string[];
+};

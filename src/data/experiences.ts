@@ -1,9 +1,4 @@
-export type Experience = {
-  title: string;
-  date: string;
-  description: string;
-  stack: string[];
-};
+import type { DataExperience } from '@/types';
 
 const WEB = ['JS', 'HTML', 'CSS'];
 const FRONTEND = ['Next', 'React', 'TypeScript'];
@@ -11,7 +6,7 @@ const BACKEND = ['DotNet', 'CSharp', 'SQL'];
 const DATA = ['Scala', 'Spark'];
 // const FULLSTACK = [...WEB, ...FRONTEND, ...BACKEND];
 
-export const experiences: Experience[] = [
+export const experiences: DataExperience[] = [
   {
     title: 'Frontend Developer at ENTI',
     date: 'Aug 2023 - Present',

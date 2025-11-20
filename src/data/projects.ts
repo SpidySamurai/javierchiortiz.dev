@@ -1,20 +1,8 @@
-export type Project = {
-  id?: string;
-  title: string;
-  imageUrl: string;
-  description?: string;
-  stack?: string[];
-  projectUrl?: string; // legacy
-  liveUrl?: string | null;
-  repoUrl?: string | null;
-  category?: 'featured' | 'entry' | 'other';
-  status?: 'complete' | 'wip' | 'planning' | 'archived';
-  hidden?: boolean;
-};
+import type { DataProject } from '@/types';
 
 const imgPath = '/utils/img/01b6c8e2-295f-494e-acd0-e71473ebf089.png';
 
-export const projects: Project[] = [
+export const projects: DataProject[] = [
   {
     id: 'wallet-app',
     title: 'Wallet App',

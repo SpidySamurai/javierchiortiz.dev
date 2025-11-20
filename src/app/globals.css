@@ -59,19 +59,39 @@ section {
   }
 
   .project-image-wrapper .project-image {
-    /* ensure images keep natural aspect and occupy width */
-    width: 100%;
-    height: auto;
+    /* ensure images keep natural aspect and occupy width
+       next/image with `fill` renders an absolutely-positioned <img>
+       so handle both native <img> and next/image elements here. */
     display: block;
-    /* transition the transform for a smooth pan */
+    transition: transform 9s linear 0.2s;
+    transform-origin: top center;
+    will-change: transform;
+    /* allow transforms on the underlying img used by next/image */
+  }
+
+  /* target the img element inside next/image wrappers too */
+  .project-image-wrapper img {
+    display: block;
+    /* next/image with fill produces an absolutely positioned img; ensure
+       it fills the container and uses cover with top alignment so translateY
+       shifts the visible area as expected. Use width:100% and height:100%
+       so the image covers the wrapper consistently and translateY moves
+       the visual crop rather than shifting layout. */
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
     transition: transform 9s linear 0.2s;
     transform-origin: top center;
     will-change: transform;
   }
 
   /* trigger pan when hovering the whole project card */
-  .project-card:hover .project-image {
-    /* pan up to reveal lower parts using computed pixel amount */
+  /* when hovering the card, pan either the element with class or the inner img */
+  .project-card:hover .project-image,
+  .project-card:hover .project-image-wrapper img {
     transform: translateY(var(--pan-amount, -22%));
   }
 }
