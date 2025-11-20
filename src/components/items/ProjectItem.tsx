@@ -55,11 +55,11 @@ export default function ProjectItem({
 
   return (
     <div className="block">
-      <div className="rounded-lg overflow-hidden transition-transform duration-300 p-4 space-y-4 hover:bg-surface/5 hover:scale-[1.01] project-card">
+      <div className="rounded-lg overflow-hidden transition-transform duration-300 p-4 space-y-4 hover:bg-surface hover:scale-[1.01] project-card">
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-bold text-default">{title}</h3>
           {category === 'entry' && (
-            <span className="text-xs px-2 py-0.5 rounded bg-surface/5 text-muted">Entry • {status || 'wip'}</span>
+            <span className="text-xs px-2 py-0.5 rounded bg-surface text-muted">Entry • {status || 'wip'}</span>
           )}
         </div>
 
