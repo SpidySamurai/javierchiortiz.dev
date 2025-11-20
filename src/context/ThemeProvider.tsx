@@ -39,7 +39,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     if (theme === 'system') {
       applied = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    document.body.setAttribute('data-theme', applied);
+    document.documentElement.setAttribute('data-theme', applied);
     localStorage.setItem('theme', theme);
   }, [theme]);
 

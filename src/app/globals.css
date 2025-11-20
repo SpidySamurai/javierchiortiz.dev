@@ -35,7 +35,7 @@ section {
 }
 
 /* Light theme overrides: mantiene la lógica de contraste y look profesional */
-body[data-theme='light'] {
+html[data-theme='light'] {
   --color-primary: #f4f6fb; /* fondo principal claro, no blanco puro */
   --color-surface: #e9edf5; /* cards, navbar, surface */
   --color-default: #23234a; /* texto principal oscuro */
