@@ -4,7 +4,7 @@ import { experiences } from '@/data/experiences';
 function ExperienceSection() {
   return (
     <section id="experience">
-      <h2 className="text-xl font-bold mb-4 text-white">Experience</h2>
+      <h2 className="text-xl font-bold mb-4 text-default">Experience</h2>
       {experiences.map((exp, index) => (
         <ExperienceItem
           key={index}

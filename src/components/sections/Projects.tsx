@@ -21,9 +21,9 @@ const Projects = () => {
   }, [query]);
 
   return (
-    <section id="projects" className="pl-2 flex flex-col gap-6 text-lg">
+    <section id="projects" className="pl-2 flex flex-col gap-6 text-lg text-default">
       <div className="flex flex-col gap-3">
-        <h2 className="text-xl font-bold mb-2 text-white">Projects</h2>
+        <h2 className="text-xl font-bold mb-2 text-default">Projects</h2>
 
         <div className="flex items-center gap-2">
           <label htmlFor="projects-search" className="sr-only">
@@ -35,13 +35,13 @@ const Projects = () => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Buscar proyectos (titulo, tech, descripcion)"
-            className="w-full max-w-md bg-white/5 text-white placeholder:text-gray-400 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            className="w-full max-w-md bg-surface/40 text-default placeholder:text-muted px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary"
           />
           {query && (
             <button
               aria-label="Limpiar búsqueda"
               onClick={() => setQuery('')}
-              className="ml-2 text-sm text-gray-300 hover:text-white"
+              className="ml-2 text-sm text-muted hover:text-default"
             >
               Clear
             </button>
@@ -51,7 +51,7 @@ const Projects = () => {
 
       <div className="pt-2 flex flex-col gap-4">
         {filtered.length === 0 ? (
-          <p className="text-gray-400">{`No se encontraron proyectos para "${query}"`}</p>
+          <p className="text-muted">{`No se encontraron proyectos para "${query}"`}</p>
         ) : (
           filtered.map((project, idx) => <ProjectItem key={project.title + idx} {...project} />)
         )}
