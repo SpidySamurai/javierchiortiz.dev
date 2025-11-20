@@ -15,6 +15,11 @@ const targets = [
     url: 'https://spidysamurai.github.io/Kittys_api_consuming/',
     out: 'public/utils/img/kittys-api-consuming-screenshot.png',
   },
+  // personal site (added so this script can capture it too)
+  {
+    url: 'https://javierchiortiz.dev/',
+    out: 'public/utils/img/portfolio-personal-live-screenshot.png',
+  },
 ];
 
 (async () => {
@@ -23,16 +28,28 @@ const targets = [
     const page = await browser.newPage();
     await page.setViewport({ width: 1280, height: 800 });
 
+    const force = process.argv.includes('--force');
+
     for (const t of targets) {
-      console.log('Capturing', t.url);
-      await page.goto(t.url, { waitUntil: 'networkidle2', timeout: 30000 });
-  // small delay to allow animations
-  await new Promise((res) => setTimeout(res, 800));
-      const outPath = path.resolve(t.out);
-      const outDir = path.dirname(outPath);
-      if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
-      await page.screenshot({ path: outPath, fullPage: true });
-      console.log('Saved to', outPath);
+      try {
+        console.log('Processing', t.url);
+        const outPath = path.resolve(t.out);
+        if (fs.existsSync(outPath) && !force) {
+          console.log(' -> Skipping, file exists:', outPath);
+          continue;
+        }
+
+        await page.goto(t.url, { waitUntil: 'networkidle2', timeout: 30000 });
+        // small delay to allow animations
+        await new Promise((res) => setTimeout(res, 800));
+
+        const outDir = path.dirname(outPath);
+        if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+        await page.screenshot({ path: outPath, fullPage: true });
+        console.log('Saved to', outPath);
+      } catch (err) {
+        console.error(' - Failed to capture', t.url, err && err.message ? err.message : err);
+      }
     }
 
     await browser.close();

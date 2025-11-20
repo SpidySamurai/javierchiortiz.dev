@@ -32,10 +32,10 @@ export const projects: Project[] = [
   {
     id: 'portfolio-personal',
     title: 'Portafolio Personal',
-    imageUrl: imgPath,
+    imageUrl: '/utils/img/portfolio-personal-live-screenshot.png',
     description: 'Sitio personal para mostrar mi experiencia y proyectos recientes.',
     stack: ['Next', 'Tailwind', 'TypeScript'],
-    liveUrl: null,
+    liveUrl: 'https://javierchiortiz.dev',
     repoUrl: 'https://github.com/SpidySamurai/web-portfolio2025',
     category: 'featured',
     status: 'complete',
