@@ -131,7 +131,6 @@ export default function Navbar() {
           {/* Toggle de tema con label y separación visual */}
           <div className="flex items-center justify-between mb-6 mt-2 px-2">
             <span className="text-muted text-sm">Tema</span>
-            {/* @ts-ignore */}
             <ThemeToggle />
           </div>
           <hr className="mb-4 border-gray-300" />
