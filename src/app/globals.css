@@ -9,7 +9,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #1a1a2e;
+  background-color: var(--color-primary);
 }
 
 /* Smooth scrolling for in-page anchors */
@@ -22,13 +22,50 @@ section {
   scroll-margin-top: 4.5rem; /* roughly header height */
 }
 
-@theme {
+:root {
   --color-primary: #1a1a2e;
+  --color-surface: #23234a;
+  --color-default: #ffffff;
+  --color-muted: #bfc8e6;
   --color-secondary: #1e90ff;
   --color-secondary-light: #98ccff;
   --color-white: #ffffff;
   --color-gray: #8c93a1;
 }
+
+/* Utilidades semánticas para fondo y texto */
+.bg-primary { background-color: var(--color-primary); }
+.bg-surface { background-color: var(--color-surface); }
+.bg-secondary { background-color: var(--color-secondary); }
+.bg-secondary-light { background-color: var(--color-secondary-light); }
+.text-default { color: var(--color-default); }
+.text-muted { color: var(--color-muted); }
+.text-secondary { color: var(--color-secondary); }
+.text-secondary-light { color: var(--color-secondary-light); }
+.text-surface { color: var(--color-surface); }
+
+:root {
+  --color-primary: #1a1a2e;
+  --color-surface: #23234a;
+  --color-default: #ffffff;
+  --color-muted: #bfc8e6;
+  --color-secondary: #1e90ff;
+  --color-secondary-light: #98ccff;
+  --color-white: #ffffff;
+  --color-gray: #8c93a1;
+}
+
+/* Utilidades semánticas para fondo y texto */
+.bg-primary { background-color: var(--color-primary) !important; }
+.bg-surface { background-color: var(--color-surface) !important; }
+.bg-secondary { background-color: var(--color-secondary) !important; }
+.bg-secondary-light { background-color: var(--color-secondary-light) !important; }
+.text-default { color: var(--color-default) !important; }
+.text-muted { color: var(--color-muted) !important; }
+.text-secondary { color: var(--color-secondary) !important; }
+.text-secondary-light { color: var(--color-secondary-light) !important; }
+.text-surface { color: var(--color-surface) !important; }
+
 
 /* global.css */
 .scroll-x-thin {

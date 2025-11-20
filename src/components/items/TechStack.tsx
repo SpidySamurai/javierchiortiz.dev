@@ -74,7 +74,7 @@ export default function TechStack({ stack, previewRows = 2, rowHeight = 32 }: Te
             e.preventDefault();
             setIsExpanded((prev) => !prev);
           }}
-          className="text-xs text-blue-300 underline underline-offset-2 mt-2 inline-block"
+          className="text-xs text-secondary underline underline-offset-2 mt-2 inline-block"
         >
           {isExpanded ? 'ver menos' : 'ver más'}
         </button>
