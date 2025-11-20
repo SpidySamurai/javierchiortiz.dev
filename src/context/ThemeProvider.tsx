@@ -27,7 +27,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setMounted(true);
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('theme') as Theme | null;
-      if (stored && stored !== theme) {
+      if (stored) {
         setThemeState(stored);
       }
     }
@@ -43,11 +43,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  // Load theme from localStorage
-  useEffect(() => {
-    const stored = localStorage.getItem('theme') as Theme | null;
-    if (stored) setThemeState(stored);
-  }, []);
 
   if (!mounted) return null;
   return (
