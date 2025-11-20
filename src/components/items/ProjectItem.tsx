@@ -1,10 +1,7 @@
-'use client';
+ 'use client';
 
 import { useRef, useEffect } from 'react';
-import Image from 'next/image';
-// using <Image /> from next/image but preserving pixel-accurate pan by
-// reading the natural dimensions on load (onLoadingComplete) and setting
-// the --pan-amount CSS variable on the wrapper.
+// using native <img> for pan behavior; next/image was removed here intentionally
 import TechStack from './TechStack';
 
 type ProjectItemProps = {
@@ -68,22 +65,19 @@ export default function ProjectItem({
 
         <div className="flex flex-col sm:flex-row gap-4 items-start">
             <div ref={wrapperRef} className="w-full sm:w-1/3 max-w-[320px] relative aspect-[16/9] rounded-md overflow-hidden project-image-wrapper">
-              <Image
+              <img
                 src={imageUrl}
                 alt={title}
                 className="rounded-md project-image"
-                fill
-                sizes="(max-width: 640px) 100vw, 320px"
-                onLoadingComplete={(result) => {
-                  // next/image provides naturalWidth/naturalHeight in the result
-                  const naturalW = (result && (result.naturalWidth || result.width)) || 0;
-                  const naturalH = (result && (result.naturalHeight || result.height)) || 0;
-                  if (!wrapperRef.current || !naturalW) return;
-                  imgNatural.current = { w: naturalW, h: naturalH };
+                style={{ width: '100%', height: 'auto', display: 'block' }}
+                onLoad={(e) => {
+                  const imgEl = e.currentTarget as HTMLImageElement;
+                  if (!wrapperRef.current || !imgEl.naturalWidth) return;
+                  imgNatural.current = { w: imgEl.naturalWidth, h: imgEl.naturalHeight };
                   const wrapper = wrapperRef.current;
                   const wrapperWidth = wrapper.clientWidth;
-                  const scale = wrapperWidth / naturalW;
-                  const scaledHeight = naturalH * scale;
+                  const scale = wrapperWidth / imgEl.naturalWidth;
+                  const scaledHeight = imgEl.naturalHeight * scale;
                   const wrapperHeight = wrapper.clientHeight;
                   const delta = Math.max(0, scaledHeight - wrapperHeight);
                   wrapper.style.setProperty('--pan-amount', `-${Math.round(delta)}px`);
