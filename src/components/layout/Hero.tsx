@@ -6,11 +6,11 @@ import Cat from '../Cat';
 
 const Hero = () => {
   return (
-    <section className="min-w-[320] mt-8 flex items-center text-center justify-center text-default px-4 lg:text-left">
-      <div className="max-w-md ">
-        <h1 className="text-4xl md:text-4xl font-bold">Javier Chi Ortíz</h1>
+    <section className="min-w-[320px] mt-8 flex items-center text-center justify-center text-default px-4 lg:text-left">
+      <div className="max-w-md">
+        <h1 className="text-4xl md:text-4xl font-bold text-default">Javier Chi Ortíz</h1>
         <h2 className="text-2xl text-muted mt-0.5">Front End Engineer</h2>
-        <Cat></Cat>
+        <Cat />
         <p className="max-w-80 mt-4 text-lg text-muted leading-relaxed">
           I build scalable, mobile-first digital experiences for the web.
         </p>
@@ -36,13 +36,13 @@ const Hero = () => {
         </div>
 
         {/* Social Icons */}
-        <div className="flex justify-center gap-4 mt-6 text-xl text-white lg:justify-start">
+        <div className="flex justify-center gap-4 mt-6 text-xl text-default lg:justify-start">
           <a
             href="https://github.com/SpidySamurai"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub (opens in new tab)"
-            className="text-white hover:text-blue-400 transition"
+            className="text-default hover:text-secondary transition"
           >
             <FaGithub />
           </a>
@@ -51,7 +51,7 @@ const Hero = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn (opens in new tab)"
-            className="text-white hover:text-blue-400 transition"
+            className="text-default hover:text-secondary transition"
           >
             <FaLinkedin />
           </a>
@@ -60,7 +60,7 @@ const Hero = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram (opens in new tab)"
-            className="text-white hover:text-blue-400 transition"
+            className="text-default hover:text-secondary transition"
           >
             <FaInstagram />
           </a>
@@ -69,7 +69,7 @@ const Hero = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp (opens in new tab)"
-            className="text-white hover:text-blue-400 transition"
+            className="text-default hover:text-secondary transition"
           >
             <FaWhatsapp />
           </a>
