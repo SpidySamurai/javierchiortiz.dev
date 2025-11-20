@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import ThemeToggle from '../ui/ThemeToggle';
 
 const SECTIONS = [
   { id: 'about', label: 'About' },
@@ -71,7 +72,7 @@ export default function Navbar() {
           <li key={s.id}>
             <a
               href={`#${s.id}`}
-                className={`text-sm transition px-2 py-1 rounded ${active === s.id ? 'text-default bg-secondary/30 font-semibold' : 'text-muted hover:text-default hover:bg-surface/10'}`}
+              className={`text-sm transition px-2 py-1 rounded ${active === s.id ? 'text-default bg-secondary/30 font-semibold' : 'text-muted hover:text-default hover:bg-surface/10'}`}
               aria-current={active === s.id ? 'true' : undefined}
             >
               {s.label}
@@ -99,7 +100,7 @@ export default function Navbar() {
 
         {/* Backdrop (no heavy blur) */}
         <div
-          className={`fixed inset-0 bg-black/40 transition-opacity duration-200 ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+          className={`fixed inset-0 bg-surface/80 transition-opacity duration-200 ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
           onClick={() => setOpen(false)}
           aria-hidden
         />
@@ -126,6 +127,14 @@ export default function Navbar() {
               </svg>
             </button>
           </div>
+
+          {/* Toggle de tema con label y separación visual */}
+          <div className="flex items-center justify-between mb-6 mt-2 px-2">
+            <span className="text-muted text-sm">Tema</span>
+            {/* @ts-ignore */}
+            <ThemeToggle />
+          </div>
+          <hr className="mb-4 border-gray-300" />
 
           <nav>
             <ul className="flex flex-col gap-3">
