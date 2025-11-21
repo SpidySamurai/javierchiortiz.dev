@@ -2,14 +2,32 @@
 
 import React, { useEffect, useState } from 'react';
 import ThemeToggle from '../ui/ThemeToggle';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/context/LanguageProvider';
 
 const SECTIONS = [
-  { id: 'about', label: 'About' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'projects', label: 'Projects' },
+  { id: 'about', labelKey: 'about' },
+  { id: 'experience', labelKey: 'experience' },
+  { id: 'projects', labelKey: 'projects' },
 ];
 
-export default function Navbar() {
+function Navbar() {
+  const { t } = useTranslation('common');
+  const { language, languages, setLanguage } = useLanguage();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  // Cerrar el dropdown al hacer click fuera
+  useEffect(() => {
+    if (!showDropdown) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showDropdown]);
   const [active, setActive] = useState<string>('about');
   const [open, setOpen] = useState(false);
   const closeButtonRef = React.useRef<HTMLButtonElement | null>(null);
@@ -75,11 +93,40 @@ export default function Navbar() {
               className={`text-sm transition px-2 py-1 rounded ${active === s.id ? 'text-default bg-secondary/30 font-semibold' : 'text-muted hover:text-default hover:bg-surface/10'}`}
               aria-current={active === s.id ? 'true' : undefined}
             >
-              {s.label}
+              {t(s.labelKey)}
             </a>
           </li>
         ))}
       </ul>
+      {/* Theme toggle + language selector (desktop) */}
+      <div className="hidden lg:flex items-center gap-2 ml-6">
+        <ThemeToggle />
+        <div className="relative" ref={dropdownRef}>
+          <button
+            aria-label={t('language_label')}
+            className="px-2 py-1 rounded text-sm text-muted hover:text-default hover:bg-surface/10"
+            onClick={() => setShowDropdown((v) => !v)}
+          >
+            {language.toUpperCase()} ▼
+          </button>
+          {showDropdown && (
+            <div className="absolute right-0 mt-2 w-24 bg-surface border border-gray-300 rounded shadow-lg z-50">
+              {languages.map((lng) => (
+                <button
+                  key={lng}
+                  className={`w-full px-2 py-1 text-left text-sm ${language === lng ? 'bg-secondary/30 font-semibold' : 'text-muted hover:text-default hover:bg-surface/10'}`}
+                  onClick={() => {
+                    setLanguage(lng);
+                    setShowDropdown(false);
+                  }}
+                >
+                  {lng === 'es' ? t('language_spanish') : t('language_english')}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Mobile hamburger */}
       <div className="lg:hidden">
@@ -115,7 +162,7 @@ export default function Navbar() {
           aria-label="Navigation menu"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="text-default font-semibold">Menu</div>
+            <div className="text-default font-semibold">{t('menu')}</div>
             <button
               ref={closeButtonRef}
               onClick={() => setOpen(false)}
@@ -130,7 +177,7 @@ export default function Navbar() {
 
           {/* Toggle de tema con label y separación visual */}
           <div className="flex items-center justify-between mb-6 mt-2 px-2">
-            <span className="text-muted text-sm">Tema</span>
+            <span className="text-muted text-sm">{t('theme')}</span>
             <ThemeToggle />
           </div>
           <hr className="mb-4 border-gray-300" />
@@ -147,7 +194,7 @@ export default function Navbar() {
                     }`}
                     style={{ transitionDelay: `${idx * 35}ms` }}
                   >
-                    {s.label}
+                    {t(s.labelKey)}
                   </a>
                 </li>
               ))}
@@ -158,3 +205,5 @@ export default function Navbar() {
     </nav>
   );
 }
+
+export default Navbar;

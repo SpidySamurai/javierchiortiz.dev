@@ -1,0 +1,25 @@
+import i18next, { Resource } from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import enCommon from '@/locales/en/common.json';
+import esCommon from '@/locales/es/common.json';
+
+const resources = {
+  en: { common: enCommon },
+  es: { common: esCommon },
+} satisfies Resource;
+
+const i18n = i18next.createInstance();
+
+void i18n.use(initReactI18next).init({
+  resources,
+  lng: 'es',
+  fallbackLng: 'en',
+  defaultNS: 'common',
+  interpolation: {
+    escapeValue: false,
+  },
+});
+
+export default i18n;
+export type AvailableLanguage = 'en' | 'es';
+export const LANGUAGES: AvailableLanguage[] = ['en', 'es'];
