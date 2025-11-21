@@ -46,6 +46,7 @@ export type DataProject = {
 };
 
 export type DataExperience = {
+  id: string;
   title: string;
   date: string;
   description: string;

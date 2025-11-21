@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import Navbar from './Navbar';
-import ThemeToggle from '@/components/ui/ThemeToggle';
 
 const Header = () => {
   // ...existing code...
@@ -32,10 +31,6 @@ const Header = () => {
         {/* Right: navbar + theme toggle */}
         <div className="flex items-center justify-end gap-6 h-full">
           <Navbar />
-          {/* El toggle solo se muestra en desktop */}
-          <div className="hidden lg:block mt-2">
-            <ThemeToggle />
-          </div>
         </div>
       </div>
     </header>

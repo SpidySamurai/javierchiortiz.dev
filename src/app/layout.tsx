@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/context/ThemeProvider';
+import { LanguageProvider } from '@/context/LanguageProvider';
 import Header from '@/components/layout/Header';
 
 const geistSans = Geist({
@@ -25,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
         {/* Script anti-FOUC: aplica el tema antes de que React monte */}
         <script
@@ -45,10 +46,12 @@ export default function RootLayout({
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider>
-          <Header />
-          <main>{children}</main>
-        </ThemeProvider>
+        <LanguageProvider>
+          <ThemeProvider>
+            <Header />
+            <main>{children}</main>
+          </ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

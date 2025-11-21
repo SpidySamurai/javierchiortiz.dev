@@ -8,6 +8,7 @@ const DATA = ['Scala', 'Spark'];
 
 export const experiences: DataExperience[] = [
   {
+    id: 'enti',
     title: 'Frontend Developer at ENTI',
     date: 'Aug 2023 - Present',
     description:
@@ -15,6 +16,7 @@ export const experiences: DataExperience[] = [
     stack: [...FRONTEND, ...WEB, ...DATA, 'Superset', 'SQL', 'Django', 'Python'],
   },
   {
+    id: 'softtek',
     title: 'Frontend Support Dev at Softtek',
     date: 'Jun 2021 - Dec 2022',
     description:
@@ -22,6 +24,7 @@ export const experiences: DataExperience[] = [
     stack: [...FRONTEND, ...BACKEND, ...WEB],
   },
   {
+    id: 'scandia',
     title: 'FrontEnd at Scandia',
     date: 'Jun 2021 - Dec 2022',
     description:
@@ -29,6 +32,7 @@ export const experiences: DataExperience[] = [
     stack: [...FRONTEND, ...WEB, 'Shopify'],
   },
   {
+    id: 'iotam',
     title: 'FrontEnd at IOTAM',
     date: 'Jun 2021 - Dec 2022',
     description:
@@ -36,6 +40,7 @@ export const experiences: DataExperience[] = [
     stack: ['React', 'SASS', ...WEB],
   },
   {
+    id: 'brightcoders',
     title: 'FrontEnd Intership at BrightCoders ',
     date: 'Jun 2021 - Dec 2022',
     description:
