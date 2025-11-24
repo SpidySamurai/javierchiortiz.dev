@@ -4,11 +4,9 @@ import Link from 'next/link';
 import Navbar from './Navbar';
 
 const Header = () => {
-  // ...existing code...
   return (
   <header className="sticky top-0 z-40 w-full px-4 py-2 shadow-md bg-primary">
       <div className="w-full max-w-screen-xl mx-auto flex items-center justify-between h-16">
-        {/* Left: logo */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
             <svg
@@ -28,7 +26,6 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Right: navbar + theme toggle */}
         <div className="flex items-center justify-end gap-6 h-full">
           <Navbar />
         </div>
