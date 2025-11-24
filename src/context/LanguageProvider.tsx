@@ -12,23 +12,37 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<AvailableLanguage>('es');
+type LanguageProviderProps = {
+  children: React.ReactNode;
+  initialLanguage: AvailableLanguage;
+};
+
+export function LanguageProvider({ children, initialLanguage }: LanguageProviderProps) {
+  const [language, setLanguageState] = useState<AvailableLanguage>(initialLanguage);
 
   useEffect(() => {
-    const stored = typeof window !== 'undefined' ? (localStorage.getItem('portfolio:lang') as AvailableLanguage | null) : null;
+    if (typeof window === 'undefined') return;
+    const stored = localStorage.getItem('portfolio:lang') as AvailableLanguage | null;
     if (stored && LANGUAGES.includes(stored)) {
       setLanguageState(stored);
-      i18n.changeLanguage(stored).catch(() => undefined);
-      document.documentElement.lang = stored;
     }
   }, []);
 
+  useEffect(() => {
+    document.documentElement.lang = language;
+    try {
+      localStorage.setItem('portfolio:lang', language);
+    } catch {
+      // ignore
+    }
+    if (typeof document !== 'undefined') {
+      document.cookie = `portfolio:lang=${language}; path=/; max-age=31536000`;
+    }
+    void i18n.changeLanguage(language);
+  }, [language]);
+
   const setLanguage = useCallback((lng: AvailableLanguage) => {
     setLanguageState(lng);
-    localStorage.setItem('portfolio:lang', lng);
-    document.documentElement.lang = lng;
-    void i18n.changeLanguage(lng);
   }, []);
 
   const value = useMemo(
