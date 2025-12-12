@@ -55,15 +55,15 @@
     },
     "spa-rick-and-morty": {
       "title": "Rick and Morty SPA",
-      "description": "Practice SPA that consumes the Rick & Morty API."
+      "description": "Single-page app powered by the Rick & Morty API with a responsive character grid and quick links to the docs."
     },
     "batata-bit": {
       "title": "Batata-bit",
-      "description": "Responsive landing page built with a mobile-first focus."
+      "description": "Marketing landing for a crypto exchange featuring live pricing tables, highlighted benefits, and tiered plans."
     },
     "kittys-api-consuming": {
       "title": "Kittys API Consuming",
-      "description": "API consumption exercise with pagination and filters."
+      "description": "Client-side experiment with The Cat API to fetch random cats, manage favorites, and upload custom photos."
     }
   },
   "projects_entry_label": "Entry",
