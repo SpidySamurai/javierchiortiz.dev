@@ -1,44 +1,81 @@
-'use client';
-
 import { useMemo, useState } from 'react';
 import ProjectItem from '../items/ProjectItem';
 import { projects } from '@/data/projects';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 
 const Projects = () => {
   const [query, setQuery] = useState('');
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
 
   const localizedProjects = useMemo(() => {
     return projects.map((project, index) => {
       const projectId = project.id || `project_${index}`;
-      const title = t(`project_items.${projectId}.title`, { defaultValue: project.title });
+      const title = t(`project_items.${projectId}.title`);
       const description = project.description
-        ? t(`project_items.${projectId}.description`, { defaultValue: project.description })
+        ? t(`project_items.${projectId}.description`)
         : undefined;
 
       return { ...project, id: projectId, title, description };
     });
   }, [t]);
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return localizedProjects;
+  type TabId = 'all' | 'work' | 'personal' | 'entry';
+  const [activeTab, setActiveTab] = useState<TabId>('all');
 
-    return localizedProjects.filter((p) => {
+  const tabs: { id: TabId; label: string }[] = [
+    { id: 'all', label: 'projects_tab_all' },
+    { id: 'work', label: 'projects_tab_work' },
+    { id: 'personal', label: 'projects_tab_personal' },
+    { id: 'entry', label: 'projects_tab_entry' },
+  ];
+
+  const filtered = useMemo(() => {
+    let result = localizedProjects;
+
+    // Filter by Tab
+    if (activeTab === 'work') {
+      result = result.filter((p) => p.isWork);
+    } else if (activeTab === 'personal') {
+      result = result.filter((p) => !p.isWork && p.category !== 'entry');
+    } else if (activeTab === 'entry') {
+      result = result.filter((p) => p.category === 'entry');
+    }
+
+    // Filter by Query
+    const q = query.trim().toLowerCase();
+    if (!q) return result;
+
+    return result.filter((p) => {
       const inTitle = p.title.toLowerCase().includes(q);
       const inDesc = p.description?.toLowerCase().includes(q);
       const inStack = p.stack?.some((s) => s.toLowerCase().includes(q));
       const inUrl = !!p.projectUrl && p.projectUrl.toLowerCase().includes(q);
       return inTitle || inDesc || inStack || inUrl;
     });
-  }, [query, localizedProjects]);
+  }, [query, localizedProjects, activeTab]);
 
   return (
     <section id="projects" className="pl-2 flex flex-col gap-6 text-lg text-default">
-      <div className="flex flex-col gap-3">
-        <h2 className="text-xl font-bold mb-2 text-default">{t('projects')}</h2>
+      <div className="flex flex-col gap-4">
+        <h2 className="text-xl font-bold text-default">{t('projects')}</h2>
 
+        {/* Tabs */}
+        <div className="flex flex-wrap gap-2">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${activeTab === tab.id
+                  ? 'bg-secondary text-default'
+                  : 'bg-surface text-muted hover:text-default hover:bg-surface/80'
+                }`}
+            >
+              {t(tab.label)}
+            </button>
+          ))}
+        </div>
+
+        {/* Search */}
         <div className="flex items-center gap-2">
           <label htmlFor="projects-search" className="sr-only">
             {t('projects_search_label')}
