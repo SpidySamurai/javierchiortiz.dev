@@ -15,11 +15,20 @@ import {
   SiPython,
   SiDjango,
   SiSharp,
+  SiShopify,
+  SiWebpack,
 } from 'react-icons/si';
 
 import type { TechInfo } from '@/types';
 
 export const techIcons: Record<string, TechInfo> = {
+  // ... (existing)
+  Webpack: {
+    icon: SiWebpack,
+    label: 'Webpack',
+    color: '#8DD6F9',
+  },
+
   TypeScript: {
     icon: SiTypescript,
     label: 'TypeScript',
@@ -40,6 +49,11 @@ export const techIcons: Record<string, TechInfo> = {
     label: 'Next.js',
     color: '#ffffff',
   },
+  'Next.js': {
+    icon: SiNextdotjs,
+    label: 'Next.js',
+    color: '#ffffff',
+  },
   React: {
     icon: SiReact,
     label: 'React',
@@ -48,6 +62,11 @@ export const techIcons: Record<string, TechInfo> = {
   Tailwind: {
     icon: SiTailwindcss,
     label: 'Tailwind',
+    color: '#38BDF8',
+  },
+  'Tailwind CSS': {
+    icon: SiTailwindcss,
+    label: 'Tailwind CSS',
     color: '#38BDF8',
   },
   CSS: {
@@ -59,6 +78,16 @@ export const techIcons: Record<string, TechInfo> = {
     icon: SiHtml5,
     label: 'HTML5',
     color: '#E34F26',
+  },
+  Shopify: {
+    icon: SiShopify,
+    label: 'Shopify',
+    color: '#95BF47',
+  },
+  Liquid: {
+    icon: SiShopify,
+    label: 'Liquid',
+    color: '#668C36',
   },
   SQL: {
     label: 'SQL Server',
