@@ -217,22 +217,29 @@
 /* --- Speech Bubble --- */
 .cat-bubble {
   position: absolute;
-  top: -40px;
-  /* Adjusted for new layout */
-  left: -20px;
-  /* Shift to align with small cat */
-  /* transform is handled by animation */
+  top: -180px;
+  /* Shift up drastically for unscaled visual position */
+  left: auto;
+  right: 10px;
+  /* Anchor to right, pull in slightly to prevent clipping */
   background: white;
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 20px 40px;
+  /* Giant padding (Reduced) */
+  min-width: 320px;
+  /* Giant width (Reduced) */
+  text-align: center;
+  border-radius: 50px;
+  /* Giant radius */
   border-bottom-right-radius: 0;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 2.2rem;
+  /* Giant text (renders as ~16px) */
+  font-weight: 800;
   color: #333;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
   opacity: 0;
   pointer-events: none;
   white-space: nowrap;
+  z-index: 99999;
 }
 
 .cat-bubble.show {
