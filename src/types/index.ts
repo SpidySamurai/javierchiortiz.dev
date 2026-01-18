@@ -43,6 +43,9 @@ export type DataProject = {
   category?: 'featured' | 'entry' | 'other';
   status?: 'complete' | 'wip' | 'planning' | 'archived';
   hidden?: boolean;
+  isWork?: boolean;
+  company?: string;
+  companyUrl?: string;
 };
 
 export type DataExperience = {
@@ -51,4 +54,5 @@ export type DataExperience = {
   date: string;
   description: string;
   stack: string[];
+  url?: string;
 };
