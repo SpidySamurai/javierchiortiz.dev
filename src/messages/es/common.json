@@ -1,0 +1,101 @@
+{
+    "hero_subtitle": "Ingeniero Front End",
+    "hero_description": "Construyo experiencias digitales escalables y mobile-first para la web.",
+    "about": "Sobre mí",
+    "about_paragraph_1": "Soy un Frontend Developer con más de 5 años construyendo interfaces accesibles, responsivas y seguras. Me enfoco en crear código limpio y mantenible mientras colaboro con otros equipos para entregar experiencias intuitivas.",
+    "about_paragraph_2": "Mi stack principal incluye React, Next.js, TypeScript y Tailwind CSS. He trabajado en e-wallets, tableros de datos, librerías de componentes y herramientas internas, siempre con mentalidad mobile-first y atención al rendimiento.",
+    "about_paragraph_3": "Soy autodidacta, proactivo y busco mejorar la DX, la calidad del producto y la accesibilidad. Disfruto programar, depurar y refactorizar en equipo con diseño, backend y QA.",
+    "about_paragraph_4": "Fuera del trabajo practico Karate Shotokan (2° Dan), aprendo tecnología y juego títulos de exploración y fantasía. Creo que el buen código y las artes marciales comparten claridad, disciplina y mejora constante.",
+    "experience": "Experiencia",
+    "projects": "Proyectos",
+    "projects_search_label": "Buscar proyectos",
+    "projects_search_placeholder": "Buscar proyectos (título, tech, descripción)",
+    "projects_clear": "Limpiar",
+    "projects_empty": "No se encontraron proyectos para \"{query}\"",
+    "projects_tab_all": "Todos",
+    "projects_tab_work": "Profesional",
+    "projects_tab_personal": "Personales",
+    "projects_tab_entry": "Entry / Práctica",
+    "menu": "Menú",
+    "theme": "Tema",
+    "language_label": "Idioma",
+    "language_spanish": "Español",
+    "language_english": "Inglés",
+    "experience_items": {
+        "enti": {
+            "title": "Full Stack en ENTI",
+            "date": "Ago 2023 - Presente",
+            "description": "Construí y mantuve interfaces UI escalables para aplicaciones con datos intensivos, habilitando a equipos internos y clientes externos a consultar tableros dinámicos y herramientas. Lideré el desarrollo de un portal responsivo multipágina y colaboré con backend para integrar APIs seguras y optimizar los flujos de usuario. Actualmente desarrollo una e-wallet web mobile-first enfocada en vistas de cuentas y transacciones en tiempo real con sesiones seguras."
+        },
+        "softtek": {
+            "title": "Full Stack en Softtek",
+            "date": "Jun 2021 - Dic 2022",
+            "description": "Brindé soporte de mantenimiento migrando páginas, resolviendo incidencias e implementando soluciones junto a desarrolladores y QA. Contribuí a mejoras del sistema y aseguré la operación mediante pruebas, comunicación con usuarios y ajustes de datos en backend."
+        },
+        "scandia": {
+            "title": "FrontEnd en Scandia",
+            "date": "Jun 2021 - Dic 2022",
+            "description": "Implementé y optimicé interfaces e-commerce enfocadas en rendimiento, SEO y respuesta en múltiples dispositivos. Trabajé con un UI/UX semi senior y el equipo de marketing para llevar diseños a producción, personalizar tiendas y mejorar la experiencia del cliente con elementos interactivos y layouts optimizados."
+        },
+        "iotam": {
+            "title": "FrontEnd en IOTAM",
+            "date": "Jun 2021 - Dic 2022",
+            "description": "Refactoricé y mejoré la responsividad de componentes clave de la aplicación. Colaboré con backend para asegurar el flujo confiable de datos desde medidores, apoyé la visualización de datos y elevé la interfaz general en coordinación con el equipo de diseño."
+        },
+        "brightcoders": {
+            "title": "FrontEnd Internship en BrightCoders",
+            "date": "Jun 2021 - Dic 2022",
+            "description": "Participé en un programa colaborativo resolviendo retos de código e iterando soluciones en equipos pequeños. Construí páginas basadas en diseños y contribuí a un proyecto final con múltiples features aplicando las habilidades desarrolladas durante la estancia."
+        }
+    },
+    "project_items": {
+        "wallet-app": {
+            "title": "Wallet App",
+            "description": "Aplicación de billetera con autenticación, envíos, recepción y manejo de transacciones."
+        },
+        "scandia-ecommerce": {
+            "title": "Scandia Manufacturing",
+            "description": "Colaboré en la construcción de páginas, componentes y responsiveness para este sitio e-commerce líder en la industria."
+        },
+        "portfolio-personal": {
+            "title": "Portafolio Personal",
+            "description": "Sitio personal para mostrar mi experiencia y proyectos recientes."
+        },
+        "spa-rick-and-morty": {
+            "title": "SPA Rick and Morty",
+            "description": "SPA que consume la API de Rick & Morty, muestra la grilla de personajes y enlaza con la documentación."
+        },
+        "batata-bit": {
+            "title": "Batata-bit",
+            "description": "Landing de criptomonedas con tablas de precios en tiempo real, beneficios destacados y planes escalonados."
+        },
+        " Batata-bit": {
+            "title": "Batata-bit",
+            "description": "Landing de criptomonedas con tablas de precios en tiempo real, beneficios destacados y planes escalonados."
+        },
+        "batata-bit-fixed": {
+            "title": "Batata-bit",
+            "description": "Landing de criptomonedas con tablas de precios en tiempo real, beneficios destacados y planes escalonados."
+        },
+        "batatabit": {
+            "title": "Batata-bit",
+            "description": "Landing de criptomonedas con tablas de precios en tiempo real, beneficios destacados y planes escalonados."
+        },
+        "kittys-api-consuming": {
+            "title": "Kittys API Consuming",
+            "description": "Mini app con The Cat API: genera gatos aleatorios, guarda favoritos y permite subir tus fotos."
+        }
+    },
+    "projects_entry_label": "Entry",
+    "projects_work_label": "Profesional",
+    "project_status": {
+        "wip": "En progreso",
+        "complete": "Completado"
+    },
+    "project_view_demo": "Ver demo",
+    "project_visit_site": "Visitar sitio",
+    "project_demo_unavailable": "Demo no disponible",
+    "project_view_code": "Ver código",
+    "project_live_aria": "Abrir demo de {title} (se abre en nueva pestaña)",
+    "project_code_aria": "Ver código de {title} en GitHub (se abre en nueva pestaña)"
+}
