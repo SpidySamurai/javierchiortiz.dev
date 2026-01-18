@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react';
 // using native <img> for pan behavior; next/image was removed here intentionally
 import TechStack from './TechStack';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 
 type ProjectItemProps = {
   id?: string;
@@ -17,6 +17,9 @@ type ProjectItemProps = {
   category?: string;
   status?: string;
   hidden?: boolean;
+  isWork?: boolean;
+  company?: string;
+  companyUrl?: string;
 };
 
 export default function ProjectItem({
@@ -31,8 +34,11 @@ export default function ProjectItem({
   category,
   status,
   hidden,
+  isWork,
+  company,
+  companyUrl,
 }: ProjectItemProps) {
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const imgNatural = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
 
@@ -58,12 +64,45 @@ export default function ProjectItem({
   return (
     <div className="block">
       <div className="rounded-lg overflow-hidden transition-transform duration-300 p-4 space-y-4 hover:bg-surface hover:scale-[1.01] project-card">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xl font-bold text-default">{title}</h3>
-          {category === 'entry' && (
-            <span className="text-xs px-2 py-0.5 rounded bg-surface text-muted">
-              {t('projects_entry_label')} • {t(`project_status.${status || 'wip'}`, { defaultValue: status || 'wip' })}
-            </span>
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-bold text-default">{title}</h3>
+            {(category === 'entry' || isWork) && (
+              <span className="text-xs px-2 py-0.5 rounded bg-surface text-muted">
+                {t(isWork ? 'projects_work_label' : 'projects_entry_label')} •{' '}
+                {t(`project_status.${status || 'wip'}`)}
+              </span>
+            )}
+          </div>
+          {company && (
+            <div className="text-sm font-medium text-secondary">
+              {companyUrl ? (
+                <a
+                  href={companyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline flex items-center gap-1"
+                >
+                  @ {company}
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </a>
+              ) : (
+                <span>@ {company}</span>
+              )}
+            </div>
           )}
         </div>
 
@@ -102,7 +141,7 @@ export default function ProjectItem({
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium bg-secondary text-default hover:bg-secondary-light"
                   aria-label={t('project_live_aria', { title })}
                 >
-                  {t('project_view_demo')}
+                  {t(isWork ? 'project_visit_site' : 'project_view_demo')}
                 </a>
               ) : (
                 <button

@@ -1,11 +1,9 @@
-'use client';
-
 import ExperienceItem from '@/components/items/ExperienceItem';
 import { experiences } from '@/data/experiences';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 
 function ExperienceSection() {
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   return (
     <section id="experience">
       <h2 className="text-xl font-bold mb-4 text-default">{t('experience')}</h2>
@@ -14,10 +12,11 @@ function ExperienceSection() {
         return (
           <ExperienceItem
             key={expId}
-            title={t(`experience_items.${expId}.title`, { defaultValue: exp.title })}
-            date={t(`experience_items.${expId}.date`, { defaultValue: exp.date })}
-            description={t(`experience_items.${expId}.description`, { defaultValue: exp.description })}
+            title={t(`experience_items.${expId}.title`)}
+            date={t(`experience_items.${expId}.date`)}
+            description={t(`experience_items.${expId}.description`)}
             stack={exp.stack}
+            url={exp.url}
           />
         );
       })}

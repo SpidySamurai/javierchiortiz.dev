@@ -1,9 +1,7 @@
-'use client';
-
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 
 const About = () => {
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   const paragraphs = [
     t('about_paragraph_1'),
     t('about_paragraph_2'),
