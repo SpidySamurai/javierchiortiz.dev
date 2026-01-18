@@ -45,11 +45,11 @@ export const experiences: DataExperience[] = [
   },
   {
     id: 'brightcoders',
-    title: 'FrontEnd Intership at BrightCoders ',
+    title: 'FrontEnd Internship at BrightCoders ',
     date: 'Jun 2021 - Dec 2022',
     description:
       'Participated in a collaborative internship program solving coding challenges and iterating on solutions in small teams. Built web pages based on provided designs and contributed to a final multi-feature project, applying skills developed throughout the program.',
     stack: [...WEB, 'ROR', 'Ruby'],
-    url: 'https://www.brightcoders.mx/',
+    url: 'https://www.brightcoders.com/',
   },
 ];

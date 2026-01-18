@@ -4,6 +4,18 @@ const imgPath = '/utils/img/01b6c8e2-295f-494e-acd0-e71473ebf089.png';
 
 export const projects: DataProject[] = [
   {
+    id: 'lab2next',
+    title: 'Lab2Next',
+    imageUrl: '/utils/img/lab2next-screenshot.png', // Generated via script
+    description: 'Landing page MVP for a future clinical systems application.',
+    stack: ['Next.js', 'React', 'Tailwind CSS'],
+    liveUrl: 'https://lab2next.com/',
+    repoUrl: null,
+    category: 'featured',
+    status: 'wip',
+    isWork: true, // It sounds like a professional venture/MVP
+  },
+  {
     id: 'scandia-ecommerce',
     title: 'Scandia Manufacturing',
     imageUrl: '/utils/img/scandia-manufacturing-screenshot.png',
@@ -18,6 +30,35 @@ export const projects: DataProject[] = [
     companyUrl: 'https://scandiamfg.com/',
   },
   {
+    id: 'saunas-com',
+    title: 'Saunas.com',
+    imageUrl: '/utils/img/saunas-screenshot.png', // Generated via script
+    description: 'E-commerce platform for sauna and steam room products. Feature-rich implementation related to Scandia Mfg.',
+    stack: ['Shopify', 'HTML', 'Liquid', 'JavaScript'],
+    liveUrl: 'https://saunas.com/',
+    repoUrl: null,
+    category: 'featured',
+    status: 'complete',
+    isWork: true,
+    company: 'Scandia',
+    companyUrl: 'https://scandiamfg.com/',
+  },
+  {
+    id: 'sun-valley-salt',
+    title: 'Sun Valley Salt',
+    imageUrl: '/utils/img/sunvalleysalt-screenshot.png', // Generated via script
+    description: 'E-commerce platform for Himalayan salt wall panels. Manufacturing and customization focus.',
+    stack: ['Shopify', 'HTML', 'Liquid', 'JavaScript'],
+    liveUrl: 'https://sunvalleysalt.com/',
+    repoUrl: null,
+    category: 'featured',
+    status: 'complete',
+    isWork: true,
+    company: 'Scandia',
+    companyUrl: 'https://scandiamfg.com/',
+  },
+
+  {
     id: 'portfolio-personal',
     title: 'Portafolio Personal',
     imageUrl: '/utils/img/portfolio-personal-live-screenshot.png',
@@ -27,6 +68,7 @@ export const projects: DataProject[] = [
     repoUrl: 'https://github.com/SpidySamurai/web-portfolio2025',
     category: 'featured',
     status: 'complete',
+    isWork: true,
   },
   {
     id: 'wallet-app',
