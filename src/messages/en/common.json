@@ -1,5 +1,5 @@
 {
-    "hero_subtitle": "Front End Engineer",
+    "hero_subtitle": "Full Stack Developer",
     "hero_description": "I build scalable, mobile-first digital experiences for the web.",
     "about": "About me",
     "about_paragraph_1": "I am a Frontend Developer with over 5 years of experience building accessible, responsive, and secure interfaces. I focus on creating clean, maintainable code while collaborating with other teams to deliver intuitive experiences.",
@@ -69,7 +69,7 @@
         },
         "lab2next": {
             "title": "Lab2Next",
-            "description": "MVP landing page for an upcoming clinical systems application. Focused on modern healthcare solutions."
+            "description": "Official site for Lab2Next App. Showcases features, pricing packages, and system capabilities."
         },
         "portfolio-personal": {
             "title": "Modern Portfolio v2025",
