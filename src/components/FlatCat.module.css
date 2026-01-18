@@ -1,18 +1,12 @@
 /* Flat Geometric Orange Cat (Terracotta Style) */
-:root {
-  --flat-cat-white: #fdfdfd;
-  /* Main Coat */
-  --flat-cat-orange: #E67E22;
-  /* Orange/Ginger Patches */
-  --flat-cat-nose: #E08E79;
-  /* Soft Coral */
-  --flat-cat-eye-bg: #F2C94C;
-  /* Amber/Yellow */
-  --flat-cat-eye-pupil: #33292b;
-  /* Dark Brown/Black */
-}
-
 .sleeping-cat-wrapper {
+  /* Variables Moved Here */
+  --flat-cat-white: #fdfdfd;
+  --flat-cat-orange: #E67E22;
+  --flat-cat-nose: #E08E79;
+  --flat-cat-eye-bg: #F2C94C;
+  --flat-cat-eye-pupil: #33292b;
+
   position: fixed;
   bottom: 0.5rem;
   /* Closer to edge */
