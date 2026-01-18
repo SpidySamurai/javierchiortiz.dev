@@ -1,11 +1,18 @@
 // src/components/ui/ThemeToggle.tsx
 'use client';
-import { useTheme } from '@/context/ThemeProvider';
+import { useTheme } from 'next-themes';
 import { Switch } from '@headlessui/react';
+import { useEffect, useState } from 'react';
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const isLight = theme === 'light';
+  const { setTheme, resolvedTheme } = useTheme();
+  // Montaje seguro para evitar mismatch (opcional si next-themes maneja hydration mismatch, pero buena práctica)
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return <div className="h-6 w-12 bg-gray-200 rounded-full" />; // Placeholder para evitar layout shift
+
+  const isLight = resolvedTheme === 'light';
 
   return (
     <Switch

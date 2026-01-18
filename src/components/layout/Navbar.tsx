@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import ThemeToggle from '../ui/ThemeToggle';
-import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@/context/LanguageProvider';
+import { useTranslations, useLocale } from 'next-intl';
+import { usePathname, useRouter } from '@/i18n/routing';
 
 const SECTIONS = [
   { id: 'about', labelKey: 'about' },
@@ -12,10 +12,19 @@ const SECTIONS = [
 ];
 
 function Navbar() {
-  const { t } = useTranslation('common');
-  const { language, languages, setLanguage } = useLanguage();
+  const t = useTranslations('common');
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const languages = ['en', 'es'];
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  const handleLanguageChange = (newLocale: string) => {
+    router.replace(pathname, { locale: newLocale as 'en' | 'es' });
+    setShowDropdown(false);
+  };
 
   // Cerrar el dropdown al hacer click fuera
   useEffect(() => {
@@ -107,18 +116,15 @@ function Navbar() {
             className="px-2 py-1 rounded text-sm text-muted hover:text-default hover:bg-surface/10"
             onClick={() => setShowDropdown((v) => !v)}
           >
-            {language.toUpperCase()} ▼
+            {locale.toUpperCase()} ▼
           </button>
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-24 bg-surface border border-gray-300 rounded shadow-lg z-50">
               {languages.map((lng) => (
                 <button
                   key={lng}
-                  className={`w-full px-2 py-1 text-left text-sm ${language === lng ? 'bg-secondary/30 font-semibold' : 'text-muted hover:text-default hover:bg-surface/10'}`}
-                  onClick={() => {
-                    setLanguage(lng);
-                    setShowDropdown(false);
-                  }}
+                  className={`w-full px-2 py-1 text-left text-sm ${locale === lng ? 'bg-secondary/30 font-semibold' : 'text-muted hover:text-default hover:bg-surface/10'}`}
+                  onClick={() => handleLanguageChange(lng)}
                 >
                   {lng === 'es' ? t('language_spanish') : t('language_english')}
                 </button>
@@ -154,9 +160,8 @@ function Navbar() {
 
         {/* Drawer */}
         <aside
-          className={`fixed top-0 right-0 h-full w-64 bg-primary shadow-2xl p-4 transform transition-transform duration-300 ease-in-out z-60 ${
-            open ? 'translate-x-0' : 'translate-x-full'
-          }`}
+          className={`fixed top-0 right-0 h-full w-64 bg-primary shadow-2xl p-4 transform transition-transform duration-300 ease-in-out z-60 ${open ? 'translate-x-0' : 'translate-x-full'
+            }`}
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
@@ -189,9 +194,8 @@ function Navbar() {
                   <a
                     href={`#${s.id}`}
                     onClick={handleLinkClick}
-                    className={`block text-sm px-2 py-2 rounded ${
-                 active === s.id ? 'text-default bg-secondary/30 font-semibold' : 'text-muted hover:text-default hover:bg-surface/10'
-                    }`}
+                    className={`block text-sm px-2 py-2 rounded ${active === s.id ? 'text-default bg-secondary/30 font-semibold' : 'text-muted hover:text-default hover:bg-surface/10'
+                      }`}
                     style={{ transitionDelay: `${idx * 35}ms` }}
                   >
                     {t(s.labelKey)}
