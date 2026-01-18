@@ -4,16 +4,20 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useLanyard } from '@/hooks/useLanyard';
 
+
 type GamerCardProps = {
     isOpen: boolean;
     onClose: () => void;
 };
 
 const DISCORD_ID = '363896212874723331';
+const MARVEL_UID = '1774670402';
+import { useMarvelRivals } from '@/hooks/useMarvelRivals';
 
 export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
     const t = useTranslations('common');
     const { data: lanyardData, isLoading } = useLanyard({ userId: DISCORD_ID });
+    const marvelData = useMarvelRivals(MARVEL_UID);
 
     // Live Timer
     const [currentTime, setCurrentTime] = React.useState(Date.now());
@@ -176,6 +180,73 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
                         </div>
 
                         {/* Removed Static Stats (Rank/Level) as per request for no hardcoding */}
+
+                        {/* Marvel Rivals Rank Widget - Textual Layout */}
+                        <div className="w-full bg-[#171821] p-3 rounded-xl border border-white/5 mb-4 flex flex-col gap-2.5 group hover:bg-[#1c1d26] transition-colors cursor-default">
+                            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                                <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Marvel Rivals</span>
+                                <span className="text-[10px] text-gray-600 font-mono">Lv. {marvelData.level}</span>
+                            </div>
+
+                            {/* Current Rank Row */}
+                            <div className="flex items-center justify-between">
+                                <span className="text-xs text-gray-400 font-medium">Current Rank</span>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-4 h-4 flex items-center justify-center">
+                                        {marvelData.rankIcon ? (
+                                            <img
+                                                src={marvelData.rankIcon}
+                                                alt="Rank"
+                                                className="w-full h-full object-contain"
+                                                onError={(e) => {
+                                                    e.currentTarget.style.display = 'none';
+                                                    // Fallback to text/emoji if image fails
+                                                    e.currentTarget.parentElement!.innerHTML = '<span class="text-xs">🏆</span>';
+                                                }}
+                                            />
+                                        ) : (
+                                            <span className="text-xs">🏆</span>
+                                        )}
+                                    </div>
+                                    <span className="text-sm font-bold" style={{ color: marvelData.rankColor }}>
+                                        {marvelData.rank}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Peak Rank Row */}
+                            <div className="flex items-center justify-between">
+                                <span className="text-xs text-gray-500 font-medium">Max Rank</span>
+                                <div className="flex items-center gap-2 opacity-80">
+                                    <div className="w-4 h-4 flex items-center justify-center">
+                                        {marvelData.peakRankIcon ? (
+                                            <img
+                                                src={marvelData.peakRankIcon}
+                                                alt="Max Rank"
+                                                className="w-full h-full object-contain"
+                                                onError={(e) => {
+                                                    e.currentTarget.style.display = 'none';
+                                                    e.currentTarget.parentElement!.innerHTML = '<span class="text-xs text-gray-500">🏆</span>';
+                                                }}
+                                            />
+                                        ) : (
+                                            <span className="text-xs text-gray-500">🏆</span>
+                                        )}
+                                    </div>
+                                    <span className="text-sm font-bold" style={{ color: marvelData.peakRankColor || '#9ca3af' }}>
+                                        {marvelData.peakRank || 'Unranked'}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {marvelData.lastUpdated && (
+                                <div className="text-right pt-1">
+                                    <span className="text-[8px] text-gray-700 font-mono">
+                                        Updated {marvelData.lastUpdated.split(',')[0]}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
 
                         {/* Connections - Grid on mobile for space */}
                         <div className="w-full grid grid-cols-2 md:grid-cols-1 gap-2">
