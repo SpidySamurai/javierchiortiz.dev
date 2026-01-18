@@ -12,10 +12,7 @@ function withOpacity(variable) {
 }
 
 export default {
-  content: [
-    join(__dirname, 'src/**/*.{js,ts,jsx,tsx}'),
-    join(__dirname, 'src/app/globals.css'),
-  ],
+  content: [join(__dirname, 'src/**/*.{js,ts,jsx,tsx}'), join(__dirname, 'src/app/globals.css')],
   theme: {
     extend: {
       colors: {

@@ -1,111 +1,111 @@
 {
-    "hero_subtitle": "Full Stack Developer",
-    "hero_description": "I build scalable, mobile-first digital experiences for the web.",
-    "about": "About me",
-    "about_paragraph_1": "I am a Frontend Developer with over 5 years of experience building accessible, responsive, and secure interfaces. I focus on creating clean, maintainable code while collaborating with other teams to deliver intuitive experiences.",
-    "about_paragraph_2": "My main stack includes React, Next.js, TypeScript, and Tailwind CSS. I have worked on e-wallets, data dashboards, component libraries, and internal tools, always with a mobile-first mindset and attention to performance.",
-    "about_paragraph_3": "I am self-taught, proactive, and strive to improve DX, product quality, and accessibility. I enjoy programming, debugging, and refactoring as a team with design, backend, and QA.",
-    "about_paragraph_4": "Outside of work, I practice Shotokan Karate (2nd Dan), learn about technology, and play exploration and fantasy titles. I believe that good code and martial arts share clarity, discipline, and constant improvement.",
-    "experience": "Experience",
-    "projects": "Projects",
-    "projects_search_label": "Search projects",
-    "projects_search_placeholder": "Search projects (title, tech, description)",
-    "projects_clear": "Clear",
-    "projects_empty": "No projects found for \"{query}\"",
-    "projects_tab_all": "All",
-    "projects_tab_work": "Professional",
-    "projects_tab_personal": "Personal",
-    "projects_tab_entry": "Entry / Practice",
-    "projects_confidentiality": "Most of my professional projects are private or internal due to corporate confidentiality agreements.",
-    "footer_rights": "All rights reserved.",
-    "menu": "Menu",
-    "theme": "Theme",
-    "language_label": "Language",
-    "language_spanish": "Spanish",
-    "language_english": "English",
-    "experience_items": {
-        "enti": {
-            "title": "Full Stack at ENTI",
-            "date": "Aug 2023 - Present",
-            "description": "Built and maintained scalable UI interfaces for data-intensive applications, enabling internal teams and external clients to query dynamic dashboards and tools. Led the development of a multipage responsive portal and collaborated with backend to integrate secure APIs and optimize user flows. Currently developing a mobile-first web e-wallet focused on account views and real-time transactions with secure sessions."
-        },
-        "softtek": {
-            "title": "Full Stack at Softtek",
-            "date": "Jun 2021 - Dec 2022",
-            "description": "Provided maintenance support by migrating pages, resolving incidents, and implementing solutions together with developers and QA. Contributed to system improvements and ensured operation through testing, communication with users, and backend data adjustments."
-        },
-        "scandia": {
-            "title": "FrontEnd at Scandia",
-            "date": "Jun 2021 - Dec 2022",
-            "description": "Implemented and optimized e-commerce interfaces focused on performance, SEO, and multi-device responsiveness. Worked with a semi-senior UI/UX and the marketing team to bring designs to production, customize stores, and improve customer experience with interactive elements and optimized layouts."
-        },
-        "iotam": {
-            "title": "FrontEnd at IOTAM",
-            "date": "Jun 2021 - Dec 2022",
-            "description": "Refactored and improved the responsiveness of key application components. Collaborated with backend to ensure reliable data flow from meters, supported data visualization, and elevated the overall interface in coordination with the design team."
-        },
-        "brightcoders": {
-            "title": "FrontEnd Internship at BrightCoders",
-            "date": "Jun 2021 - Dec 2022",
-            "description": "Participated in a collaborative program resolving code challenges and iterating solutions in small teams. Built pages based on designs and contributed to a final project with multiple features applying the skills developed during the stay."
-        }
+  "hero_subtitle": "Full Stack Developer",
+  "hero_description": "I build scalable, mobile-first digital experiences for the web.",
+  "about": "About me",
+  "about_paragraph_1": "I am a Frontend Developer with over 5 years of experience building accessible, responsive, and secure interfaces. I focus on creating clean, maintainable code while collaborating with other teams to deliver intuitive experiences.",
+  "about_paragraph_2": "My main stack includes React, Next.js, TypeScript, and Tailwind CSS. I have worked on e-wallets, data dashboards, component libraries, and internal tools, always with a mobile-first mindset and attention to performance.",
+  "about_paragraph_3": "I am self-taught, proactive, and strive to improve DX, product quality, and accessibility. I enjoy programming, debugging, and refactoring as a team with design, backend, and QA.",
+  "about_paragraph_4": "Outside of work, I practice Shotokan Karate (2nd Dan), learn about technology, and play exploration and fantasy titles. I believe that good code and martial arts share clarity, discipline, and constant improvement.",
+  "experience": "Experience",
+  "projects": "Projects",
+  "projects_search_label": "Search projects",
+  "projects_search_placeholder": "Search projects (title, tech, description)",
+  "projects_clear": "Clear",
+  "projects_empty": "No projects found for \"{query}\"",
+  "projects_tab_all": "All",
+  "projects_tab_work": "Professional",
+  "projects_tab_personal": "Personal",
+  "projects_tab_entry": "Entry / Practice",
+  "projects_confidentiality": "Most of my professional projects are private or internal due to corporate confidentiality agreements.",
+  "footer_rights": "All rights reserved.",
+  "menu": "Menu",
+  "theme": "Theme",
+  "language_label": "Language",
+  "language_spanish": "Spanish",
+  "language_english": "English",
+  "experience_items": {
+    "enti": {
+      "title": "Full Stack at ENTI",
+      "date": "Aug 2023 - Present",
+      "description": "Built and maintained scalable UI interfaces for data-intensive applications, enabling internal teams and external clients to query dynamic dashboards and tools. Led the development of a multipage responsive portal and collaborated with backend to integrate secure APIs and optimize user flows. Currently developing a mobile-first web e-wallet focused on account views and real-time transactions with secure sessions."
     },
-    "project_items": {
-        "wallet-app": {
-            "title": "Wallet App",
-            "description": "Wallet application with authentication, sending, receiving, and transaction management."
-        },
-        "scandia-ecommerce": {
-            "title": "Scandia Manufacturing",
-            "description": "Collaborated on building pages, components, and responsiveness for this industry-leading e-commerce site."
-        },
-        "saunas-com": {
-            "title": "Saunas.com",
-            "description": "E-commerce platform for sauna and steam room products. Feature-rich implementation related to Scandia Mfg."
-        },
-        "sun-valley-salt": {
-            "title": "Sun Valley Salt",
-            "description": "E-commerce platform for Himalayan salt wall panels. Manufacturing and customization focus."
-        },
-        "lab2next": {
-            "title": "Lab2Next",
-            "description": "Official site for Lab2Next App. Showcases features, pricing packages, and system capabilities."
-        },
-        "portfolio-personal": {
-            "title": "Modern Portfolio v2025",
-            "description": "Personal site to show my experience and recent projects."
-        },
-        "spa-rick-and-morty": {
-            "title": "SPA Rick and Morty",
-            "description": "SPA that consumes the Rick & Morty API, shows the character grid, and links to documentation."
-        },
-        "batata-bit": {
-            "title": "Batata-bit",
-            "description": "Cryptocurrency landing page with real-time price tables, key benefits, and tiered plans."
-        },
-        "batatabit": {
-            "title": "Batata-bit",
-            "description": "Cryptocurrency landing page with real-time price tables, key benefits, and tiered plans."
-        },
-        "batata-bit-fixed": {
-            "title": "Batata-bit",
-            "description": "Cryptocurrency landing page with real-time price tables, key benefits, and tiered plans."
-        },
-        "kittys-api-consuming": {
-            "title": "Kittys API Consuming",
-            "description": "Mini app with The Cat API: generates random cats, saves favorites, and allows you to upload your photos."
-        }
+    "softtek": {
+      "title": "Full Stack at Softtek",
+      "date": "Jun 2021 - Dec 2022",
+      "description": "Provided maintenance support by migrating pages, resolving incidents, and implementing solutions together with developers and QA. Contributed to system improvements and ensured operation through testing, communication with users, and backend data adjustments."
     },
-    "projects_entry_label": "Entry",
-    "projects_work_label": "Professional",
-    "project_status": {
-        "wip": "In progress",
-        "complete": "Completed"
+    "scandia": {
+      "title": "FrontEnd at Scandia",
+      "date": "Jun 2021 - Dec 2022",
+      "description": "Implemented and optimized e-commerce interfaces focused on performance, SEO, and multi-device responsiveness. Worked with a semi-senior UI/UX and the marketing team to bring designs to production, customize stores, and improve customer experience with interactive elements and optimized layouts."
     },
-    "project_view_demo": "View demo",
-    "project_visit_site": "Visit site",
-    "project_demo_unavailable": "Demo unavailable",
-    "project_view_code": "View code",
-    "project_live_aria": "Open {title} demo (opens in new tab)",
-    "project_code_aria": "View {title} code on GitHub (opens in new tab)"
+    "iotam": {
+      "title": "FrontEnd at IOTAM",
+      "date": "Jun 2021 - Dec 2022",
+      "description": "Refactored and improved the responsiveness of key application components. Collaborated with backend to ensure reliable data flow from meters, supported data visualization, and elevated the overall interface in coordination with the design team."
+    },
+    "brightcoders": {
+      "title": "FrontEnd Internship at BrightCoders",
+      "date": "Jun 2021 - Dec 2022",
+      "description": "Participated in a collaborative program resolving code challenges and iterating solutions in small teams. Built pages based on designs and contributed to a final project with multiple features applying the skills developed during the stay."
+    }
+  },
+  "project_items": {
+    "wallet-app": {
+      "title": "Wallet App",
+      "description": "Wallet application with authentication, sending, receiving, and transaction management."
+    },
+    "scandia-ecommerce": {
+      "title": "Scandia Manufacturing",
+      "description": "Collaborated on building pages, components, and responsiveness for this industry-leading e-commerce site."
+    },
+    "saunas-com": {
+      "title": "Saunas.com",
+      "description": "E-commerce platform for sauna and steam room products. Feature-rich implementation related to Scandia Mfg."
+    },
+    "sun-valley-salt": {
+      "title": "Sun Valley Salt",
+      "description": "E-commerce platform for Himalayan salt wall panels. Manufacturing and customization focus."
+    },
+    "lab2next": {
+      "title": "Lab2Next",
+      "description": "Official site for Lab2Next App. Showcases features, pricing packages, and system capabilities."
+    },
+    "portfolio-personal": {
+      "title": "Modern Portfolio v2025",
+      "description": "Personal site to show my experience and recent projects."
+    },
+    "spa-rick-and-morty": {
+      "title": "SPA Rick and Morty",
+      "description": "SPA that consumes the Rick & Morty API, shows the character grid, and links to documentation."
+    },
+    "batata-bit": {
+      "title": "Batata-bit",
+      "description": "Cryptocurrency landing page with real-time price tables, key benefits, and tiered plans."
+    },
+    "batatabit": {
+      "title": "Batata-bit",
+      "description": "Cryptocurrency landing page with real-time price tables, key benefits, and tiered plans."
+    },
+    "batata-bit-fixed": {
+      "title": "Batata-bit",
+      "description": "Cryptocurrency landing page with real-time price tables, key benefits, and tiered plans."
+    },
+    "kittys-api-consuming": {
+      "title": "Kittys API Consuming",
+      "description": "Mini app with The Cat API: generates random cats, saves favorites, and allows you to upload your photos."
+    }
+  },
+  "projects_entry_label": "Entry",
+  "projects_work_label": "Professional",
+  "project_status": {
+    "wip": "In progress",
+    "complete": "Completed"
+  },
+  "project_view_demo": "View demo",
+  "project_visit_site": "Visit site",
+  "project_demo_unavailable": "Demo unavailable",
+  "project_view_code": "View code",
+  "project_live_aria": "Open {title} demo (opens in new tab)",
+  "project_code_aria": "View {title} code on GitHub (opens in new tab)"
 }
