@@ -20,6 +20,10 @@ const targets = [
     url: 'https://javierchiortiz.dev/',
     out: 'public/utils/img/portfolio-personal-live-screenshot.png',
   },
+  {
+    url: 'https://scandiamfg.com/',
+    out: 'public/utils/img/scandia-manufacturing-screenshot.png',
+  },
 ];
 
 (async () => {
