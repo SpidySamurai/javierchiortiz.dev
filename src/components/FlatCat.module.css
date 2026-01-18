@@ -1,14 +1,15 @@
 /* Flat Geometric Orange Cat (Terracotta Style) */
 :root {
-  --flat-cat-body: #D65A2C;
-  /* Terracotta/Burnt Orange */
+  --flat-cat-white: #fdfdfd;
+  /* Main Coat */
+  --flat-cat-orange: #E67E22;
+  /* Orange/Ginger Patches */
   --flat-cat-nose: #E08E79;
   /* Soft Coral */
   --flat-cat-eye-bg: #F2C94C;
   /* Amber/Yellow */
   --flat-cat-eye-pupil: #33292b;
   /* Dark Brown/Black */
-  --flat-cat-shadow: rgba(0, 0, 0, 0.15);
 }
 
 .sleeping-cat-wrapper {
@@ -56,7 +57,9 @@
   right: 0;
   width: 90px;
   height: 100px;
-  background-color: var(--flat-cat-body);
+  background-color: var(--flat-cat-white);
+  /* Orange Patch on back */
+  background-image: radial-gradient(circle at 0% 50%, var(--flat-cat-orange) 40%, transparent 41%);
   border-radius: 40px 40px 0 0;
 }
 
@@ -67,7 +70,13 @@
   right: -20px;
   width: 50px;
   height: 25px;
-  background-color: var(--flat-cat-body);
+  background-color: var(--flat-cat-orange);
+  /* Stripes */
+  background-image: repeating-linear-gradient(90deg,
+      transparent,
+      transparent 8px,
+      rgba(0, 0, 0, 0.05) 8px,
+      rgba(0, 0, 0, 0.05) 16px);
   border-radius: 0 25px 25px 0;
   transform-origin: right center;
   /* animation removed as requested */
@@ -101,7 +110,9 @@
   left: 0;
   width: 100px;
   height: 90px;
-  background-color: var(--flat-cat-body);
+  background-color: var(--flat-cat-white);
+  /* Orange patch on top right/left of head */
+  background-image: linear-gradient(135deg, var(--flat-cat-orange) 35%, transparent 35%);
   border-radius: 45px;
   z-index: 2;
 }
@@ -114,7 +125,7 @@
   height: 0;
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
-  border-bottom: 40px solid var(--flat-cat-body);
+  border-bottom: 40px solid var(--flat-cat-orange);
   z-index: 1;
 }
 
@@ -167,11 +178,14 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  /* Move based on JS variables, default to 0 */
+  transform: translate(calc(-50% + var(--pupil-x, 0px)), calc(-50% + var(--pupil-y, 0px)));
   width: 8px;
   height: 8px;
   background-color: var(--flat-cat-eye-pupil);
   border-radius: 50%;
+  transition: transform 0.1s ease-out;
+  /* Smooth movement */
 }
 
 .cat-nose {
@@ -211,13 +225,13 @@
   position: absolute;
   top: -40px;
   /* Adjusted for new layout */
-  left: 20px;
+  left: -20px;
   /* Shift to align with small cat */
   /* transform is handled by animation */
   background: white;
   padding: 8px 16px;
   border-radius: 20px;
-  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   font-size: 16px;
   font-weight: bold;
   color: #333;
