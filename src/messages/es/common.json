@@ -1,6 +1,6 @@
 {
-    "hero_subtitle": "Ingeniero Front End",
-    "hero_description": "Construyo experiencias digitales escalables y mobile-first para la web.",
+    "hero_subtitle": "Desarrollador Full Stack",
+    "hero_description": "Creo experiencias web accesibles, pixel-perfect, performantes y atractivas.",
     "about": "Sobre mí",
     "about_paragraph_1": "Soy un Frontend Developer con más de 5 años construyendo interfaces accesibles, responsivas y seguras. Me enfoco en crear código limpio y mantenible mientras colaboro con otros equipos para entregar experiencias intuitivas.",
     "about_paragraph_2": "Mi stack principal incluye React, Next.js, TypeScript y Tailwind CSS. He trabajado en e-wallets, tableros de datos, librerías de componentes y herramientas internas, siempre con mentalidad mobile-first y atención al rendimiento.",
@@ -69,7 +69,7 @@
         },
         "lab2next": {
             "title": "Lab2Next",
-            "description": "Landing page MVP para una futura aplicación de sistemas clínicos. Enfoque en soluciones modernas de salud."
+            "description": "Sitio oficial para la App Lab2Next. Muestra funcionalidades, paquetes de precios y capacidades del sistema."
         },
         "portfolio-personal": {
             "title": "Portafolio Moderno v2025",
