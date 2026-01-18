@@ -2,9 +2,9 @@
 .sleeping-cat-wrapper {
   /* Variables Moved Here */
   --flat-cat-white: #fdfdfd;
-  --flat-cat-orange: #E67E22;
-  --flat-cat-nose: #E08E79;
-  --flat-cat-eye-bg: #F2C94C;
+  --flat-cat-orange: #e67e22;
+  --flat-cat-nose: #e08e79;
+  --flat-cat-eye-bg: #f2c94c;
   --flat-cat-eye-pupil: #33292b;
 
   position: fixed;
@@ -66,11 +66,13 @@
   height: 25px;
   background-color: var(--flat-cat-orange);
   /* Stripes */
-  background-image: repeating-linear-gradient(90deg,
-      transparent,
-      transparent 8px,
-      rgba(0, 0, 0, 0.05) 8px,
-      rgba(0, 0, 0, 0.05) 16px);
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 8px,
+    rgba(0, 0, 0, 0.05) 8px,
+    rgba(0, 0, 0, 0.05) 16px
+  );
   border-radius: 0 25px 25px 0;
   transform-origin: right center;
   /* animation removed as requested */
@@ -95,7 +97,6 @@
 .cat-body::after {
   left: 45px;
 }
-
 
 /* --- Head (Rounded Square) --- */
 .cat-head {
@@ -144,7 +145,6 @@
   border-right: 8px solid transparent;
   border-bottom: 25px solid var(--flat-cat-nose);
 }
-
 
 /* --- Face --- */
 .cat-face {
@@ -261,7 +261,6 @@
 /* --- Animations --- */
 /* --- Animations --- */
 @keyframes bob {
-
   0%,
   100% {
     transform: translateY(0) scale(0.35);
@@ -274,7 +273,6 @@
 }
 
 @keyframes tail-wag {
-
   0%,
   100% {
     transform: rotate(0deg);

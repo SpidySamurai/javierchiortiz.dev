@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export async function generateMetadata({
-  params
+  params,
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {

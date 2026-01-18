@@ -64,7 +64,6 @@
 }
 
 @keyframes ear-twitch {
-
   0%,
   90% {
     transform: rotate(0deg);
@@ -95,7 +94,6 @@
 }
 
 @keyframes blink {
-
   0%,
   92% {
     transform: scaleY(1);
@@ -116,7 +114,6 @@
 
 /* Subtle bob */
 @keyframes bob {
-
   0%,
   100% {
     transform: translateY(0);
@@ -128,7 +125,6 @@
 }
 
 @keyframes bob {
-
   0%,
   100% {
     transform: translateY(0);

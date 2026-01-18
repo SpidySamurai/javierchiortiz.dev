@@ -22,5 +22,5 @@ export default function ThemeToggle() {
     >
       <span className="rounded-full bg-white shadow-lg transition group-data-checked:translate-x-5 sm:group-data-checked:translate-x-6 size-4 sm:size-5 translate-x-1"></span>
     </Switch>
-  )
+  );
 }

@@ -22,7 +22,6 @@ section {
   scroll-margin-top: 4.5rem; /* roughly header height */
 }
 
-
 :root {
   --color-primary: #1a1a2e;
   --color-surface: #23234a;
@@ -39,7 +38,7 @@ html[data-theme='light'] {
   --color-primary: #f4f6fb; /* fondo principal claro, no blanco puro */
   --color-surface: #e9edf5; /* cards, navbar, surface */
   --color-default: #23234a; /* texto principal oscuro */
-  --color-muted: #5a627a;   /* texto secundario gris azulado, legible */
+  --color-muted: #5a627a; /* texto secundario gris azulado, legible */
   --color-secondary: #1e90ff; /* azul vibrante igual que dark */
   --color-secondary-light: #4fb3ff; /* azul claro para hover/detalles */
   --color-white: #ffffff; /* solo para highlights */
@@ -47,15 +46,33 @@ html[data-theme='light'] {
 }
 
 /* Utilidades semánticas para fondo y texto */
-.bg-primary { background-color: var(--color-primary); }
-.bg-surface { background-color: var(--color-surface); }
-.bg-secondary { background-color: var(--color-secondary); }
-.bg-secondary-light { background-color: var(--color-secondary-light); }
-.text-default { color: var(--color-default); }
-.text-muted { color: var(--color-muted); }
-.text-secondary { color: var(--color-secondary); }
-.text-secondary-light { color: var(--color-secondary-light); }
-.text-surface { color: var(--color-surface); }
+.bg-primary {
+  background-color: var(--color-primary);
+}
+.bg-surface {
+  background-color: var(--color-surface);
+}
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+.bg-secondary-light {
+  background-color: var(--color-secondary-light);
+}
+.text-default {
+  color: var(--color-default);
+}
+.text-muted {
+  color: var(--color-muted);
+}
+.text-secondary {
+  color: var(--color-secondary);
+}
+.text-secondary-light {
+  color: var(--color-secondary-light);
+}
+.text-surface {
+  color: var(--color-surface);
+}
 
 :root {
   --color-primary: #1a1a2e;
@@ -69,16 +86,33 @@ html[data-theme='light'] {
 }
 
 /* Utilidades semánticas para fondo y texto */
-.bg-primary { background-color: var(--color-primary) !important; }
-.bg-surface { background-color: var(--color-surface) !important; }
-.bg-secondary { background-color: var(--color-secondary) !important; }
-.bg-secondary-light { background-color: var(--color-secondary-light) !important; }
-.text-default { color: var(--color-default) !important; }
-.text-muted { color: var(--color-muted) !important; }
-.text-secondary { color: var(--color-secondary) !important; }
-.text-secondary-light { color: var(--color-secondary-light) !important; }
-.text-surface { color: var(--color-surface) !important; }
-
+.bg-primary {
+  background-color: var(--color-primary) !important;
+}
+.bg-surface {
+  background-color: var(--color-surface) !important;
+}
+.bg-secondary {
+  background-color: var(--color-secondary) !important;
+}
+.bg-secondary-light {
+  background-color: var(--color-secondary-light) !important;
+}
+.text-default {
+  color: var(--color-default) !important;
+}
+.text-muted {
+  color: var(--color-muted) !important;
+}
+.text-secondary {
+  color: var(--color-secondary) !important;
+}
+.text-secondary-light {
+  color: var(--color-secondary-light) !important;
+}
+.text-surface {
+  color: var(--color-surface) !important;
+}
 
 /* global.css */
 .scroll-x-thin {

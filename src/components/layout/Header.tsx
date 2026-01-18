@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 
 const Header = () => {
   return (
-  <header className="sticky top-0 z-40 w-full px-4 py-2 shadow-md bg-primary">
+    <header className="sticky top-0 z-40 w-full px-4 py-2 shadow-md bg-primary">
       <div className="w-full max-w-screen-xl mx-auto flex items-center justify-between h-16">
         <div className="flex items-center">
           <Link href="/" className="flex items-center">

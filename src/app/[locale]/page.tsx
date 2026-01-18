@@ -19,7 +19,8 @@ export default function Home() {
           <Hero />
           {/* Temporary mount for verification */}
           <div className="mt-8">
-            <FlatCat onUnlock={() => setShowEasterEgg(true)} /> {/* Added onUnlock prop to FlatCat */}
+            <FlatCat onUnlock={() => setShowEasterEgg(true)} />{' '}
+            {/* Added onUnlock prop to FlatCat */}
           </div>
         </div>
 

@@ -13,9 +13,9 @@ function ExperienceItem({ title, date, description, stack, url }: ExperienceItem
   return (
     <>
       <a
-        href={url || "#"}
-        target={url ? "_blank" : undefined}
-        rel={url ? "noopener noreferrer" : undefined}
+        href={url || '#'}
+        target={url ? '_blank' : undefined}
+        rel={url ? 'noopener noreferrer' : undefined}
         className="block"
       >
         <div className="border-blue-500 p-4 mb-6 hover:bg-surface hover:scale-[1.01] transition-transform rounded cursor-pointer">

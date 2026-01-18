@@ -7,7 +7,8 @@ export const projects: DataProject[] = [
     id: 'lab2next',
     title: 'Lab2Next',
     imageUrl: '/utils/img/lab2next-screenshot.png', // Generated via script
-    description: 'Official site for Lab2Next App. Showcases features, pricing packages, and system capabilities.',
+    description:
+      'Official site for Lab2Next App. Showcases features, pricing packages, and system capabilities.',
     stack: ['Next.js', 'React', 'Tailwind CSS'],
     liveUrl: 'https://lab2next.com/',
     repoUrl: null,
@@ -19,7 +20,8 @@ export const projects: DataProject[] = [
     id: 'scandia-ecommerce',
     title: 'Scandia Manufacturing',
     imageUrl: '/utils/img/scandia-manufacturing-screenshot.png',
-    description: 'E-commerce platform build with special focus on shopify sections, components and responsiveness.',
+    description:
+      'E-commerce platform build with special focus on shopify sections, components and responsiveness.',
     stack: ['Shopify', 'HTML', 'CSS', 'JavaScript'],
     liveUrl: 'https://scandiamfg.com/',
     repoUrl: null,
@@ -33,7 +35,8 @@ export const projects: DataProject[] = [
     id: 'saunas-com',
     title: 'Saunas.com',
     imageUrl: '/utils/img/saunas-screenshot.png', // Generated via script
-    description: 'E-commerce platform for sauna and steam room products. Feature-rich implementation related to Scandia Mfg.',
+    description:
+      'E-commerce platform for sauna and steam room products. Feature-rich implementation related to Scandia Mfg.',
     stack: ['Shopify', 'HTML', 'Liquid', 'JavaScript'],
     liveUrl: 'https://saunas.com/',
     repoUrl: null,
@@ -47,7 +50,8 @@ export const projects: DataProject[] = [
     id: 'sun-valley-salt',
     title: 'Sun Valley Salt',
     imageUrl: '/utils/img/sunvalleysalt-screenshot.png', // Generated via script
-    description: 'E-commerce platform for Himalayan salt wall panels. Manufacturing and customization focus.',
+    description:
+      'E-commerce platform for Himalayan salt wall panels. Manufacturing and customization focus.',
     stack: ['Shopify', 'HTML', 'Liquid', 'JavaScript'],
     liveUrl: 'https://sunvalleysalt.com/',
     repoUrl: null,
@@ -99,7 +103,7 @@ export const projects: DataProject[] = [
   },
   {
     id: 'kittys-api-consuming',
-    title: "Kittys API Consuming",
+    title: 'Kittys API Consuming',
     imageUrl: '/utils/img/kittys-api-consuming-screenshot.png',
     description: 'Ejercicio de consumo de APIs con paginación y filtros.',
     stack: ['JavaScript', 'HTML', 'CSS'],
@@ -112,7 +116,7 @@ export const projects: DataProject[] = [
     id: 'batata-bit',
     title: 'Batata-bit',
     imageUrl: '/utils/img/batata-bit-screenshot.png',
-    description: "Landing responsive enfocada en diseño mobile-first.",
+    description: 'Landing responsive enfocada en diseño mobile-first.',
     stack: ['HTML', 'CSS'],
     liveUrl: 'https://spidysamurai.github.io/Batata-bit/',
     repoUrl: 'https://github.com/SpidySamurai/Batata-bit',

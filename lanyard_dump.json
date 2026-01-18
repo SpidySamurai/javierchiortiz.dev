@@ -1,1 +1,63 @@
-{"data":{"kv":{},"discord_user":{"avatar":"624596dd510cd60f4f81d1da735ea7c1","avatar_decoration_data":{"asset":"a_f3af281c65cf0cf590e9e1f59e9c6cf6","expires_at":null,"sku_id":"1212569856189407352"},"bot":false,"collectibles":{"nameplate":{"asset":"nameplates/trick_or_treat/pile_of_bones_trick/","expires_at":null,"label":"COLLECTIBLES_TRICK_OR_TREAT_PILE_OF_BONES_TRICK_NP_A11Y","palette":"berry","sku_id":"1420057111697821756"}},"discriminator":"0","display_name":"Spidy Samurai","display_name_styles":null,"global_name":"Spidy Samurai","id":"363896212874723331","primary_guild":{"badge":"8e228078dc56d4ad8bdccb696d4e90be","identity_enabled":true,"identity_guild_id":"1193841000108531764","tag":"RVLS"},"public_flags":0,"username":"spidynomore"},"activities":[{"created_at":1768715702518,"id":"custom","name":"Custom Status","session_id":"0505146ad2dbbaa664199ce971eac185","state":"Ojos de tigre","type":4},{"application_id":"1432419613165228174","created_at":1768725838081,"id":"108d786f436cbfec","name":"ARC Raiders","session_id":"0505146ad2dbbaa664199ce971eac185","timestamps":{"start":1768725836602},"type":0}],"discord_status":"idle","active_on_discord_web":false,"active_on_discord_desktop":true,"active_on_discord_mobile":false,"active_on_discord_embedded":false,"listening_to_spotify":false,"spotify":null},"success":true}
+{
+  "data": {
+    "kv": {},
+    "discord_user": {
+      "avatar": "624596dd510cd60f4f81d1da735ea7c1",
+      "avatar_decoration_data": {
+        "asset": "a_f3af281c65cf0cf590e9e1f59e9c6cf6",
+        "expires_at": null,
+        "sku_id": "1212569856189407352"
+      },
+      "bot": false,
+      "collectibles": {
+        "nameplate": {
+          "asset": "nameplates/trick_or_treat/pile_of_bones_trick/",
+          "expires_at": null,
+          "label": "COLLECTIBLES_TRICK_OR_TREAT_PILE_OF_BONES_TRICK_NP_A11Y",
+          "palette": "berry",
+          "sku_id": "1420057111697821756"
+        }
+      },
+      "discriminator": "0",
+      "display_name": "Spidy Samurai",
+      "display_name_styles": null,
+      "global_name": "Spidy Samurai",
+      "id": "363896212874723331",
+      "primary_guild": {
+        "badge": "8e228078dc56d4ad8bdccb696d4e90be",
+        "identity_enabled": true,
+        "identity_guild_id": "1193841000108531764",
+        "tag": "RVLS"
+      },
+      "public_flags": 0,
+      "username": "spidynomore"
+    },
+    "activities": [
+      {
+        "created_at": 1768715702518,
+        "id": "custom",
+        "name": "Custom Status",
+        "session_id": "0505146ad2dbbaa664199ce971eac185",
+        "state": "Ojos de tigre",
+        "type": 4
+      },
+      {
+        "application_id": "1432419613165228174",
+        "created_at": 1768725838081,
+        "id": "108d786f436cbfec",
+        "name": "ARC Raiders",
+        "session_id": "0505146ad2dbbaa664199ce971eac185",
+        "timestamps": { "start": 1768725836602 },
+        "type": 0
+      }
+    ],
+    "discord_status": "idle",
+    "active_on_discord_web": false,
+    "active_on_discord_desktop": true,
+    "active_on_discord_mobile": false,
+    "active_on_discord_embedded": false,
+    "listening_to_spotify": false,
+    "spotify": null
+  },
+  "success": true
+}
