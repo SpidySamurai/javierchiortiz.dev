@@ -1,20 +1,17 @@
-'use client';
-
+import { useTranslations } from 'next-intl';
 import { FaGithub, FaLinkedin, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import { SiReact, SiNextdotjs, SiTailwindcss, SiTypescript } from 'react-icons/si';
-import Cat from '../Cat';
-import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   return (
     <section className="min-w-[320px] mt-8 flex items-center text-center justify-center text-default px-4 lg:text-left">
       <div className="max-w-md">
         <h1 className="text-4xl md:text-4xl font-bold text-default">Javier Chi Ortíz</h1>
-        <h2 className="text-2xl text-muted mt-0.5">{t('hero_subtitle', 'Front End Engineer')}</h2>
-        <Cat />
+        <h2 className="text-2xl text-muted mt-0.5">{t('hero_subtitle')}</h2>
+
         <p className="max-w-80 mt-4 text-lg text-muted leading-relaxed">
-          {t('hero_description', 'I build scalable, mobile-first digital experiences for the web.')}
+          {t('hero_description')}
         </p>
 
         {/* Tech Stack */}
@@ -86,8 +83,8 @@ const Hero = () => {
               Contact me
             </a>
         </div> */}
-      </div>
-    </section>
+      </div >
+    </section >
   );
 };
 
