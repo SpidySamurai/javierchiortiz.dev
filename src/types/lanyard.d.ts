@@ -6,6 +6,16 @@ export interface LanyardUser {
     display_name?: string;
     global_name?: string;
     public_flags?: number;
+    avatar_decoration_data?: {
+        asset: string;
+        sku_id: string;
+    };
+    primary_guild?: {
+        badge: string;
+        identity_enabled: boolean;
+        identity_guild_id: string;
+        tag: string;
+    };
 }
 
 export interface LanyardActivity {
@@ -13,6 +23,7 @@ export interface LanyardActivity {
     state: string;
     name: string;
     id: string;
+    application_id?: string;
     emoji?: { name: string; id?: string; animated?: boolean };
     created_at: number;
     timestamps?: { start: number; end?: number };
