@@ -36,7 +36,11 @@ const Projects = () => {
     if (activeTab === 'work') {
       result = result.filter((p) => p.isWork);
     } else if (activeTab === 'personal') {
-      result = result.filter((p) => !p.isWork && p.category !== 'entry');
+      // Includes both personal featured and entry-level/practice
+      // Also explicitly includes the portfolio and Lab2Next as requested
+      result = result.filter(
+        (p) => !p.isWork || p.id === 'portfolio-personal' || p.id === 'lab2next'
+      );
     } else if (activeTab === 'entry') {
       result = result.filter((p) => p.category === 'entry');
     }
@@ -66,8 +70,8 @@ const Projects = () => {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${activeTab === tab.id
-                  ? 'bg-secondary text-default'
-                  : 'bg-surface text-muted hover:text-default hover:bg-surface/80'
+                ? 'bg-secondary text-default'
+                : 'bg-surface text-muted hover:text-default hover:bg-surface/80'
                 }`}
             >
               {t(tab.label)}
@@ -98,6 +102,26 @@ const Projects = () => {
             </button>
           )}
         </div>
+
+        {/* Confidentiality Notice */}
+        {(activeTab === 'work' || activeTab === 'all') && !query && (
+          <div className="bg-surface/50 border border-surface px-4 py-3 rounded-md text-sm text-secondary flex gap-2 items-start opacity-90">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="mt-0.5 shrink-0"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            <p>{t('projects_confidentiality')}</p>
+          </div>
+        )}
       </div>
 
       <div className="pt-2 flex flex-col gap-4">

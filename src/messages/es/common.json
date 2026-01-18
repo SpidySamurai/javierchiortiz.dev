@@ -16,6 +16,8 @@
     "projects_tab_work": "Profesional",
     "projects_tab_personal": "Personales",
     "projects_tab_entry": "Entry / Práctica",
+    "projects_confidentiality": "La mayoría de mis proyectos profesionales son privados debido a acuerdos corporativos.",
+    "footer_rights": "Todos los derechos reservados.",
     "menu": "Menú",
     "theme": "Tema",
     "language_label": "Idioma",
@@ -57,8 +59,20 @@
             "title": "Scandia Manufacturing",
             "description": "Colaboré en la construcción de páginas, componentes y responsiveness para este sitio e-commerce líder en la industria."
         },
+        "saunas-com": {
+            "title": "Saunas.com",
+            "description": "Plataforma de e-commerce para productos de sauna y vapor. Implementación rica en funcionalidades relacionada con Scandia Mfg."
+        },
+        "sun-valley-salt": {
+            "title": "Sun Valley Salt",
+            "description": "Plataforma de e-commerce para paneles de pared de sal del Himalaya. Enfoque en manufactura y personalización."
+        },
+        "lab2next": {
+            "title": "Lab2Next",
+            "description": "Landing page MVP para una futura aplicación de sistemas clínicos. Enfoque en soluciones modernas de salud."
+        },
         "portfolio-personal": {
-            "title": "Portafolio Personal",
+            "title": "Portafolio Moderno v2025",
             "description": "Sitio personal para mostrar mi experiencia y proyectos recientes."
         },
         "spa-rick-and-morty": {

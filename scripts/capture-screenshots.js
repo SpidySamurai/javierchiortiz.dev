@@ -24,6 +24,18 @@ const targets = [
     url: 'https://scandiamfg.com/',
     out: 'public/utils/img/scandia-manufacturing-screenshot.png',
   },
+  {
+    url: 'https://saunas.com/',
+    out: 'public/utils/img/saunas-screenshot.png',
+  },
+  {
+    url: 'https://sunvalleysalt.com/',
+    out: 'public/utils/img/sunvalleysalt-screenshot.png',
+  },
+  {
+    url: 'https://lab2next.com/',
+    out: 'public/utils/img/lab2next-screenshot.png',
+  },
 ];
 
 (async () => {
