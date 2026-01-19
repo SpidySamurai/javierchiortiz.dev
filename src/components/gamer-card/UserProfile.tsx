@@ -47,7 +47,7 @@ export const UserProfile = ({
         {avatarDecoration && (
           <img
             src={avatarDecoration}
-            className="absolute -top-[18%] -left-[18%] w-[136%] h-[136%] pointer-events-none z-30"
+            className="absolute -top-[18%] -left-[-8%] w-[136%] h-[136%] pointer-events-none z-30"
             alt="Decoration"
           />
         )}
