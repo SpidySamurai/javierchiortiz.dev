@@ -21,6 +21,7 @@ Private repository for my personal professional portfolio. This project showcase
 ## 🛠️ Getting Started
 
 1.  **Install dependencies:**
+
     ```bash
     npm install
     ```
@@ -34,12 +35,14 @@ Private repository for my personal professional portfolio. This project showcase
 ## 📸 Scripts
 
 ### Capture Screenshots
+
 This project uses Puppeteer to automatically generate thumbnails for the featured projects.
 Add new URLs to `scripts/capture-screenshots.js` and run:
 
 ```bash
 npm run screenshots
 ```
+
 This will save images to `public/utils/img/`.
 
 ## 📂 Project Structure
@@ -51,4 +54,5 @@ This will save images to `public/utils/img/`.
 - `src/utils`: Helper styles and assets.
 
 ## 🔒 License
+
 Private. All rights reserved.

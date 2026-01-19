@@ -69,10 +69,11 @@ const Projects = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${activeTab === tab.id
-                ? 'bg-secondary text-default'
-                : 'bg-surface text-muted hover:text-default hover:bg-surface/80'
-                }`}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                activeTab === tab.id
+                  ? 'bg-secondary text-default'
+                  : 'bg-surface text-muted hover:text-default hover:bg-surface/80'
+              }`}
             >
               {t(tab.label)}
             </button>

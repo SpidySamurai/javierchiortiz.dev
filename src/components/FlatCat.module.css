@@ -2,9 +2,9 @@
 .sleeping-cat-wrapper {
   /* Variables Moved Here */
   --flat-cat-white: #fdfdfd;
-  --flat-cat-orange: #E67E22;
-  --flat-cat-nose: #E08E79;
-  --flat-cat-eye-bg: #F2C94C;
+  --flat-cat-orange: #e67e22;
+  --flat-cat-nose: #e08e79;
+  --flat-cat-eye-bg: #f2c94c;
   --flat-cat-eye-pupil: #33292b;
 
   position: fixed;
@@ -66,11 +66,13 @@
   height: 25px;
   background-color: var(--flat-cat-orange);
   /* Stripes */
-  background-image: repeating-linear-gradient(90deg,
-      transparent,
-      transparent 8px,
-      rgba(0, 0, 0, 0.05) 8px,
-      rgba(0, 0, 0, 0.05) 16px);
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 8px,
+    rgba(0, 0, 0, 0.05) 8px,
+    rgba(0, 0, 0, 0.05) 16px
+  );
   border-radius: 0 25px 25px 0;
   transform-origin: right center;
   /* animation removed as requested */
@@ -95,7 +97,6 @@
 .cat-body::after {
   left: 45px;
 }
-
 
 /* --- Head (Rounded Square) --- */
 .cat-head {
@@ -144,7 +145,6 @@
   border-right: 8px solid transparent;
   border-bottom: 25px solid var(--flat-cat-nose);
 }
-
 
 /* --- Face --- */
 .cat-face {
@@ -217,22 +217,29 @@
 /* --- Speech Bubble --- */
 .cat-bubble {
   position: absolute;
-  top: -40px;
-  /* Adjusted for new layout */
-  left: -20px;
-  /* Shift to align with small cat */
-  /* transform is handled by animation */
+  top: -180px;
+  /* Shift up drastically for unscaled visual position */
+  left: auto;
+  right: 10px;
+  /* Anchor to right, pull in slightly to prevent clipping */
   background: white;
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 20px 40px;
+  /* Giant padding (Reduced) */
+  min-width: 320px;
+  /* Giant width (Reduced) */
+  text-align: center;
+  border-radius: 50px;
+  /* Giant radius */
   border-bottom-right-radius: 0;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 2.2rem;
+  /* Giant text (renders as ~16px) */
+  font-weight: 800;
   color: #333;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
   opacity: 0;
   pointer-events: none;
   white-space: nowrap;
+  z-index: 99999;
 }
 
 .cat-bubble.show {
@@ -254,7 +261,6 @@
 /* --- Animations --- */
 /* --- Animations --- */
 @keyframes bob {
-
   0%,
   100% {
     transform: translateY(0) scale(0.35);
@@ -267,7 +273,6 @@
 }
 
 @keyframes tail-wag {
-
   0%,
   100% {
     transform: rotate(0deg);
