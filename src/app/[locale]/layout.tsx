@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import Header from '@/components/layout/Header';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
+import { GamerCardProvider } from '@/components/providers/GamerCardContext';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 
@@ -19,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export async function generateMetadata({
-  params
+  params,
 }: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
@@ -78,10 +79,12 @@ export default async function RootLayout({
       <head />
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>
-          <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
-            <Header />
-            <main>{children}</main>
-          </ThemeProvider>
+          <GamerCardProvider>
+            <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
+              <Header />
+              <main>{children}</main>
+            </ThemeProvider>
+          </GamerCardProvider>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -1,11 +1,15 @@
 'use client';
 
+import React from 'react';
 import Hero from '@/components/layout/Hero';
 import MainContent from '@/components/sections/MainContent';
 import Footer from '@/components/layout/Footer';
 import FlatCat from '@/components/FlatCat';
+import { useGamerCard } from '@/components/providers/GamerCardContext';
 
 export default function Home() {
+  const { unlockCard } = useGamerCard();
+
   return (
     <main className="flex flex-col items-center min-h-screen">
       <div className="flex flex-col lg:flex-row w-full max-w-screen-xl">
@@ -14,7 +18,7 @@ export default function Home() {
           <Hero />
           {/* Temporary mount for verification */}
           <div className="mt-8">
-            <FlatCat />
+            <FlatCat onUnlock={unlockCard} />
           </div>
         </div>
 

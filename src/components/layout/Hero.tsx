@@ -10,9 +10,7 @@ const Hero = () => {
         <h1 className="text-4xl md:text-4xl font-bold text-default">Javier Chi Ortíz</h1>
         <h2 className="text-2xl text-muted mt-0.5">{t('hero_subtitle')}</h2>
 
-        <p className="max-w-80 mt-4 text-lg text-muted leading-relaxed">
-          {t('hero_description')}
-        </p>
+        <p className="max-w-80 mt-4 text-lg text-muted leading-relaxed">{t('hero_description')}</p>
 
         {/* Tech Stack */}
         <div className="flex flex-wrap justify-center items-center gap-4 mt-4 text-muted text-sm">
@@ -83,8 +81,8 @@ const Hero = () => {
               Contact me
             </a>
         </div> */}
-      </div >
-    </section >
+      </div>
+    </section>
   );
 };
 

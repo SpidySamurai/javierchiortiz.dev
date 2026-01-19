@@ -107,7 +107,10 @@ export default function ProjectItem({
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 items-start">
-          <div ref={wrapperRef} className="w-full sm:w-1/3 max-w-[320px] relative aspect-[16/9] rounded-md overflow-hidden project-image-wrapper">
+          <div
+            ref={wrapperRef}
+            className="w-full sm:w-1/3 max-w-[320px] relative aspect-[16/9] rounded-md overflow-hidden project-image-wrapper"
+          >
             <img
               src={imageUrl}
               alt={title}

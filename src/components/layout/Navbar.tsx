@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ThemeToggle from '../ui/ThemeToggle';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/routing';
+import { useGamerCard } from '@/components/providers/GamerCardContext';
 
 const SECTIONS = [
   { id: 'about', labelKey: 'about' },
@@ -16,6 +17,7 @@ function Navbar() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const { isUnlocked, openCard } = useGamerCard();
 
   const languages = ['en', 'es'];
   const [showDropdown, setShowDropdown] = useState(false);
@@ -77,7 +79,11 @@ function Navbar() {
       });
     };
 
-    const io = new IntersectionObserver(callback, { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+    const io = new IntersectionObserver(callback, {
+      root: null,
+      rootMargin: '-40% 0px -40% 0px',
+      threshold: 0,
+    });
 
     SECTIONS.forEach((s) => {
       const el = document.getElementById(s.id);
@@ -99,7 +105,11 @@ function Navbar() {
           <li key={s.id}>
             <a
               href={`#${s.id}`}
-              className={`text-sm transition px-2 py-1 rounded ${active === s.id ? 'text-default bg-secondary/30 font-semibold' : 'text-muted hover:text-default hover:bg-surface/10'}`}
+              className={`text-sm transition px-2 py-1 rounded ${
+                active === s.id
+                  ? 'text-default bg-secondary/30 font-semibold'
+                  : 'text-muted hover:text-default hover:bg-surface/10'
+              }`}
               aria-current={active === s.id ? 'true' : undefined}
             >
               {t(s.labelKey)}
@@ -109,6 +119,16 @@ function Navbar() {
       </ul>
       {/* Theme toggle + language selector (desktop) */}
       <div className="hidden lg:flex items-center gap-2 ml-6">
+        {isUnlocked && (
+          <button
+            onClick={openCard}
+            className="p-2 rounded-md hover:bg-surface/10 transition-transform hover:scale-110"
+            title="Open Gamer Card"
+            aria-label="Open Gamer Card"
+          >
+            <span className="text-xl">🕷️</span>
+          </button>
+        )}
         <ThemeToggle />
         <div className="relative" ref={dropdownRef}>
           <button
@@ -123,7 +143,11 @@ function Navbar() {
               {languages.map((lng) => (
                 <button
                   key={lng}
-                  className={`w-full px-2 py-1 text-left text-sm ${locale === lng ? 'bg-secondary/30 font-semibold' : 'text-muted hover:text-default hover:bg-surface/10'}`}
+                  className={`w-full px-2 py-1 text-left text-sm ${
+                    locale === lng
+                      ? 'bg-secondary/30 font-semibold'
+                      : 'text-muted hover:text-default hover:bg-surface/10'
+                  }`}
                   onClick={() => handleLanguageChange(lng)}
                 >
                   {lng === 'es' ? t('language_spanish') : t('language_english')}
@@ -142,26 +166,47 @@ function Navbar() {
           onClick={() => setOpen((v) => !v)}
           className="p-2 rounded-md text-default focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             {open ? (
-              <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M6 18L18 6M6 6l12 12"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M4 6h16M4 12h16M4 18h16"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             )}
           </svg>
         </button>
 
         {/* Backdrop (no heavy blur) */}
         <div
-          className={`fixed inset-0 bg-surface/80 transition-opacity duration-200 ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+          className={`fixed inset-0 bg-surface/80 transition-opacity duration-200 ${
+            open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
           onClick={() => setOpen(false)}
           aria-hidden
         />
 
         {/* Drawer */}
         <aside
-          className={`fixed top-0 right-0 h-full w-64 bg-primary shadow-2xl p-4 transform transition-transform duration-300 ease-in-out z-60 ${open ? 'translate-x-0' : 'translate-x-full'
-            }`}
+          className={`fixed top-0 right-0 h-full w-64 bg-primary shadow-2xl p-4 transform transition-transform duration-300 ease-in-out z-60 ${
+            open ? 'translate-x-0' : 'translate-x-full'
+          }`}
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
@@ -174,8 +219,20 @@ function Navbar() {
               aria-label="Close menu"
               className="p-2 rounded-md text-default focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 18L18 6M6 6l12 12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
           </div>
@@ -183,7 +240,18 @@ function Navbar() {
           {/* Toggle de tema con label y separación visual */}
           <div className="flex items-center justify-between mb-6 mt-2 px-2">
             <span className="text-muted text-sm">{t('theme')}</span>
-            <ThemeToggle />
+            <div className="flex items-center gap-3">
+              {isUnlocked && (
+                <button
+                  onClick={openCard}
+                  className="p-1.5 rounded-md hover:bg-surface/10 transition-colors border border-transparent hover:border-surface/20"
+                  title="Open Gamer Card"
+                >
+                  <span className="text-lg">🕷️</span>
+                </button>
+              )}
+              <ThemeToggle />
+            </div>
           </div>
           <hr className="mb-4 border-gray-300" />
 
@@ -194,8 +262,11 @@ function Navbar() {
                   <a
                     href={`#${s.id}`}
                     onClick={handleLinkClick}
-                    className={`block text-sm px-2 py-2 rounded ${active === s.id ? 'text-default bg-secondary/30 font-semibold' : 'text-muted hover:text-default hover:bg-surface/10'
-                      }`}
+                    className={`block text-sm px-2 py-2 rounded ${
+                      active === s.id
+                        ? 'text-default bg-secondary/30 font-semibold'
+                        : 'text-muted hover:text-default hover:bg-surface/10'
+                    }`}
                     style={{ transitionDelay: `${idx * 35}ms` }}
                   >
                     {t(s.labelKey)}

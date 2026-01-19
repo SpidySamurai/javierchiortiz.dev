@@ -9,7 +9,7 @@
 - Projects UI: ProjectItem uses native <img> for a hover pan effect; CSS expects project-image-wrapper/project-image classes and sets --pan-amount via JS. Avoid swapping to next/image unless preserving this contract.
 - Styling: globals.css defines theme tokens under html[data-theme] and semantic utility classes (.bg-primary, .text-muted, etc.). Prefer those variables over hard-coded colors; sections rely on scroll-margin-top to avoid the sticky header overlap.
 - Navigation: Navbar (components/layout/Navbar.tsx) uses IntersectionObserver for active link state and a mobile drawer that locks body scroll. Update SECTIONS and matching section ids together; keep aria labels intact.
-- Hero: components/layout/Hero.tsx holds social links and text; strings should stay translatable via hero_* keys in the common namespace.
+- Hero: components/layout/Hero.tsx holds social links and text; strings should stay translatable via hero\_\* keys in the common namespace.
 - Projects search: components/sections/Projects.tsx builds a localized project list with useMemo and filters against title/description/stack/projectUrl. Preserve this flow when extending search.
 - Data types: src/types/index.ts defines DataProject/DataExperience shapes used by data files. Align new entries with these types and the translation keys.
 - Code quality: sigue principios SOLID y mantiene tipados estrictos de TypeScript (evita any/unknown innecesarios, aprovecha tipos derivados de datos y props claras).
