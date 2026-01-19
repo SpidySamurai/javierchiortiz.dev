@@ -111,9 +111,9 @@ export const ActivityWidget = ({ activity, currentTime }: ActivityWidgetProps) =
             )}
           </div>
           <div className="mt-2 flex items-center gap-4">
-            {/* Visual Game Art Block */}
-            {activity?.assets?.large_image && (
-              <div className="relative w-16 h-16 md:w-20 md:h-20 shrink-0">
+            {/* Visual Game Art Block (Dynamic or Default Spiderman) */}
+            <div className="relative w-16 h-16 md:w-20 md:h-20 shrink-0">
+              {activity?.assets?.large_image ? (
                 <img
                   src={
                     activity.assets.large_image.startsWith('mp:')
@@ -126,33 +126,40 @@ export const ActivityWidget = ({ activity, currentTime }: ActivityWidgetProps) =
                   className="w-full h-full object-cover rounded-xl shadow-lg border border-white/10"
                   alt={activity.name}
                 />
-                {activity.assets.small_image && (
-                  <img
-                    src={
-                      activity.assets.small_image.startsWith('mp:')
-                        ? `https://media.discordapp.net/${activity.assets.small_image.replace(
-                            'mp:',
-                            ''
-                          )}`
-                        : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.small_image}.png`
-                    }
-                    className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full border-2 border-[#12131a] z-10"
-                    alt=""
-                    title={activity.assets.small_text}
-                  />
-                )}
-              </div>
-            )}
+              ) : (
+                <div className="w-full h-full bg-indigo-500/10 rounded-xl flex items-center justify-center border border-indigo-500/20">
+                  <span className="text-3xl">🕸️</span>
+                </div>
+              )}
+
+              {activity?.assets?.small_image && (
+                <img
+                  src={
+                    activity.assets.small_image.startsWith('mp:')
+                      ? `https://media.discordapp.net/${activity.assets.small_image.replace(
+                          'mp:',
+                          ''
+                        )}`
+                      : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.small_image}.png`
+                  }
+                  className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full border-2 border-[#12131a] z-10"
+                  alt=""
+                  title={activity.assets.small_text}
+                />
+              )}
+            </div>
 
             <div className="min-w-0 flex-1">
-              <h4 className="text-white font-black text-2xl md:text-3xl mb-1 truncate drop-shadow-lg leading-tight">
+              <h4 className="text-white font-black text-lg md:text-3xl mb-0.5 md:mb-1 leading-snug line-clamp-2 drop-shadow-lg">
                 {activity?.name || 'Fighting crime in Merida City 🕷️'}
               </h4>
 
               {/* Dynamic State Row with Icon */}
-              <div className={`flex items-center gap-2 mt-1 ${detailedState.color} drop-shadow-md`}>
+              <div
+                className={`flex items-center gap-1.5 md:gap-2 mt-0.5 md:mt-1 ${detailedState.color} drop-shadow-md`}
+              >
                 {detailedState.icon}
-                <p className="text-sm md:text-base italic line-clamp-1 font-medium">
+                <p className="text-xs md:text-base italic line-clamp-1 font-medium">
                   {detailedState.label}
                 </p>
               </div>
