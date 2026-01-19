@@ -32,7 +32,6 @@ export function useLanyard({ userId }: UseLanyardOptions) {
 
     ws.onopen = () => {
       setIsConnected(true);
-      console.log('Lanyard WS Connected');
     };
 
     ws.onmessage = (event) => {
