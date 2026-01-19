@@ -85,21 +85,26 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
   const customStatus = lanyardData?.activities.find((a) => a.type === 4)?.state;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md animate-fade-in p-2 md:p-8 overflow-y-auto">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md animate-fade-in p-2 md:p-8 overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+    >
       <div
         className="relative w-full max-w-5xl my-auto bg-[#0c0d12] rounded-3xl md:rounded-[2rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.9)] flex flex-col md:flex-row border border-white/5"
         onClick={(e) => e.stopPropagation()}
       >
         {/* --- LEFT PANEL: PROFILE OVERVIEW --- */}
-        <div className="w-full md:w-[340px] bg-[#12131a] flex flex-col items-center relative overflow-hidden shrink-0 border-b md:border-b-0 md:border-r border-white/5">
+        <aside className="w-full md:w-[340px] bg-[#12131a] flex flex-col items-center relative overflow-hidden shrink-0 border-b md:border-b-0 md:border-r border-white/5">
           {/* Top Decorative Banner */}
-          <div className="absolute top-0 w-full h-32 md:h-40 bg-gradient-to-br from-indigo-900/40 via-purple-900/20 to-transparent"></div>
-          <div className="absolute top-0 w-full h-32 md:h-40 bg-[url('/utils/img/grid-pattern.svg')] opacity-10"></div>
+          <div className="absolute top-0 w-full h-32 md:h-40 bg-gradient-to-br from-indigo-900/40 via-purple-900/20 to-transparent pointer-events-none"></div>
+          <div className="absolute top-0 w-full h-32 md:h-40 bg-[url('/utils/img/grid-pattern.svg')] opacity-10 pointer-events-none"></div>
 
           {/* Close Button Mobile */}
           <button
             onClick={onClose}
             className="absolute top-4 right-4 z-50 text-white/50 p-2 md:hidden"
+            aria-label="Close"
           >
             <svg
               width="24"
@@ -137,12 +142,12 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
 
             <SocialLinks />
           </div>
-        </div>
+        </aside>
 
         {/* --- RIGHT PANEL: DYNAMIC WIDGET DASHBOARD --- */}
-        <div className="flex-1 bg-[#0c0d12] p-5 md:p-12 relative">
+        <section className="flex-1 bg-[#0c0d12] p-5 md:p-6 lg:p-12 relative flex flex-col min-w-0">
           {/* Mobile Header */}
-          <div className="flex md:hidden justify-between items-center mb-6">
+          <header className="flex md:hidden justify-between items-center mb-6">
             <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest">
               Live Activity
             </p>
@@ -150,10 +155,10 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
               <div className={`w-2 h-2 rounded-full ${statusInfo.color} animate-pulse`}></div>
               <p className="text-white text-xs font-bold uppercase">{statusInfo.label}</p>
             </div>
-          </div>
+          </header>
 
           {/* Desktop Header Stats */}
-          <div className="hidden md:flex justify-between items-center mb-12">
+          <header className="hidden md:flex justify-between items-center mb-12">
             <div className="flex gap-8">
               <div>
                 <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-1">
@@ -170,6 +175,7 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-white bg-white/5 hover:bg-white/10 p-3 rounded-full transition-all"
+              aria-label="Close"
             >
               <svg
                 width="24"
@@ -182,13 +188,13 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             </button>
-          </div>
+          </header>
           {/* --- ACTIVITY WIDGET --- */}
           <ActivityWidget activity={mainActivity} currentTime={currentTime} />
 
           {/* --- LARGE WIDGET: SPOTIFY OR HERO --- */}
           <SpotifyWidget spotify={spotify} currentTime={currentTime} />
-        </div>
+        </section>
       </div>
 
       <style jsx>{`

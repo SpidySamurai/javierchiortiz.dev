@@ -35,20 +35,26 @@ export const BadgeList = ({ user, userId }: BadgeListProps) => {
   const badges = getBadges(user);
 
   return (
-    <div className="flex flex-wrap justify-center gap-1.5 md:gap-2 mb-6 md:mb-8">
+    <ul
+      className="flex flex-wrap justify-center gap-1.5 md:gap-2 mb-6 md:mb-8"
+      aria-label="User Badges"
+    >
       {badges.map((b, i) => (
-        <div
+        <li
           key={i}
           className="flex items-center gap-1.5 bg-white/5 backdrop-blur-md px-2.5 py-1 md:px-3 md:py-1.5 rounded-full border border-white/10 group cursor-default hover:bg-white/10 transition-colors"
+          title={b.name}
         >
-          <span className="text-base md:text-lg">{b.icon}</span>
+          <span className="text-base md:text-lg" aria-hidden="true">
+            {b.icon}
+          </span>
           <span
-            className={`text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${b.color} opacity-0 group-hover:opacity-100 transition-opacity w-0 group-hover:w-auto overflow-hidden`}
+            className={`text-[9px] md:text-[10px] font-bold uppercase tracking-wider ${b.color} opacity-0 group-hover:opacity-100 transition-opacity w-0 group-hover:w-auto overflow-hidden text-nowrap`}
           >
             {b.name.split(' ')[0]}
           </span>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };

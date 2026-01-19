@@ -10,13 +10,13 @@ export const MarvelRivalsWidget = () => {
   const marvelData = useMarvelRivals(MARVEL_UID);
 
   return (
-    <div className="w-full bg-[#171821] p-3 rounded-xl border border-white/5 mb-4 flex flex-col gap-2.5 group hover:bg-[#1c1d26] transition-colors cursor-default ">
-      <div className="flex items-center justify-between border-b border-white/5 pb-2">
+    <article className="w-full bg-[#171821] p-3 rounded-xl border border-white/5 mb-4 flex flex-col gap-2.5 group hover:bg-[#1c1d26] transition-colors cursor-default ">
+      <header className="flex items-center justify-between border-b border-white/5 pb-2">
         <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
           Marvel Rivals
         </span>
         <span className="text-[10px] text-gray-600 font-mono">Lv. {marvelData.level}</span>
-      </div>
+      </header>
 
       {/* Current Rank Row */}
       <div className="flex items-center justify-between">
@@ -79,6 +79,6 @@ export const MarvelRivalsWidget = () => {
           </span>
         </div>
       )}
-    </div>
+    </article>
   );
 };
