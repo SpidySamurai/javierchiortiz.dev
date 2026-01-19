@@ -1,13 +1,14 @@
 import React from 'react';
+import type { LanyardUser } from '@/types/lanyard';
 
 type BadgeListProps = {
-  user?: any;
+  user?: LanyardUser;
   userId: string;
 };
 
 export const BadgeList = ({ user, userId }: BadgeListProps) => {
   // Badge Logic (Decoding public_flags)
-  const getBadges = (userData: any) => {
+  const getBadges = (userData?: LanyardUser) => {
     const flags = userData?.public_flags || 0;
     const badges = [];
 

@@ -14,6 +14,29 @@ export interface MarvelPlayerValues {
   peakRankIcon: string;
   peakRankColor: string;
 }
+interface MarvelRank {
+  rank: string;
+  image: string;
+  color: string;
+}
+
+interface MarvelUpdates {
+  last_history_update?: string;
+}
+
+interface MarvelSeason {
+  player: {
+    rank: MarvelRank;
+    level?: string;
+  };
+  updates?: MarvelUpdates;
+}
+
+interface MarvelApiResponse {
+  player?: MarvelSeason['player'];
+  seasons?: Record<string, MarvelSeason>;
+  updates?: MarvelUpdates;
+}
 
 const RANK_ASSETS: { [key: string]: string } = {
   Bronze: '/utils/img/icons/1%20Bronze%20Rank.webp',
@@ -45,34 +68,36 @@ export function useMarvelRivals(uid: string) {
     data: currentData,
     error: currentError,
     isLoading: currentLoading,
-  } = useSWR(uid ? `/api/marvel/player?uid=${uid}` : null, fetcher);
+  } = useSWR<MarvelApiResponse>(uid ? `/api/marvel/player?uid=${uid}` : null, fetcher);
 
   const {
     data: s1Data,
     error: s1Error,
-    isLoading: s1Loading,
-  } = useSWR(uid ? `/api/marvel/player?uid=${uid}&season=1` : null, fetcher);
+  } = useSWR<MarvelApiResponse>(uid ? `/api/marvel/player?uid=${uid}&season=1` : null, fetcher);
 
-  const isLoading = currentLoading || s1Loading;
+
   const error = currentError || s1Error;
 
   // Helper to normalize data to a list of seasons
   const getSeasonList = () => {
-    const list: any[] = [];
+    const list: MarvelSeason[] = [];
     if (currentData) {
       // If it has 'seasons' wrapper, use it
       if (currentData.seasons) {
         Object.values(currentData.seasons).forEach((s) => list.push(s));
       } else if (currentData.player) {
-        // Single season response
-        list.push(currentData);
+        // Construct a MarvelSeason object if strictly needed, or just push compatible structure
+        // If currentData has player, it matches MarvelSeason structure mostly if we treat the root as the container
+        // However, currentData has 'updates' etc.
+        // Let's coerce it.
+        list.push(currentData as unknown as MarvelSeason);
       }
     }
     if (s1Data) {
       if (s1Data.seasons) {
         Object.values(s1Data.seasons).forEach((s) => list.push(s));
       } else if (s1Data.player) {
-        list.push(s1Data);
+        list.push(s1Data as unknown as MarvelSeason);
       }
     }
     return list;
