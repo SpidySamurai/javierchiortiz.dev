@@ -1,8 +1,9 @@
 import React from 'react';
 import { LuGamepad2, LuCode, LuSwords, LuCoffee, LuClock, LuZap } from 'react-icons/lu';
+import type { LanyardActivity } from '@/types/lanyard';
 
 type ActivityWidgetProps = {
-  activity: any;
+  activity?: LanyardActivity;
   currentTime: number;
 };
 
@@ -19,7 +20,7 @@ export const ActivityWidget = ({ activity, currentTime }: ActivityWidgetProps) =
   };
 
   // Helper: Generic State Mapper (Works for any game)
-  const getDetailedState = (act: any) => {
+  const getDetailedState = (act?: LanyardActivity) => {
     if (!act)
       return {
         label: '"With great power comes great responsibility."',

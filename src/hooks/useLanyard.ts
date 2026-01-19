@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import type { LanyardData, LanyardResponse } from '@/types/lanyard';
+import type { LanyardData } from '@/types/lanyard';
 
 const LANYARD_WS = 'wss://api.lanyard.rest/socket';
 
@@ -9,7 +9,7 @@ interface UseLanyardOptions {
 
 interface LanyardOp {
   op: number;
-  d?: any;
+  d?: unknown;
   t?: string;
   seq?: number;
 }
@@ -40,7 +40,8 @@ export function useLanyard({ userId }: UseLanyardOptions) {
 
         switch (message.op) {
           case 1: // Hello
-            const interval = message.d.heartbeat_interval;
+            const helloData = message.d as { heartbeat_interval: number };
+            const interval = helloData.heartbeat_interval;
             // Start Heartbeat
             if (heartbeatRef.current) clearInterval(heartbeatRef.current);
             heartbeatRef.current = setInterval(() => {
@@ -65,7 +66,7 @@ export function useLanyard({ userId }: UseLanyardOptions) {
               // But usually INIT_STATE for single ID is just the data.
               // PRESENCE_UPDATE is the full new state.
               // Let's handle both.
-              setData(message.d);
+              setData(message.d as LanyardData);
             }
             break;
         }

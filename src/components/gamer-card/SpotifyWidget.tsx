@@ -1,7 +1,8 @@
 import React from 'react';
+import type { LanyardSpotify } from '@/types/lanyard';
 
 type SpotifyWidgetProps = {
-  spotify: any;
+  spotify: LanyardSpotify | null;
   currentTime: number;
 };
 

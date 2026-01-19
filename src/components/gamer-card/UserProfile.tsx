@@ -1,8 +1,9 @@
 import React from 'react';
 import { LuMonitor, LuSmartphone, LuGlobe } from 'react-icons/lu';
+import type { LanyardUser } from '@/types/lanyard';
 
 type UserProfileProps = {
-  discordUser: any;
+  discordUser: LanyardUser | undefined;
   statusInfo: { color: string; shadow: string; label: string };
   avatarDecoration?: string | null;
   customStatus?: string;
@@ -85,7 +86,7 @@ export const UserProfile = ({
         {customStatus && (
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 mb-2 max-w-full">
             <span className="text-gray-300 text-xs md:text-sm italic truncate">
-              "{customStatus}"
+              &quot;{customStatus}&quot;
             </span>
           </div>
         )}

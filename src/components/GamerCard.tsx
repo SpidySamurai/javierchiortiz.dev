@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useTranslations } from 'next-intl';
+// import { useTranslations } from 'next-intl'; // removed unused
 import { useLanyard } from '@/hooks/useLanyard';
 
 // Atomic Components
@@ -20,8 +20,8 @@ type GamerCardProps = {
 const DISCORD_ID = '363896212874723331';
 
 export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
-  const t = useTranslations('common');
-  const { data: lanyardData, isLoading } = useLanyard({ userId: DISCORD_ID });
+  // const t = useTranslations('common'); // removed unused
+  const { data: lanyardData } = useLanyard({ userId: DISCORD_ID });
 
   // Live Timer for progress bars
   const [currentTime, setCurrentTime] = React.useState(Date.now());
@@ -64,11 +64,6 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
   };
 
   const statusInfo = getStatusInfo(lanyardData?.discord_status);
-
-  // Rich Activity Details
-  const activity =
-    lanyardData?.activities.find((a) => a.type === 0) || // Game
-    lanyardData?.activities.find((a) => a.type === 4 && a.name !== 'Custom Status'); // Standard Activity
 
   const mainActivity = lanyardData?.activities.find((a) => a.type === 0);
 
