@@ -91,7 +91,11 @@ export function useLanyard({ userId }: UseLanyardOptions) {
   useEffect(() => {
     connect();
     return () => {
-      if (socketRef.current) socketRef.current.close();
+      if (socketRef.current) {
+        // Prevent reconnect logic from firing on unmount
+        socketRef.current.onclose = null;
+        socketRef.current.close();
+      }
       if (heartbeatRef.current) clearInterval(heartbeatRef.current);
     };
   }, [connect]);
