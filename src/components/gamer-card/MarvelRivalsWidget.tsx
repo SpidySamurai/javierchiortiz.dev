@@ -10,7 +10,7 @@ export const MarvelRivalsWidget = () => {
   const marvelData = useMarvelRivals(MARVEL_UID);
 
   return (
-    <div className="w-full bg-[#171821] p-3 rounded-xl border border-white/5 mb-4 flex flex-col gap-2.5 group hover:bg-[#1c1d26] transition-colors cursor-default">
+    <div className="w-full bg-[#171821] p-3 rounded-xl border border-white/5 mb-4 flex flex-col gap-2.5 group hover:bg-[#1c1d26] transition-colors cursor-default ">
       <div className="flex items-center justify-between border-b border-white/5 pb-2">
         <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
           Marvel Rivals
