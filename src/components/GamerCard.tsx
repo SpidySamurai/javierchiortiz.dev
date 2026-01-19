@@ -27,9 +27,11 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
   const [currentTime, setCurrentTime] = React.useState(Date.now());
 
   React.useEffect(() => {
+    if (!isOpen) return;
     const interval = setInterval(() => setCurrentTime(Date.now()), 1000);
+    setCurrentTime(Date.now()); // Update immediately on open
     return () => clearInterval(interval);
-  }, []);
+  }, [isOpen]);
 
   // Lock body scroll
   React.useEffect(() => {
@@ -42,8 +44,6 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
-
-  if (!isOpen) return null;
 
   // Derived Status Color & Label
   const getStatusInfo = (status?: string) => {
@@ -68,16 +68,8 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
   // Rich Activity Details
   const activity =
     lanyardData?.activities.find((a) => a.type === 0) || // Game
-    lanyardData?.activities.find((a) => a.type === 4 && a.name !== 'Custom Status'); // Standard Activity (e.g. Visual Studio Code w/o Rich Presence type 0?) - usually type 0 is game.
-  // Actually original logic was simpler:
-  // lanyardData?.activities.find(a => a.type === 0) || lanyardData?.activities.find(a => a.type === 4) is wrong if type 4 is Custom Status.
-  // Let's stick to original logic but filter out 'Custom Status' text if it appears as name?
-  // Original: lanyardData?.activities.find(a => a.type === 0) || lanyardData?.activities.find(a => a.type === 4);
+    lanyardData?.activities.find((a) => a.type === 4 && a.name !== 'Custom Status'); // Standard Activity
 
-  // Correct logic: Type 4 is "Custom Status". Type 0 is "Playing".
-  // We want the Game/App in the bottom right using ActivityWidget.
-  // Custom Status (Type 4) is displayed in UserProfile.
-  // So for ActivityWidget we prefer Type 0.
   const mainActivity = lanyardData?.activities.find((a) => a.type === 0);
 
   const spotify = lanyardData?.listening_to_spotify ? lanyardData.spotify : null;
@@ -86,9 +78,12 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md animate-fade-in p-2 md:p-8 overflow-y-auto"
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-2 md:p-8 overflow-y-auto transition-all duration-300 ${
+        isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+      }`}
       role="dialog"
       aria-modal="true"
+      aria-hidden={!isOpen}
     >
       <div
         className="relative w-full max-w-5xl my-auto bg-[#0c0d12] rounded-3xl md:rounded-[2rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.9)] flex flex-col md:flex-row border border-white/5"

@@ -1,15 +1,14 @@
 'use client';
 
-import React from 'react'; // Added import for React
+import React from 'react';
 import Hero from '@/components/layout/Hero';
 import MainContent from '@/components/sections/MainContent';
 import Footer from '@/components/layout/Footer';
 import FlatCat from '@/components/FlatCat';
-
-import GamerCard from '@/components/GamerCard'; // Added import for GamerCard
+import { useGamerCard } from '@/components/providers/GamerCardContext';
 
 export default function Home() {
-  const [showEasterEgg, setShowEasterEgg] = React.useState(false); // Added state for showEasterEgg
+  const { unlockCard } = useGamerCard();
 
   return (
     <main className="flex flex-col items-center min-h-screen">
@@ -19,8 +18,7 @@ export default function Home() {
           <Hero />
           {/* Temporary mount for verification */}
           <div className="mt-8">
-            <FlatCat onUnlock={() => setShowEasterEgg(true)} />{' '}
-            {/* Added onUnlock prop to FlatCat */}
+            <FlatCat onUnlock={unlockCard} />
           </div>
         </div>
 
@@ -33,9 +31,6 @@ export default function Home() {
       <div className="w-full max-w-screen-xl px-4">
         <Footer />
       </div>
-
-      {/* Render GamerCard at the bottom of the page */}
-      <GamerCard isOpen={showEasterEgg} onClose={() => setShowEasterEgg(false)} />
     </main>
   );
 }
