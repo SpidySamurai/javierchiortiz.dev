@@ -30,7 +30,7 @@ export default function FlatCat({ onUnlock }: FlatCatProps) {
     setShowBubble(true);
 
     // Random variations without numbers
-    const variations = ['Miau! 🧡', 'Miau! ⚡', 'Miau? �', 'Purr...'];
+    const variations = ['Miau! 🧡', 'Miau!!!! ⚡', 'Miau? 🤔', 'Purr...'];
     const randomText = variations[Math.floor(Math.random() * variations.length)];
     setBubbleText(randomText);
 
@@ -41,7 +41,7 @@ export default function FlatCat({ onUnlock }: FlatCatProps) {
 
     // Check threshold (7 clicks)
     if (clickCountRef.current >= 7) {
-      setBubbleText('🔓 UNLOCKED!'); // Show manual unlock feedback FIRST
+      setBubbleText('¡Secret!'); // Show manual unlock feedback FIRST
 
       // Wait a bit before opening the secret modal
       if (onUnlock) {
