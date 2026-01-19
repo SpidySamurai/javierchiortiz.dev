@@ -10,7 +10,25 @@ export interface MarvelPlayerValues {
   lastUpdated: string;
   isLoading: boolean;
   isError: boolean;
+  peakRank: string;
+  peakRankIcon: string;
+  peakRankColor: string;
 }
+
+const RANK_ASSETS: { [key: string]: string } = {
+  Bronze: '/utils/img/icons/1%20Bronze%20Rank.webp',
+  Silver: '/utils/img/icons/2%20Silver%20Rank.webp',
+  Gold: '/utils/img/icons/3%20Gold%20Rank.webp',
+  Platinum: '/utils/img/icons/4%20Platinum%20Rank.webp',
+  Diamond: '/utils/img/icons/5%20Diamond%20Rank.webp',
+  Grandmaster: '/utils/img/icons/6%20Grandmaster%20Rank.webp',
+};
+
+const getLocalRankIcon = (rankName?: string) => {
+  if (!rankName) return '';
+  const tier = rankName.split(' ')[0]; // e.g., "Platinum" from "Platinum III"
+  return RANK_ASSETS[tier] || '';
+};
 
 export function useMarvelRivals(uid: string) {
   // Potentially parameterize season later, for now we can default or fetch latest.
@@ -113,11 +131,11 @@ export function useMarvelRivals(uid: string) {
 
   return {
     rank: player?.rank?.rank || 'Unranked', // Current Rank
-    rankIcon: player?.rank?.image || '',
+    rankIcon: getLocalRankIcon(player?.rank?.rank),
     rankColor: player?.rank?.color || '#ffffff',
 
     peakRank: peakRank.rank,
-    peakRankIcon: peakRank.image,
+    peakRankIcon: getLocalRankIcon(peakRank.rank),
     peakRankColor: peakRank.color,
 
     level: player?.level || '0',
