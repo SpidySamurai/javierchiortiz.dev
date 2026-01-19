@@ -89,8 +89,13 @@ export function useLanyard({ userId }: UseLanyardOptions) {
   }, [userId]);
 
   useEffect(() => {
-    connect();
+    // Debounce connection to prevent Strict Mode double-invocation causing "WebSocket closed before connection" errors
+    const timeoutId = setTimeout(() => {
+      connect();
+    }, 50);
+
     return () => {
+      clearTimeout(timeoutId);
       if (socketRef.current) {
         // Prevent reconnect logic from firing on unmount
         socketRef.current.onclose = null;
