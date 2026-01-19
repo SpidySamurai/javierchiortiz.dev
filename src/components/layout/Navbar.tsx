@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ThemeToggle from '../ui/ThemeToggle';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/routing';
+import { useGamerCard } from '@/components/providers/GamerCardContext';
 
 const SECTIONS = [
   { id: 'about', labelKey: 'about' },
@@ -16,6 +17,7 @@ function Navbar() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const { isUnlocked, openCard } = useGamerCard();
 
   const languages = ['en', 'es'];
   const [showDropdown, setShowDropdown] = useState(false);
@@ -117,6 +119,16 @@ function Navbar() {
       </ul>
       {/* Theme toggle + language selector (desktop) */}
       <div className="hidden lg:flex items-center gap-2 ml-6">
+        {isUnlocked && (
+          <button
+            onClick={openCard}
+            className="p-2 rounded-md hover:bg-surface/10 transition-transform hover:scale-110"
+            title="Open Gamer Card"
+            aria-label="Open Gamer Card"
+          >
+            <span className="text-xl">🕷️</span>
+          </button>
+        )}
         <ThemeToggle />
         <div className="relative" ref={dropdownRef}>
           <button
@@ -228,7 +240,18 @@ function Navbar() {
           {/* Toggle de tema con label y separación visual */}
           <div className="flex items-center justify-between mb-6 mt-2 px-2">
             <span className="text-muted text-sm">{t('theme')}</span>
-            <ThemeToggle />
+            <div className="flex items-center gap-3">
+              {isUnlocked && (
+                <button
+                  onClick={openCard}
+                  className="p-1.5 rounded-md hover:bg-surface/10 transition-colors border border-transparent hover:border-surface/20"
+                  title="Open Gamer Card"
+                >
+                  <span className="text-lg">🕷️</span>
+                </button>
+              )}
+              <ThemeToggle />
+            </div>
           </div>
           <hr className="mb-4 border-gray-300" />
 
