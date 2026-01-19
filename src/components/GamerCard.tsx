@@ -183,12 +183,11 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
               </svg>
             </button>
           </div>
+          {/* --- ACTIVITY WIDGET --- */}
+          <ActivityWidget activity={mainActivity} currentTime={currentTime} />
 
           {/* --- LARGE WIDGET: SPOTIFY OR HERO --- */}
           <SpotifyWidget spotify={spotify} currentTime={currentTime} />
-
-          {/* --- ACTIVITY WIDGET --- */}
-          <ActivityWidget activity={mainActivity} currentTime={currentTime} />
         </div>
       </div>
 

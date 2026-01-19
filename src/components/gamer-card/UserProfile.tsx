@@ -1,4 +1,5 @@
 import React from 'react';
+import { LuMonitor, LuSmartphone, LuGlobe } from 'react-icons/lu';
 
 type UserProfileProps = {
   discordUser: any;
@@ -60,12 +61,23 @@ export const UserProfile = ({
             </span>
           )}
         </h2>
-        <p className="text-indigo-400 font-medium text-xs md:text-sm tracking-wide flex items-center justify-center gap-1.5 mb-2">
-          @{discordUser?.username || 'spidynomore'}
-          {activeOn?.desktop && <span title="Online via Desktop">🖥️</span>}
-          {activeOn?.mobile && <span title="Online via Mobile">📱</span>}
-          {activeOn?.web && <span title="Online via Web">🌐</span>}
-        </p>
+        <div className="flex items-center justify-center gap-2.5 mb-2 text-indigo-400">
+          <p className="font-medium text-xs md:text-sm tracking-wide">
+            @{discordUser?.username || 'spidynomore'}
+          </p>
+          {/* Device Icons */}
+          <div className="flex items-center gap-1.5 opacity-80">
+            {activeOn?.desktop && (
+              <LuMonitor size={14} className="text-indigo-400" title="Online via Desktop" />
+            )}
+            {activeOn?.mobile && (
+              <LuSmartphone size={14} className="text-indigo-400" title="Online via Mobile" />
+            )}
+            {activeOn?.web && (
+              <LuGlobe size={14} className="text-indigo-400" title="Online via Web" />
+            )}
+          </div>
+        </div>
 
         {/* Custom Status */}
         {customStatus && (

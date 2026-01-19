@@ -1,4 +1,5 @@
 import React from 'react';
+import { LuGamepad2, LuCode, LuSwords, LuCoffee, LuClock, LuZap } from 'react-icons/lu';
 
 type ActivityWidgetProps = {
   activity: any;
@@ -17,38 +18,83 @@ export const ActivityWidget = ({ activity, currentTime }: ActivityWidgetProps) =
     return `${minutes}m ${seconds}s`;
   };
 
-  return (
-    <div className="w-full">
-      {/* BOTTOM RIGHT: MAIN ACTIVITY (Game/Code) - DESIGNATED SPOT */}
-      <div className="bg-[#12131a] p-6 md:p-8 rounded-2xl md:rounded-[2.5rem] border border-white/5 relative overflow-hidden group min-h-[180px] flex flex-col justify-center">
-        {/* Background Image (Dynamic or Fallback) */}
-        <div className="absolute inset-0 z-0">
-          {activity?.assets?.large_image ? (
-            <img
-              src={
-                activity.assets.large_image.startsWith('mp:')
-                  ? `https://media.discordapp.net/${activity.assets.large_image.replace('mp:', '')}`
-                  : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png`
-              }
-              className="w-full h-full object-cover opacity-40 grayscale-0"
-              alt=""
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          ) : (
-            // Fallback Gradient if no asset image available
-            <div className="w-full h-full bg-gradient-to-br from-indigo-900/40 via-purple-900/20 to-transparent opacity-50"></div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#12131a] via-[#12131a]/90 to-transparent"></div>
-        </div>
+  // Helper: Generic State Mapper (Works for any game)
+  const getDetailedState = (act: any) => {
+    if (!act)
+      return {
+        label: '"With great power comes great responsibility."',
+        icon: null,
+        color: 'text-gray-400',
+      };
+    if (act.type !== 0)
+      return {
+        label: act.state || 'Coding / Working',
+        icon: <LuCode size={16} />,
+        color: 'text-indigo-400',
+      };
 
-        <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-indigo-500/10 blur-[80px] z-10"></div>
+    const raw = (act.state + ' ' + act.details).toLowerCase();
+
+    // 1. Combat / Action
+    if (
+      raw.includes('combate') ||
+      raw.includes('match') ||
+      raw.includes('fighting') ||
+      raw.includes('game')
+    ) {
+      return {
+        label: act.state || 'In Match',
+        icon: <LuSwords size={16} />,
+        color: 'text-red-400',
+      };
+    }
+
+    // 2. Lobby / Menu
+    if (
+      raw.includes('lobby') ||
+      raw.includes('menu') ||
+      raw.includes('waiting') ||
+      raw.includes('idle')
+    ) {
+      return {
+        label: act.state || 'In Lobby',
+        icon: <LuCoffee size={16} />,
+        color: 'text-green-400',
+      };
+    }
+
+    // 3. Queue / Loading
+    if (raw.includes('queue') || raw.includes('finding') || raw.includes('loading')) {
+      return {
+        label: act.state || 'In Queue',
+        icon: <LuClock size={16} />,
+        color: 'text-yellow-400',
+      };
+    }
+
+    // Default Fallback
+    return {
+      label: act.state || act.details || 'Playing',
+      icon: <LuZap size={16} />,
+      color: 'text-indigo-300',
+    };
+  };
+
+  const detailedState = getDetailedState(activity);
+
+  return (
+    <div className="w-full mb-4">
+      {/* BOTTOM RIGHT: MAIN ACTIVITY (Game/Code) - DESIGNATED SPOT */}
+      <div className="bg-[#12131a] p-6 md:p-8 rounded-2xl  border border-white/5 relative overflow-hidden group min-h-[180px] flex flex-col justify-center shadow-2xl">
+        {/* Subtle Background Gradient (No Image) */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-transparent opacity-50"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-[60px] z-10"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-500/10 blur-[50px] z-10"></div>
 
         <div className="relative z-20 h-full flex flex-col justify-between">
           <div className="flex justify-between items-start mb-4">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-xl md:text-2xl shadow-lg">
-              {activity?.type === 0 ? '🎮' : '👨‍💻'}
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-xl md:text-2xl shadow-lg text-white/90">
+              {activity?.type === 0 ? <LuGamepad2 size={24} /> : <LuCode size={24} />}
             </div>
             {activity && (
               <div className="flex flex-col items-end">
@@ -64,15 +110,53 @@ export const ActivityWidget = ({ activity, currentTime }: ActivityWidgetProps) =
               </div>
             )}
           </div>
-          <div className="mt-2">
-            <h4 className="text-white font-black text-2xl md:text-3xl mb-1 truncate drop-shadow-lg">
-              {activity?.name || 'No Activity'}
-            </h4>
-            <p className="text-gray-300 text-sm md:text-base italic line-clamp-1 drop-shadow-md">
-              {activity?.state ||
-                activity?.details ||
-                (activity?.type === 0 ? 'Playing' : 'Resting...')}
-            </p>
+          <div className="mt-2 flex items-center gap-4">
+            {/* Visual Game Art Block */}
+            {activity?.assets?.large_image && (
+              <div className="relative w-16 h-16 md:w-20 md:h-20 shrink-0">
+                <img
+                  src={
+                    activity.assets.large_image.startsWith('mp:')
+                      ? `https://media.discordapp.net/${activity.assets.large_image.replace(
+                          'mp:',
+                          ''
+                        )}`
+                      : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png`
+                  }
+                  className="w-full h-full object-cover rounded-xl shadow-lg border border-white/10"
+                  alt={activity.name}
+                />
+                {activity.assets.small_image && (
+                  <img
+                    src={
+                      activity.assets.small_image.startsWith('mp:')
+                        ? `https://media.discordapp.net/${activity.assets.small_image.replace(
+                            'mp:',
+                            ''
+                          )}`
+                        : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.small_image}.png`
+                    }
+                    className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full border-2 border-[#12131a] z-10"
+                    alt=""
+                    title={activity.assets.small_text}
+                  />
+                )}
+              </div>
+            )}
+
+            <div className="min-w-0 flex-1">
+              <h4 className="text-white font-black text-2xl md:text-3xl mb-1 truncate drop-shadow-lg leading-tight">
+                {activity?.name || 'Fighting crime in Merida City 🕷️'}
+              </h4>
+
+              {/* Dynamic State Row with Icon */}
+              <div className={`flex items-center gap-2 mt-1 ${detailedState.color} drop-shadow-md`}>
+                {detailedState.icon}
+                <p className="text-sm md:text-base italic line-clamp-1 font-medium">
+                  {detailedState.label}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
