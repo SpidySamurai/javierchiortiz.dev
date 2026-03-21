@@ -1,3 +1,5 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 
 export default function About() {
@@ -6,20 +8,20 @@ export default function About() {
   return (
     <section
       id="about"
-      className="w-full max-w-screen-xl mx-auto px-6 py-20"
-      style={{ scrollMarginTop: '4.5rem' }}
+      className="py-28 px-8 lg:px-20"
+      style={{ backgroundColor: '#0b1326', scrollMarginTop: '4.5rem' }}
     >
       {/* Section label */}
       <p
-        className="text-xs font-semibold uppercase tracking-widest mb-3"
-        style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--ds-font-body)', letterSpacing: '0.1em' }}
+        className="text-xs uppercase tracking-[0.3em] font-bold mb-4"
+        style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
       >
         {t('about')}
       </p>
 
       <h2
-        className="text-3xl lg:text-4xl font-bold mb-12"
-        style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--ds-font-display)', letterSpacing: '-0.02em' }}
+        className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-16"
+        style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
       >
         About me
       </h2>
@@ -29,8 +31,8 @@ export default function About() {
           {(['about_paragraph_1', 'about_paragraph_2'] as const).map((key) => (
             <p
               key={key}
-              className="text-base leading-relaxed"
-              style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--ds-font-body)', lineHeight: '1.6' }}
+              className="text-lg leading-relaxed"
+              style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
             >
               {t(key)}
             </p>
@@ -41,8 +43,8 @@ export default function About() {
           {(['about_paragraph_3', 'about_paragraph_4'] as const).map((key) => (
             <p
               key={key}
-              className="text-base leading-relaxed"
-              style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--ds-font-body)', lineHeight: '1.6' }}
+              className="text-lg leading-relaxed"
+              style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
             >
               {t(key)}
             </p>
