@@ -65,11 +65,11 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
 
   const statusInfo = getStatusInfo(lanyardData?.discord_status);
 
-  const mainActivity = lanyardData?.activities.find((a) => a.type === 0);
+  const mainActivity = lanyardData?.activities?.find((a) => a.type === 0);
 
   const spotify = lanyardData?.listening_to_spotify ? lanyardData.spotify : null;
 
-  const customStatus = lanyardData?.activities.find((a) => a.type === 4)?.state;
+  const customStatus = lanyardData?.activities?.find((a) => a.type === 4)?.state;
 
   return (
     <div
@@ -114,7 +114,7 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
                 discordUser={lanyardData.discord_user}
                 statusInfo={statusInfo}
                 avatarDecoration={
-                  lanyardData.discord_user.avatar_decoration_data?.asset &&
+                  lanyardData?.discord_user?.avatar_decoration_data?.asset &&
                   `https://cdn.discordapp.com/avatar-decoration-presets/${lanyardData.discord_user.avatar_decoration_data.asset}.png`
                 }
                 customStatus={customStatus}
