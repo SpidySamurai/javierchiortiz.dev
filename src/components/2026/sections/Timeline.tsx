@@ -1,28 +1,98 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 
 type ExperienceKey = 'enti' | 'softtek' | 'scandia' | 'iotam' | 'brightcoders';
 
-const EXPERIENCE_KEYS: ExperienceKey[] = ['enti', 'softtek', 'scandia', 'iotam', 'brightcoders'];
+interface TimelineEntry {
+  key: ExperienceKey;
+  tier: string;
+  yearDisplay: string[];
+  tech: string[];
+}
 
-const TECH_BY_ROLE: Record<ExperienceKey, string[]> = {
-  enti:        ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
-  softtek:     ['React', 'Node.js', 'SQL', 'REST APIs'],
-  scandia:     ['Shopify', 'Liquid', 'JavaScript', 'CSS'],
-  iotam:       ['React', 'TypeScript', 'REST APIs'],
-  brightcoders: ['React', 'CSS', 'JavaScript'],
-};
+const TIMELINE_ENTRIES: TimelineEntry[] = [
+  {
+    key: 'enti',
+    tier: 'Lead Role',
+    yearDisplay: ['2023', 'PRESENT'],
+    tech: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
+  },
+  {
+    key: 'softtek',
+    tier: 'Engineering Tier',
+    yearDisplay: ['2021', '2022'],
+    tech: ['React', 'Node.js', 'SQL', 'REST APIs'],
+  },
+  {
+    key: 'scandia',
+    tier: 'Engineering Tier',
+    yearDisplay: ['2021', '2022'],
+    tech: ['Shopify', 'Liquid', 'JavaScript', 'CSS'],
+  },
+  {
+    key: 'iotam',
+    tier: 'Foundational Tier',
+    yearDisplay: ['2021', '2022'],
+    tech: ['React', 'TypeScript', 'REST APIs'],
+  },
+  {
+    key: 'brightcoders',
+    tier: 'Foundational Tier',
+    yearDisplay: ['2021'],
+    tech: ['React', 'CSS', 'JavaScript'],
+  },
+];
 
 function TechChip({ label }: { label: string }) {
   return (
     <span
-      className="px-2.5 py-0.5 rounded-full text-xs font-medium"
+      className="px-3 py-0.5 rounded text-[9px] font-medium uppercase border"
       style={{
-        background: 'var(--ds-secondary-container)',
-        color: 'var(--ds-on-secondary)',
-        fontFamily: 'var(--ds-font-body)',
+        color: 'rgba(199,196,215,0.7)',
+        borderColor: 'rgba(70,69,84,0.3)',
+        fontFamily: 'var(--font-inter), sans-serif',
       }}
     >
       {label}
+    </span>
+  );
+}
+
+function TierBadge({ label, isLead }: { label: string; isLead?: boolean }) {
+  return (
+    <div
+      className="inline-block px-4 py-1 mb-4 rounded-full text-[10px] font-bold uppercase tracking-widest border"
+      style={{
+        color: isLead ? '#c0c1ff' : '#908fa0',
+        backgroundColor: isLead ? 'rgba(192,193,255,0.1)' : 'rgba(144,143,160,0.08)',
+        borderColor: isLead ? 'rgba(192,193,255,0.2)' : 'rgba(144,143,160,0.15)',
+      }}
+    >
+      {label}
+    </div>
+  );
+}
+
+function YearDisplay({ years, align = 'left' }: { years: string[]; align?: 'left' | 'right' }) {
+  return (
+    <span
+      className="font-black leading-none block"
+      style={{
+        color: 'rgba(49,57,77,0.8)',
+        fontFamily: 'var(--font-manrope), sans-serif',
+        textAlign: align,
+      }}
+    >
+      <span className="text-6xl md:text-8xl">{years[0]}</span>
+      {years[1] && (
+        <>
+          <br />
+          <span className="text-3xl md:text-5xl" style={{ color: 'rgba(49,57,77,0.5)' }}>
+            {years[1]}
+          </span>
+        </>
+      )}
     </span>
   );
 }
@@ -33,76 +103,150 @@ export default function Timeline() {
   return (
     <section
       id="experience"
-      className="w-full max-w-screen-xl mx-auto px-6 py-20"
-      style={{ scrollMarginTop: '4.5rem' }}
+      className="px-8 lg:px-20 py-32 overflow-hidden"
+      style={{ backgroundColor: '#131b2e' }}
     >
-      {/* Section label */}
-      <p
-        className="text-xs font-semibold uppercase tracking-widest mb-3"
-        style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--ds-font-body)', letterSpacing: '0.1em' }}
-      >
-        {t('experience')}
-      </p>
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-4">
+          <div className="space-y-2">
+            <span
+              className="text-xs uppercase tracking-[0.3em] font-bold block"
+              style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              Chronology
+            </span>
+            <h3
+              className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
+              style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+            >
+              Professional{' '}
+              <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Stance</span>
+            </h3>
+          </div>
+          <span
+            className="text-sm uppercase tracking-widest pb-2"
+            style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+          >
+            V4 Editorial Timeline • 2021—Present
+          </span>
+        </div>
 
-      {/* Section title */}
-      <h2
-        className="text-3xl lg:text-4xl font-bold mb-14"
-        style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--ds-font-display)', letterSpacing: '-0.02em' }}
-      >
-        Professional Timeline
-      </h2>
+        {/* Timeline items */}
+        <div className="relative">
+          {/* Center vertical line */}
+          <div
+            className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px hidden md:block"
+            style={{
+              background: 'linear-gradient(to bottom, #c0c1ff, rgba(128,131,255,0.15), transparent)',
+              transform: 'translateX(-50%)',
+            }}
+          />
 
-      {/* Timeline items */}
-      <div className="flex flex-col gap-0">
-        {EXPERIENCE_KEYS.map((key, i) => {
-          const item = t.raw(`experience_items.${key}`) as { title: string; date: string; description: string };
-          const isLast = i === EXPERIENCE_KEYS.length - 1;
+          <div className="space-y-32">
+            {TIMELINE_ENTRIES.map((entry, i) => {
+              const item = t.raw(`experience_items.${entry.key}`) as {
+                title: string;
+                date: string;
+                description: string;
+              };
+              const isOdd = i % 2 === 0;
+              const isLead = entry.key === 'enti';
 
-          return (
-            <div key={key} className="flex gap-8">
-              {/* Timeline spine */}
-              <div className="flex flex-col items-center pt-1 flex-shrink-0">
-                <div
-                  className="w-2.5 h-2.5 rounded-full mt-1.5 flex-shrink-0"
-                  style={{ background: i === 0 ? 'var(--ds-primary)' : 'var(--ds-outline-variant)' }}
-                />
-                {!isLast && (
-                  <div
-                    className="w-px flex-1 mt-1"
-                    style={{ background: 'var(--ds-outline-variant)', minHeight: '3.5rem', opacity: 0.4 }}
-                  />
-                )}
-              </div>
+              if (isOdd) {
+                // ODD: text left, year right
+                return (
+                  <div key={entry.key} className="relative grid md:grid-cols-2 gap-12 items-center">
+                    {/* Text on LEFT */}
+                    <div className="md:text-right md:pr-16 order-2 md:order-1">
+                      <TierBadge label={entry.tier} isLead={isLead} />
+                      <h4
+                        className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter"
+                        style={{
+                          color: '#dae2fd',
+                          fontFamily: 'var(--font-manrope), sans-serif',
+                        }}
+                      >
+                        {item.title}
+                      </h4>
+                      <div className="flex flex-wrap md:justify-end gap-2 mb-6">
+                        {entry.tech.map((t) => (
+                          <TechChip key={t} label={t} />
+                        ))}
+                      </div>
+                      <p
+                        className="text-base leading-relaxed"
+                        style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+                      >
+                        {item.description}
+                      </p>
+                    </div>
 
-              {/* Content */}
-              <div className="pb-12 flex-1">
-                <p
-                  className="text-xs uppercase tracking-widest mb-1"
-                  style={{ color: 'var(--ds-outline)', fontFamily: 'var(--ds-font-body)', letterSpacing: '0.08em' }}
-                >
-                  {item.date}
-                </p>
-                <h3
-                  className="text-lg font-semibold mb-2"
-                  style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--ds-font-display)' }}
-                >
-                  {item.title}
-                </h3>
-                <p
-                  className="text-sm leading-relaxed mb-4"
-                  style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--ds-font-body)', lineHeight: '1.6' }}
-                >
-                  {item.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {TECH_BY_ROLE[key].map((tech) => (
-                    <TechChip key={tech} label={tech} />
-                  ))}
+                    {/* Year on RIGHT */}
+                    <div className="relative order-1 md:order-2">
+                      {/* Center dot */}
+                      <div
+                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-10 hidden md:block"
+                        style={{
+                          backgroundColor: '#c0c1ff',
+                          boxShadow: '0 0 20px rgba(192,193,255,0.6)',
+                        }}
+                      />
+                      <div className="pl-0 md:pl-16">
+                        <YearDisplay years={entry.yearDisplay} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              // EVEN: year left, text right
+              return (
+                <div key={entry.key} className="relative grid md:grid-cols-2 gap-12 items-center">
+                  {/* Year on LEFT */}
+                  <div className="md:text-right md:pr-16 order-1">
+                    <YearDisplay years={entry.yearDisplay} align="right" />
+                  </div>
+
+                  {/* Text on RIGHT */}
+                  <div className="order-2 relative">
+                    {/* Center dot */}
+                    <div
+                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-10 hidden md:block"
+                      style={{
+                        backgroundColor: '#8083ff',
+                        boxShadow: '0 0 16px rgba(128,131,255,0.4)',
+                      }}
+                    />
+                    <div className="pl-0 md:pl-16">
+                      <TierBadge label={entry.tier} />
+                      <h4
+                        className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter"
+                        style={{
+                          color: '#dae2fd',
+                          fontFamily: 'var(--font-manrope), sans-serif',
+                        }}
+                      >
+                        {item.title}
+                      </h4>
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {entry.tech.map((t) => (
+                          <TechChip key={t} label={t} />
+                        ))}
+                      </div>
+                      <p
+                        className="text-base leading-relaxed"
+                        style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+                      >
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );

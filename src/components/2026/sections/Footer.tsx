@@ -1,41 +1,73 @@
-import { useTranslations } from 'next-intl';
-
-const SOCIAL_LINKS = [
-  { label: 'GitHub', href: 'https://github.com/javierchiortiz' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/javierchiortiz' },
-] as const;
+'use client';
 
 export default function Footer() {
-  const t = useTranslations('common');
   const year = new Date().getFullYear();
 
   return (
     <footer
-      className="w-full px-6 py-10"
-      style={{ borderTop: '1px solid color-mix(in srgb, var(--ds-outline-variant) 20%, transparent)' }}
+      id="contact"
+      className="py-20 px-8 md:px-16 border-t"
+      style={{
+        backgroundColor: '#0b1326',
+        borderColor: 'rgba(70,69,84,0.15)',
+      }}
     >
-      <div className="w-full max-w-screen-xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p
-          className="text-sm"
-          style={{ color: 'var(--ds-outline)', fontFamily: 'var(--ds-font-body)' }}
-        >
-          © {year} Javier Chi Ortíz — {t('footer_rights')}
-        </p>
-
-        <div className="flex items-center gap-6">
-          {SOCIAL_LINKS.map(({ label, href }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm transition-colors hover:opacity-80"
-              style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--ds-font-body)' }}
-            >
-              {label}
-            </a>
-          ))}
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+        {/* Identity */}
+        <div className="text-center md:text-left">
+          <h2
+            className="text-3xl font-extrabold mb-2"
+            style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+          >
+            Javier Chi Ortíz
+          </h2>
+          <p style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}>
+            Available for collaborations
+          </p>
         </div>
+
+        {/* Links */}
+        <div className="flex gap-8">
+          <a
+            href="mailto:javier@javierchiortiz.dev"
+            className="text-xs font-bold uppercase tracking-widest transition-colors"
+            style={{ color: '#c7c4d7' }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c0c1ff')}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c7c4d7')}
+          >
+            Email
+          </a>
+          <a
+            href="https://linkedin.com/in/javierchiortiz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-bold uppercase tracking-widest transition-colors"
+            style={{ color: '#c7c4d7' }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c0c1ff')}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c7c4d7')}
+          >
+            LinkedIn
+          </a>
+          <a
+            href="https://github.com/javierchiortiz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-bold uppercase tracking-widest transition-colors"
+            style={{ color: '#c7c4d7' }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c0c1ff')}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c7c4d7')}
+          >
+            GitHub
+          </a>
+        </div>
+
+        {/* Copyright */}
+        <p
+          className="text-[10px] uppercase tracking-widest"
+          style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+        >
+          © {year} Javier Chi Ortíz
+        </p>
       </div>
     </footer>
   );
