@@ -6,11 +6,12 @@ import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
 
 const NAV_LINKS = [
   { href: '#projects', label: 'Projects' },
-  { href: '#experience', label: 'Experience' },
+  { href: '#stack', label: 'Stack' },
+  { href: '#about', label: 'About' },
   { href: '#contact', label: 'Contact' },
 ];
 
-const SECTION_IDS = ['projects', 'experience', 'contact'];
+const SECTION_IDS = ['projects', 'stack', 'about', 'contact'];
 
 export default function Header() {
   const [active, setActive] = useState<string>('');
@@ -55,7 +56,7 @@ export default function Header() {
       {/* Logo */}
       <div
         className="text-xl font-bold tracking-tighter"
-        style={{ color: '#c0c1ff', fontFamily: 'var(--font-manrope), sans-serif' }}
+        style={{ color: '#e0e7ff', fontFamily: 'var(--font-manrope), sans-serif' }}
       >
         Javier Chi Ortíz
       </div>
@@ -69,10 +70,13 @@ export default function Header() {
             <a
               key={href}
               href={href}
-              className="text-sm font-medium transition-colors pb-0.5"
+              className="text-sm transition-colors pb-0.5"
               style={{
-                color: isActive ? '#dae2fd' : '#c7c4d7',
-                borderBottom: isActive ? '2px solid #c0c1ff' : '2px solid transparent',
+                color: isActive ? '#c7d2fe' : '#94a3b8',
+                borderBottom: isActive ? '2px solid #818cf8' : '2px solid transparent',
+                fontFamily: 'var(--font-manrope), sans-serif',
+                letterSpacing: '-0.025em',
+                fontWeight: 700,
               }}
             >
               {label}
