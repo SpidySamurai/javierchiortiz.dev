@@ -19,7 +19,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 flex flex-col md:flex-row items-start gap-12 max-w-7xl mx-auto">
+      <div className="relative z-10 flex flex-col md:flex-row items-start gap-12">
         {/* Left: text block */}
         <div className="w-full md:w-3/5 space-y-8">
           <h1
@@ -38,29 +38,7 @@ export default function Hero() {
             {t('hero_description')}
           </p>
 
-          <div className="flex items-center gap-4 flex-wrap">
-            <a
-              href="#projects"
-              className="px-6 py-3 rounded-lg text-sm font-bold transition-opacity hover:opacity-90"
-              style={{
-                background: 'linear-gradient(135deg, #c0c1ff, #8083ff)',
-                color: '#1000a9',
-                fontFamily: 'var(--font-manrope), sans-serif',
-              }}
-            >
-              View Projects
-            </a>
-            <a
-              href="#experience"
-              className="px-6 py-3 rounded-lg text-sm font-medium transition-colors"
-              style={{
-                color: '#c7c4d7',
-                border: '1px solid rgba(70,69,84,0.6)',
-              }}
-            >
-              Experience
-            </a>
-          </div>
+
         </div>
 
         {/* Right: overlapping image cards */}

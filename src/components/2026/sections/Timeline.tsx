@@ -79,7 +79,7 @@ function YearDisplay({ years, align = 'left' }: { years: string[]; align?: 'left
     <span
       className="font-black leading-none block"
       style={{
-        color: 'rgba(49,57,77,0.8)',
+        color: 'rgba(49,57,77,0.3)',
         fontFamily: 'var(--font-manrope), sans-serif',
         textAlign: align,
       }}
@@ -88,7 +88,7 @@ function YearDisplay({ years, align = 'left' }: { years: string[]; align?: 'left
       {years[1] && (
         <>
           <br />
-          <span className="text-3xl md:text-5xl" style={{ color: 'rgba(49,57,77,0.5)' }}>
+          <span className="text-3xl md:text-5xl" style={{ color: 'rgba(49,57,77,0.2)' }}>
             {years[1]}
           </span>
         </>
@@ -128,7 +128,7 @@ export default function Timeline() {
             className="text-sm uppercase tracking-widest pb-2"
             style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
           >
-            V4 Editorial Timeline • 2021—Present
+            V4 Editorial Timeline • 2018—Present
           </span>
         </div>
 
