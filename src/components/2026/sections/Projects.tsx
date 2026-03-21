@@ -1,39 +1,15 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 
-// TODO: replace with real project data / CMS feed
-const PROJECTS = [
-  {
-    key: 'wallet-app',
-    category: 'Fintech',
-    tags: ['React', 'Next.js', 'TypeScript'],
-    demo: null,
-    code: null,
-  },
-  {
-    key: 'scandia-ecommerce',
-    category: 'E-commerce',
-    tags: ['Shopify', 'Liquid', 'CSS'],
-    demo: 'https://scandia.com',
-    code: null,
-  },
-  {
-    key: 'spa-rick-and-morty',
-    category: 'Practice',
-    tags: ['React', 'REST API'],
-    demo: null,
-    code: 'https://github.com',
-  },
-] as const;
-
-function CategoryChip({ label }: { label: string }) {
+function CategoryPill({ label }: { label: string }) {
   return (
     <span
-      className="px-2 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider"
+      className="px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
       style={{
-        color: 'var(--ds-on-surface-variant)',
-        background: 'color-mix(in srgb, var(--ds-outline-variant) 20%, transparent)',
-        fontFamily: 'var(--ds-font-body)',
-        letterSpacing: '0.06em',
+        backgroundColor: 'rgba(62,60,143,0.8)',
+        color: '#afadff',
+        backdropFilter: 'blur(8px)',
       }}
     >
       {label}
@@ -41,14 +17,14 @@ function CategoryChip({ label }: { label: string }) {
   );
 }
 
-function TechChip({ label }: { label: string }) {
+function SmallChip({ label }: { label: string }) {
   return (
     <span
-      className="px-2.5 py-0.5 rounded-full text-xs font-medium"
+      className="px-2 py-0.5 rounded text-[9px] uppercase border"
       style={{
-        background: 'var(--ds-secondary-container)',
-        color: 'var(--ds-on-secondary)',
-        fontFamily: 'var(--ds-font-body)',
+        color: '#908fa0',
+        borderColor: 'rgba(70,69,84,0.3)',
+        fontFamily: 'var(--font-inter), sans-serif',
       }}
     >
       {label}
@@ -59,106 +35,182 @@ function TechChip({ label }: { label: string }) {
 export default function Projects() {
   const t = useTranslations('common');
 
+  const walletApp = t.raw('project_items.wallet-app') as { title: string; description: string };
+  const scandiaProject = t.raw('project_items.scandia-ecommerce') as { title: string; description: string };
+  const lab2next = t.raw('project_items.lab2next') as { title: string; description: string };
+
   return (
     <section
       id="projects"
-      className="w-full max-w-screen-xl mx-auto px-6 py-20"
-      style={{ scrollMarginTop: '4.5rem' }}
+      className="py-28 px-8"
+      style={{ backgroundColor: '#0b1326' }}
     >
-      {/* Section label */}
-      <p
-        className="text-xs font-semibold uppercase tracking-widest mb-3"
-        style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--ds-font-body)', letterSpacing: '0.1em' }}
-      >
-        {t('projects')}
-      </p>
+      <div className="max-w-7xl mx-auto">
+        {/* Section header */}
+        <div className="mb-20 space-y-4">
+          <h3
+            className="text-3xl font-bold tracking-tight"
+            style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+          >
+            Gallery of Work
+          </h3>
+          <div className="h-1 w-24 rounded-full" style={{ backgroundColor: '#c0c1ff' }} />
+        </div>
 
-      <h2
-        className="text-3xl lg:text-4xl font-bold mb-14"
-        style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--ds-font-display)', letterSpacing: '-0.02em' }}
-      >
-        Featured Work
-      </h2>
-
-      <div className="flex flex-col gap-px">
-        {PROJECTS.map((project) => {
-          const item = t.raw(`project_items.${project.key}`) as { title: string; description: string };
-
-          return (
-            <article
-              key={project.key}
-              className="group flex flex-col lg:flex-row lg:items-start gap-6 py-8 transition-colors"
-              style={{ borderTop: '1px solid color-mix(in srgb, var(--ds-outline-variant) 20%, transparent)' }}
+        {/* Bento grid */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-12 gap-8"
+          style={{ gridAutoRows: '300px' }}
+        >
+          {/* Project 1: Wallet App — col-span-8 row-span-2 (large featured) */}
+          <div
+            className="md:col-span-8 md:row-span-2 group relative overflow-hidden rounded-xl"
+            style={{ backgroundColor: '#171f33' }}
+          >
+            {/* Image placeholder */}
+            <div
+              className="absolute inset-0 flex items-center justify-center"
+              style={{ backgroundColor: '#222a3d' }}
             >
-              {/* Thumbnail — placeholder */}
-              <div
-                className="w-full lg:w-48 h-28 rounded-lg flex-shrink-0 flex items-center justify-center"
-                style={{ background: 'var(--ds-surface-container)' }}
-                aria-hidden="true"
+              <span
+                className="text-xs uppercase tracking-widest"
+                style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
               >
-                <span
-                  className="text-xs uppercase tracking-widest"
-                  style={{ color: 'var(--ds-outline)', fontFamily: 'var(--ds-font-body)' }}
-                >
-                  Image pending
-                </span>
+                Image Pending
+              </span>
+            </div>
+
+            {/* Gradient overlay */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(to top, #0b1326 0%, rgba(11,19,38,0.2) 50%, transparent 100%)',
+              }}
+            />
+
+            {/* Content */}
+            <div className="absolute bottom-0 left-0 p-10 space-y-4 w-full">
+              <div className="flex gap-3 flex-wrap">
+                <CategoryPill label="Fintech" />
+                <CategoryPill label="React" />
               </div>
+              <h4
+                className="text-4xl font-bold"
+                style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+              >
+                {walletApp.title}
+              </h4>
+              <p
+                className="max-w-md text-sm leading-relaxed"
+                style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+              >
+                {walletApp.description}
+              </p>
+              <a
+                href="#"
+                className="inline-block text-sm font-medium transition-opacity hover:opacity-70"
+                style={{ color: '#c0c1ff' }}
+              >
+                View Study →
+              </a>
+            </div>
+          </div>
 
-              {/* Content */}
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <CategoryChip label={project.category} />
-                </div>
+          {/* Project 2: Scandia — col-span-4 row-span-3 (tall vertical) */}
+          <div
+            className="md:col-span-4 md:row-span-3 group relative overflow-hidden rounded-xl"
+            style={{ backgroundColor: '#222a3d' }}
+          >
+            {/* Gradient overlay */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(to top, #0b1326 0%, transparent 60%)',
+              }}
+            />
 
-                <h3
-                  className="text-xl font-semibold mb-2"
-                  style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--ds-font-display)' }}
+            {/* Content */}
+            <div className="absolute bottom-0 left-0 p-8 space-y-3">
+              <span
+                className="text-[10px] font-bold uppercase tracking-widest block"
+                style={{ color: '#c0c1ff' }}
+              >
+                E-commerce
+              </span>
+              <h4
+                className="text-2xl font-bold"
+                style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+              >
+                {scandiaProject.title}
+              </h4>
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+              >
+                {scandiaProject.description}
+              </p>
+            </div>
+          </div>
+
+          {/* Project 3: Lab2Next — col-span-4 row-span-2 (no image, content card) */}
+          <div
+            className="md:col-span-4 md:row-span-2 group relative overflow-hidden rounded-xl"
+            style={{ backgroundColor: '#171f33' }}
+          >
+            <div className="absolute inset-0 p-8 flex flex-col justify-between">
+              <div className="space-y-4">
+                <div
+                  className="w-12 h-12 rounded-lg flex items-center justify-center"
+                  style={{ backgroundColor: 'rgba(192,193,255,0.1)' }}
                 >
-                  {item.title}
-                </h3>
-
+                  <span className="material-symbols-outlined" style={{ color: '#c0c1ff' }}>
+                    code
+                  </span>
+                </div>
+                <h4
+                  className="text-xl font-bold"
+                  style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+                >
+                  {lab2next.title}
+                </h4>
                 <p
-                  className="text-sm leading-relaxed mb-4"
-                  style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--ds-font-body)', lineHeight: '1.6' }}
+                  className="text-sm leading-relaxed"
+                  style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
                 >
-                  {item.description}
+                  {lab2next.description}
                 </p>
-
-                <div className="flex flex-wrap items-center gap-3">
-                  {project.tags.map((tag) => (
-                    <TechChip key={tag} label={tag} />
-                  ))}
-
-                  {project.demo && (
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="ml-auto text-sm font-medium transition-opacity hover:opacity-70"
-                      style={{ color: 'var(--ds-primary)', fontFamily: 'var(--ds-font-body)' }}
-                      aria-label={t('project_live_aria', { title: item.title })}
-                    >
-                      {t('project_view_demo')} ↗
-                    </a>
-                  )}
-
-                  {project.code && (
-                    <a
-                      href={project.code}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm font-medium transition-opacity hover:opacity-70"
-                      style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--ds-font-body)' }}
-                      aria-label={t('project_code_aria', { title: item.title })}
-                    >
-                      {t('project_view_code')}
-                    </a>
-                  )}
-                </div>
               </div>
-            </article>
-          );
-        })}
+              <div className="flex flex-wrap gap-2">
+                <SmallChip label="React" />
+                <SmallChip label="TypeScript" />
+                <SmallChip label="Next.js" />
+              </div>
+            </div>
+          </div>
+
+          {/* Project 4: More Projects — col-span-4 row-span-1 (infill) */}
+          <div
+            className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-8 cursor-pointer transition-all duration-500"
+            style={{ backgroundColor: '#131b2e' }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#222a3d')}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#131b2e')}
+          >
+            <div className="text-center">
+              <span
+                className="material-symbols-outlined text-3xl block mb-2"
+                style={{ color: '#c0c1ff' }}
+              >
+                folder_open
+              </span>
+              <h4
+                className="text-sm font-bold uppercase tracking-widest"
+                style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+              >
+                More Projects
+              </h4>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
