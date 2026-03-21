@@ -6,10 +6,11 @@ import { useGamerCard } from '@/components/providers/GamerCardContext';
 const NAV_ITEMS = [
   { id: 'projects', icon: 'grid_view', label: 'Projects' },
   { id: 'experience', icon: 'work', label: 'Experience' },
+  { id: 'insights', icon: 'terminal', label: 'Insights' },
   { id: 'contact', icon: 'mail', label: 'Contact' },
 ];
 
-const SECTION_IDS = ['projects', 'experience', 'contact'];
+const SECTION_IDS = ['projects', 'experience', 'insights', 'contact'];
 
 export default function Sidebar() {
   const [active, setActive] = useState<string>('');

@@ -1,9 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
-
 export default function Hero() {
-  const t = useTranslations('common');
 
   return (
     <section
@@ -27,7 +22,7 @@ export default function Hero() {
             className="text-xs uppercase tracking-[0.3em] font-bold block"
             style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
           >
-            {t('hero_subtitle')}
+            Full Stack Developer
           </span>
 
           {/* Name */}
@@ -45,7 +40,7 @@ export default function Hero() {
             className="text-lg leading-relaxed max-w-lg"
             style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
           >
-            {t('hero_description')}
+            A full-stack engineer operating at the intersection of aesthetic precision and technical robustness.
           </p>
         </div>
 

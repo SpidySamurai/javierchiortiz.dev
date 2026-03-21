@@ -4,11 +4,14 @@ import { useEffect, useState } from 'react';
 import ThemeToggle from '@/components/2026/ui/ThemeToggle';
 import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
 
-const MOBILE_NAV = [
+const DESKTOP_NAV = [
   { href: '#projects', label: 'Projects' },
-  { href: '#experience', label: 'Experience' },
+  { href: '#stack', label: 'Stack' },
+  { href: '#about', label: 'About' },
   { href: '#contact', label: 'Contact' },
 ];
+
+const SECTION_IDS = ['projects', 'stack', 'about', 'contact'];
 
 export default function Header() {
   const [active, setActive] = useState<string>('');
@@ -24,8 +27,8 @@ export default function Header() {
       { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
     );
 
-    MOBILE_NAV.forEach(({ href }) => {
-      const el = document.getElementById(href.replace('#', ''));
+    SECTION_IDS.forEach((id) => {
+      const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 
@@ -58,7 +61,29 @@ export default function Header() {
         Javier Chi Ortíz
       </div>
 
-      {/* Desktop controls — no nav links, sidebar handles that */}
+      {/* Desktop nav — center */}
+      <nav className="hidden md:flex items-center gap-8">
+        {DESKTOP_NAV.map(({ href, label }) => {
+          const id = href.replace('#', '');
+          const isActive = active === id;
+          return (
+            <a
+              key={href}
+              href={href}
+              className="font-bold tracking-tight pb-0.5 transition-colors duration-200"
+              style={{
+                color: isActive ? '#c7d2fe' : '#94a3b8',
+                borderBottom: isActive ? '2px solid #818cf8' : '2px solid transparent',
+                fontFamily: 'var(--font-manrope), sans-serif',
+              }}
+            >
+              {label}
+            </a>
+          );
+        })}
+      </nav>
+
+      {/* Desktop controls — right */}
       <div className="hidden md:flex items-center gap-3">
         <ThemeToggle />
         <LanguageSwitcher />
@@ -136,7 +161,7 @@ export default function Header() {
         </button>
 
         <nav className="flex flex-col gap-1">
-          {MOBILE_NAV.map(({ href, label }) => {
+          {DESKTOP_NAV.map(({ href, label }) => {
             const id = href.replace('#', '');
             const isActive = active === id;
             return (
