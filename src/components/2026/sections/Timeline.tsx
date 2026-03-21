@@ -175,7 +175,7 @@ export default function Timeline() {
                         ))}
                       </div>
                       <p
-                        className="text-base leading-relaxed"
+                        className="text-lg leading-relaxed"
                         style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
                       >
                         {item.description}
@@ -235,7 +235,7 @@ export default function Timeline() {
                         ))}
                       </div>
                       <p
-                        className="text-base leading-relaxed"
+                        className="text-lg leading-relaxed"
                         style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
                       >
                         {item.description}

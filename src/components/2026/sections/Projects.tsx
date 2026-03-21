@@ -64,7 +64,7 @@ export default function Projects() {
         >
           {/* Project 1: Wallet App — col-span-8 row-span-2 (large featured) */}
           <div
-            className="md:col-span-8 md:row-span-2 group relative overflow-hidden rounded-xl"
+            className="md:col-span-8 md:row-span-2 group relative overflow-hidden rounded-xl transition-all duration-500 hover:scale-[0.98]"
             style={{ backgroundColor: '#171f33' }}
           >
             {/* Image placeholder */}
@@ -118,7 +118,7 @@ export default function Projects() {
 
           {/* Project 2: Scandia — col-span-4 row-span-3 (tall vertical) */}
           <div
-            className="md:col-span-4 md:row-span-3 group relative overflow-hidden rounded-xl"
+            className="md:col-span-4 md:row-span-3 group relative overflow-hidden rounded-xl transition-all duration-500 hover:scale-[0.98]"
             style={{ backgroundColor: '#222a3d' }}
           >
             {/* Gradient overlay */}
@@ -154,7 +154,7 @@ export default function Projects() {
 
           {/* Project 3: Lab2Next — col-span-4 row-span-2 (no image, content card) */}
           <div
-            className="md:col-span-4 md:row-span-2 group relative overflow-hidden rounded-xl"
+            className="md:col-span-4 md:row-span-2 group relative overflow-hidden rounded-xl transition-all duration-500 hover:scale-[0.98]"
             style={{ backgroundColor: '#171f33' }}
           >
             <div className="absolute inset-0 p-8 flex flex-col justify-between">
@@ -190,7 +190,7 @@ export default function Projects() {
 
           {/* Project 4: More Projects — col-span-4 row-span-1 (infill) */}
           <div
-            className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-8 cursor-pointer transition-all duration-500"
+            className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-8 cursor-pointer transition-all duration-500 hover:scale-[0.98]"
             style={{ backgroundColor: '#131b2e' }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#222a3d')}
             onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#131b2e')}

@@ -35,10 +35,12 @@ export default function LanguageSwitcher() {
         aria-label={t('language_label')}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="px-2 py-1 rounded text-sm transition-colors"
-        style={{ color: 'var(--ds-on-surface-variant)' }}
+        className="w-9 h-9 flex items-center justify-center rounded-full transition-colors"
+        style={{ color: '#94a3b8' }}
+        onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.color = '#c0c1ff')}
+        onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.color = '#94a3b8')}
       >
-        {locale.toUpperCase()} ▾
+        <span className="material-symbols-outlined text-[22px]">translate</span>
       </button>
 
       {open && (

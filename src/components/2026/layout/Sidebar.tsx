@@ -77,8 +77,8 @@ export default function Sidebar() {
               href={`#${id}`}
               className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
               style={{
-                color: isActive ? '#c0c1ff' : '#64748b',
-                backgroundColor: isActive ? 'rgba(192,193,255,0.1)' : 'transparent',
+                color: isActive ? '#a5b4fc' : '#64748b',
+                backgroundColor: isActive ? 'rgba(99,102,241,0.1)' : 'transparent',
                 transform: isActive ? 'translateX(4px)' : 'translateX(0)',
                 fontFamily: 'var(--font-manrope), sans-serif',
                 fontWeight: 700,
