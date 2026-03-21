@@ -29,7 +29,7 @@ Personal web portfolio with multi-version routing:
 ## Agent Roles
 - **Context** (`.claude/agents/context.md`): Orchestrator. Manages project state, delegates tasks, coordinates between agents.
 - **Fullstack Dev** (`.claude/agents/fullstack.md`): Senior developer. Handles all implementation — components, pages, API, styling.
-- **Stitch MCP**: Google Design tool (HTTP MCP). Design file: **"Unified Portfolio (Timeline V3)"**. Used to inspect and extract design specs (colors, typography, layout, components).
+- **Stitch MCP**: Google Design tool (HTTP MCP). Design file: **"Unified Portfolio (Timeline V4)"** (project `12817670546148158167`, screen `11ad868a865e46cda30966ac38c0b8ad`). Used to inspect and extract design specs (colors, typography, layout, components).
 
 ### Workflow
 1. Context agent receives task from user
@@ -42,3 +42,6 @@ Personal web portfolio with multi-version routing:
 - Language: The user communicates in Spanish. Code, commits, and technical docs stay in English.
 - Keep code simple and avoid over-engineering.
 - Prefer editing existing files over creating new ones.
+- Use atomic React components — no logic in layout components, no HTML dumps from Stitch.
+- Commits use only the user's git identity (no Co-Authored-By lines).
+- New images for 2026 design are pending — use placeholder where needed.
