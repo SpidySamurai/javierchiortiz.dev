@@ -4,14 +4,11 @@ import { useEffect, useState } from 'react';
 import ThemeToggle from '@/components/2026/ui/ThemeToggle';
 import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
 
-const NAV_LINKS = [
+const MOBILE_NAV = [
   { href: '#projects', label: 'Projects' },
-  { href: '#stack', label: 'Stack' },
-  { href: '#about', label: 'About' },
+  { href: '#experience', label: 'Experience' },
   { href: '#contact', label: 'Contact' },
 ];
-
-const SECTION_IDS = ['projects', 'stack', 'about', 'contact'];
 
 export default function Header() {
   const [active, setActive] = useState<string>('');
@@ -27,8 +24,8 @@ export default function Header() {
       { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
     );
 
-    SECTION_IDS.forEach((id) => {
-      const el = document.getElementById(id);
+    MOBILE_NAV.forEach(({ href }) => {
+      const el = document.getElementById(href.replace('#', ''));
       if (el) observer.observe(el);
     });
 
@@ -61,40 +58,18 @@ export default function Header() {
         Javier Chi Ortíz
       </div>
 
-      {/* Desktop nav */}
-      <nav className="hidden md:flex items-center gap-8">
-        {NAV_LINKS.map(({ href, label }) => {
-          const id = href.replace('#', '');
-          const isActive = active === id;
-          return (
-            <a
-              key={href}
-              href={href}
-              className="text-sm transition-colors pb-0.5"
-              style={{
-                color: isActive ? '#c7d2fe' : '#94a3b8',
-                borderBottom: isActive ? '2px solid #818cf8' : '2px solid transparent',
-                fontFamily: 'var(--font-manrope), sans-serif',
-                letterSpacing: '-0.025em',
-                fontWeight: 700,
-              }}
-            >
-              {label}
-            </a>
-          );
-        })}
-      </nav>
+      {/* Desktop controls — no nav links, sidebar handles that */}
+      <div className="hidden md:flex items-center gap-3">
+        <ThemeToggle />
+        <LanguageSwitcher />
+      </div>
 
-      {/* Right controls */}
-      <div className="flex items-center gap-4">
-        <div className="hidden md:flex items-center gap-4">
-          <ThemeToggle />
-          <LanguageSwitcher />
-        </div>
-
-        {/* Mobile hamburger */}
+      {/* Mobile hamburger */}
+      <div className="md:hidden flex items-center gap-2">
+        <ThemeToggle />
+        <LanguageSwitcher />
         <button
-          className="md:hidden p-2 rounded"
+          className="p-2 rounded"
           style={{ color: '#dae2fd' }}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileOpen}
@@ -160,8 +135,8 @@ export default function Header() {
           </svg>
         </button>
 
-        <nav className="flex flex-col gap-4">
-          {NAV_LINKS.map(({ href, label }) => {
+        <nav className="flex flex-col gap-1">
+          {MOBILE_NAV.map(({ href, label }) => {
             const id = href.replace('#', '');
             const isActive = active === id;
             return (
@@ -169,8 +144,12 @@ export default function Header() {
                 key={href}
                 href={href}
                 onClick={() => setMobileOpen(false)}
-                className="text-sm font-medium py-2 transition-colors"
-                style={{ color: isActive ? '#c0c1ff' : '#c7c4d7' }}
+                className="flex items-center px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all duration-200"
+                style={{
+                  color: isActive ? '#a5b4fc' : '#64748b',
+                  backgroundColor: isActive ? 'rgba(99,102,241,0.1)' : 'transparent',
+                  fontFamily: 'var(--font-manrope), sans-serif',
+                }}
               >
                 {label}
               </a>
@@ -178,9 +157,20 @@ export default function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-4 pt-2 border-t" style={{ borderColor: 'rgba(70,69,84,0.4)' }}>
-          <ThemeToggle />
-          <LanguageSwitcher />
+        <div className="mt-auto pt-4 border-t" style={{ borderColor: 'rgba(70,69,84,0.4)' }}>
+          <a
+            href="/cv-javier-chi.pdf"
+            download
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md font-bold uppercase tracking-widest text-xs transition-opacity hover:opacity-90"
+            style={{
+              background: 'linear-gradient(135deg, #c0c1ff, #8083ff)',
+              color: '#1000a9',
+              fontFamily: 'var(--font-manrope), sans-serif',
+            }}
+          >
+            <span className="material-symbols-outlined text-[18px]">download</span>
+            Download CV
+          </a>
         </div>
       </aside>
     </header>
