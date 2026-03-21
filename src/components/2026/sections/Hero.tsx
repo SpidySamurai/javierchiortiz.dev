@@ -19,69 +19,90 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 flex flex-col md:flex-row items-start gap-12">
+      <div className="relative z-10 flex flex-col md:flex-row items-center gap-12 md:gap-0">
         {/* Left: text block */}
-        <div className="w-full md:w-3/5 space-y-8">
+        <div className="w-full md:w-3/5 space-y-6">
+          {/* Kicker */}
+          <span
+            className="text-xs uppercase tracking-[0.3em] font-bold block"
+            style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+          >
+            {t('hero_subtitle')}
+          </span>
+
+          {/* Name */}
           <h1
-            className="text-6xl md:text-8xl font-extrabold tracking-tighter leading-tight"
+            className="text-5xl md:text-7xl font-extrabold tracking-tighter leading-none"
             style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
-            Crafting
+            Javier Chi
             <br />
-            <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Digital</span> Artifacts
+            <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Ortíz</span>
           </h1>
 
+          {/* Description */}
           <p
-            className="text-xl leading-relaxed max-w-xl"
+            className="text-lg leading-relaxed max-w-lg"
             style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
           >
             {t('hero_description')}
           </p>
-
-
         </div>
 
         {/* Right: overlapping image cards */}
-        <div className="w-full md:w-2/5 flex justify-end relative" style={{ minHeight: '320px' }}>
-          {/* Large card */}
-          <div
-            className="w-64 h-80 rounded-xl overflow-hidden shadow-2xl p-2 flex-shrink-0"
-            style={{
-              backgroundColor: '#131b2e',
-              transform: 'rotate(3deg)',
-            }}
-          >
+        <div className="w-full md:w-2/5 flex justify-center md:justify-end">
+          {/* Fixed-size stage for the two cards */}
+          <div className="relative" style={{ width: '320px', height: '380px' }}>
+            {/* Back card — large, tilted right, z behind */}
             <div
-              className="w-full h-full rounded-lg flex items-center justify-center"
-              style={{ backgroundColor: '#222a3d' }}
+              className="absolute overflow-hidden rounded-xl shadow-2xl"
+              style={{
+                width: '240px',
+                height: '300px',
+                top: '20px',
+                right: '0',
+                transform: 'rotate(3deg)',
+                backgroundColor: '#131b2e',
+                zIndex: 1,
+              }}
             >
-              <span
-                className="text-xs uppercase tracking-widest"
-                style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+              <div
+                className="w-full h-full flex items-center justify-center"
+                style={{ backgroundColor: '#222a3d' }}
               >
-                Pending
-              </span>
+                <span
+                  className="text-xs uppercase tracking-widest"
+                  style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+                >
+                  Pending
+                </span>
+              </div>
             </div>
-          </div>
 
-          {/* Small overlapping card */}
-          <div
-            className="absolute -bottom-12 -left-12 w-48 h-48 rounded-xl overflow-hidden shadow-2xl p-2"
-            style={{
-              backgroundColor: '#171f33',
-              transform: 'rotate(-6deg)',
-            }}
-          >
+            {/* Front card — smaller, tilted left, z on top */}
             <div
-              className="w-full h-full rounded-lg flex items-center justify-center"
-              style={{ backgroundColor: '#222a3d' }}
+              className="absolute overflow-hidden rounded-xl shadow-2xl"
+              style={{
+                width: '200px',
+                height: '220px',
+                bottom: '0',
+                left: '0',
+                transform: 'rotate(-6deg)',
+                backgroundColor: '#171f33',
+                zIndex: 2,
+              }}
             >
-              <span
-                className="text-xs uppercase tracking-widest"
-                style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+              <div
+                className="w-full h-full flex items-center justify-center"
+                style={{ backgroundColor: '#222a3d' }}
               >
-                Pending
-              </span>
+                <span
+                  className="text-xs uppercase tracking-widest"
+                  style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+                >
+                  Pending
+                </span>
+              </div>
             </div>
           </div>
         </div>
