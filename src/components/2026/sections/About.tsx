@@ -9,7 +9,7 @@ export default function About() {
     <section
       id="about"
       className="py-28 px-8 lg:px-20"
-      style={{ backgroundColor: '#0b1326', scrollMarginTop: '4.5rem' }}
+      style={{ backgroundColor: '#0b1326', scrollMarginTop: '5rem' }}
     >
       {/* Section label */}
       <p

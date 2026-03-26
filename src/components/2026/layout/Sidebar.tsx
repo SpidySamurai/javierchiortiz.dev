@@ -37,7 +37,7 @@ export default function Sidebar() {
   return (
     <aside
       className="hidden lg:flex flex-col fixed left-0 top-0 h-full w-64 z-40 pt-24 p-6"
-      style={{ backgroundColor: '#020617' }}
+      style={{ backgroundColor: '#060e20' }}
     >
       {/* Profile */}
       <div className="mb-10 px-2">

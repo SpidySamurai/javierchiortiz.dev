@@ -10,6 +10,7 @@ export default function Footer() {
       style={{
         backgroundColor: '#0b1326',
         borderColor: 'rgba(70,69,84,0.10)',
+        scrollMarginTop: '5rem',
       }}
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
