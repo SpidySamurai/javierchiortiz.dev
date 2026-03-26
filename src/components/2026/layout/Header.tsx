@@ -11,29 +11,8 @@ const DESKTOP_NAV = [
   { href: '#contact', label: 'Contact' },
 ];
 
-const SECTION_IDS = ['projects', 'stack', 'about', 'contact'];
-
 export default function Header() {
-  const [active, setActive] = useState<string>('');
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
-    );
-
-    SECTION_IDS.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -45,7 +24,7 @@ export default function Header() {
 
   return (
     <header
-      className="fixed top-0 w-full flex justify-between items-center px-8 py-4 z-50"
+      className="fixed top-0 left-0 w-full lg:left-64 lg:w-[calc(100%-16rem)] flex justify-between items-center px-8 py-4 z-50"
       style={{
         backgroundColor: 'rgba(11, 19, 38, 0.6)',
         backdropFilter: 'blur(24px)',
@@ -60,28 +39,6 @@ export default function Header() {
       >
         Javier Chi Ortíz
       </div>
-
-      {/* Desktop nav — center */}
-      <nav className="hidden md:flex items-center gap-8">
-        {DESKTOP_NAV.map(({ href, label }) => {
-          const id = href.replace('#', '');
-          const isActive = active === id;
-          return (
-            <a
-              key={href}
-              href={href}
-              className="font-bold tracking-tight pb-0.5 transition-colors duration-200"
-              style={{
-                color: isActive ? '#c7d2fe' : '#94a3b8',
-                borderBottom: isActive ? '2px solid #818cf8' : '2px solid transparent',
-                fontFamily: 'var(--font-manrope), sans-serif',
-              }}
-            >
-              {label}
-            </a>
-          );
-        })}
-      </nav>
 
       {/* Desktop controls — right */}
       <div className="hidden md:flex items-center gap-3">
@@ -161,25 +118,21 @@ export default function Header() {
         </button>
 
         <nav className="flex flex-col gap-1">
-          {DESKTOP_NAV.map(({ href, label }) => {
-            const id = href.replace('#', '');
-            const isActive = active === id;
-            return (
-              <a
-                key={href}
-                href={href}
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all duration-200"
-                style={{
-                  color: isActive ? '#a5b4fc' : '#64748b',
-                  backgroundColor: isActive ? 'rgba(99,102,241,0.1)' : 'transparent',
-                  fontFamily: 'var(--font-manrope), sans-serif',
-                }}
-              >
-                {label}
-              </a>
-            );
-          })}
+          {DESKTOP_NAV.map(({ href, label }) => (
+            <a
+              key={href}
+              href={href}
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all duration-200"
+              style={{
+                color: '#64748b',
+                backgroundColor: 'transparent',
+                fontFamily: 'var(--font-manrope), sans-serif',
+              }}
+            >
+              {label}
+            </a>
+          ))}
         </nav>
 
         <div className="mt-auto pt-4 border-t" style={{ borderColor: 'rgba(70,69,84,0.4)' }}>

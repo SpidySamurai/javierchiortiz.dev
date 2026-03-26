@@ -58,7 +58,7 @@ export default function Stack() {
     <section
       id="stack"
       className="py-28 px-8 lg:px-20"
-      style={{ backgroundColor: '#131b2e' }}
+      style={{ backgroundColor: '#131b2e', scrollMarginTop: '5rem' }}
     >
       {/* Header */}
       <div className="flex items-end justify-between mb-16">

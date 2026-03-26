@@ -43,24 +43,38 @@ export default function Projects() {
     <section
       id="projects"
       className="py-28 px-8"
-      style={{ backgroundColor: '#0b1326' }}
+      style={{ backgroundColor: '#0b1326', scrollMarginTop: '5rem' }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
-        <div className="mb-20 space-y-4">
-          <h3
-            className="text-3xl font-bold tracking-tight"
-            style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+          <div className="space-y-2">
+            <span
+              className="text-xs uppercase tracking-[0.3em] font-bold block"
+              style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              Showcase
+            </span>
+            <h2
+              className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
+              style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+            >
+              Gallery of{' '}
+              <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Work</span>
+            </h2>
+          </div>
+          <span
+            className="text-sm uppercase tracking-widest pb-2"
+            style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
           >
-            Gallery of Work
-          </h3>
-          <div className="h-1 w-24 rounded-full" style={{ backgroundColor: '#c0c1ff' }} />
+            Selected · Ongoing
+          </span>
         </div>
 
         {/* Bento grid */}
         <div
-          className="grid grid-cols-1 md:grid-cols-12 gap-8"
-          style={{ gridAutoRows: '300px' }}
+          className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8"
+          style={{ gridAutoRows: 'minmax(240px, auto)' }}
         >
           {/* Project 1: Wallet App — col-span-8 row-span-2 (large featured) */}
           <div

@@ -104,7 +104,7 @@ export default function Timeline() {
     <section
       id="experience"
       className="px-8 lg:px-20 py-32 overflow-hidden"
-      style={{ backgroundColor: '#131b2e' }}
+      style={{ backgroundColor: '#131b2e', scrollMarginTop: '5rem' }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -170,8 +170,8 @@ export default function Timeline() {
                         {item.title}
                       </h4>
                       <div className="flex flex-wrap md:justify-end gap-2 mb-6">
-                        {entry.tech.map((t) => (
-                          <TechChip key={t} label={t} />
+                        {entry.tech.map((tech) => (
+                          <TechChip key={tech} label={tech} />
                         ))}
                       </div>
                       <p
@@ -230,8 +230,8 @@ export default function Timeline() {
                         {item.title}
                       </h4>
                       <div className="flex flex-wrap gap-2 mb-6">
-                        {entry.tech.map((t) => (
-                          <TechChip key={t} label={t} />
+                        {entry.tech.map((tech) => (
+                          <TechChip key={tech} label={tech} />
                         ))}
                       </div>
                       <p
