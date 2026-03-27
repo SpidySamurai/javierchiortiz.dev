@@ -35,7 +35,7 @@ export default function LanguageSwitcher() {
         aria-label={t('language_label')}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="w-9 h-9 flex items-center justify-center rounded-full transition-colors text-[#94a3b8] hover:text-[#c0c1ff]"
+        className="w-9 h-9 flex items-center justify-center rounded-full transition-colors cursor-pointer text-[#94a3b8] hover:text-[#c0c1ff]"
       >
         <span className="material-symbols-outlined text-[22px]">translate</span>
       </button>
