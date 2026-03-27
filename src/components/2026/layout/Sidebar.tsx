@@ -76,11 +76,11 @@ export default function Sidebar() {
               key={id}
               href={`#${id}`}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200 ${
-                isActive ? '' : 'hover:text-[#cbd5e1] hover:bg-[#1a2030]'
+                isActive
+                  ? 'text-[#a5b4fc] bg-[rgba(99,102,241,0.1)]'
+                  : 'text-[#64748b] hover:text-[#cbd5e1] hover:bg-[#1a2030]'
               }`}
               style={{
-                color: isActive ? '#a5b4fc' : '#64748b',
-                backgroundColor: isActive ? 'rgba(99,102,241,0.1)' : 'transparent',
                 transform: isActive ? 'translateX(4px)' : 'translateX(0)',
                 fontFamily: 'var(--font-manrope), sans-serif',
                 fontWeight: 700,
