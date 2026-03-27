@@ -41,14 +41,14 @@ export default function Sidebar() {
     >
       {/* Profile */}
       <div className="mb-10 px-2">
-        <div
+        {/* <div
           className="w-12 h-12 rounded-full overflow-hidden mb-4 flex items-center justify-center"
           style={{ backgroundColor: '#222a3d' }}
         >
           <span className="material-symbols-outlined text-xl" style={{ color: '#908fa0' }}>
             account_circle
           </span>
-        </div>
+        </div> */}
         <h1
           className="text-lg font-bold"
           style={{ color: '#ffffff', fontFamily: 'var(--font-manrope), sans-serif' }}
@@ -58,7 +58,7 @@ export default function Sidebar() {
         <p
           className="uppercase tracking-widest mt-1"
           style={{
-            color: '#64748b',
+            color: '#8ce638ff',
             fontFamily: 'var(--font-manrope), sans-serif',
             fontSize: '10px',
           }}
@@ -75,25 +75,15 @@ export default function Sidebar() {
             <a
               key={id}
               href={`#${id}`}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200 ${
+                isActive ? '' : 'hover:text-[#cbd5e1] hover:bg-[#1a2030]'
+              }`}
               style={{
                 color: isActive ? '#a5b4fc' : '#64748b',
                 backgroundColor: isActive ? 'rgba(99,102,241,0.1)' : 'transparent',
                 transform: isActive ? 'translateX(4px)' : 'translateX(0)',
                 fontFamily: 'var(--font-manrope), sans-serif',
                 fontWeight: 700,
-              }}
-              onMouseEnter={(e) => {
-                if (!isActive) {
-                  (e.currentTarget as HTMLAnchorElement).style.color = '#cbd5e1';
-                  (e.currentTarget as HTMLAnchorElement).style.backgroundColor = '#1a2030';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) {
-                  (e.currentTarget as HTMLAnchorElement).style.color = '#64748b';
-                  (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'transparent';
-                }
               }}
             >
               <span className="material-symbols-outlined text-[20px]">{icon}</span>
@@ -139,10 +129,7 @@ export default function Sidebar() {
             href="https://github.com/javierchiortiz"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-medium transition-colors"
-            style={{ color: '#64748b' }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c7c4d7')}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#64748b')}
+            className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
           >
             <span className="material-symbols-outlined text-[16px]">code</span>
             GitHub
@@ -151,10 +138,7 @@ export default function Sidebar() {
             href="https://linkedin.com/in/javierchiortiz"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-medium transition-colors"
-            style={{ color: '#64748b' }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c7c4d7')}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#64748b')}
+            className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
           >
             <span className="material-symbols-outlined text-[16px]">account_circle</span>
             LinkedIn

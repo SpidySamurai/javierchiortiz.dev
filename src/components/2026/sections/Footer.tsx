@@ -1,5 +1,3 @@
-'use client';
-
 export default function Footer() {
   const year = new Date().getFullYear();
 
@@ -31,10 +29,7 @@ export default function Footer() {
         <div className="flex gap-8">
           <a
             href="mailto:javier@javierchiortiz.dev"
-            className="text-xs font-bold uppercase tracking-widest transition-colors"
-            style={{ color: '#c7c4d7' }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c0c1ff')}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c7c4d7')}
+            className="text-xs font-bold uppercase tracking-widest transition-colors text-[#c7c4d7] hover:text-[#c0c1ff]"
           >
             Email
           </a>
@@ -42,10 +37,7 @@ export default function Footer() {
             href="https://linkedin.com/in/javierchiortiz"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-bold uppercase tracking-widest transition-colors"
-            style={{ color: '#c7c4d7' }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c0c1ff')}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c7c4d7')}
+            className="text-xs font-bold uppercase tracking-widest transition-colors text-[#c7c4d7] hover:text-[#c0c1ff]"
           >
             LinkedIn
           </a>
@@ -53,10 +45,7 @@ export default function Footer() {
             href="https://github.com/javierchiortiz"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-bold uppercase tracking-widest transition-colors"
-            style={{ color: '#c7c4d7' }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c0c1ff')}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = '#c7c4d7')}
+            className="text-xs font-bold uppercase tracking-widest transition-colors text-[#c7c4d7] hover:text-[#c0c1ff]"
           >
             GitHub
           </a>
