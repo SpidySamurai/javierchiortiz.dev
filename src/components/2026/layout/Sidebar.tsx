@@ -68,7 +68,7 @@ export default function Sidebar() {
       </div>
 
       {/* Nav links */}
-      <nav className="flex-1 space-y-2">
+      <nav className="flex-1 flex flex-col justify-center space-y-2">
         {NAV_ITEMS.map(({ id, icon, label }) => {
           const isActive = active === id;
           return (
