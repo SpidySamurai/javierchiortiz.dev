@@ -41,7 +41,7 @@ export default function Sidebar() {
       style={{ backgroundColor: '#060e20' }}
     >
       {/* Profile */}
-      <div className="mb-10 px-2">
+      <div className="mb-10 px-2 text-center">
         {/* <div
           className="w-12 h-12 rounded-full overflow-hidden mb-4 flex items-center justify-center"
           style={{ backgroundColor: '#222a3d' }}
