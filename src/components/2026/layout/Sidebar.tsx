@@ -40,36 +40,30 @@ export default function Sidebar() {
       className="hidden lg:flex flex-col fixed left-0 top-0 h-full w-64 z-40 pt-24 p-6"
       style={{ backgroundColor: '#060e20' }}
     >
-      {/* Profile */}
-      <div className="mb-10 px-2 text-center">
-        {/* <div
-          className="w-12 h-12 rounded-full overflow-hidden mb-4 flex items-center justify-center"
-          style={{ backgroundColor: '#222a3d' }}
-        >
-          <span className="material-symbols-outlined text-xl" style={{ color: '#908fa0' }}>
-            account_circle
-          </span>
-        </div> */}
-        <h1
-          className="text-lg font-bold"
-          style={{ color: '#ffffff', fontFamily: 'var(--font-manrope), sans-serif' }}
-        >
-          Javier Chi Ortíz
-        </h1>
-        <p
-          className="uppercase tracking-widest mt-1"
-          style={{
-            color: '#8ce638ff',
-            fontFamily: 'var(--font-manrope), sans-serif',
-            fontSize: '10px',
-          }}
-        >
-          Full Stack Developer
-        </p>
-      </div>
+      {/* Profile + Nav grouped and centered vertically */}
+      <div className="flex-1 flex flex-col justify-center gap-8">
+        {/* Profile */}
+        <div className="px-2">
+          <h1
+            className="text-lg font-bold"
+            style={{ color: '#ffffff', fontFamily: 'var(--font-manrope), sans-serif' }}
+          >
+            Javier Chi Ortíz
+          </h1>
+          <p
+            className="uppercase tracking-widest mt-1"
+            style={{
+              color: '#8ce638ff',
+              fontFamily: 'var(--font-manrope), sans-serif',
+              fontSize: '10px',
+            }}
+          >
+            Full Stack Developer
+          </p>
+        </div>
 
-      {/* Nav links */}
-      <nav className="flex-1 flex flex-col justify-center space-y-2">
+        {/* Nav links */}
+        <nav className="space-y-2">
         {NAV_ITEMS.map(({ id, icon, label }) => {
           const isActive = active === id;
           return (
@@ -93,6 +87,7 @@ export default function Sidebar() {
           );
         })}
       </nav>
+      </div>
 
       {/* Bottom section */}
       <div className="mt-auto space-y-4">
