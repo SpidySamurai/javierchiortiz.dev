@@ -119,29 +119,29 @@ export default function Sidebar() {
           Download CV
         </a>
 
-        {/* FlatCat easter egg */}
-        <FlatCat onUnlock={unlockCard} />
-
-        {/* Social links */}
-        <div className="flex flex-col gap-2 pt-4 px-1">
-          <a
-            href="https://github.com/javierchiortiz"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
-          >
-            <span className="material-symbols-outlined text-[16px]">code</span>
-            GitHub
-          </a>
-          <a
-            href="https://linkedin.com/in/javierchiortiz"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
-          >
-            <span className="material-symbols-outlined text-[16px]">account_circle</span>
-            LinkedIn
-          </a>
+        {/* Social links + FlatCat */}
+        <div className="flex items-center gap-3 pt-4 px-1">
+          <FlatCat onUnlock={unlockCard} />
+          <div className="flex flex-col gap-2">
+            <a
+              href="https://github.com/javierchiortiz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
+            >
+              <span className="material-symbols-outlined text-[16px]">code</span>
+              GitHub
+            </a>
+            <a
+              href="https://linkedin.com/in/javierchiortiz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
+            >
+              <span className="material-symbols-outlined text-[16px]">account_circle</span>
+              LinkedIn
+            </a>
+          </div>
         </div>
       </div>
     </aside>
