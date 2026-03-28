@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
-import FlatCat from '@/components/FlatCat';
 
 const NAV_ITEMS = [
   { id: 'projects', icon: 'grid_view', label: 'Projects' },
@@ -15,7 +14,7 @@ const SECTION_IDS = ['projects', 'experience', 'insights', 'contact'];
 
 export default function Sidebar() {
   const [active, setActive] = useState<string>('');
-  const { isUnlocked, openCard, unlockCard } = useGamerCard();
+  const { isUnlocked, openCard } = useGamerCard();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -119,29 +118,26 @@ export default function Sidebar() {
           Download CV
         </a>
 
-        {/* Social links + FlatCat */}
-        <div className="flex items-center gap-3 pt-4 px-1">
-          <FlatCat onUnlock={unlockCard} />
-          <div className="flex flex-col gap-2">
-            <a
-              href="https://github.com/javierchiortiz"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
-            >
-              <span className="material-symbols-outlined text-[16px]">code</span>
-              GitHub
-            </a>
-            <a
-              href="https://linkedin.com/in/javierchiortiz"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
-            >
-              <span className="material-symbols-outlined text-[16px]">account_circle</span>
-              LinkedIn
-            </a>
-          </div>
+        {/* Social links */}
+        <div className="flex flex-col gap-2 pt-4 px-1">
+          <a
+            href="https://github.com/javierchiortiz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
+          >
+            <span className="material-symbols-outlined text-[16px]">code</span>
+            GitHub
+          </a>
+          <a
+            href="https://linkedin.com/in/javierchiortiz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
+          >
+            <span className="material-symbols-outlined text-[16px]">account_circle</span>
+            LinkedIn
+          </a>
         </div>
       </div>
     </aside>
