@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
+import FlatCat from '@/components/FlatCat';
 
 const NAV_ITEMS = [
   { id: 'projects', icon: 'grid_view', label: 'Projects' },
@@ -14,7 +15,7 @@ const SECTION_IDS = ['projects', 'experience', 'insights', 'contact'];
 
 export default function Sidebar() {
   const [active, setActive] = useState<string>('');
-  const { isUnlocked, openCard } = useGamerCard();
+  const { isUnlocked, openCard, unlockCard } = useGamerCard();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -122,6 +123,9 @@ export default function Sidebar() {
           <span className="material-symbols-outlined text-[18px]">download</span>
           Download CV
         </a>
+
+        {/* FlatCat easter egg */}
+        <FlatCat onUnlock={unlockCard} />
 
         {/* Social links */}
         <div className="flex flex-col gap-2 pt-4 px-1">
