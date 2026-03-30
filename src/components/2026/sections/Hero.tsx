@@ -25,14 +25,15 @@ export default function Hero() {
             Full Stack Developer
           </span>
 
-          {/* Name */}
+          {/* Headline */}
           <h1
             className="text-5xl md:text-7xl font-extrabold tracking-tighter leading-none"
             style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
-            Javier Chi
+            Crafting{' '}
+            <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Digital</span>
             <br />
-            <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Ortíz</span>
+            Artifacts
           </h1>
 
           {/* Description */}
