@@ -23,8 +23,8 @@ export default function Home() {
         <Hero />
         <Timeline />
         <Projects />
-        <Stack />
         <About />
+        <Stack />
         <Footer />
       </main>
     </div>
