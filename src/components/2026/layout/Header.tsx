@@ -37,7 +37,7 @@ export default function Header() {
         className="text-xl font-bold tracking-tighter"
         style={{ color: '#e0e7ff', fontFamily: 'var(--font-manrope), sans-serif' }}
       >
-        Javier Chi Ortíz
+        {/* Javier Chi Ortíz */}
       </div>
 
       {/* Desktop controls — right */}

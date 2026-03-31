@@ -41,7 +41,7 @@ export default function Hero() {
             className="text-lg leading-relaxed max-w-lg"
             style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
           >
-            A full-stack engineer operating at the intersection of aesthetic precision and technical robustness.
+            A full-stack engineer operating at the intersection of aesthetic precision and technical robustness. Five years crafting accessible, mobile-first interfaces — from Lab2Next and data dashboards to reusable components and tools built to last.
           </p>
         </div>
 
