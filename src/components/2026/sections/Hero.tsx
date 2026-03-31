@@ -1,10 +1,70 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import Particles, { initParticlesEngine } from '@tsparticles/react';
+import { loadSlim } from '@tsparticles/slim';
+
 export default function Hero() {
+  const [particlesReady, setParticlesReady] = useState(false);
+
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => setParticlesReady(true));
+  }, []);
 
   return (
     <section
       className="relative px-8 md:px-16 pt-24 pb-40 overflow-hidden"
       style={{ backgroundColor: '#0b1326' }}
     >
+      {/* Particle background */}
+      {particlesReady && (
+        <Particles
+          id="hero-particles"
+          className="absolute inset-0 z-0"
+          options={{
+            fullScreen: { enable: false },
+            background: { color: { value: 'transparent' } },
+            fpsLimit: 60,
+            particles: {
+              number: { value: 140, density: { enable: true } },
+              color: { value: ['#c0c1ff', '#a5b4fc', '#818cf8'] },
+              opacity: {
+                value: { min: 0.1, max: 0.6 },
+                animation: { enable: true, speed: 0.6, sync: false },
+              },
+              size: {
+                value: { min: 1, max: 3 },
+              },
+              collisions: {
+                enable: true,
+                mode: 'bounce',
+              },
+              move: {
+                enable: true,
+                speed: { min: 0.3, max: 0.8 },
+                direction: 'top',
+                random: true,
+                straight: false,
+                outModes: { default: 'out' },
+                attract: { enable: true, rotate: { x: 600, y: 1200 } },
+              },
+              shape: { type: 'circle' },
+            },
+            interactivity: {
+              events: {
+                onHover: { enable: true, mode: 'repulse' },
+              },
+              modes: {
+                repulse: { distance: 80, duration: 0.4 },
+              },
+            },
+            detectRetina: true,
+          }}
+        />
+      )}
+
       {/* Ambient glow */}
       <div
         className="absolute -top-40 -right-20 w-[600px] h-[600px] rounded-full pointer-events-none"
@@ -16,7 +76,7 @@ export default function Hero() {
 
       <div className="relative z-10 flex flex-col md:flex-row items-center gap-12 md:gap-0">
         {/* Left: text block */}
-        <div className="w-full md:w-3/5 space-y-6">
+        <div className="w-full md:w-1/2 space-y-6">
           {/* Kicker */}
           <span
             className="text-xs uppercase tracking-[0.3em] font-bold block"
@@ -27,26 +87,27 @@ export default function Hero() {
 
           {/* Headline */}
           <h1
-            className="text-5xl md:text-7xl font-extrabold tracking-tighter leading-none"
+            className="text-6xl md:text-8xl font-extrabold tracking-tighter leading-none"
             style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
-            Crafting{' '}
-            <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Digital</span>
+            Crafting <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Digital</span>
             <br />
             Artifacts
           </h1>
 
           {/* Description */}
           <p
-            className="text-lg leading-relaxed max-w-lg"
+            className="text-xl leading-relaxed max-w-lg"
             style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
           >
-            A full-stack engineer operating at the intersection of aesthetic precision and technical robustness. Five years crafting accessible, mobile-first interfaces — from Lab2Next and data dashboards to reusable components and tools built to last.
+            A full-stack engineer operating at the intersection of aesthetic precision and technical
+            robustness. Five years crafting accessible, mobile-first interfaces — from Lab2Next and
+            data dashboards to reusable components and tools built to last.
           </p>
         </div>
 
         {/* Right: overlapping image cards */}
-        <div className="w-full md:w-2/5 flex justify-center md:justify-end">
+        <div className="w-full md:w-1/2 flex justify-center md:justify-end">
           {/* Fixed-size stage for the two cards */}
           <div className="relative" style={{ width: '320px', height: '380px' }}>
             {/* Back card — large, tilted right, z behind */}
