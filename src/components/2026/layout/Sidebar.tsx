@@ -4,13 +4,14 @@ import { useEffect, useState } from 'react';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 
 const NAV_ITEMS = [
-  { id: 'projects', icon: 'grid_view', label: 'Projects' },
   { id: 'experience', icon: 'work', label: 'Experience' },
-  { id: 'insights', icon: 'terminal', label: 'Insights' },
+  { id: 'projects', icon: 'grid_view', label: 'Projects' },
+  { id: 'stack', icon: 'terminal', label: 'Stack' },
+  { id: 'about', icon: 'person', label: 'About' },
   { id: 'contact', icon: 'mail', label: 'Contact' },
 ];
 
-const SECTION_IDS = ['projects', 'experience', 'insights', 'contact'];
+const SECTION_IDS = ['experience', 'projects', 'stack', 'about', 'contact'];
 
 export default function Sidebar() {
   const [active, setActive] = useState<string>('');
@@ -43,12 +44,14 @@ export default function Sidebar() {
       <div className="flex-1 flex flex-col justify-center gap-8">
         {/* Profile */}
         <div className="px-2">
-          <h1
-            className="text-lg font-bold"
+          <a
+            href="#"
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            className="text-lg font-bold block hover:text-[#c0c1ff] transition-colors cursor-pointer"
             style={{ color: '#ffffff', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
             Javier Chi Ortíz
-          </h1>
+          </a>
           <p
             className="uppercase tracking-widest mt-1"
             style={{
