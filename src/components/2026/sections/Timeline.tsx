@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { motion } from 'framer-motion';
 
 type ExperienceKey = 'enti' | 'softtek' | 'scandia' | 'iotam' | 'brightcoders';
 
@@ -9,53 +10,116 @@ interface TimelineEntry {
   tier: string;
   yearDisplay: string[];
   tech: string[];
+  url: string;
 }
 
 const TIMELINE_ENTRIES: TimelineEntry[] = [
   {
     key: 'enti',
-    tier: 'Lead Role',
+    tier: 'Consulting',
     yearDisplay: ['2023', 'PRESENT'],
-    tech: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
+    tech: ['Next.js', 'React', 'TypeScript', 'Node.js', 'NestJS', 'SQL'],
+    url: 'https://enti.mx/',
   },
   {
     key: 'softtek',
-    tier: 'Engineering Tier',
+    tier: 'Enterprise',
     yearDisplay: ['2021', '2022'],
-    tech: ['React', 'Node.js', 'SQL', 'REST APIs'],
+    tech: ['React', 'TypeScript', 'C#', '.NET', 'SQL'],
+    url: 'https://www.softtek.com/',
   },
   {
     key: 'scandia',
-    tier: 'Engineering Tier',
+    tier: 'E-commerce',
     yearDisplay: ['2021', '2022'],
-    tech: ['Shopify', 'Liquid', 'JavaScript', 'CSS'],
+    tech: ['Shopify', 'Liquid', 'JavaScript', 'Next.js', 'React'],
+    url: 'https://www.linkedin.com/company/scandia-manufacturing/people/?viewAsMember=true',
   },
   {
     key: 'iotam',
-    tier: 'Foundational Tier',
+    tier: 'Startup',
     yearDisplay: ['2021', '2022'],
-    tech: ['React', 'TypeScript', 'REST APIs'],
+    tech: ['React', 'TypeScript', 'SASS', 'REST APIs'],
+    url: 'https://iotam.com.mx/',
   },
   {
     key: 'brightcoders',
-    tier: 'Foundational Tier',
+    tier: 'Internship',
     yearDisplay: ['2021'],
-    tech: ['React', 'CSS', 'JavaScript'],
+    tech: ['Ruby', 'Ruby on Rails', 'JavaScript', 'HTML', 'CSS'],
+    url: 'https://www.brightcoders.com/',
   },
 ];
 
+const entryVariants = {
+  hidden: (dir: number) => ({ opacity: 0, x: dir * 60 }),
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const yearVariants = {
+  hidden: { opacity: 0, y: 24, scale: 0.94 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] as const, delay: 0.15 },
+  },
+};
+
+const chipVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' as const } },
+};
+
+const MONTH_IDX: Record<string, number> = {
+  Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+  Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+  // Spanish
+  Ene: 0, Ago: 7, Dic: 11,
+};
+
+function parseDuration(dateStr: string, yrLabel: string, moLabel: string): string {
+  const [startPart, endPart] = dateStr.split(' - ');
+  const parse = (s: string) => {
+    const [mon, yr] = s.trim().split(' ');
+    return { m: MONTH_IDX[mon] ?? 0, y: parseInt(yr) };
+  };
+  const start = parse(startPart);
+  const now = new Date();
+  const endTrimmed = endPart?.trim();
+  const end =
+    endTrimmed === 'Present' || endTrimmed === 'Presente'
+      ? { m: now.getMonth(), y: now.getFullYear() }
+      : parse(endPart);
+  const total = (end.y - start.y) * 12 + (end.m - start.m) + 1;
+  const yr = Math.floor(total / 12);
+  const mo = total % 12;
+  if (yr > 0 && mo > 0) return `${yr} ${yrLabel} ${mo} ${moLabel}`;
+  if (yr > 0) return `${yr} ${yrLabel}`;
+  return `${mo} ${moLabel}`;
+}
+
 function TechChip({ label }: { label: string }) {
   return (
-    <span
+    <motion.span
       className="px-3 py-0.5 rounded text-[9px] font-medium uppercase border"
       style={{
         color: 'rgba(199,196,215,0.7)',
         borderColor: 'rgba(70,69,84,0.3)',
         fontFamily: 'var(--font-inter), sans-serif',
       }}
+      variants={chipVariants}
     >
       {label}
-    </span>
+    </motion.span>
   );
 }
 
@@ -74,26 +138,40 @@ function TierBadge({ label, isLead }: { label: string; isLead?: boolean }) {
   );
 }
 
-function YearDisplay({ years, align = 'left' }: { years: string[]; align?: 'left' | 'right' }) {
+
+function YearDisplay({ align = 'left', date }: { align?: 'left' | 'right'; date?: string }) {
+  const t = useTranslations('common');
+  const duration = date ? parseDuration(date, t('duration_yr'), t('duration_mo')) : null;
+  const period = date ? date.toUpperCase().replace(' - ', ' — ') : null;
   return (
-    <span
+    <motion.span
       className="font-black leading-none block"
-      style={{
-        color: 'rgba(49,57,77,0.3)',
-        fontFamily: 'var(--font-manrope), sans-serif',
-        textAlign: align,
-      }}
+      style={{ fontFamily: 'var(--font-manrope), sans-serif', textAlign: align }}
+      variants={yearVariants}
     >
-      <span className="text-6xl md:text-8xl">{years[0]}</span>
-      {years[1] && (
-        <>
-          <br />
-          <span className="text-3xl md:text-5xl" style={{ color: 'rgba(49,57,77,0.2)' }}>
-            {years[1]}
-          </span>
-        </>
+      {period && (
+        <span
+          className="block text-2xl md:text-3xl tracking-tight"
+          style={{ color: 'rgba(192,193,255,0.55)' }}
+        >
+          {period}
+        </span>
       )}
-    </span>
+      {duration && (
+        <span
+          className="block mt-2"
+          style={{
+            color: 'rgba(192,193,255,0.35)',
+            fontFamily: 'var(--font-inter), sans-serif',
+            fontSize: '12px',
+            fontWeight: 500,
+            letterSpacing: '0.08em',
+          }}
+        >
+          {duration}
+        </span>
+      )}
+    </motion.span>
   );
 }
 
@@ -108,7 +186,13 @@ export default function Timeline() {
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-4">
+        <motion.div
+          className="flex flex-col md:flex-row justify-between items-end mb-24 gap-4"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           <div className="space-y-2">
             <span
               className="text-xs uppercase tracking-[0.3em] font-bold block"
@@ -120,17 +204,10 @@ export default function Timeline() {
               className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
               style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
             >
-              Professional{' '}
-              <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Stance</span>
+              Professional <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Stance</span>
             </h3>
           </div>
-          <span
-            className="text-sm uppercase tracking-widest pb-2"
-            style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
-          >
-            V4 Editorial Timeline • 2018—Present
-          </span>
-        </div>
+        </motion.div>
 
         {/* Timeline items */}
         <div className="relative">
@@ -138,7 +215,8 @@ export default function Timeline() {
           <div
             className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px hidden md:block"
             style={{
-              background: 'linear-gradient(to bottom, #c0c1ff, rgba(128,131,255,0.15), transparent)',
+              background:
+                'linear-gradient(to bottom, #c0c1ff, rgba(128,131,255,0.15), transparent)',
               transform: 'translateX(-50%)',
             }}
           />
@@ -156,24 +234,41 @@ export default function Timeline() {
               if (isOdd) {
                 // ODD: text left, year right
                 return (
-                  <div key={entry.key} className="relative grid md:grid-cols-2 gap-12 items-center">
+                  <motion.div
+                    key={entry.key}
+                    className="relative grid md:grid-cols-2 gap-12 items-center"
+                    custom={1}
+                    variants={entryVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-80px' }}
+                  >
                     {/* Text on LEFT */}
                     <div className="md:text-right md:pr-16 order-2 md:order-1">
                       <TierBadge label={entry.tier} isLead={isLead} />
-                      <h4
-                        className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter"
+                      <a
+                        href={entry.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-4xl md:text-5xl font-black leading-none mb-2 tracking-tighter block hover:text-[#c0c1ff] transition-colors"
                         style={{
                           color: '#dae2fd',
                           fontFamily: 'var(--font-manrope), sans-serif',
                         }}
                       >
                         {item.title}
-                      </h4>
-                      <div className="flex flex-wrap md:justify-end gap-2 mb-6">
+                      </a>
+                      <motion.div
+                        className="flex flex-wrap md:justify-end gap-2 mb-6"
+                        variants={{
+                          hidden: {},
+                          visible: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } },
+                        }}
+                      >
                         {entry.tech.map((tech) => (
                           <TechChip key={tech} label={tech} />
                         ))}
-                      </div>
+                      </motion.div>
                       <p
                         className="text-lg leading-relaxed"
                         style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
@@ -182,58 +277,77 @@ export default function Timeline() {
                       </p>
                     </div>
 
+                    {/* Center dot — on the row, aligned with the center line */}
+                    <div
+                      className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-10 hidden md:block"
+                      style={{
+                        backgroundColor: '#c0c1ff',
+                        boxShadow: '0 0 20px rgba(192,193,255,0.6)',
+                      }}
+                    />
+
                     {/* Year on RIGHT */}
                     <div className="relative order-1 md:order-2">
-                      {/* Center dot */}
-                      <div
-                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-10 hidden md:block"
-                        style={{
-                          backgroundColor: '#c0c1ff',
-                          boxShadow: '0 0 20px rgba(192,193,255,0.6)',
-                        }}
-                      />
                       <div className="pl-0 md:pl-16">
-                        <YearDisplay years={entry.yearDisplay} />
+                        <YearDisplay date={item.date} />
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               }
 
               // EVEN: year left, text right
               return (
-                <div key={entry.key} className="relative grid md:grid-cols-2 gap-12 items-center">
+                <motion.div
+                  key={entry.key}
+                  className="relative grid md:grid-cols-2 gap-12 items-center"
+                  custom={-1}
+                  variants={entryVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: '-80px' }}
+                >
                   {/* Year on LEFT */}
                   <div className="md:text-right md:pr-16 order-1">
-                    <YearDisplay years={entry.yearDisplay} align="right" />
+                    <YearDisplay align="right" date={item.date} />
                   </div>
+
+                  {/* Center dot — on the row, aligned with the center line */}
+                  <div
+                    className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-10 hidden md:block"
+                    style={{
+                      backgroundColor: '#8083ff',
+                      boxShadow: '0 0 16px rgba(128,131,255,0.4)',
+                    }}
+                  />
 
                   {/* Text on RIGHT */}
                   <div className="order-2 relative">
-                    {/* Center dot */}
-                    <div
-                      className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-10 hidden md:block"
-                      style={{
-                        backgroundColor: '#8083ff',
-                        boxShadow: '0 0 16px rgba(128,131,255,0.4)',
-                      }}
-                    />
                     <div className="pl-0 md:pl-16">
                       <TierBadge label={entry.tier} />
-                      <h4
-                        className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter"
+                      <a
+                        href={entry.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter block hover:text-[#c0c1ff] transition-colors"
                         style={{
                           color: '#dae2fd',
                           fontFamily: 'var(--font-manrope), sans-serif',
                         }}
                       >
                         {item.title}
-                      </h4>
-                      <div className="flex flex-wrap gap-2 mb-6">
+                      </a>
+                      <motion.div
+                        className="flex flex-wrap gap-2 mb-6"
+                        variants={{
+                          hidden: {},
+                          visible: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } },
+                        }}
+                      >
                         {entry.tech.map((tech) => (
                           <TechChip key={tech} label={tech} />
                         ))}
-                      </div>
+                      </motion.div>
                       <p
                         className="text-lg leading-relaxed"
                         style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
@@ -242,7 +356,7 @@ export default function Timeline() {
                       </p>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
