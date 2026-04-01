@@ -53,21 +53,21 @@ export default function Projects() {
               className="text-xs uppercase tracking-[0.3em] font-bold block"
               style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
             >
-              Showcase
+              {t('projects_label')}
             </span>
             <h2
               className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
               style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
             >
-              Gallery of{' '}
-              <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Work</span>
+              {t('projects_title')}{' '}
+              <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>{t('projects_title_accent')}</span>
             </h2>
           </div>
           <span
             className="text-sm uppercase tracking-widest pb-2"
             style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
           >
-            Selected · Ongoing
+            {t('projects_subtitle')}
           </span>
         </div>
 
@@ -125,7 +125,7 @@ export default function Projects() {
                 className="inline-block text-sm font-medium transition-opacity hover:opacity-70"
                 style={{ color: '#c0c1ff' }}
               >
-                View Study →
+                {t('project_view_study')}
               </a>
             </div>
           </div>
@@ -220,7 +220,7 @@ export default function Projects() {
                 className="text-sm font-bold uppercase tracking-widest"
                 style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
               >
-                More Projects
+                {t('projects_more')}
               </h4>
             </div>
           </div>

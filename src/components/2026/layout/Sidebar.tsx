@@ -1,18 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 
-const NAV_ITEMS = [
-  { id: 'experience', icon: 'work', label: 'Experience' },
-  { id: 'projects', icon: 'grid_view', label: 'Projects' },
-  { id: 'about', icon: 'person', label: 'About' },
-  { id: 'stack', icon: 'terminal', label: 'Stack' },
-];
+const NAV_IDS = [
+  { id: 'experience', icon: 'work', key: 'experience' },
+  { id: 'projects', icon: 'grid_view', key: 'projects' },
+  { id: 'about', icon: 'person', key: 'about' },
+  { id: 'stack', icon: 'terminal', key: 'stack' },
+] as const;
 
 const SECTION_IDS = ['experience', 'projects', 'about', 'stack'];
 
 export default function Sidebar() {
+  const t = useTranslations('common');
   const [active, setActive] = useState<string>('');
   const { isUnlocked, openCard } = useGamerCard();
 
@@ -59,13 +61,13 @@ export default function Sidebar() {
               fontSize: '10px',
             }}
           >
-            Full Stack Developer
+            {t('hero_subtitle')}
           </p>
         </div>
 
         {/* Nav links */}
         <nav className="space-y-2">
-        {NAV_ITEMS.map(({ id, icon, label }) => {
+        {NAV_IDS.map(({ id, icon, key }) => {
           const isActive = active === id;
           return (
             <a
@@ -83,7 +85,7 @@ export default function Sidebar() {
               }}
             >
               <span className="material-symbols-outlined text-[20px]">{icon}</span>
-              {label}
+              {t(key)}
             </a>
           );
         })}
@@ -101,7 +103,7 @@ export default function Sidebar() {
             style={{ color: '#c7c4d7', backgroundColor: 'rgba(192,193,255,0.05)' }}
           >
             <span className="text-base">🕷️</span>
-            Gamer Card
+            {t('gamer_card')}
           </button>
         )}
 
@@ -117,7 +119,7 @@ export default function Sidebar() {
           }}
         >
           <span className="material-symbols-outlined text-[18px]">download</span>
-          Download CV
+          {t('download_cv')}
         </a>
 
         {/* Social links */}

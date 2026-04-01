@@ -23,7 +23,7 @@ export default function About() {
         className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-16"
         style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
       >
-        About me
+        {t('about')}
       </h2>
 
       <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">

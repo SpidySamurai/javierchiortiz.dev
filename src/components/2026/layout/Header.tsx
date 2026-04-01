@@ -1,17 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import ThemeToggle from '@/components/2026/ui/ThemeToggle';
 import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
 
 const DESKTOP_NAV = [
-  { href: '#projects', label: 'Projects' },
-  { href: '#stack', label: 'Stack' },
-  { href: '#about', label: 'About' },
-  { href: '#contact', label: 'Contact' },
-];
+  { href: '#projects', key: 'projects' },
+  { href: '#stack', key: 'stack' },
+  { href: '#about', key: 'about' },
+  { href: '#contact', key: 'contact' },
+] as const;
 
 export default function Header() {
+  const t = useTranslations('common');
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -118,7 +120,7 @@ export default function Header() {
         </button>
 
         <nav className="flex flex-col gap-1">
-          {DESKTOP_NAV.map(({ href, label }) => (
+          {DESKTOP_NAV.map(({ href, key }) => (
             <a
               key={href}
               href={href}
@@ -130,7 +132,7 @@ export default function Header() {
                 fontFamily: 'var(--font-manrope), sans-serif',
               }}
             >
-              {label}
+              {t(key)}
             </a>
           ))}
         </nav>
@@ -147,7 +149,7 @@ export default function Header() {
             }}
           >
             <span className="material-symbols-outlined text-[18px]">download</span>
-            Download CV
+            {t('download_cv')}
           </a>
         </div>
       </aside>

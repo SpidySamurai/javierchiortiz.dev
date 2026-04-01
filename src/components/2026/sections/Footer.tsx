@@ -1,4 +1,9 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+
 export default function Footer() {
+  const t = useTranslations('common');
   const year = new Date().getFullYear();
 
   return (
@@ -21,7 +26,7 @@ export default function Footer() {
             Javier Chi Ortíz
           </h2>
           <p style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}>
-            Available for collaborations
+            {t('footer_available')}
           </p>
         </div>
 
