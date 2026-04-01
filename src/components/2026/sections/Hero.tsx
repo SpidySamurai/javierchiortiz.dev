@@ -14,7 +14,7 @@ const PARTICLES_OPTIONS = {
   fpsLimit: 60,
   particles: {
     number: { value: 140, density: { enable: true } },
-    color: { value: ['#c0c1ff', '#a5b4fc', '#818cf8'] },
+    color: { value: ['#c0c1ff', '#a5b4fc', '#818cf8'] as string[] },
     opacity: {
       value: { min: 0.1, max: 0.6 },
       animation: { enable: true, speed: 0.6, sync: false },
@@ -34,7 +34,7 @@ const PARTICLES_OPTIONS = {
     repulse: { enable: true, distance: 80, duration: 0.4 },
   },
   interactivity: {
-    events: { onHover: { enable: true, mode: ['repulse', 'bubble'] } },
+    events: { onHover: { enable: true, mode: ['repulse', 'bubble'] as string[] } },
     modes: {
       repulse: { distance: 160, duration: 2, speed: 12, factor: 20 },
       bubble: { distance: 120, size: 6, duration: 0.3, opacity: 0.9 },
