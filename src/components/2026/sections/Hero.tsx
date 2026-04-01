@@ -1,13 +1,12 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import type { Container } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
 import { loadEmittersPlugin } from '@tsparticles/plugin-emitters';
 import { loadTrailEffect } from '@tsparticles/effect-trail';
-
-const HEADLINE = 'Crafting Digital\nArtifacts';
 
 const PARTICLES_OPTIONS = {
   fullScreen: { enable: false },
@@ -59,9 +58,6 @@ const ParticleBackground = memo(function ParticleBackground({
     />
   );
 });
-const DIGITAL_START = HEADLINE.indexOf('Digital');
-const DIGITAL_END = DIGITAL_START + 'Digital'.length;
-
 function TypingText({
   text,
   start,
@@ -92,20 +88,33 @@ function TypingText({
   );
 }
 
-function TypingHeadline({ onDone }: { onDone?: () => void }) {
+function TypingHeadline({
+  pre,
+  accent,
+  post,
+  onDone,
+}: {
+  pre: string;
+  accent: string;
+  post: string;
+  onDone?: () => void;
+}) {
+  const full = pre + accent + post;
+  const accentStart = pre.length;
+  const accentEnd = pre.length + accent.length;
   const [count, setCount] = useState(0);
-  const done = count >= HEADLINE.length;
+  const done = count >= full.length;
 
   useEffect(() => {
     if (done) {
       onDone?.();
       return;
     }
-    const t = setTimeout(() => setCount((c) => c + 1), 70);
-    return () => clearTimeout(t);
-  }, [count, done]);
+    const timer = setTimeout(() => setCount((c) => c + 1), 70);
+    return () => clearTimeout(timer);
+  }, [count, done, onDone]);
 
-  const text = HEADLINE.slice(0, count);
+  const text = full.slice(0, count);
 
   const renderChars = () => {
     const chars: React.ReactNode[] = [];
@@ -113,7 +122,7 @@ function TypingHeadline({ onDone }: { onDone?: () => void }) {
       const ch = text[i];
       if (ch === '\n') {
         chars.push(<br key={i} />);
-      } else if (i >= DIGITAL_START && i < DIGITAL_END) {
+      } else if (i >= accentStart && i < accentEnd) {
         chars.push(
           <span key={i} style={{ color: '#c0c1ff', fontStyle: 'italic' }}>
             {ch}
@@ -141,6 +150,7 @@ function TypingHeadline({ onDone }: { onDone?: () => void }) {
 }
 
 export default function Hero() {
+  const t = useTranslations('common');
   const [particlesReady, setParticlesReady] = useState(false);
   const [typingDone, setTypingDone] = useState(false);
   const cometContainerRef = useRef<Container | null>(null);
@@ -248,7 +258,12 @@ export default function Hero() {
         {/* Left: text block */}
         <div className="w-full md:w-1/2 space-y-6">
           {/* Headline */}
-          <TypingHeadline onDone={() => setTypingDone(true)} />
+          <TypingHeadline
+            pre={t('hero_headline_pre')}
+            accent={t('hero_headline_accent')}
+            post={t('hero_headline_post')}
+            onDone={() => setTypingDone(true)}
+          />
 
           {/* Description */}
           <p
@@ -329,7 +344,7 @@ export default function Hero() {
       {/* Comet caption */}
       <p className="absolute bottom-10 right-8 md:right-16 text-xs italic pointer-events-none">
         <TypingText
-          text="comets like ideas — brief, unique, unrepeatable"
+          text={t('hero_comet_caption')}
           start={typingDone}
           style={{
             color: 'rgba(192,193,255,0.75)',
@@ -355,7 +370,7 @@ export default function Hero() {
             lineHeight: 1,
           }}
         >
-          Curator • Developer • Designer • Curator • Developer
+          {t('hero_ticker')} • {t('hero_ticker')}
         </span>
       </div>
     </section>

@@ -16,35 +16,35 @@ interface TimelineEntry {
 const TIMELINE_ENTRIES: TimelineEntry[] = [
   {
     key: 'enti',
-    tier: 'Consulting',
+    tier: 'tier_consulting',
     yearDisplay: ['2023', 'PRESENT'],
     tech: ['Next.js', 'React', 'TypeScript', 'Node.js', 'NestJS', 'SQL'],
     url: 'https://enti.mx/',
   },
   {
     key: 'softtek',
-    tier: 'Enterprise',
+    tier: 'tier_enterprise',
     yearDisplay: ['2021', '2022'],
     tech: ['React', 'TypeScript', 'C#', '.NET', 'SQL'],
     url: 'https://www.softtek.com/',
   },
   {
     key: 'scandia',
-    tier: 'E-commerce',
+    tier: 'tier_ecommerce',
     yearDisplay: ['2021', '2022'],
     tech: ['Shopify', 'Liquid', 'JavaScript', 'Next.js', 'React'],
     url: 'https://www.linkedin.com/company/scandia-manufacturing/people/?viewAsMember=true',
   },
   {
     key: 'iotam',
-    tier: 'Startup',
+    tier: 'tier_startup',
     yearDisplay: ['2021', '2022'],
     tech: ['React', 'TypeScript', 'SASS', 'REST APIs'],
     url: 'https://iotam.com.mx/',
   },
   {
     key: 'brightcoders',
-    tier: 'Internship',
+    tier: 'tier_internship',
     yearDisplay: ['2021'],
     tech: ['Ruby', 'Ruby on Rails', 'JavaScript', 'HTML', 'CSS'],
     url: 'https://www.brightcoders.com/',
@@ -198,13 +198,13 @@ export default function Timeline() {
               className="text-xs uppercase tracking-[0.3em] font-bold block"
               style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
             >
-              Chronology
+              {t('timeline_label')}
             </span>
             <h3
               className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
               style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
             >
-              Professional <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>Stance</span>
+              {t('timeline_title')}{' '}<span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>{t('timeline_title_accent')}</span>
             </h3>
           </div>
         </motion.div>
@@ -245,7 +245,7 @@ export default function Timeline() {
                   >
                     {/* Text on LEFT */}
                     <div className="md:text-right md:pr-16 order-2 md:order-1">
-                      <TierBadge label={entry.tier} isLead={isLead} />
+                      <TierBadge label={t(entry.tier as Parameters<typeof t>[0])} isLead={isLead} />
                       <a
                         href={entry.url}
                         target="_blank"
@@ -324,7 +324,7 @@ export default function Timeline() {
                   {/* Text on RIGHT */}
                   <div className="order-2 relative">
                     <div className="pl-0 md:pl-16">
-                      <TierBadge label={entry.tier} />
+                      <TierBadge label={t(entry.tier as Parameters<typeof t>[0])} />
                       <a
                         href={entry.url}
                         target="_blank"
