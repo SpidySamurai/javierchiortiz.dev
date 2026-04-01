@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { projects } from '@/data/projects';
 import type { DataProject } from '@/types';
@@ -40,6 +41,10 @@ function getCategoryLabel(project: DataProject): string {
   return 'Personal';
 }
 
+function getProjectUrl(project: DataProject): string | null {
+  return project.liveUrl ?? project.repoUrl ?? null;
+}
+
 function ProjectImage({ imageUrl, title }: { imageUrl: string; title: string }) {
   if (!imageUrl) {
     return (
@@ -65,19 +70,33 @@ function ProjectImage({ imageUrl, title }: { imageUrl: string; title: string }) 
   );
 }
 
+function ProjectLink({ project, label }: { project: DataProject; label: string }) {
+  const url = getProjectUrl(project);
+  if (!url) return null;
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-block text-sm font-medium transition-opacity hover:opacity-70"
+      style={{ color: '#c0c1ff' }}
+    >
+      {label}
+    </a>
+  );
+}
+
 export default function Projects() {
   const t = useTranslations('common');
+  const [expanded, setExpanded] = useState(false);
 
-  const visibleProjects = projects.filter((p) => !p.hidden);
-  const featuredProjects = visibleProjects.filter((p) => p.category === 'featured');
-  const entryProjects = visibleProjects.filter((p) => p.category === 'entry');
+  const featuredProjects = projects.filter((p) => !p.hidden && p.category === 'featured');
+  const entryProjects = projects.filter((p) => !p.hidden && p.category === 'entry');
 
-  // First featured: large card (col-span-8 row-span-2)
   const primaryFeatured = featuredProjects[0];
-  // Second featured: tall vertical card (col-span-4 row-span-3)
   const secondaryFeatured = featuredProjects[1];
-  // Third featured: content card (col-span-4 row-span-2)
   const tertiaryFeatured = featuredProjects[2];
+  const additionalProjects = [...featuredProjects.slice(3), ...entryProjects];
 
   return (
     <section
@@ -136,9 +155,6 @@ export default function Projects() {
               <div className="absolute bottom-0 left-0 p-10 space-y-4 w-full">
                 <div className="flex gap-3 flex-wrap">
                   <CategoryPill label={getCategoryLabel(primaryFeatured)} />
-                  {primaryFeatured.stack?.slice(0, 1).map((tech) => (
-                    <CategoryPill key={tech} label={tech} />
-                  ))}
                 </div>
                 <h4
                   className="text-4xl font-bold"
@@ -152,30 +168,12 @@ export default function Projects() {
                 >
                   {primaryFeatured.description}
                 </p>
-                <div className="flex gap-4 items-center">
-                  {primaryFeatured.liveUrl && (
-                    <a
-                      href={primaryFeatured.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block text-sm font-medium transition-opacity hover:opacity-70"
-                      style={{ color: '#c0c1ff' }}
-                    >
-                      {t('project_view_study')}
-                    </a>
-                  )}
-                  {primaryFeatured.repoUrl && (
-                    <a
-                      href={primaryFeatured.repoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block text-sm font-medium transition-opacity hover:opacity-70"
-                      style={{ color: '#908fa0' }}
-                    >
-                      Repo
-                    </a>
-                  )}
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {primaryFeatured.stack?.map((tech) => (
+                    <SmallChip key={tech} label={tech} />
+                  ))}
                 </div>
+                <ProjectLink project={primaryFeatured} label={t('project_view_study')} />
               </div>
             </div>
           )}
@@ -198,12 +196,7 @@ export default function Projects() {
 
               {/* Content */}
               <div className="absolute bottom-0 left-0 p-8 space-y-3">
-                <span
-                  className="text-[10px] font-bold uppercase tracking-widest block"
-                  style={{ color: '#c0c1ff' }}
-                >
-                  {getCategoryLabel(secondaryFeatured)}
-                </span>
+                <CategoryPill label={getCategoryLabel(secondaryFeatured)} />
                 <h4
                   className="text-2xl font-bold"
                   style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
@@ -216,17 +209,12 @@ export default function Projects() {
                 >
                   {secondaryFeatured.description}
                 </p>
-                {secondaryFeatured.liveUrl && (
-                  <a
-                    href={secondaryFeatured.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block text-sm font-medium transition-opacity hover:opacity-70"
-                    style={{ color: '#c0c1ff' }}
-                  >
-                    {t('project_view_study')}
-                  </a>
-                )}
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {secondaryFeatured.stack?.map((tech) => (
+                    <SmallChip key={tech} label={tech} />
+                  ))}
+                </div>
+                <ProjectLink project={secondaryFeatured} label={t('project_view_study')} />
               </div>
             </div>
           )}
@@ -239,7 +227,8 @@ export default function Projects() {
             >
               <ProjectImage imageUrl={tertiaryFeatured.imageUrl} title={tertiaryFeatured.title} />
 
-              <div className="absolute inset-0 p-8 flex flex-col justify-between"
+              <div
+                className="absolute inset-0 p-8 flex flex-col justify-between"
                 style={{
                   background: tertiaryFeatured.imageUrl
                     ? 'linear-gradient(to top, #171f33 0%, rgba(23,31,51,0.7) 60%, transparent 100%)'
@@ -255,6 +244,7 @@ export default function Projects() {
                       code
                     </span>
                   </div>
+                  <CategoryPill label={getCategoryLabel(tertiaryFeatured)} />
                   <h4
                     className="text-xl font-bold"
                     style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
@@ -268,102 +258,91 @@ export default function Projects() {
                     {tertiaryFeatured.description}
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {tertiaryFeatured.stack?.map((tech) => (
-                    <SmallChip key={tech} label={tech} />
-                  ))}
+                <div className="space-y-3">
+                  <div className="flex flex-wrap gap-2">
+                    {tertiaryFeatured.stack?.map((tech) => (
+                      <SmallChip key={tech} label={tech} />
+                    ))}
+                  </div>
+                  <ProjectLink project={tertiaryFeatured} label={t('project_view_study')} />
                 </div>
               </div>
             </div>
           )}
 
-          {/* Entry-level projects — col-span-4 row-span-1 each */}
-          {entryProjects.map((project) => (
+          {/* More Projects button — shown when not expanded */}
+          {!expanded && (
             <div
-              key={project.id}
-              className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl transition-all duration-500 hover:scale-[0.98]"
+              className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-8 cursor-pointer transition-all duration-500 hover:scale-[0.98]"
               style={{ backgroundColor: '#131b2e' }}
+              onClick={() => setExpanded(true)}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#222a3d')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#131b2e')}
             >
-              <ProjectImage imageUrl={project.imageUrl} title={project.title} />
-
-              <div
-                className="absolute inset-0 p-6 flex flex-col justify-between"
-                style={{
-                  background: project.imageUrl
-                    ? 'linear-gradient(to top, #131b2e 0%, rgba(19,27,46,0.6) 60%, transparent 100%)'
-                    : undefined,
-                }}
-              >
-                <div>
-                  <span
-                    className="text-[10px] font-bold uppercase tracking-widest block mb-2"
-                    style={{ color: '#c0c1ff' }}
-                  >
-                    {getCategoryLabel(project)}
-                  </span>
-                  <h4
-                    className="text-base font-bold mb-1"
-                    style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
-                  >
-                    {project.title}
-                  </h4>
-                  <p
-                    className="text-xs leading-relaxed line-clamp-2"
-                    style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
-                  >
-                    {project.description}
-                  </p>
-                </div>
-                <div className="flex gap-3 items-center">
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-medium transition-opacity hover:opacity-70"
-                      style={{ color: '#c0c1ff' }}
-                    >
-                      {t('project_view_study')}
-                    </a>
-                  )}
-                  {project.repoUrl && (
-                    <a
-                      href={project.repoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-medium transition-opacity hover:opacity-70"
-                      style={{ color: '#908fa0' }}
-                    >
-                      Repo
-                    </a>
-                  )}
-                </div>
+              <div className="text-center">
+                <span
+                  className="material-symbols-outlined text-3xl block mb-2"
+                  style={{ color: '#c0c1ff' }}
+                >
+                  folder_open
+                </span>
+                <h4
+                  className="text-sm font-bold uppercase tracking-widest"
+                  style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+                >
+                  {t('projects_more')}
+                </h4>
               </div>
             </div>
-          ))}
+          )}
 
-          {/* More Projects — infill card */}
-          <div
-            className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-8 cursor-pointer transition-all duration-500 hover:scale-[0.98]"
-            style={{ backgroundColor: '#131b2e' }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#222a3d')}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#131b2e')}
-          >
-            <div className="text-center">
-              <span
-                className="material-symbols-outlined text-3xl block mb-2"
-                style={{ color: '#c0c1ff' }}
+          {/* Additional projects — shown when expanded */}
+          {expanded &&
+            additionalProjects.map((project) => (
+              <div
+                key={project.id}
+                className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl transition-all duration-500 hover:scale-[0.98]"
+                style={{ backgroundColor: '#131b2e' }}
               >
-                folder_open
-              </span>
-              <h4
-                className="text-sm font-bold uppercase tracking-widest"
-                style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
-              >
-                {t('projects_more')}
-              </h4>
-            </div>
-          </div>
+                <ProjectImage imageUrl={project.imageUrl} title={project.title} />
+
+                {/* Gradient overlay */}
+                {project.imageUrl && (
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background: 'linear-gradient(to top, #131b2e 0%, rgba(19,27,46,0.7) 60%, transparent 100%)',
+                    }}
+                  />
+                )}
+
+                <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                  <div className="space-y-2">
+                    <CategoryPill label={getCategoryLabel(project)} />
+                    <h4
+                      className="text-lg font-bold"
+                      style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+                    >
+                      {project.title}
+                    </h4>
+                    <p
+                      className="text-xs leading-relaxed line-clamp-3"
+                      style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+                    >
+                      {project.description}
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap gap-1">
+                      {project.stack?.map((tech) => (
+                        <SmallChip key={tech} label={tech} />
+                      ))}
+                    </div>
+                    <ProjectLink project={project} label={t('project_view_study')} />
+                  </div>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     </section>
