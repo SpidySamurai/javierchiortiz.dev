@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Masonry from 'react-masonry-css';
 import { useTranslations } from 'next-intl';
 import { projects } from '@/data/projects';
 import type { DataProject } from '@/types';
@@ -65,7 +67,8 @@ function ProjectImage({ imageUrl, title }: { imageUrl: string; title: string }) 
     <img
       src={imageUrl}
       alt={title}
-      className="absolute inset-0 w-full h-full object-cover"
+      className="absolute inset-0 w-full object-cover transition-transform duration-[3500ms] ease-out group-hover:translate-y-[-8%]"
+      style={{ height: '115%', top: 0 }}
     />
   );
 }
@@ -85,6 +88,12 @@ function ProjectLink({ project, label }: { project: DataProject; label: string }
     </a>
   );
 }
+
+const masonryBreakpoints = {
+  default: 3,
+  1024: 2,
+  640: 1,
+};
 
 export default function Projects() {
   const t = useTranslations('common');
@@ -137,9 +146,13 @@ export default function Projects() {
         >
           {/* Primary featured: col-span-8 row-span-2 (large) */}
           {primaryFeatured && (
-            <div
-              className="md:col-span-8 md:row-span-2 group relative overflow-hidden rounded-xl transition-all duration-500 hover:scale-[0.98]"
+            <motion.div
+              className="md:col-span-8 md:row-span-2 group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(192,193,255,0.15),0_8px_32px_rgba(11,19,38,0.4)]"
               style={{ backgroundColor: '#171f33' }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
             >
               <ProjectImage imageUrl={primaryFeatured.imageUrl} title={primaryFeatured.title} />
 
@@ -175,14 +188,18 @@ export default function Projects() {
                 </div>
                 <ProjectLink project={primaryFeatured} label={t('project_view_study')} />
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Secondary featured: col-span-4 row-span-3 (tall vertical) */}
           {secondaryFeatured && (
-            <div
-              className="md:col-span-4 md:row-span-3 group relative overflow-hidden rounded-xl transition-all duration-500 hover:scale-[0.98]"
+            <motion.div
+              className="md:col-span-4 md:row-span-3 group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(192,193,255,0.15),0_8px_32px_rgba(11,19,38,0.4)]"
               style={{ backgroundColor: '#222a3d' }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
             >
               <ProjectImage imageUrl={secondaryFeatured.imageUrl} title={secondaryFeatured.title} />
 
@@ -216,14 +233,18 @@ export default function Projects() {
                 </div>
                 <ProjectLink project={secondaryFeatured} label={t('project_view_study')} />
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Tertiary featured: col-span-4 row-span-2 (content card) */}
           {tertiaryFeatured && (
-            <div
-              className="md:col-span-4 md:row-span-2 group relative overflow-hidden rounded-xl transition-all duration-500 hover:scale-[0.98]"
+            <motion.div
+              className="md:col-span-4 md:row-span-2 group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(192,193,255,0.15),0_8px_32px_rgba(11,19,38,0.4)]"
               style={{ backgroundColor: '#171f33' }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
             >
               <ProjectImage imageUrl={tertiaryFeatured.imageUrl} title={tertiaryFeatured.title} />
 
@@ -267,13 +288,13 @@ export default function Projects() {
                   <ProjectLink project={tertiaryFeatured} label={t('project_view_study')} />
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* More Projects button — shown when not expanded */}
           {!expanded && (
             <div
-              className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-8 cursor-pointer transition-all duration-500 hover:scale-[0.98]"
+              className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-8 cursor-pointer transition-shadow duration-300"
               style={{ backgroundColor: '#131b2e' }}
               onClick={() => setExpanded(true)}
               onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#222a3d')}
@@ -296,54 +317,69 @@ export default function Projects() {
             </div>
           )}
 
-          {/* Additional projects — shown when expanded */}
-          {expanded &&
-            additionalProjects.map((project) => (
-              <div
-                key={project.id}
-                className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl transition-all duration-500 hover:scale-[0.98]"
-                style={{ backgroundColor: '#131b2e' }}
+        </div>{/* end bento grid */}
+
+        {/* Expanded projects — masonry layout */}
+        <AnimatePresence>
+          {expanded && (
+            <motion.div
+              className="mt-6 md:mt-8"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            >
+              <Masonry
+                breakpointCols={masonryBreakpoints}
+                className="masonry-grid"
+                columnClassName="masonry-grid_column"
               >
-                <ProjectImage imageUrl={project.imageUrl} title={project.title} />
-
-                {/* Gradient overlay */}
-                {project.imageUrl && (
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background: 'linear-gradient(to top, #131b2e 0%, rgba(19,27,46,0.7) 60%, transparent 100%)',
-                    }}
-                  />
-                )}
-
-                <div className="absolute inset-0 p-6 flex flex-col justify-between">
-                  <div className="space-y-2">
-                    <CategoryPill label={getCategoryLabel(project)} />
-                    <h4
-                      className="text-lg font-bold"
-                      style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
-                    >
-                      {project.title}
-                    </h4>
-                    <p
-                      className="text-xs leading-relaxed line-clamp-3"
-                      style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
-                    >
-                      {project.description}
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap gap-1">
-                      {project.stack?.map((tech) => (
-                        <SmallChip key={tech} label={tech} />
-                      ))}
+                {additionalProjects.map((project, i) => (
+                  <motion.div
+                    key={project.id}
+                    className="group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(192,193,255,0.15),0_8px_32px_rgba(11,19,38,0.4)]"
+                    style={{ backgroundColor: '#171f33' }}
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.08 }}
+                  >
+                    <div className="p-6 flex flex-col gap-3 min-h-[240px]">
+                      {project.imageUrl && (
+                        <div className="relative w-full h-40 overflow-hidden rounded-lg mb-2">
+                          <img
+                            src={project.imageUrl}
+                            alt={project.title}
+                            className="w-full h-full object-cover transition-transform duration-[3500ms] ease-out group-hover:translate-y-[-8%]"
+                            style={{ height: '115%', top: 0, position: 'absolute' }}
+                          />
+                        </div>
+                      )}
+                      <CategoryPill label={getCategoryLabel(project)} />
+                      <h4
+                        className="text-xl font-bold"
+                        style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+                      >
+                        {project.title}
+                      </h4>
+                      <p
+                        className="text-sm leading-relaxed"
+                        style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+                      >
+                        {project.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mt-auto">
+                        {project.stack?.map((tech) => (
+                          <SmallChip key={tech} label={tech} />
+                        ))}
+                      </div>
+                      <ProjectLink project={project} label={t('project_view_study')} />
                     </div>
-                    <ProjectLink project={project} label={t('project_view_study')} />
-                  </div>
-                </div>
-              </div>
-            ))}
-        </div>
+                  </motion.div>
+                ))}
+              </Masonry>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

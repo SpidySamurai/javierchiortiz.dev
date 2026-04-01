@@ -245,3 +245,22 @@ html[data-theme='light'] .ds-2026 {
     transition: none !important;
   }
 }
+
+/* react-masonry-css layout */
+.masonry-grid {
+  display: flex;
+  gap: 1.5rem;
+}
+.masonry-grid_column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .masonry-grid {
+    gap: 2rem;
+  }
+  .masonry-grid_column {
+    gap: 2rem;
+  }
+}
