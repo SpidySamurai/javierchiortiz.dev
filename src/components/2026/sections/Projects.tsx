@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Masonry from 'react-masonry-css';
+import { FaGithub } from 'react-icons/fa';
 import { useTranslations } from 'next-intl';
 import { projects } from '@/data/projects';
 import type { DataProject } from '@/types';
@@ -43,9 +43,6 @@ function getCategoryLabel(project: DataProject): string {
   return 'Personal';
 }
 
-function getProjectUrl(project: DataProject): string | null {
-  return project.liveUrl ?? project.repoUrl ?? null;
-}
 
 function ProjectImage({ imageUrl, title }: { imageUrl: string; title: string }) {
   if (!imageUrl) {
@@ -73,39 +70,142 @@ function ProjectImage({ imageUrl, title }: { imageUrl: string; title: string }) 
   );
 }
 
-function ProjectLink({ project, label }: { project: DataProject; label: string }) {
-  const url = getProjectUrl(project);
-  if (!url) return null;
+function ProjectCard({ project, index, t }: { project: DataProject; index: number; t: ReturnType<typeof useTranslations> }) {
+  // Common span and layout classes strictly designed to fit 8 projects into a perfect 6-row by 12-column Grid
+  const shapes = [
+    'md:col-span-8 md:row-span-2', // 0: Large (Rows 1-2, cols 1-8)
+    'md:col-span-4 md:row-span-3', // 1: Tall (Rows 1-3, cols 9-12)
+    'md:col-span-4 md:row-span-2', // 2: Square (Rows 3-4, cols 1-4)
+    'md:col-span-4 md:row-span-2', // 3: Square (Rows 3-4, cols 5-8)
+    'md:col-span-4 md:row-span-1', // 4: Short (Row 4, cols 9-12) -> Finishes 4 rows exactly!
+    'md:col-span-6 md:row-span-2', // 5: Wide square (Rows 5-6, cols 1-6)
+    'md:col-span-6 md:row-span-1', // 6: Wide short (Row 5, cols 7-12)
+    'md:col-span-3 md:row-span-1', // 7: Small (Row 6, cols 7-9)
+  ];
+
+  const shapeClass = shapes[index] || 'md:col-span-4 md:row-span-2';
+
+  const isLarge = index === 0;
+  const isTall = index === 1;
+  const isSquare = index === 2 || index === 3 || index === 5;
+  const isShort = index === 4 || index === 6 || index === 7;
+
+  const bgColor = index % 2 === 0 ? '#171f33' : '#222a3d';
+
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-block text-sm font-medium transition-opacity hover:opacity-70"
-      style={{ color: '#c0c1ff' }}
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -40, scale: 0.95 }}
+      transition={{ duration: 0.5, ease: 'easeOut', delay: (index % 4) * 0.05 }}
+      className={`${shapeClass} group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(192,193,255,0.15),0_8px_32px_rgba(11,19,38,0.4)]`}
+      style={{ backgroundColor: bgColor }}
     >
-      {label}
-    </a>
+      <ProjectImage imageUrl={project.imageUrl} title={project.title} />
+
+      {/* Gradients */}
+      {isLarge && (
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(to top, #0b1326 0%, rgba(11,19,38,0.2) 50%, transparent 100%)',
+          }}
+        />
+      )}
+      {isTall && (
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(to top, #0b1326 0%, transparent 60%)' }}
+        />
+      )}
+      {(isSquare || isShort) && (
+        <div
+          className="absolute inset-0"
+          style={{
+            background: project.imageUrl
+              ? 'linear-gradient(to top, #171f33 0%, rgba(23,31,51,0.7) 60%, transparent 100%)'
+              : undefined,
+          }}
+        />
+      )}
+
+      {/* Content — consistent order: tier → title → desc → stack → links */}
+      <div
+        className={`absolute ${
+          isLarge || isTall
+            ? 'bottom-0 left-0 w-full p-8 md:p-10 space-y-3'
+            : 'inset-0 p-6 md:p-8 flex flex-col justify-end space-y-3'
+        }`}
+      >
+        <CategoryPill label={getCategoryLabel(project)} />
+
+        <h4
+          className={`font-bold line-clamp-1 ${
+            isLarge ? 'text-3xl md:text-4xl' : isTall || isSquare ? 'text-2xl' : 'text-lg'
+          }`}
+          style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+        >
+          {project.title}
+        </h4>
+
+        {!isShort && (
+          <p
+            className={`text-sm leading-relaxed line-clamp-2 ${isLarge ? 'max-w-md' : ''}`}
+            style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+          >
+            {project.description}
+          </p>
+        )}
+
+        <div className="flex flex-wrap gap-2">
+          {project.stack?.slice(0, isShort ? 2 : isLarge ? 6 : 4).map((tech) => (
+            <SmallChip key={tech} label={tech} />
+          ))}
+          {project.stack && project.stack.length > (isShort ? 2 : isLarge ? 6 : 4) && (
+            <SmallChip label={`+${project.stack.length - (isShort ? 2 : isLarge ? 6 : 4)}`} />
+          )}
+        </div>
+
+        <div className="flex items-center gap-4 pt-1">
+          {project.repoUrl && (
+            <a
+              href={project.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-70"
+              style={{ color: '#908fa0' }}
+            >
+              <FaGithub size={14} />
+              <span style={{ fontFamily: 'var(--font-inter), sans-serif' }}>Code</span>
+            </a>
+          )}
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium transition-opacity hover:opacity-70"
+              style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              {t('project_view_study')}
+            </a>
+          )}
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
-const masonryBreakpoints = {
-  default: 3,
-  1024: 2,
-  640: 1,
-};
-
 export default function Projects() {
   const t = useTranslations('common');
-  const [expanded, setExpanded] = useState(false);
+  const [showMore, setShowMore] = useState(false);
 
-  const featuredProjects = projects.filter((p) => !p.hidden && p.category === 'featured');
-  const entryProjects = projects.filter((p) => !p.hidden && p.category === 'entry');
+  const visibleProjects = projects.filter((p) => !p.hidden);
 
-  const primaryFeatured = featuredProjects[0];
-  const secondaryFeatured = featuredProjects[1];
-  const tertiaryFeatured = featuredProjects[2];
-  const additionalProjects = [...featuredProjects.slice(3), ...entryProjects];
+  // Show 4 projects initially, or all if expanded
+  const displayedProjects = showMore ? visibleProjects : visibleProjects.slice(0, 4);
 
   return (
     <section
@@ -128,7 +228,9 @@ export default function Projects() {
               style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
             >
               {t('projects_title')}{' '}
-              <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>{t('projects_title_accent')}</span>
+              <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>
+                {t('projects_title_accent')}
+              </span>
             </h2>
           </div>
           <span
@@ -140,246 +242,82 @@ export default function Projects() {
         </div>
 
         {/* Bento grid */}
-        <div
+        <motion.div
+          layout
           className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8"
           style={{ gridAutoRows: 'minmax(240px, auto)' }}
         >
-          {/* Primary featured: col-span-8 row-span-2 (large) */}
-          {primaryFeatured && (
-            <motion.div
-              className="md:col-span-8 md:row-span-2 group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(192,193,255,0.15),0_8px_32px_rgba(11,19,38,0.4)]"
-              style={{ backgroundColor: '#171f33' }}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-            >
-              <ProjectImage imageUrl={primaryFeatured.imageUrl} title={primaryFeatured.title} />
+          <AnimatePresence mode="popLayout">
+            {displayedProjects.map((project, i) => (
+              <ProjectCard key={project.id} project={project} index={i} t={t} />
+            ))}
 
-              {/* Gradient overlay */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background: 'linear-gradient(to top, #0b1326 0%, rgba(11,19,38,0.2) 50%, transparent 100%)',
-                }}
-              />
-
-              {/* Content */}
-              <div className="absolute bottom-0 left-0 p-10 space-y-4 w-full">
-                <div className="flex gap-3 flex-wrap">
-                  <CategoryPill label={getCategoryLabel(primaryFeatured)} />
-                </div>
-                <h4
-                  className="text-4xl font-bold"
-                  style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
-                >
-                  {primaryFeatured.title}
-                </h4>
-                <p
-                  className="max-w-md text-sm leading-relaxed"
-                  style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
-                >
-                  {primaryFeatured.description}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {primaryFeatured.stack?.map((tech) => (
-                    <SmallChip key={tech} label={tech} />
-                  ))}
-                </div>
-                <ProjectLink project={primaryFeatured} label={t('project_view_study')} />
-              </div>
-            </motion.div>
-          )}
-
-          {/* Secondary featured: col-span-4 row-span-3 (tall vertical) */}
-          {secondaryFeatured && (
-            <motion.div
-              className="md:col-span-4 md:row-span-3 group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(192,193,255,0.15),0_8px_32px_rgba(11,19,38,0.4)]"
-              style={{ backgroundColor: '#222a3d' }}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            >
-              <ProjectImage imageUrl={secondaryFeatured.imageUrl} title={secondaryFeatured.title} />
-
-              {/* Gradient overlay */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background: 'linear-gradient(to top, #0b1326 0%, transparent 60%)',
-                }}
-              />
-
-              {/* Content */}
-              <div className="absolute bottom-0 left-0 p-8 space-y-3">
-                <CategoryPill label={getCategoryLabel(secondaryFeatured)} />
-                <h4
-                  className="text-2xl font-bold"
-                  style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
-                >
-                  {secondaryFeatured.title}
-                </h4>
-                <p
-                  className="text-sm leading-relaxed"
-                  style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
-                >
-                  {secondaryFeatured.description}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  {secondaryFeatured.stack?.map((tech) => (
-                    <SmallChip key={tech} label={tech} />
-                  ))}
-                </div>
-                <ProjectLink project={secondaryFeatured} label={t('project_view_study')} />
-              </div>
-            </motion.div>
-          )}
-
-          {/* Tertiary featured: col-span-4 row-span-2 (content card) */}
-          {tertiaryFeatured && (
-            <motion.div
-              className="md:col-span-4 md:row-span-2 group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(192,193,255,0.15),0_8px_32px_rgba(11,19,38,0.4)]"
-              style={{ backgroundColor: '#171f33' }}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-            >
-              <ProjectImage imageUrl={tertiaryFeatured.imageUrl} title={tertiaryFeatured.title} />
-
-              <div
-                className="absolute inset-0 p-8 flex flex-col justify-between"
-                style={{
-                  background: tertiaryFeatured.imageUrl
-                    ? 'linear-gradient(to top, #171f33 0%, rgba(23,31,51,0.7) 60%, transparent 100%)'
-                    : undefined,
-                }}
+            {/* More Projects — slot 4 */}
+            {!showMore && visibleProjects.length > 4 && (
+              <motion.button
+                layout
+                key="more-btn"
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.92 }}
+                transition={{ duration: 0.4, ease: 'easeOut', delay: 0.2 }}
+                onClick={() => setShowMore(true)}
+                className="col-span-1 md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-8 transition-colors duration-300 hover:bg-[#222a3d] border border-dashed text-left w-full h-full"
+                style={{ backgroundColor: '#131b2e', borderColor: 'rgba(192,193,255,0.2)' }}
               >
-                <div className="space-y-4">
-                  <div
-                    className="w-12 h-12 rounded-lg flex items-center justify-center"
-                    style={{ backgroundColor: 'rgba(192,193,255,0.1)' }}
+                <div className="text-center">
+                  <span
+                    className="material-symbols-outlined text-3xl block mb-2 transition-transform duration-300 group-hover:scale-110"
+                    style={{ color: '#c0c1ff' }}
                   >
-                    <span className="material-symbols-outlined" style={{ color: '#c0c1ff' }}>
-                      code
-                    </span>
-                  </div>
-                  <CategoryPill label={getCategoryLabel(tertiaryFeatured)} />
+                    grid_view
+                  </span>
                   <h4
-                    className="text-xl font-bold"
+                    className="text-sm font-bold uppercase tracking-widest"
                     style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
                   >
-                    {tertiaryFeatured.title}
+                    {t('projects_more')}
                   </h4>
-                  <p
-                    className="text-sm leading-relaxed"
-                    style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
-                  >
-                    {tertiaryFeatured.description}
-                  </p>
                 </div>
-                <div className="space-y-3">
-                  <div className="flex flex-wrap gap-2">
-                    {tertiaryFeatured.stack?.map((tech) => (
-                      <SmallChip key={tech} label={tech} />
-                    ))}
-                  </div>
-                  <ProjectLink project={tertiaryFeatured} label={t('project_view_study')} />
-                </div>
-              </div>
-            </motion.div>
-          )}
+              </motion.button>
+            )}
 
-          {/* More Projects button — shown when not expanded */}
-          {!expanded && (
-            <div
-              className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-8 cursor-pointer transition-shadow duration-300"
-              style={{ backgroundColor: '#131b2e' }}
-              onClick={() => setExpanded(true)}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#222a3d')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.backgroundColor = '#131b2e')}
-            >
-              <div className="text-center">
-                <span
-                  className="material-symbols-outlined text-3xl block mb-2"
-                  style={{ color: '#c0c1ff' }}
-                >
-                  folder_open
-                </span>
-                <h4
-                  className="text-sm font-bold uppercase tracking-widest"
-                  style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
-                >
-                  {t('projects_more')}
-                </h4>
-              </div>
-            </div>
-          )}
-
-        </div>{/* end bento grid */}
-
-        {/* Expanded projects — masonry layout */}
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              className="mt-6 md:mt-8"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
-            >
-              <Masonry
-                breakpointCols={masonryBreakpoints}
-                className="masonry-grid"
-                columnClassName="masonry-grid_column"
+            {/* Show Less — slot final */}
+            {showMore && (
+              <motion.button
+                key="less-btn"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeOut', delay: 0.3 }}
+                onClick={() => {
+                  setShowMore(false);
+                  setTimeout(() => {
+                    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+                  }, 500);
+                }}
+                className="col-span-1 md:col-start-10 md:col-span-3 md:row-start-6 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-6 transition-colors duration-300 hover:bg-[#222a3d] border border-dashed"
+                style={{ backgroundColor: '#131b2e', borderColor: 'rgba(192,193,255,0.2)' }}
               >
-                {additionalProjects.map((project, i) => (
-                  <motion.div
-                    key={project.id}
-                    className="group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(192,193,255,0.15),0_8px_32px_rgba(11,19,38,0.4)]"
-                    style={{ backgroundColor: '#171f33' }}
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, ease: 'easeOut', delay: i * 0.08 }}
+                <div className="flex flex-col items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+                  <span
+                    className="material-symbols-outlined text-xl transition-transform duration-300 group-hover:-translate-y-1 block"
+                    style={{ color: '#c0c1ff' }}
                   >
-                    <div className="p-6 flex flex-col gap-3 min-h-[240px]">
-                      {project.imageUrl && (
-                        <div className="relative w-full h-40 overflow-hidden rounded-lg mb-2">
-                          <img
-                            src={project.imageUrl}
-                            alt={project.title}
-                            className="w-full h-full object-cover transition-transform duration-[3500ms] ease-out group-hover:translate-y-[-8%]"
-                            style={{ height: '115%', top: 0, position: 'absolute' }}
-                          />
-                        </div>
-                      )}
-                      <CategoryPill label={getCategoryLabel(project)} />
-                      <h4
-                        className="text-xl font-bold"
-                        style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
-                      >
-                        {project.title}
-                      </h4>
-                      <p
-                        className="text-sm leading-relaxed"
-                        style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
-                      >
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2 mt-auto">
-                        {project.stack?.map((tech) => (
-                          <SmallChip key={tech} label={tech} />
-                        ))}
-                      </div>
-                      <ProjectLink project={project} label={t('project_view_study')} />
-                    </div>
-                  </motion.div>
-                ))}
-              </Masonry>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                    expand_less
+                  </span>
+                  <span
+                    className="text-xs font-bold uppercase tracking-widest"
+                    style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+                  >
+                    Less
+                  </span>
+                </div>
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </motion.div>
+        {/* end bento grid */}
       </div>
     </section>
   );
