@@ -10,7 +10,7 @@ import type { DataProject } from '@/types';
 function CategoryPill({ label }: { label: string }) {
   return (
     <span
-      className="px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
+      className="self-start px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
       style={{
         backgroundColor: 'rgba(62,60,143,0.8)',
         color: '#afadff',
@@ -64,7 +64,7 @@ function ProjectImage({ imageUrl, title }: { imageUrl: string; title: string }) 
     <img
       src={imageUrl}
       alt={title}
-      className="absolute inset-0 w-full object-cover transition-transform duration-[3500ms] ease-out group-hover:translate-y-[-8%]"
+      className="absolute inset-0 w-full object-cover object-top transition-transform duration-[3500ms] ease-out group-hover:translate-y-[-8%]"
       style={{ height: '115%', top: 0 }}
     />
   );
