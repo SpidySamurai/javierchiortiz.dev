@@ -1,6 +1,7 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import type { Container } from '@tsparticles/engine';
@@ -88,7 +89,7 @@ function TypingText({
   );
 }
 
-function TypingHeadline({
+function AnimatedHeadline({
   pre,
   accent,
   post,
@@ -99,52 +100,39 @@ function TypingHeadline({
   post: string;
   onDone?: () => void;
 }) {
-  const full = pre + accent + post;
-  const accentStart = pre.length;
-  const accentEnd = pre.length + accent.length;
-  const [count, setCount] = useState(0);
-  const done = count >= full.length;
+  const words: { text: string; isAccent: boolean }[] = [
+    ...pre.trim().split(/\s+/).filter(Boolean).map((w) => ({ text: w, isAccent: false })),
+    ...accent.trim().split(/\s+/).filter(Boolean).map((w) => ({ text: w, isAccent: true })),
+    ...post.trim().split(/\s+/).filter(Boolean).map((w) => ({ text: w, isAccent: false })),
+  ];
+
+  const lastDelay = (words.length - 1) * 0.1 + 0.55;
 
   useEffect(() => {
-    if (done) {
-      onDone?.();
-      return;
-    }
-    const timer = setTimeout(() => setCount((c) => c + 1), 70);
+    const timer = setTimeout(() => onDone?.(), lastDelay * 1000 + 100);
     return () => clearTimeout(timer);
-  }, [count, done, onDone]);
-
-  const text = full.slice(0, count);
-
-  const renderChars = () => {
-    const chars: React.ReactNode[] = [];
-    for (let i = 0; i < text.length; i++) {
-      const ch = text[i];
-      if (ch === '\n') {
-        chars.push(<br key={i} />);
-      } else if (i >= accentStart && i < accentEnd) {
-        chars.push(
-          <span key={i} style={{ color: '#c0c1ff', fontStyle: 'italic' }}>
-            {ch}
-          </span>
-        );
-      } else {
-        chars.push(<span key={i}>{ch}</span>);
-      }
-    }
-    if (!done)
-      chars.push(
-        <span key="cursor" style={{ borderRight: '3px solid #c0c1ff', marginLeft: '1px' }} />
-      );
-    return chars;
-  };
+  }, [lastDelay, onDone]);
 
   return (
     <h1
       className="text-6xl md:text-8xl font-extrabold tracking-tighter leading-none"
       style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
     >
-      {renderChars()}
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.1, duration: 0.55, ease: 'easeOut' }}
+          className="inline-block"
+          style={{
+            marginRight: '0.22em',
+            ...(word.isAccent ? { color: '#c0c1ff', fontStyle: 'italic' } : {}),
+          }}
+        >
+          {word.text}
+        </motion.span>
+      ))}
     </h1>
   );
 }
@@ -258,7 +246,7 @@ export default function Hero() {
         {/* Left: text block */}
         <div className="w-full md:w-1/2 space-y-6">
           {/* Headline */}
-          <TypingHeadline
+          <AnimatedHeadline
             pre={t('hero_headline_pre')}
             accent={t('hero_headline_accent')}
             post={t('hero_headline_post')}
@@ -266,20 +254,15 @@ export default function Hero() {
           />
 
           {/* Description */}
-          <p
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
             className="text-xl leading-relaxed max-w-lg"
-            style={{
-              color: '#c7c4d7',
-              fontFamily: 'var(--font-inter), sans-serif',
-              opacity: typingDone ? 1 : 0,
-              transform: typingDone ? 'translateY(0)' : 'translateY(12px)',
-              transition: 'opacity 0.8s ease, transform 0.8s ease',
-            }}
+            style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
           >
-            A full-stack engineer operating at the intersection of aesthetic precision and technical
-            robustness. Five years crafting accessible, mobile-first interfaces — from Lab2Next and
-            data dashboards to reusable components and tools built to last.
-          </p>
+            {t('hero_description_long')}
+          </motion.p>
         </div>
 
         {/* Right: overlapping image cards — hidden until real images are ready */}

@@ -246,21 +246,8 @@ html[data-theme='light'] .ds-2026 {
   }
 }
 
-/* react-masonry-css layout */
-.masonry-grid {
-  display: flex;
-  gap: 1.5rem;
-}
-.masonry-grid_column {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-@media (min-width: 768px) {
-  .masonry-grid {
-    gap: 2rem;
-  }
-  .masonry-grid_column {
-    gap: 2rem;
-  }
+/* Ambient float for tech icon chips */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
 }
