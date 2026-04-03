@@ -39,6 +39,11 @@ yarn-error.log*
 # Claude MCP config (contains API keys)
 .mcp.json
 
+# Claude Code agents and skills
+.agents/
+.claude/agents/
+skills-lock.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
