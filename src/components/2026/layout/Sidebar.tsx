@@ -38,7 +38,7 @@ export default function Sidebar() {
   return (
     <aside
       className="hidden lg:flex flex-col fixed left-0 top-0 h-full w-64 z-40 pt-24 p-6"
-      style={{ backgroundColor: '#060e20' }}
+      style={{ backgroundColor: 'var(--ds-surface)' }}
     >
       {/* Profile + Nav grouped and centered vertically */}
       <div className="flex-1 flex flex-col justify-center gap-8">
@@ -48,7 +48,7 @@ export default function Sidebar() {
             href="#"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             className="text-lg font-bold block hover:text-[#c0c1ff] transition-colors cursor-pointer"
-            style={{ color: '#ffffff', fontFamily: 'var(--font-manrope), sans-serif' }}
+            style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
             Javier Chi Ortíz
           </a>
@@ -99,7 +99,7 @@ export default function Sidebar() {
             onClick={openCard}
             aria-label="Open Gamer Card"
             className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all"
-            style={{ color: '#c7c4d7', backgroundColor: 'rgba(192,193,255,0.05)' }}
+            style={{ color: 'var(--ds-on-surface-variant)', backgroundColor: 'color-mix(in srgb, var(--ds-primary) 5%, transparent)' }}
           >
             <span className="text-base">🕷️</span>
             {t('gamer_card')}

@@ -28,7 +28,7 @@ export default function Header() {
     <header
       className="fixed top-0 left-0 w-full lg:left-64 lg:w-[calc(100%-16rem)] flex justify-between items-center px-8 py-4 z-50"
       style={{
-        backgroundColor: 'rgba(11, 19, 38, 0.6)',
+        backgroundColor: 'color-mix(in srgb, var(--ds-bg) 60%, transparent)',
         backdropFilter: 'blur(24px)',
         WebkitBackdropFilter: 'blur(24px)',
         boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)',
@@ -37,7 +37,7 @@ export default function Header() {
       {/* Logo */}
       <div
         className="text-xl font-bold tracking-tighter"
-        style={{ color: '#e0e7ff', fontFamily: 'var(--font-manrope), sans-serif' }}
+        style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
       >
         {/* Javier Chi Ortíz */}
       </div>
@@ -54,7 +54,7 @@ export default function Header() {
         <LanguageSwitcher />
         <button
           className="p-2 rounded"
-          style={{ color: '#dae2fd' }}
+          style={{ color: 'var(--ds-on-surface)' }}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((v) => !v)}
@@ -86,7 +86,7 @@ export default function Header() {
         <div
           aria-hidden
           className="fixed inset-0 z-40"
-          style={{ background: 'rgba(11,19,38,0.8)' }}
+          style={{ background: 'color-mix(in srgb, var(--ds-bg) 80%, transparent)' }}
           onClick={() => setMobileOpen(false)}
         />
       )}
@@ -98,13 +98,13 @@ export default function Header() {
         aria-label="Navigation menu"
         className="fixed top-0 right-0 h-full w-64 p-6 z-50 flex flex-col gap-6 transition-transform duration-300 md:hidden"
         style={{
-          backgroundColor: '#060e20',
+          backgroundColor: 'var(--ds-surface)',
           transform: mobileOpen ? 'translateX(0)' : 'translateX(100%)',
         }}
       >
         <button
           className="self-end p-1.5 rounded"
-          style={{ color: '#c7c4d7' }}
+          style={{ color: 'var(--ds-on-surface-variant)' }}
           aria-label="Close menu"
           onClick={() => setMobileOpen(false)}
         >
@@ -127,7 +127,7 @@ export default function Header() {
               onClick={() => setMobileOpen(false)}
               className="flex items-center px-4 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all duration-200"
               style={{
-                color: '#64748b',
+                color: 'var(--ds-outline)',
                 backgroundColor: 'transparent',
                 fontFamily: 'var(--font-manrope), sans-serif',
               }}
@@ -137,7 +137,7 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="mt-auto pt-4 border-t" style={{ borderColor: 'rgba(70,69,84,0.4)' }}>
+        <div className="mt-auto pt-4 border-t" style={{ borderColor: 'color-mix(in srgb, var(--ds-outline-variant) 40%, transparent)' }}>
           <a
             href="/cv-javier-chi.pdf"
             download
