@@ -29,8 +29,13 @@ export default function FlatCat({ onUnlock }: FlatCatProps) {
     setBubbleKey((prev) => prev + 1);
     setShowBubble(true);
 
-    // Random variations without numbers
-    const variations = ['Miau! 🧡', 'Miau!!!! ⚡', 'Miau? 🤔', 'Purr...'];
+    const clicks = clickCountRef.current;
+    const variations =
+      clicks <= 2
+        ? ['Miau~', 'Purrr...', 'Nyaa!', 'Mrrrow?', '=^.^=']
+        : clicks <= 5
+          ? ['Miau miau!', '*purring intensifies*', 'Prrt!', 'Nyaaaa~', 'Miau??']
+          : ['¡Sigue, sigue!', '*tail wags*', 'Mrrr!!!', 'Miau miau miau!'];
     const randomText = variations[Math.floor(Math.random() * variations.length)];
     setBubbleText(randomText);
 
@@ -41,7 +46,7 @@ export default function FlatCat({ onUnlock }: FlatCatProps) {
 
     // Check threshold (7 clicks)
     if (clickCountRef.current >= 7) {
-      setBubbleText('¡Secret!'); // Show manual unlock feedback FIRST
+      setBubbleText('*purrs loudly*'); // Show manual unlock feedback FIRST
 
       // Wait a bit before opening the secret modal
       if (onUnlock) {
@@ -58,7 +63,7 @@ export default function FlatCat({ onUnlock }: FlatCatProps) {
       // Set timer to reset count if user stops clicking for a bit (1.5s)
       resetTimerRef.current = setTimeout(() => {
         clickCountRef.current = 0;
-        setBubbleText('...'); // Reset feedback
+        setBubbleText('...zzz'); // Reset feedback
       }, 1500);
 
       // Auto hide bubble for normal clicks

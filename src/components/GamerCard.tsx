@@ -81,13 +81,13 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
       aria-hidden={!isOpen}
     >
       <div
-        className="relative w-full max-w-5xl my-auto bg-[#0c0d12] rounded-3xl md:rounded-[2rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.9)] flex flex-col md:flex-row border border-white/5"
+        className="relative w-full max-w-5xl my-auto bg-[#0b1326] rounded-3xl md:rounded-[2rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.9)] flex flex-col md:flex-row border border-white/5"
         onClick={(e) => e.stopPropagation()}
       >
         {/* --- LEFT PANEL: PROFILE OVERVIEW --- */}
-        <aside className="w-full md:w-[340px] bg-[#12131a] flex flex-col items-center relative overflow-hidden shrink-0 border-b md:border-b-0 md:border-r border-white/5">
+        <aside className="w-full md:w-[340px] bg-[#131b2e] flex flex-col items-center relative overflow-hidden shrink-0 border-b md:border-b-0 md:border-r border-white/5">
           {/* Top Decorative Banner */}
-          <div className="absolute top-0 w-full h-32 md:h-40 bg-gradient-to-br from-indigo-900/40 via-purple-900/20 to-transparent pointer-events-none"></div>
+          <div className="absolute top-0 w-full h-32 md:h-40 bg-gradient-to-br from-[#c0c1ff]/10 via-purple-900/20 to-transparent pointer-events-none"></div>
           <div className="absolute top-0 w-full h-32 md:h-40 bg-[url('/utils/img/grid-pattern.svg')] opacity-10 pointer-events-none"></div>
 
           {/* Close Button Mobile */}
@@ -135,7 +135,7 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
         </aside>
 
         {/* --- RIGHT PANEL: DYNAMIC WIDGET DASHBOARD --- */}
-        <section className="flex-1 bg-[#0c0d12] p-5 md:p-6 lg:p-12 relative flex flex-col min-w-0">
+        <section className="flex-1 bg-[#0b1326] p-5 md:p-6 lg:p-12 relative flex flex-col min-w-0">
           {/* Mobile Header */}
           <header className="flex md:hidden justify-between items-center mb-6">
             <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest">
@@ -187,19 +187,6 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
         </section>
       </div>
 
-      <style jsx>{`
-        .animate-fade-in {
-          animation: fadeIn 0.3s ease-out forwards;
-        }
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-      `}</style>
     </div>
   );
 }
