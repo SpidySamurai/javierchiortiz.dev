@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
@@ -153,7 +153,7 @@ export default function Hero() {
   const [particlesReady, setParticlesReady] = useState(false);
   const [typingDone, setTypingDone] = useState(false);
   const cometContainerRef = useRef<Container | null>(null);
-  const particlesOptions = getParticlesOptions(isDark);
+  const particlesOptions = useMemo(() => getParticlesOptions(isDark), [isDark]);
 
   const handleParticlesLoaded = useCallback((c: Container | undefined) => {
     cometContainerRef.current = c ?? null;
@@ -177,7 +177,11 @@ export default function Hero() {
     container.particles.addParticle(
       { x: startX, y: 0 },
       {
-        color: { value: isDark ? '#ffffff' : '#4042c8' },
+        color: {
+          value: isDark
+            ? (['#ffffff', '#c0c1ff', '#a5b4fc', '#e0e7ff'] as string[])
+            : (['#4042c8', '#6668e8', '#312ec0', '#1e1cb8'] as string[]),
+        },
         size: { value: { min: 1, max: 1 } },
         opacity: { value: 1 },
         effect: {
@@ -243,7 +247,7 @@ export default function Hero() {
       style={{ backgroundColor: 'var(--ds-bg)' }}
     >
       {/* Unified particles — background + comets in one container */}
-      {particlesReady && <ParticleBackground key={resolvedTheme} onLoaded={handleParticlesLoaded} options={particlesOptions} />}
+      {particlesReady && <ParticleBackground key={resolvedTheme ?? 'dark'} onLoaded={handleParticlesLoaded} options={particlesOptions} />}
 
       {/* Ambient glow */}
       <div
