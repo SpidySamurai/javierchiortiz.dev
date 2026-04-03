@@ -1,5 +1,5 @@
 import React from 'react';
-import { LuGamepad2, LuCode, LuSwords, LuCoffee, LuClock, LuZap } from 'react-icons/lu';
+import { LuGamepad2, LuCode, LuTerminal, LuSwords, LuCoffee, LuClock, LuZap } from 'react-icons/lu';
 import type { LanyardActivity } from '@/types/lanyard';
 
 type ActivityWidgetProps = {
@@ -31,7 +31,7 @@ export const ActivityWidget = ({ activity, currentTime }: ActivityWidgetProps) =
       return {
         label: act.state || 'Coding / Working',
         icon: <LuCode size={16} />,
-        color: 'text-indigo-400',
+        color: 'text-[#c0c1ff]',
       };
 
     const raw = (act.state + ' ' + act.details).toLowerCase();
@@ -77,17 +77,17 @@ export const ActivityWidget = ({ activity, currentTime }: ActivityWidgetProps) =
     return {
       label: act.state || act.details || 'Playing',
       icon: <LuZap size={16} />,
-      color: 'text-indigo-300',
+      color: 'text-[#c0c1ff]',
     };
   };
 
   const detailedState = getDetailedState(activity);
 
   return (
-    <article className="w-full mb-4 bg-[#12131a] p-6 md:p-5 lg:p-8 rounded-2xl border border-white/5 relative overflow-hidden group min-h-[180px] flex flex-col justify-center shadow-2xl">
+    <article className="w-full mb-4 bg-[#131b2e] p-6 md:p-5 lg:p-8 rounded-2xl border border-white/5 relative overflow-hidden group min-h-[180px] flex flex-col justify-center shadow-2xl">
       {/* Background Decoratives */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-transparent opacity-50 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-[60px] z-10 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#c0c1ff]/5 via-purple-500/5 to-transparent opacity-50 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-[#c0c1ff]/10 blur-[60px] z-10 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-500/10 blur-[50px] z-10 pointer-events-none" />
 
       <div className="relative z-20 h-full flex flex-col justify-between">
@@ -130,10 +130,8 @@ export const ActivityWidget = ({ activity, currentTime }: ActivityWidgetProps) =
                 alt={activity.name}
               />
             ) : (
-              <div className="w-full h-full bg-indigo-500/10 rounded-xl flex items-center justify-center border border-indigo-500/20">
-                <span className="text-3xl" role="img" aria-label="Spider-Man">
-                  🕸️
-                </span>
+              <div className="w-full h-full bg-[#c0c1ff]/10 rounded-xl flex items-center justify-center border border-[#c0c1ff]/20">
+                <LuTerminal size={24} className="text-[#c0c1ff]/40" />
               </div>
             )}
 
@@ -147,7 +145,7 @@ export const ActivityWidget = ({ activity, currentTime }: ActivityWidgetProps) =
                       )}`
                     : `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.small_image}.png`
                 }
-                className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full border-2 border-[#12131a] z-10"
+                className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full border-2 border-[#131b2e] z-10"
                 alt=""
                 title={activity.assets.small_text}
               />
@@ -157,7 +155,7 @@ export const ActivityWidget = ({ activity, currentTime }: ActivityWidgetProps) =
           {/* Text Details */}
           <div className="min-w-0 flex-1">
             <h3 className="text-white font-black text-lg md:text-xl lg:text-3xl mb-0.5 md:mb-1 leading-snug line-clamp-2 drop-shadow-lg drop-shadow-lg">
-              {activity?.name || 'Fighting crime in Merida City 🕷️'}
+              {activity?.name || 'Patrolling the codebase...'}
             </h3>
 
             {/* State Label */}

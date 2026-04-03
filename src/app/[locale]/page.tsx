@@ -1,9 +1,12 @@
 'use client';
 
-import React from 'react';
-import Hero from '@/components/layout/Hero';
-import MainContent from '@/components/sections/MainContent';
-import Footer from '@/components/layout/Footer';
+import Header from '@/components/2026/layout/Header';
+import Sidebar from '@/components/2026/layout/Sidebar';
+import Hero from '@/components/2026/sections/Hero';
+import Timeline from '@/components/2026/sections/Timeline';
+import Projects from '@/components/2026/sections/Projects';
+import About from '@/components/2026/sections/About';
+import Footer from '@/components/2026/sections/Footer';
 import FlatCat from '@/components/FlatCat';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 
@@ -11,26 +14,17 @@ export default function Home() {
   const { unlockCard } = useGamerCard();
 
   return (
-    <main className="flex flex-col items-center min-h-screen">
-      <div className="flex flex-col lg:flex-row w-full max-w-screen-xl">
-        {/* Hero Section - Fijo en pantallas grandes */}
-        <div className="lg:w-1/2 lg:h-screen lg:sticky top-0 flex items-center justify-center flex-col gap-4">
-          <Hero />
-          {/* Temporary mount for verification */}
-          <div className="mt-8">
-            <FlatCat onUnlock={unlockCard} />
-          </div>
-        </div>
-
-        {/* Main Content Section - Genera scroll */}
-        <div className="lg:w-1/2 px-4 py-8 flex flex-col items-center">
-          <MainContent />
-        </div>
-      </div>
-
-      <div className="w-full max-w-screen-xl px-4">
+    <div className="ds-2026" style={{ minHeight: '100vh' }}>
+      <Header />
+      <Sidebar />
+      <FlatCat onUnlock={unlockCard} />
+      <main className="lg:ml-64 pt-20">
+        <Hero />
+        <Timeline />
+        <Projects />
+        <About />
         <Footer />
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 # Javier Chi - Professional Portfolio 2025
 
-Private repository for my personal professional portfolio. This project showcases my experience, projects, and skills using a modern, performance-focused stack.
+Personal portfolio built with Next.js 15. Showcases my experience, projects, and skills with a modern, performance-focused stack. Features a 2026 redesign and a legacy 2025 version.
 
 ## 🚀 Tech Stack
 
@@ -53,6 +53,14 @@ This will save images to `public/utils/img/`.
 - `src/messages`: JSON translation files (en/es).
 - `src/utils`: Helper styles and assets.
 
+## 📋 Environment Variables
+
+Create a `.env.local` file at the root with the following variables:
+
+```env
+MARVEL_RIVALS_API_KEY=   # API key from marvelrivalsapi.com
+```
+
 ## 🔒 License
 
-Private. All rights reserved.
+MIT

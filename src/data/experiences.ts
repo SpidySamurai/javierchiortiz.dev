@@ -4,7 +4,6 @@ const WEB = ['JS', 'HTML', 'CSS'];
 const FRONTEND = ['Next', 'React', 'TypeScript'];
 const BACKEND = ['DotNet', 'CSharp', 'SQL'];
 const DATA = ['Scala', 'Spark'];
-// const FULLSTACK = [...WEB, ...FRONTEND, ...BACKEND];
 
 export const experiences: DataExperience[] = [
   {
@@ -19,7 +18,7 @@ export const experiences: DataExperience[] = [
   {
     id: 'softtek',
     title: 'Full Stack Developer at Softtek',
-    date: 'Jun 2021 - Dec 2022',
+    date: 'Jun 2022 - Mar 2024',
     description:
       'Delivered application maintenance support by migrating pages, troubleshooting issues, and implementing solutions through collaborative work with developers and QA. Contributed to system improvements and ensured seamless operation through testing, user communication, and backend data adjustments.',
     stack: [...FRONTEND, ...BACKEND, ...WEB],
@@ -28,7 +27,7 @@ export const experiences: DataExperience[] = [
   {
     id: 'scandia',
     title: 'FrontEnd at Scandia',
-    date: 'Jun 2021 - Dec 2022',
+    date: 'Jan 2020 - Jun 2022',
     description:
       'Implemented and refined e-commerce interfaces focused on performance, SEO, and responsiveness. Collaborated with a semi senior UI/UX developer and the marketing team to bring design visions to life, customize storefronts, and enhance the customer experience through interactive features and optimized layouts.',
     stack: [...FRONTEND, ...WEB, 'Shopify'],
@@ -37,7 +36,7 @@ export const experiences: DataExperience[] = [
   {
     id: 'iotam',
     title: 'FrontEnd at IOTAM',
-    date: 'Jun 2021 - Dec 2022',
+    date: 'Jul 2021 - Dec 2021',
     description:
       'Refactored and improved the responsiveness of key application components. Collaborated with backend developers to ensure reliable data flow from meters, while supporting data visualization and enhancing the overall interface in coordination with the design team.',
     stack: ['React', 'SASS', ...WEB],
@@ -46,7 +45,7 @@ export const experiences: DataExperience[] = [
   {
     id: 'brightcoders',
     title: 'FrontEnd Internship at BrightCoders ',
-    date: 'Jun 2021 - Dec 2022',
+    date: 'Feb 2021 - Jul 2021',
     description:
       'Participated in a collaborative internship program solving coding challenges and iterating on solutions in small teams. Built web pages based on provided designs and contributed to a final multi-feature project, applying skills developed throughout the program.',
     stack: [...WEB, 'ROR', 'Ruby'],

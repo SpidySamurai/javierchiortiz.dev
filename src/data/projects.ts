@@ -14,7 +14,6 @@ export const projects: DataProject[] = [
     repoUrl: null,
     category: 'featured',
     status: 'wip',
-    isWork: true, // It sounds like a professional venture/MVP
   },
   {
     id: 'scandia-ecommerce',
@@ -72,7 +71,6 @@ export const projects: DataProject[] = [
     repoUrl: 'https://github.com/SpidySamurai/web-portfolio2025',
     category: 'featured',
     status: 'complete',
-    isWork: true,
   },
   {
     id: 'wallet-app',
