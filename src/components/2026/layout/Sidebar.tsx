@@ -101,7 +101,7 @@ export default function Sidebar() {
             className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all"
             style={{ color: 'var(--ds-on-surface-variant)', backgroundColor: 'color-mix(in srgb, var(--ds-primary) 5%, transparent)' }}
           >
-            <span className="text-base">🕷️</span>
+            <span className="material-symbols-outlined text-[18px]">sports_esports</span>
             {t('gamer_card')}
           </button>
         )}
