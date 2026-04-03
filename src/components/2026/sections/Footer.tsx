@@ -11,8 +11,8 @@ export default function Footer() {
       id="contact"
       className="py-20 px-8 md:px-16 border-t"
       style={{
-        backgroundColor: '#0b1326',
-        borderColor: 'rgba(70,69,84,0.10)',
+        backgroundColor: 'var(--ds-bg)',
+        borderColor: 'color-mix(in srgb, var(--ds-outline-variant) 10%, transparent)',
         scrollMarginTop: '5rem',
       }}
     >
@@ -21,11 +21,11 @@ export default function Footer() {
         <div className="text-center md:text-left">
           <h2
             className="text-3xl font-extrabold mb-2"
-            style={{ color: '#ffffff', fontFamily: 'var(--font-manrope), sans-serif' }}
+            style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
             Javier Chi Ortíz
           </h2>
-          <p style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}>
+          <p style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}>
             {t('footer_available')}
           </p>
         </div>
@@ -59,7 +59,7 @@ export default function Footer() {
         {/* Copyright */}
         <p
           className="text-[10px] uppercase tracking-widest"
-          style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+          style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
         >
           © {year} Javier Chi Ortíz
         </p>

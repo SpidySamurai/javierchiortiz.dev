@@ -14,7 +14,7 @@ export default function Home() {
   const { unlockCard } = useGamerCard();
 
   return (
-    <div style={{ backgroundColor: '#0b1326', color: '#dae2fd', minHeight: '100vh' }}>
+    <div className="ds-2026" style={{ minHeight: '100vh' }}>
       <Header />
       <Sidebar />
       <FlatCat onUnlock={unlockCard} />

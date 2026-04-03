@@ -116,7 +116,7 @@ function AnimatedHeadline({
   return (
     <h1
       className="text-6xl md:text-8xl font-extrabold tracking-tighter leading-none"
-      style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+      style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
     >
       {words.map((word, i) => (
         <motion.span
@@ -127,7 +127,7 @@ function AnimatedHeadline({
           className="inline-block"
           style={{
             marginRight: '0.22em',
-            ...(word.isAccent ? { color: '#c0c1ff', fontStyle: 'italic' } : {}),
+            ...(word.isAccent ? { color: 'var(--ds-primary)', fontStyle: 'italic' } : {}),
           }}
         >
           {word.text}
@@ -228,7 +228,7 @@ export default function Hero() {
   return (
     <section
       className="relative px-8 md:px-16 pt-24 pb-40 overflow-hidden"
-      style={{ backgroundColor: '#0b1326' }}
+      style={{ backgroundColor: 'var(--ds-bg)' }}
     >
       {/* Unified particles — background + comets in one container */}
       {particlesReady && <ParticleBackground onLoaded={handleParticlesLoaded} />}
@@ -259,7 +259,7 @@ export default function Hero() {
             animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="text-xl leading-relaxed max-w-lg"
-            style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+            style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
           >
             {t('hero_description_long')}
           </motion.p>
@@ -278,17 +278,17 @@ export default function Hero() {
                 top: '20px',
                 right: '0',
                 transform: 'rotate(3deg)',
-                backgroundColor: '#131b2e',
+                backgroundColor: 'var(--ds-surface)',
                 zIndex: 1,
               }}
             >
               <div
                 className="w-full h-full flex items-center justify-center"
-                style={{ backgroundColor: '#222a3d' }}
+                style={{ backgroundColor: 'var(--ds-surface-high)' }}
               >
                 <span
                   className="text-xs uppercase tracking-widest"
-                  style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+                  style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
                 >
                   Pending
                 </span>
@@ -304,17 +304,17 @@ export default function Hero() {
                 bottom: '0',
                 left: '0',
                 transform: 'rotate(-6deg)',
-                backgroundColor: '#171f33',
+                backgroundColor: 'var(--ds-surface-container)',
                 zIndex: 2,
               }}
             >
               <div
                 className="w-full h-full flex items-center justify-center"
-                style={{ backgroundColor: '#222a3d' }}
+                style={{ backgroundColor: 'var(--ds-surface-high)' }}
               >
                 <span
                   className="text-xs uppercase tracking-widest"
-                  style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+                  style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
                 >
                   Pending
                 </span>
@@ -330,7 +330,7 @@ export default function Hero() {
           text={t('hero_comet_caption')}
           start={typingDone}
           style={{
-            color: 'rgba(192,193,255,0.75)',
+            color: 'color-mix(in srgb, var(--ds-primary) 75%, transparent)',
             fontFamily: 'var(--font-inter), sans-serif',
             letterSpacing: '0.15em',
           }}
@@ -346,7 +346,7 @@ export default function Hero() {
         <span
           className="text-[12rem] font-black uppercase whitespace-nowrap block"
           style={{
-            WebkitTextStroke: '1px rgba(192,193,255,0.2)',
+            WebkitTextStroke: '1px color-mix(in srgb, var(--ds-primary) 20%, transparent)',
             color: 'transparent',
             transform: 'translateY(50%)',
             fontFamily: 'var(--font-manrope), sans-serif',

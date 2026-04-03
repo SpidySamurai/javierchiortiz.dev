@@ -79,8 +79,8 @@ function TechChip({ tech, globalIndex, muted = false }: { tech: Tech; globalInde
       whileHover={{ scale: 1.08 }}
       className="flex items-center gap-2 px-3 py-2 rounded-xl cursor-default select-none"
       style={{
-        backgroundColor: muted ? 'rgba(192,193,255,0.03)' : 'rgba(192,193,255,0.06)',
-        border: '1px solid rgba(192,193,255,0.1)',
+        backgroundColor: muted ? 'color-mix(in srgb, var(--ds-primary) 3%, transparent)' : 'color-mix(in srgb, var(--ds-primary) 6%, transparent)',
+        border: '1px solid color-mix(in srgb, var(--ds-primary) 10%, transparent)',
         backdropFilter: 'blur(8px)',
         animation: `float-y ${floatDuration(globalIndex)}s ease-in-out ${floatDelay(globalIndex)}s infinite`,
         transition: 'box-shadow 0.3s ease, border-color 0.3s ease',
@@ -91,7 +91,7 @@ function TechChip({ tech, globalIndex, muted = false }: { tech: Tech; globalInde
       }}
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLElement).style.boxShadow = '';
-        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(192,193,255,0.1)';
+        (e.currentTarget as HTMLElement).style.borderColor = 'color-mix(in srgb, var(--ds-primary) 10%, transparent)';
       }}
     >
       <Icon
@@ -101,7 +101,7 @@ function TechChip({ tech, globalIndex, muted = false }: { tech: Tech; globalInde
       <span
         className="text-xs font-medium whitespace-nowrap"
         style={{
-          color: muted ? '#908fa0' : '#c7c4d7',
+          color: muted ? 'var(--ds-outline)' : 'var(--ds-on-surface-variant)',
           fontFamily: 'var(--font-inter), sans-serif',
         }}
       >
@@ -131,7 +131,7 @@ function TechGroup({
         viewport={{ once: true }}
         transition={{ delay: startIndex * 0.045, duration: 0.4 }}
         className="text-[10px] uppercase tracking-[0.28em] font-bold"
-        style={{ color: muted ? '#908fa0' : '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+        style={{ color: muted ? 'var(--ds-outline)' : 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
       >
         {t(labelKey as Parameters<typeof t>[0])}
       </motion.p>
@@ -151,7 +151,7 @@ export default function About() {
     <section
       id="about"
       className="py-28 px-8 lg:px-20"
-      style={{ backgroundColor: '#0b1326', scrollMarginTop: '5rem' }}
+      style={{ backgroundColor: 'var(--ds-bg)', scrollMarginTop: '5rem' }}
     >
       <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
         {/* Left — text */}
@@ -162,7 +162,7 @@ export default function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="text-xs uppercase tracking-[0.3em] font-bold mb-4"
-            style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+            style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
           >
             {t('about_label')}
           </motion.p>
@@ -173,9 +173,9 @@ export default function About() {
             viewport={{ once: true }}
             transition={{ delay: 0.1, duration: 0.5 }}
             className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-10"
-            style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+            style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
-            {t('about_title')} <em style={{ color: '#c0c1ff' }}>{t('about_title_accent')}</em>
+            {t('about_title')} <em style={{ color: 'var(--ds-primary)' }}>{t('about_title_accent')}</em>
           </motion.h2>
 
           <div className="flex flex-col gap-5">
@@ -194,7 +194,7 @@ export default function About() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
                 className="text-base leading-relaxed"
-                style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+                style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
               >
                 {t(key)}
               </motion.p>

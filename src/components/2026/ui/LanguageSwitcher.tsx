@@ -42,7 +42,7 @@ export default function LanguageSwitcher() {
 
       {open && (
         <div
-          className="absolute right-0 mt-2 w-28 rounded-lg overflow-hidden shadow-lg z-50"
+          className="ds-2026 absolute right-0 mt-2 w-28 rounded-lg overflow-hidden shadow-lg z-50"
           style={{
             background: 'var(--ds-surface-high)',
             border: '1px solid color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)',

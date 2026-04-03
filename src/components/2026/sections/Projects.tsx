@@ -12,8 +12,8 @@ function CategoryPill({ label }: { label: string }) {
     <span
       className="self-start px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
       style={{
-        backgroundColor: 'rgba(62,60,143,0.8)',
-        color: '#afadff',
+        backgroundColor: 'color-mix(in srgb, var(--ds-secondary-container) 80%, transparent)',
+        color: 'var(--ds-on-secondary)',
         backdropFilter: 'blur(8px)',
       }}
     >
@@ -27,8 +27,8 @@ function SmallChip({ label }: { label: string }) {
     <span
       className="px-2 py-0.5 rounded text-[9px] uppercase border"
       style={{
-        color: '#908fa0',
-        borderColor: 'rgba(70,69,84,0.3)',
+        color: 'var(--ds-outline)',
+        borderColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)',
         fontFamily: 'var(--font-inter), sans-serif',
       }}
     >
@@ -49,11 +49,11 @@ function ProjectImage({ imageUrl, title }: { imageUrl: string; title: string }) 
     return (
       <div
         className="absolute inset-0 flex items-center justify-center"
-        style={{ backgroundColor: '#222a3d' }}
+        style={{ backgroundColor: 'var(--ds-surface-high)' }}
       >
         <span
           className="text-xs uppercase tracking-widest"
-          style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+          style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
         >
           Image Pending
         </span>
@@ -90,7 +90,7 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
   const isSquare = index === 2 || index === 3 || index === 5;
   const isShort = index === 4 || index === 6 || index === 7;
 
-  const bgColor = index % 2 === 0 ? '#171f33' : '#222a3d';
+  const bgColor = index % 2 === 0 ? 'var(--ds-surface-container)' : 'var(--ds-surface-high)';
 
   return (
     <motion.div
@@ -111,14 +111,14 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(to top, #0b1326 0%, rgba(11,19,38,0.2) 50%, transparent 100%)',
+              `linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 20%, transparent) 50%, transparent 100%)`,
           }}
         />
       )}
       {isTall && (
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(to top, #0b1326 0%, transparent 60%)' }}
+          style={{ background: 'linear-gradient(to top, var(--ds-bg) 0%, transparent 60%)' }}
         />
       )}
       {(isSquare || isShort) && (
@@ -126,7 +126,7 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
           className="absolute inset-0"
           style={{
             background: project.imageUrl
-              ? 'linear-gradient(to top, #171f33 0%, rgba(23,31,51,0.7) 60%, transparent 100%)'
+              ? `linear-gradient(to top, var(--ds-surface-container) 0%, color-mix(in srgb, var(--ds-surface-container) 70%, transparent) 60%, transparent 100%)`
               : undefined,
           }}
         />
@@ -146,7 +146,7 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
           className={`font-bold line-clamp-1 ${
             isLarge ? 'text-3xl md:text-4xl' : isTall || isSquare ? 'text-2xl' : 'text-lg'
           }`}
-          style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+          style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
         >
           {project.title}
         </h4>
@@ -154,7 +154,7 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
         {!isShort && (
           <p
             className={`text-sm leading-relaxed line-clamp-2 ${isLarge ? 'max-w-md' : ''}`}
-            style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+            style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
           >
             {project.description}
           </p>
@@ -176,7 +176,7 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-70"
-              style={{ color: '#908fa0' }}
+              style={{ color: 'var(--ds-outline)' }}
             >
               <FaGithub size={14} />
               <span style={{ fontFamily: 'var(--font-inter), sans-serif' }}>Code</span>
@@ -188,7 +188,7 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium transition-opacity hover:opacity-70"
-              style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
             >
               {t('project_view_study')}
             </a>
@@ -212,7 +212,7 @@ export default function Projects() {
     <section
       id="projects"
       className="py-28 px-8"
-      style={{ backgroundColor: '#0b1326', scrollMarginTop: '5rem' }}
+      style={{ backgroundColor: 'var(--ds-bg)', scrollMarginTop: '5rem' }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
@@ -226,23 +226,23 @@ export default function Projects() {
           <div className="space-y-2">
             <span
               className="text-xs uppercase tracking-[0.3em] font-bold block"
-              style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
             >
               {t('projects_label')}
             </span>
             <h2
               className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
-              style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
             >
               {t('projects_title')}{' '}
-              <span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>
+              <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
                 {t('projects_title_accent')}
               </span>
             </h2>
           </div>
           <span
             className="text-sm uppercase tracking-widest pb-2"
-            style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+            style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
           >
             {t('projects_subtitle')}
           </span>
@@ -270,18 +270,18 @@ export default function Projects() {
                 transition={{ duration: 0.4, ease: 'easeOut', delay: 0.2 }}
                 onClick={() => setShowMore(true)}
                 className="col-span-1 md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-8 transition-colors duration-300 hover:bg-[#222a3d] border border-dashed text-left w-full h-full"
-                style={{ backgroundColor: '#131b2e', borderColor: 'rgba(192,193,255,0.2)' }}
+                style={{ backgroundColor: 'var(--ds-surface)', borderColor: 'color-mix(in srgb, var(--ds-primary) 20%, transparent)' }}
               >
                 <div className="text-center">
                   <span
                     className="material-symbols-outlined text-3xl block mb-2 transition-transform duration-300 group-hover:scale-110"
-                    style={{ color: '#c0c1ff' }}
+                    style={{ color: 'var(--ds-primary)' }}
                   >
                     grid_view
                   </span>
                   <h4
                     className="text-sm font-bold uppercase tracking-widest"
-                    style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+                    style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
                   >
                     {t('projects_more')}
                   </h4>
@@ -304,18 +304,18 @@ export default function Projects() {
                   }, 500);
                 }}
                 className="col-span-1 md:col-start-10 md:col-span-3 md:row-start-6 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-6 transition-colors duration-300 hover:bg-[#222a3d] border border-dashed"
-                style={{ backgroundColor: '#131b2e', borderColor: 'rgba(192,193,255,0.2)' }}
+                style={{ backgroundColor: 'var(--ds-surface)', borderColor: 'color-mix(in srgb, var(--ds-primary) 20%, transparent)' }}
               >
                 <div className="flex flex-col items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
                   <span
                     className="material-symbols-outlined text-xl transition-transform duration-300 group-hover:-translate-y-1 block"
-                    style={{ color: '#c0c1ff' }}
+                    style={{ color: 'var(--ds-primary)' }}
                   >
                     expand_less
                   </span>
                   <span
                     className="text-xs font-bold uppercase tracking-widest"
-                    style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+                    style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
                   >
                     Less
                   </span>

@@ -112,8 +112,8 @@ function TechChip({ label }: { label: string }) {
     <motion.span
       className="px-3 py-0.5 rounded text-[9px] font-medium uppercase border"
       style={{
-        color: 'rgba(199,196,215,0.7)',
-        borderColor: 'rgba(70,69,84,0.3)',
+        color: 'color-mix(in srgb, var(--ds-on-surface-variant) 70%, transparent)',
+        borderColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)',
         fontFamily: 'var(--font-inter), sans-serif',
       }}
       variants={chipVariants}
@@ -128,9 +128,9 @@ function TierBadge({ label, isLead }: { label: string; isLead?: boolean }) {
     <div
       className="inline-block px-4 py-1 mb-4 rounded-full text-[10px] font-bold uppercase tracking-widest border"
       style={{
-        color: isLead ? '#c0c1ff' : '#908fa0',
-        backgroundColor: isLead ? 'rgba(192,193,255,0.1)' : 'rgba(144,143,160,0.08)',
-        borderColor: isLead ? 'rgba(192,193,255,0.2)' : 'rgba(144,143,160,0.15)',
+        color: isLead ? 'var(--ds-primary)' : 'var(--ds-outline)',
+        backgroundColor: isLead ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'color-mix(in srgb, var(--ds-outline) 8%, transparent)',
+        borderColor: isLead ? 'color-mix(in srgb, var(--ds-primary) 20%, transparent)' : 'color-mix(in srgb, var(--ds-outline) 15%, transparent)',
       }}
     >
       {label}
@@ -152,7 +152,7 @@ function YearDisplay({ align = 'left', date }: { align?: 'left' | 'right'; date?
       {period && (
         <span
           className="block text-2xl md:text-3xl tracking-tight"
-          style={{ color: 'rgba(192,193,255,0.55)' }}
+          style={{ color: 'color-mix(in srgb, var(--ds-primary) 55%, transparent)' }}
         >
           {period}
         </span>
@@ -161,7 +161,7 @@ function YearDisplay({ align = 'left', date }: { align?: 'left' | 'right'; date?
         <span
           className="block mt-2"
           style={{
-            color: 'rgba(192,193,255,0.35)',
+            color: 'color-mix(in srgb, var(--ds-primary) 35%, transparent)',
             fontFamily: 'var(--font-inter), sans-serif',
             fontSize: '12px',
             fontWeight: 500,
@@ -182,7 +182,7 @@ export default function Timeline() {
     <section
       id="experience"
       className="px-8 lg:px-20 py-32 overflow-hidden"
-      style={{ backgroundColor: '#131b2e', scrollMarginTop: '5rem' }}
+      style={{ backgroundColor: 'var(--ds-surface)', scrollMarginTop: '5rem' }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -196,15 +196,15 @@ export default function Timeline() {
           <div className="space-y-2">
             <span
               className="text-xs uppercase tracking-[0.3em] font-bold block"
-              style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
             >
               {t('timeline_label')}
             </span>
             <h3
               className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
-              style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
             >
-              {t('timeline_title')}{' '}<span style={{ color: '#c0c1ff', fontStyle: 'italic' }}>{t('timeline_title_accent')}</span>
+              {t('timeline_title')}{' '}<span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>{t('timeline_title_accent')}</span>
             </h3>
           </div>
         </motion.div>
@@ -216,7 +216,7 @@ export default function Timeline() {
             className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px hidden md:block"
             style={{
               background:
-                'linear-gradient(to bottom, #c0c1ff, rgba(128,131,255,0.15), transparent)',
+                `linear-gradient(to bottom, var(--ds-primary), color-mix(in srgb, var(--ds-primary) 15%, transparent), transparent)`,
               transform: 'translateX(-50%)',
             }}
           />
@@ -252,7 +252,7 @@ export default function Timeline() {
                         rel="noopener noreferrer"
                         className="text-4xl md:text-5xl font-black leading-none mb-2 tracking-tighter block hover:text-[#c0c1ff] transition-colors"
                         style={{
-                          color: '#dae2fd',
+                          color: 'var(--ds-on-surface)',
                           fontFamily: 'var(--font-manrope), sans-serif',
                         }}
                       >
@@ -271,7 +271,7 @@ export default function Timeline() {
                       </motion.div>
                       <p
                         className="text-lg leading-relaxed"
-                        style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+                        style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
                       >
                         {item.description}
                       </p>
@@ -281,8 +281,8 @@ export default function Timeline() {
                     <div
                       className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-10 hidden md:block"
                       style={{
-                        backgroundColor: '#c0c1ff',
-                        boxShadow: '0 0 20px rgba(192,193,255,0.6)',
+                        backgroundColor: 'var(--ds-primary)',
+                        boxShadow: '0 0 20px color-mix(in srgb, var(--ds-primary) 60%, transparent)',
                       }}
                     />
 
@@ -316,8 +316,8 @@ export default function Timeline() {
                   <div
                     className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-10 hidden md:block"
                     style={{
-                      backgroundColor: '#8083ff',
-                      boxShadow: '0 0 16px rgba(128,131,255,0.4)',
+                      backgroundColor: 'var(--ds-primary-container)',
+                      boxShadow: '0 0 16px color-mix(in srgb, var(--ds-primary-container) 40%, transparent)',
                     }}
                   />
 
@@ -331,7 +331,7 @@ export default function Timeline() {
                         rel="noopener noreferrer"
                         className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter block hover:text-[#c0c1ff] transition-colors"
                         style={{
-                          color: '#dae2fd',
+                          color: 'var(--ds-on-surface)',
                           fontFamily: 'var(--font-manrope), sans-serif',
                         }}
                       >
@@ -350,7 +350,7 @@ export default function Timeline() {
                       </motion.div>
                       <p
                         className="text-lg leading-relaxed"
-                        style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+                        style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
                       >
                         {item.description}
                       </p>
