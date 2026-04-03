@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { techIcons } from '@/data/techStack';
 import TechPill from '@/components/ui/TechPill';
 import type { TechId } from '@/types';
@@ -11,6 +12,7 @@ type TechStackProps = {
 };
 
 export default function TechStack({ stack, previewRows = 2, rowHeight = 32 }: TechStackProps) {
+  const t = useTranslations('common');
   const [isExpanded, setIsExpanded] = useState(false);
   const [maxHeight, setMaxHeight] = useState(`${previewRows * rowHeight}px`);
   const [canOverflow, setCanOverflow] = useState(false);
@@ -76,7 +78,7 @@ export default function TechStack({ stack, previewRows = 2, rowHeight = 32 }: Te
           }}
           className="text-xs text-secondary underline underline-offset-2 mt-2 inline-block"
         >
-          {isExpanded ? 'ver menos' : 'ver más'}
+          {isExpanded ? t('show_less') : t('show_more')}
         </button>
       )}
     </>

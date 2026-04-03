@@ -55,7 +55,7 @@ export default function Sidebar() {
           <p
             className="uppercase tracking-widest mt-1"
             style={{
-              color: '#8ce638ff',
+              color: 'var(--ds-primary)',
               fontFamily: 'var(--font-manrope), sans-serif',
               fontSize: '10px',
             }}
@@ -72,15 +72,13 @@ export default function Sidebar() {
             <a
               key={id}
               href={`#${id}`}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200 ${
-                isActive
-                  ? 'text-[#a5b4fc] bg-[rgba(99,102,241,0.1)]'
-                  : 'text-[#64748b] hover:text-[#cbd5e1] hover:bg-[#1a2030]'
-              }`}
+              className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
               style={{
                 transform: isActive ? 'translateX(4px)' : 'translateX(0)',
                 fontFamily: 'var(--font-manrope), sans-serif',
                 fontWeight: 700,
+                color: isActive ? 'var(--ds-primary)' : 'var(--ds-outline)',
+                backgroundColor: isActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
               }}
             >
               <span className="material-symbols-outlined text-[20px]">{icon}</span>
@@ -127,7 +125,8 @@ export default function Sidebar() {
             href="https://github.com/SpidySamurai"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
+            className="flex items-center gap-1.5 text-xs font-medium transition-colors"
+            style={{ color: 'var(--ds-outline)' }}
           >
             <span className="material-symbols-outlined text-[16px]">code</span>
             GitHub
@@ -136,7 +135,8 @@ export default function Sidebar() {
             href="https://www.linkedin.com/in/javier-fernando-chi-ortiz/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
+            className="flex items-center gap-1.5 text-xs font-medium transition-colors"
+            style={{ color: 'var(--ds-outline)' }}
           >
             <span className="material-symbols-outlined text-[16px]">account_circle</span>
             LinkedIn

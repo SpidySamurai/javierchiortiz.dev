@@ -7,7 +7,6 @@ import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
 
 const DESKTOP_NAV = [
   { href: '#projects', key: 'projects' },
-  { href: '#stack', key: 'stack' },
   { href: '#about', key: 'about' },
   { href: '#contact', key: 'contact' },
 ] as const;
