@@ -3,51 +3,60 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import { useTheme } from 'next-themes';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import type { Container } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
 import { loadEmittersPlugin } from '@tsparticles/plugin-emitters';
 import { loadTrailEffect } from '@tsparticles/effect-trail';
 
-const PARTICLES_OPTIONS = {
-  fullScreen: { enable: false },
-  background: { color: { value: 'transparent' } },
-  fpsLimit: 60,
-  particles: {
-    number: { value: 140, density: { enable: true } },
-    color: { value: ['#c0c1ff', '#a5b4fc', '#818cf8'] as string[] },
-    opacity: {
-      value: { min: 0.1, max: 0.6 },
-      animation: { enable: true, speed: 0.6, sync: false },
+function getParticlesOptions(isDark: boolean) {
+  return {
+    fullScreen: { enable: false },
+    background: { color: { value: 'transparent' } },
+    fpsLimit: 60,
+    particles: {
+      number: { value: 140, density: { enable: true } },
+      color: {
+        value: isDark
+          ? (['#c0c1ff', '#a5b4fc', '#818cf8'] as string[])
+          : (['#4042c8', '#5254d0', '#6668e8'] as string[]),
+      },
+      opacity: {
+        value: { min: isDark ? 0.1 : 0.15, max: isDark ? 0.6 : 0.45 },
+        animation: { enable: true, speed: 0.6, sync: false },
+      },
+      size: { value: { min: 1, max: 3 } },
+      collisions: { enable: true, mode: 'bounce' as const },
+      move: {
+        enable: true,
+        speed: { min: 0.3, max: 0.8 },
+        direction: 'top' as const,
+        random: true,
+        straight: false,
+        outModes: { default: 'out' as const },
+        attract: { enable: true, rotate: { x: 600, y: 1200 } },
+      },
+      shape: { type: 'circle' },
+      repulse: { enable: true, distance: 80, duration: 0.4 },
     },
-    size: { value: { min: 1, max: 3 } },
-    collisions: { enable: true, mode: 'bounce' as const },
-    move: {
-      enable: true,
-      speed: { min: 0.3, max: 0.8 },
-      direction: 'top' as const,
-      random: true,
-      straight: false,
-      outModes: { default: 'out' as const },
-      attract: { enable: true, rotate: { x: 600, y: 1200 } },
+    interactivity: {
+      events: { onHover: { enable: true, mode: ['repulse', 'bubble'] as string[] } },
+      modes: {
+        repulse: { distance: 160, duration: 2, speed: 12, factor: 20 },
+        bubble: { distance: 120, size: 6, duration: 0.3, opacity: 0.9 },
+      },
     },
-    shape: { type: 'circle' },
-    repulse: { enable: true, distance: 80, duration: 0.4 },
-  },
-  interactivity: {
-    events: { onHover: { enable: true, mode: ['repulse', 'bubble'] as string[] } },
-    modes: {
-      repulse: { distance: 160, duration: 2, speed: 12, factor: 20 },
-      bubble: { distance: 120, size: 6, duration: 0.3, opacity: 0.9 },
-    },
-  },
-  detectRetina: true,
-} as const;
+    detectRetina: true,
+  } as const;
+}
 
 const ParticleBackground = memo(function ParticleBackground({
   onLoaded,
+  options,
 }: {
   onLoaded: (c: Container | undefined) => void;
+  options: ReturnType<typeof getParticlesOptions>;
 }) {
   return (
     <Particles
@@ -55,7 +64,7 @@ const ParticleBackground = memo(function ParticleBackground({
       className="absolute inset-0 z-0"
       style={{ pointerEvents: 'none' }}
       particlesLoaded={async (c) => onLoaded(c)}
-      options={PARTICLES_OPTIONS}
+      options={options}
     />
   );
 });
@@ -139,9 +148,12 @@ function AnimatedHeadline({
 
 export default function Hero() {
   const t = useTranslations('common');
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme !== 'light';
   const [particlesReady, setParticlesReady] = useState(false);
   const [typingDone, setTypingDone] = useState(false);
   const cometContainerRef = useRef<Container | null>(null);
+  const particlesOptions = getParticlesOptions(isDark);
 
   const handleParticlesLoaded = useCallback((c: Container | undefined) => {
     cometContainerRef.current = c ?? null;
@@ -165,7 +177,7 @@ export default function Hero() {
     container.particles.addParticle(
       { x: startX, y: 0 },
       {
-        color: { value: '#ffffff' },
+        color: { value: isDark ? '#ffffff' : '#4042c8' },
         size: { value: { min: 1, max: 1 } },
         opacity: { value: 1 },
         effect: {
@@ -231,7 +243,7 @@ export default function Hero() {
       style={{ backgroundColor: 'var(--ds-bg)' }}
     >
       {/* Unified particles — background + comets in one container */}
-      {particlesReady && <ParticleBackground onLoaded={handleParticlesLoaded} />}
+      {particlesReady && <ParticleBackground key={resolvedTheme} onLoaded={handleParticlesLoaded} options={particlesOptions} />}
 
       {/* Ambient glow */}
       <div

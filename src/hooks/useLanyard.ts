@@ -71,7 +71,7 @@ export function useLanyard({ userId }: UseLanyardOptions) {
             break;
         }
       } catch (error) {
-        console.error('Lanyard WS Parse Error:', error);
+        if (process.env.NODE_ENV === 'development') console.error('Lanyard WS Parse Error:', error);
       }
     };
 
@@ -83,7 +83,7 @@ export function useLanyard({ userId }: UseLanyardOptions) {
     };
 
     ws.onerror = (error) => {
-      console.error('Lanyard WS Error:', error);
+      if (process.env.NODE_ENV === 'development') console.error('Lanyard WS Error:', error);
       ws.close();
     };
   }, [userId]);
