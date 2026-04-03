@@ -1,4 +1,5 @@
 import React from 'react';
+import { SiSpotify } from 'react-icons/si';
 import type { LanyardSpotify } from '@/types/lanyard';
 
 type SpotifyWidgetProps = {
@@ -8,7 +9,7 @@ type SpotifyWidgetProps = {
 
 export const SpotifyWidget = ({ spotify, currentTime }: SpotifyWidgetProps) => {
   return (
-    <article className="w-full bg-[#12131a] rounded-[1.5rem]  border border-white/5 overflow-hidden relative group mb-6 md:mb-8 shadow-2xl min-h-[250px] flex items-center justify-center">
+    <article className="w-full bg-[#131b2e] rounded-[1.5rem]  border border-white/5 overflow-hidden relative group mb-6 md:mb-8 shadow-2xl min-h-[250px] flex items-center justify-center">
       <div className="absolute inset-0 bg-[url('/utils/img/grid-pattern.svg')] opacity-5 z-0 pointer-events-none"></div>
 
       {spotify ? (
@@ -76,26 +77,13 @@ export const SpotifyWidget = ({ spotify, currentTime }: SpotifyWidgetProps) => {
         /* IDLE STATE (No Music) */
         <section className="p-8 relative z-10 text-center opacity-60">
           <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10">
-            <span className="text-3xl grayscale" role="img" aria-label="Music Note">
-              🎵
-            </span>
+            <SiSpotify size={28} className="text-[#908fa0]" />
           </div>
           <h3 className="text-xl font-bold text-white mb-1 tracking-tight">Vibe Check</h3>
           <p className="text-gray-400 text-sm">Not listening to anything right now.</p>
         </section>
       )}
 
-      <style jsx>{`
-        @keyframes music-bar {
-          0%,
-          100% {
-            height: 4px;
-          }
-          50% {
-            height: 12px;
-          }
-        }
-      `}</style>
     </article>
   );
 };

@@ -1,32 +1,62 @@
 import React from 'react';
+import { SiGithub, SiTwitch, SiSpotify } from 'react-icons/si';
+import { LuGamepad2 } from 'react-icons/lu';
+
+type SocialLink = {
+  name: string;
+  label: string;
+  icon: React.ReactNode;
+  href: string;
+};
+
+const LINKS: SocialLink[] = [
+  {
+    name: 'GitHub',
+    label: 'SpidySamurai',
+    icon: <SiGithub />,
+    href: 'https://github.com/SpidySamurai',
+  },
+  {
+    name: 'Twitch',
+    label: 'Twitch',
+    icon: <SiTwitch />,
+    href: '#',
+  },
+  {
+    name: 'Xbox',
+    label: 'Xbox',
+    icon: <LuGamepad2 />,
+    href: '#',
+  },
+  {
+    name: 'Spotify',
+    label: 'Spotify',
+    icon: <SiSpotify />,
+    href: '#',
+  },
+];
 
 export const SocialLinks = () => {
   return (
     <nav className="w-full">
       <ul className="grid grid-cols-2 md:grid-cols-1 gap-2">
-        {['GitHub', 'Twitch', 'Xbox', 'Spotify'].map((n) => (
-          <li key={n}>
-            <button
+        {LINKS.map((link) => (
+          <li key={link.name}>
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full flex items-center gap-2.5 md:gap-3 bg-white/5 p-2.5 md:p-3 rounded-xl border border-white/5 hover:bg-white/10 transition-all cursor-pointer group text-left"
-              aria-label={`Visit ${n} Profile`}
+              aria-label={`Visit ${link.name} Profile`}
             >
-              <div className="w-5 h-5 md:w-6 md:h-6 flex items-center justify-center opacity-60 group-hover:opacity-100 transition-opacity">
-                <img
-                  src={`/utils/img/icons/${n.toLowerCase()}.svg`}
-                  alt=""
-                  className="w-3.5 h-3.5 md:w-4 md:h-4"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = `https://cdn.simpleicons.org/${n.toLowerCase()}/white`;
-                  }}
-                  aria-hidden="true"
-                />
+              <div className="w-5 h-5 md:w-6 md:h-6 flex items-center justify-center opacity-60 group-hover:opacity-100 transition-opacity text-gray-400 group-hover:text-[#c0c1ff]">
+                {link.icon}
               </div>
               <span className="text-[10px] md:text-xs text-gray-400 group-hover:text-white font-semibold truncate">
-                {n === 'GitHub' ? 'SpidySamurai' : n}
+                {link.label}
               </span>
               <svg
-                className="ml-auto w-2.5 h-2.5 md:w-3 md:h-3 text-gray-700 group-hover:text-indigo-500 hidden md:block"
+                className="ml-auto w-2.5 h-2.5 md:w-3 md:h-3 text-gray-700 group-hover:text-[#c0c1ff] hidden md:block"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -39,7 +69,7 @@ export const SocialLinks = () => {
                   strokeWidth="2"
                 />
               </svg>
-            </button>
+            </a>
           </li>
         ))}
       </ul>
