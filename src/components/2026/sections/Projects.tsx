@@ -96,9 +96,10 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
     <motion.div
       layout
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -40, scale: 0.95 }}
-      transition={{ duration: 0.5, ease: 'easeOut', delay: (index % 4) * 0.05 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.55, ease: 'easeOut', delay: (index % 4) * 0.08 }}
       className={`${shapeClass} group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(192,193,255,0.15),0_8px_32px_rgba(11,19,38,0.4)]`}
       style={{ backgroundColor: bgColor }}
     >
@@ -215,7 +216,13 @@ export default function Projects() {
     >
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4"
+        >
           <div className="space-y-2">
             <span
               className="text-xs uppercase tracking-[0.3em] font-bold block"
@@ -239,7 +246,7 @@ export default function Projects() {
           >
             {t('projects_subtitle')}
           </span>
-        </div>
+        </motion.div>
 
         {/* Bento grid */}
         <motion.div
