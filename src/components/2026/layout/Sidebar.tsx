@@ -8,10 +8,9 @@ const NAV_IDS = [
   { id: 'experience', icon: 'work', key: 'experience' },
   { id: 'projects', icon: 'grid_view', key: 'projects' },
   { id: 'about', icon: 'person', key: 'about' },
-  { id: 'stack', icon: 'terminal', key: 'stack' },
 ] as const;
 
-const SECTION_IDS = ['experience', 'projects', 'about', 'stack'];
+const SECTION_IDS = ['experience', 'projects', 'about'];
 
 export default function Sidebar() {
   const t = useTranslations('common');
@@ -125,7 +124,7 @@ export default function Sidebar() {
         {/* Social links */}
         <div className="flex flex-col gap-2 pt-4 px-1">
           <a
-            href="https://github.com/javierchiortiz"
+            href="https://github.com/SpidySamurai"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"
@@ -134,7 +133,7 @@ export default function Sidebar() {
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/javierchiortiz"
+            href="https://www.linkedin.com/in/javier-fernando-chi-ortiz/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-xs font-medium transition-colors text-[#64748b] hover:text-[#c7c4d7]"

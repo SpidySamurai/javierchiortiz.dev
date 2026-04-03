@@ -39,7 +39,7 @@ export default function Footer() {
             Email
           </a>
           <a
-            href="https://linkedin.com/in/javierchiortiz"
+            href="https://www.linkedin.com/in/javier-fernando-chi-ortiz/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs font-bold uppercase tracking-widest transition-colors text-[#c7c4d7] hover:text-[#c0c1ff]"
@@ -47,7 +47,7 @@ export default function Footer() {
             LinkedIn
           </a>
           <a
-            href="https://github.com/javierchiortiz"
+            href="https://github.com/SpidySamurai"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs font-bold uppercase tracking-widest transition-colors text-[#c7c4d7] hover:text-[#c0c1ff]"
