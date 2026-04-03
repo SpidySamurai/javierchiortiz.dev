@@ -1,22 +1,23 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Manrope, Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
-import Header from '@/components/layout/Header';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { GamerCardProvider } from '@/components/providers/GamerCardContext';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const manrope = Manrope({
+  variable: '--font-manrope',
   subsets: ['latin'],
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
+  display: 'swap',
 });
 
 export async function generateMetadata({
@@ -65,24 +66,25 @@ export default async function RootLayout({
 }) {
   const { locale } = await params;
 
-  // Ensure that the incoming `locale` is valid
   if (!(routing.locales as readonly string[]).includes(locale)) {
     notFound();
   }
 
-  // Providing all messages to the client
-  // side is the easiest way to get started
   const messages = await getMessages();
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <head />
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
+      </head>
+      <body className={`${manrope.variable} ${inter.variable} antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <GamerCardProvider>
             <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
-              <Header />
-              <main>{children}</main>
+              {children}
             </ThemeProvider>
           </GamerCardProvider>
         </NextIntlClientProvider>

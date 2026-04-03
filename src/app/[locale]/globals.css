@@ -35,14 +35,14 @@ section {
 
 /* Light theme overrides: mantiene la lógica de contraste y look profesional */
 html[data-theme='light'] {
-  --color-primary: #f4f6fb; /* fondo principal claro, no blanco puro */
-  --color-surface: #e9edf5; /* cards, navbar, surface */
-  --color-default: #23234a; /* texto principal oscuro */
-  --color-muted: #5a627a; /* texto secundario gris azulado, legible */
-  --color-secondary: #1e90ff; /* azul vibrante igual que dark */
-  --color-secondary-light: #4fb3ff; /* azul claro para hover/detalles */
-  --color-white: #ffffff; /* solo para highlights */
-  --color-gray: #cfd8e3; /* gris claro para borders y backgrounds secundarios */
+  --color-primary: #eef1fa;
+  --color-surface: #e4e9f5;
+  --color-default: #141d35;
+  --color-muted: #3a4260;
+  --color-secondary: #1e90ff;
+  --color-secondary-light: #4fb3ff;
+  --color-white: #f2f5fc;
+  --color-gray: #b0b8d0;
 }
 
 /* Utilidades semánticas para fondo y texto */
@@ -112,6 +112,65 @@ html[data-theme='light'] {
 }
 .text-surface {
   color: var(--color-surface) !important;
+}
+
+/* ============================================================
+   Design System 2026 — "The Digital Curator"
+   Scoped under .ds-2026 to avoid conflicts with 2025 styles
+   ============================================================ */
+.ds-2026 {
+  --ds-bg:                  #0b1326;
+  --ds-surface:             #131b2e;
+  --ds-surface-container:   #171f33;
+  --ds-surface-high:        #222a3d;
+  --ds-surface-highest:     #2d3449;
+  --ds-surface-bright:      #31394d;
+
+  --ds-on-surface:          #dae2fd;
+  --ds-on-surface-variant:  #c7c4d7;
+
+  --ds-primary:             #c0c1ff;
+  --ds-primary-container:   #8083ff;
+  --ds-on-primary:          #1000a9;
+
+  --ds-secondary-container: #3e3c8f;
+  --ds-on-secondary:        #afadff;
+
+  --ds-tertiary:            #b8c4ff;
+
+  --ds-outline-variant:     #464554;
+  --ds-outline:             #908fa0;
+
+  --ds-font-display:        var(--font-manrope), sans-serif;
+  --ds-font-body:           var(--font-inter), sans-serif;
+
+  background-color: var(--ds-bg);
+  color: var(--ds-on-surface);
+  font-family: var(--ds-font-body);
+}
+
+html[data-theme='light'] .ds-2026 {
+  --ds-bg:                  #eef1fa;
+  --ds-surface:             #e4e9f5;
+  --ds-surface-container:   #d9e0ef;
+  --ds-surface-high:        #cdd6ea;
+  --ds-surface-highest:     #c2cce4;
+  --ds-surface-bright:      #f2f5fc;
+
+  --ds-on-surface:          #141d35;
+  --ds-on-surface-variant:  #3a4260;
+
+  --ds-primary:             #4042c8;
+  --ds-primary-container:   #6668e8;
+  --ds-on-primary:          #ffffff;
+
+  --ds-secondary-container: #d0d2f5;
+  --ds-on-secondary:        #2f2ebe;
+
+  --ds-tertiary:            #3a4a9e;
+
+  --ds-outline-variant:     #b0b8d0;
+  --ds-outline:             #626a88;
 }
 
 /* global.css */
@@ -185,4 +244,10 @@ html[data-theme='light'] {
   .project-image-wrapper .project-image {
     transition: none !important;
   }
+}
+
+/* Ambient float for tech icon chips */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
 }

@@ -32,10 +32,27 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
 
+# Claude MCP config (contains API keys)
+.mcp.json
+
+# Claude Code agents and skills
+.agents/
+.claude/
+skills-lock.json
+
+# Lanyard API debug dumps
+lanyard_*.json
+
+# Internal dev files
+.github/copilot-instructions.md
+src/app/*/test-gamercard/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+PROFILE_README.md
