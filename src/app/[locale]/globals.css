@@ -35,14 +35,14 @@ section {
 
 /* Light theme overrides: mantiene la lógica de contraste y look profesional */
 html[data-theme='light'] {
-  --color-primary: #f4f6fb; /* fondo principal claro, no blanco puro */
-  --color-surface: #e9edf5; /* cards, navbar, surface */
-  --color-default: #23234a; /* texto principal oscuro */
-  --color-muted: #5a627a; /* texto secundario gris azulado, legible */
-  --color-secondary: #1e90ff; /* azul vibrante igual que dark */
-  --color-secondary-light: #4fb3ff; /* azul claro para hover/detalles */
-  --color-white: #ffffff; /* solo para highlights */
-  --color-gray: #cfd8e3; /* gris claro para borders y backgrounds secundarios */
+  --color-primary: #eef1fa;
+  --color-surface: #e4e9f5;
+  --color-default: #141d35;
+  --color-muted: #3a4260;
+  --color-secondary: #1e90ff;
+  --color-secondary-light: #4fb3ff;
+  --color-white: #f2f5fc;
+  --color-gray: #b0b8d0;
 }
 
 /* Utilidades semánticas para fondo y texto */
@@ -150,27 +150,27 @@ html[data-theme='light'] {
 }
 
 html[data-theme='light'] .ds-2026 {
-  --ds-bg:                  #ffffff;
-  --ds-surface:             #f0f2ff;
-  --ds-surface-container:   #e8eaff;
-  --ds-surface-high:        #dcdeff;
-  --ds-surface-highest:     #d0d2f5;
-  --ds-surface-bright:      #ffffff;
+  --ds-bg:                  #eef1fa;
+  --ds-surface:             #e4e9f5;
+  --ds-surface-container:   #d9e0ef;
+  --ds-surface-high:        #cdd6ea;
+  --ds-surface-highest:     #c2cce4;
+  --ds-surface-bright:      #f2f5fc;
 
-  --ds-on-surface:          #0b1326;
-  --ds-on-surface-variant:  #2e2d4e;
+  --ds-on-surface:          #141d35;
+  --ds-on-surface-variant:  #3a4260;
 
   --ds-primary:             #4042c8;
   --ds-primary-container:   #6668e8;
   --ds-on-primary:          #ffffff;
 
-  --ds-secondary-container: #dddcff;
+  --ds-secondary-container: #d0d2f5;
   --ds-on-secondary:        #2f2ebe;
 
   --ds-tertiary:            #3a4a9e;
 
-  --ds-outline-variant:     #c0bfd8;
-  --ds-outline:             #706f88;
+  --ds-outline-variant:     #b0b8d0;
+  --ds-outline:             #626a88;
 }
 
 /* global.css */
