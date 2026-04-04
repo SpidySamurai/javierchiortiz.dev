@@ -200,6 +200,7 @@ export default function About() {
               </motion.p>
             ))}
           </div>
+
         </div>
 
         {/* Right — tech groups */}
@@ -207,6 +208,28 @@ export default function About() {
           <TechGroup labelKey="stack" items={STACK} startIndex={0} />
           <TechGroup labelKey="about_tools" items={TOOLS} startIndex={STACK.length} />
           <TechGroup labelKey="about_also" items={ALSO} startIndex={STACK.length + TOOLS.length} muted />
+
+          <motion.blockquote
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="pt-4 pl-5 relative"
+            style={{ borderLeft: '2px solid color-mix(in srgb, var(--ds-primary) 30%, transparent)' }}
+          >
+            <p
+              className="text-sm leading-relaxed italic mb-2"
+              style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              &ldquo;{t('about_quote')}&rdquo;
+            </p>
+            <cite
+              className="text-xs not-italic tracking-widest uppercase"
+              style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              — {t('about_quote_author')}
+            </cite>
+          </motion.blockquote>
         </div>
       </div>
     </section>

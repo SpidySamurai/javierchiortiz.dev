@@ -8,6 +8,9 @@ import Projects from '@/components/2026/sections/Projects';
 import About from '@/components/2026/sections/About';
 import Footer from '@/components/2026/sections/Footer';
 import FlatCat from '@/components/FlatCat';
+import ScrollProgress from '@/components/2026/ui/ScrollProgress';
+import BackToTop from '@/components/2026/ui/BackToTop';
+import CustomCursor from '@/components/2026/ui/CustomCursor';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 
 export default function Home() {
@@ -15,9 +18,12 @@ export default function Home() {
 
   return (
     <div className="ds-2026" style={{ minHeight: '100vh' }}>
+      <ScrollProgress />
+      <CustomCursor />
       <Header />
       <Sidebar />
       <FlatCat onUnlock={unlockCard} />
+      <BackToTop />
       <main className="lg:ml-64 pt-20">
         <Hero />
         <Timeline />
