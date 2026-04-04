@@ -1,8 +1,9 @@
 'use client';
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import { TwentyOnePilotsEgg } from './TwentyOnePilotsEgg';
 import { useTheme } from 'next-themes';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import type { Container } from '@tsparticles/engine';
@@ -152,6 +153,7 @@ export default function Hero() {
   const isDark = resolvedTheme !== 'light';
   const [particlesReady, setParticlesReady] = useState(false);
   const [typingDone, setTypingDone] = useState(false);
+  const [eggOpen, setEggOpen] = useState(false);
   const cometContainerRef = useRef<Container | null>(null);
   const particlesOptions = useMemo(() => getParticlesOptions(isDark), [isDark]);
 
@@ -258,6 +260,33 @@ export default function Hero() {
         }}
       />
 
+      {/* |-/ easter egg trigger — drifts like a particle */}
+      <motion.span
+        onClick={() => setEggOpen(true)}
+        className="absolute top-1/3 right-[20%] cursor-pointer z-20 hidden md:block"
+        animate={{
+          opacity: [0.04, 0.18, 0.06, 0.22, 0.04, 0.14, 0.04],
+          scale: [1, 1.04, 0.98, 1.06, 1, 1.02, 1],
+        }}
+        transition={{
+          duration: 8,
+          ease: 'easeInOut',
+          repeat: Infinity,
+          repeatType: 'mirror',
+          times: [0, 0.2, 0.35, 0.55, 0.7, 0.85, 1],
+        }}
+        style={{
+          color: 'color-mix(in srgb, var(--ds-on-surface) 100%, transparent)',
+          fontFamily: 'var(--font-inter), sans-serif',
+          fontSize: '2rem',
+          letterSpacing: '0.5em',
+          userSelect: 'none',
+        }}
+        whileHover={{ opacity: 0.35, scale: 1.05, transition: { duration: 0.3 } }}
+      >
+        |-/
+      </motion.span>
+
       <div className="relative z-10 flex flex-col md:flex-row items-center gap-12 md:gap-0">
         {/* Left: text block */}
         <div className="w-full md:w-1/2 space-y-6">
@@ -281,63 +310,8 @@ export default function Hero() {
           </motion.p>
         </div>
 
-        {/* Right: overlapping image cards — hidden until real images are ready */}
-        <div className="hidden w-full md:w-1/2 flex justify-center md:justify-end">
-          {/* Fixed-size stage for the two cards */}
-          <div className="relative" style={{ width: '320px', height: '380px' }}>
-            {/* Back card — large, tilted right, z behind */}
-            <div
-              className="absolute overflow-hidden rounded-xl shadow-2xl"
-              style={{
-                width: '240px',
-                height: '300px',
-                top: '20px',
-                right: '0',
-                transform: 'rotate(3deg)',
-                backgroundColor: 'var(--ds-surface)',
-                zIndex: 1,
-              }}
-            >
-              <div
-                className="w-full h-full flex items-center justify-center"
-                style={{ backgroundColor: 'var(--ds-surface-high)' }}
-              >
-                <span
-                  className="text-xs uppercase tracking-widest"
-                  style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
-                >
-                  Pending
-                </span>
-              </div>
-            </div>
-
-            {/* Front card — smaller, tilted left, z on top */}
-            <div
-              className="absolute overflow-hidden rounded-xl shadow-2xl"
-              style={{
-                width: '200px',
-                height: '220px',
-                bottom: '0',
-                left: '0',
-                transform: 'rotate(-6deg)',
-                backgroundColor: 'var(--ds-surface-container)',
-                zIndex: 2,
-              }}
-            >
-              <div
-                className="w-full h-full flex items-center justify-center"
-                style={{ backgroundColor: 'var(--ds-surface-high)' }}
-              >
-                <span
-                  className="text-xs uppercase tracking-widest"
-                  style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
-                >
-                  Pending
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Right — empty until real images are ready */}
+        <div className="hidden md:block w-full md:w-1/2" />
       </div>
 
       {/* Comet caption */}
@@ -352,6 +326,11 @@ export default function Hero() {
           }}
         />
       </p>
+
+      {/* Easter egg overlay */}
+      <AnimatePresence>
+        {eggOpen && <TwentyOnePilotsEgg onClose={() => setEggOpen(false)} />}
+      </AnimatePresence>
 
       {/* Editorial ticker */}
       <div
