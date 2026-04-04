@@ -126,11 +126,18 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
           className="absolute inset-0"
           style={{
             background: project.imageUrl
-              ? `linear-gradient(to top, var(--ds-surface-container) 0%, color-mix(in srgb, var(--ds-surface-container) 70%, transparent) 60%, transparent 100%)`
+              ? `linear-gradient(to top, var(--ds-surface-container) 0%, color-mix(in srgb, var(--ds-surface-container) 85%, transparent) 70%, transparent 100%)`
               : undefined,
           }}
         />
       )}
+      {/* Mobile: universal stronger gradient so text is always legible */}
+      <div
+        className="absolute inset-0 md:hidden"
+        style={{
+          background: 'linear-gradient(to top, var(--ds-surface-container) 0%, color-mix(in srgb, var(--ds-surface-container) 60%, transparent) 55%, transparent 100%)',
+        }}
+      />
 
       {/* Content — consistent order: tier → title → desc → stack → links */}
       <div
