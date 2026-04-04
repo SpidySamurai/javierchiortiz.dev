@@ -29,30 +29,29 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: 'common' });
 
   return {
-    title: 'Javier Chi Ortíz',
+    metadataBase: new URL('https://javierchiortiz.dev'),
+    title: {
+      default: 'Javier Chi — Full Stack Developer',
+      template: '%s | Javier Chi',
+    },
     description: t('hero_description'),
-    keywords: ['Desarrollador Web', 'Full Stack', 'React', 'Next.js', 'Portafolio'],
-    authors: [{ name: 'Javier Chi Ortíz' }],
+    keywords: ['Full Stack Developer', 'React', 'Next.js', 'TypeScript', 'NestJS', 'Portfolio', 'Frontend', 'Backend'],
+    authors: [{ name: 'Javier Chi Ortíz', url: 'https://javierchiortiz.dev' }],
+    creator: 'Javier Chi Ortíz',
+    robots: { index: true, follow: true },
     openGraph: {
-      title: 'Javier Chi Ortíz',
+      title: 'Javier Chi — Full Stack Developer',
       description: t('hero_description'),
       url: 'https://javierchiortiz.dev',
-      siteName: 'Javier Chi Ortíz',
-      images: [
-        {
-          url: 'https://javierchiortiz.dev/utils/img/portfolio-personal-live-screenshot.png',
-          width: 1200,
-          height: 630,
-        },
-      ],
-      locale: locale === 'es' ? 'es-ES' : 'en-US',
+      siteName: 'Javier Chi',
+      locale: locale === 'es' ? 'es_MX' : 'en_US',
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Javier Chi Ortíz',
+      title: 'Javier Chi — Full Stack Developer',
       description: t('hero_description'),
-      images: ['https://javierchiortiz.dev/utils/img/portfolio-personal-live-screenshot.png'],
+      creator: '@javierchi',
     },
   };
 }
