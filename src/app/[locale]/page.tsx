@@ -9,6 +9,7 @@ import About from '@/components/2026/sections/About';
 import Footer from '@/components/2026/sections/Footer';
 import FlatCat from '@/components/FlatCat';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
+import BackToTop from '@/components/2026/ui/BackToTop';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
       <Header />
       <Sidebar />
       <FlatCat onUnlock={unlockCard} />
+      <BackToTop />
       <main className="lg:ml-64 pt-20">
         <Hero />
         <Timeline />
