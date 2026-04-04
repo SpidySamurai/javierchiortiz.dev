@@ -11,6 +11,8 @@ export default function CustomCursor() {
   const ry = useSpring(my, { stiffness: 180, damping: 18, mass: 0.5 });
 
   useEffect(() => {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
     const move = (e: MouseEvent) => {
       mx.set(e.clientX);
       my.set(e.clientY);
