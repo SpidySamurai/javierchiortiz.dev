@@ -7,6 +7,7 @@ import Timeline from '@/components/2026/sections/Timeline';
 import Projects from '@/components/2026/sections/Projects';
 import About from '@/components/2026/sections/About';
 import Footer from '@/components/2026/sections/Footer';
+import BlogPreview from '@/components/2026/sections/BlogPreview';
 import FlatCat from '@/components/FlatCat';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
 import BackToTop from '@/components/2026/ui/BackToTop';
@@ -29,6 +30,7 @@ export default function Home() {
         <Timeline />
         <Projects />
         <About />
+        <BlogPreview />
         <Footer />
       </main>
     </div>
