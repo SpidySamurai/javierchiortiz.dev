@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { prepareWithSegments, measureNaturalWidth } from '@chenglou/pretext';
 import { TOP_SONGS } from '@/data/twentyOnePilotsSongs';
@@ -13,6 +14,7 @@ const SYMBOL_RADIUS = 88;
 const SYMBOL_HPAD = 24;
 const SYMBOL_VPAD = 4;
 const MOUSE_RADIUS = 80;
+const SHOW_TEXT = false;
 const SPEEDS = [0.45, 0.62, 0.38, 0.55, 0.48, 0.60, 0.40, 0.52, 0.44];
 const BASE_OPACITIES = [0.14, 0.10, 0.18, 0.12, 0.16, 0.10, 0.20, 0.12, 0.15];
 
@@ -61,6 +63,8 @@ export default function SongHero() {
 
     const rows: RowEl[] = [];
     const offsets = SPEEDS.map((_, i) => (i * textWidth) / ROW_COUNT);
+
+    if (!SHOW_TEXT) return;
 
     for (let i = 0; i < ROW_COUNT; i++) {
       const rowTop = rowAreaTop + i * LINE_H;
@@ -172,11 +176,23 @@ export default function SongHero() {
       className="relative w-full h-[480px] overflow-hidden select-none"
       style={{ background: '#050505' }}
     >
+      {/* Background photo */}
+      <Image
+        src="/blog/top-live-ao-arena.webp"
+        alt="Twenty One Pilots live"
+        fill
+        className="object-cover object-top"
+        sizes="100vw"
+        priority
+      />
+      {/* Dark overlay to keep text legible */}
+      <div className="absolute inset-0" style={{ background: 'rgba(5,5,5,0.72)' }} />
+
       {/* |-/ symbol */}
       <div
         ref={symbolRef}
         className="absolute z-20 pointer-events-none"
-        style={{ transform: 'translate(-50%, -50%)' }}
+        style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
       >
         <div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 rounded-full"
