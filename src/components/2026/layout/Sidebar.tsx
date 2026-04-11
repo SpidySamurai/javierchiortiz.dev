@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 
 const NAV_IDS = [
@@ -14,8 +16,13 @@ const SECTION_IDS = ['experience', 'projects', 'about'];
 
 export default function Sidebar() {
   const t = useTranslations('common');
+  const locale = useLocale();
+  const pathname = usePathname();
   const [active, setActive] = useState<string>('');
   const { isUnlocked, openCard } = useGamerCard();
+  const isBlogActive = pathname.startsWith(`/${locale}/blog`);
+  const isHome = !isBlogActive;
+  const sectionHref = (id: string) => isHome ? `#${id}` : `/${locale}#${id}`;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -71,7 +78,7 @@ export default function Sidebar() {
           return (
             <a
               key={id}
-              href={`#${id}`}
+              href={sectionHref(id)}
               className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
               style={{
                 transform: isActive ? 'translateX(4px)' : 'translateX(0)',
@@ -86,6 +93,20 @@ export default function Sidebar() {
             </a>
           );
         })}
+        <Link
+          href={`/${locale}/blog`}
+          className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
+          style={{
+            transform: isBlogActive ? 'translateX(4px)' : 'translateX(0)',
+            fontFamily: 'var(--font-manrope), sans-serif',
+            fontWeight: 700,
+            color: isBlogActive ? 'var(--ds-primary)' : 'var(--ds-outline)',
+            backgroundColor: isBlogActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
+          }}
+        >
+          <span className="material-symbols-outlined text-[20px]">edit_note</span>
+          Blog
+        </Link>
       </nav>
       </div>
 
