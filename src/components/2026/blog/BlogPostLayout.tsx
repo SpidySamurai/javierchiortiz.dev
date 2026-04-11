@@ -44,17 +44,6 @@ export default function BlogPostLayout({ post, locale, heroSlot, midSlot }: Blog
 
       <main className="lg:ml-64 pt-20">
         <article style={{ backgroundColor: 'var(--ds-bg)' }}>
-          {/* Back button */}
-          <div className="px-8 pt-10 max-w-4xl mx-auto">
-            <Link
-              href={`/${locale}/blog`}
-              className="inline-flex items-center gap-2 text-sm font-bold transition-opacity hover:opacity-70"
-              style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
-            >
-              ← Blog
-            </Link>
-          </div>
-
           {/* Hero */}
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
@@ -67,6 +56,17 @@ export default function BlogPostLayout({ post, locale, heroSlot, midSlot }: Blog
               <BlogCover theme={post.coverTheme} height="420px" />
             )}
           </motion.div>
+
+          {/* Back button */}
+          <div className="px-8 mt-8 max-w-4xl mx-auto">
+            <Link
+              href={`/${locale}/blog`}
+              className="inline-flex items-center gap-2 text-sm font-bold transition-opacity hover:opacity-70"
+              style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              ← Blog
+            </Link>
+          </div>
 
           {/* Meta row */}
           <motion.div
