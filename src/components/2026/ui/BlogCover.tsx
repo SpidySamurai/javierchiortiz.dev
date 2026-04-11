@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 interface BlogCoverProps {
   theme: 'pilots' | 'spiderman';
   height?: string;
@@ -7,47 +9,27 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
   if (theme === 'pilots') {
     return (
       <div
-        className="relative w-full overflow-hidden flex items-center justify-center"
-        style={{
-          height,
-          background: 'radial-gradient(ellipse at 85% 15%, rgba(180,0,0,0.18) 0%, transparent 55%), #0a0a0a',
-        }}
+        className="relative w-full overflow-hidden"
+        style={{ height }}
       >
-        {/* Faint |-/ symbol */}
-        <span
-          className="select-none pointer-events-none absolute"
-          style={{
-            fontFamily: 'var(--font-manrope), sans-serif',
-            fontSize: 'clamp(80px, 18vw, 160px)',
-            fontWeight: 900,
-            color: '#ffffff',
-            opacity: 0.05,
-            letterSpacing: '-0.04em',
-            userSelect: 'none',
-          }}
-        >
-          |-/
-        </span>
-        {/* Accent line */}
-        <div
-          className="absolute top-0 right-0 w-1"
-          style={{
-            height: '100%',
-            background: 'linear-gradient(to bottom, #b00000 0%, transparent 70%)',
-            opacity: 0.6,
-          }}
+        <Image
+          src="/blog/top-live-ao-arena.webp"
+          alt="Twenty One Pilots live at AO Arena Manchester, May 2025"
+          fill
+          className="object-cover object-center"
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
-        {/* Small |-/ label */}
+        {/* Dark overlay */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.2) 60%, transparent 100%)' }}
+        />
+        {/* Photo credit */}
         <span
-          className="relative z-10 font-black tracking-widest"
-          style={{
-            fontFamily: 'var(--font-manrope), sans-serif',
-            fontSize: '13px',
-            color: 'rgba(255,255,255,0.25)',
-            letterSpacing: '0.2em',
-          }}
+          className="absolute bottom-2 right-3 text-[9px] select-none pointer-events-none"
+          style={{ color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-inter), sans-serif' }}
         >
-          |-/
+          © Chris Bethell
         </span>
       </div>
     );
@@ -55,60 +37,19 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
 
   // spiderman theme
   return (
-    <div
-      className="relative w-full overflow-hidden"
-      style={{
-        height,
-        background: 'radial-gradient(ellipse at 30% 60%, rgba(180,0,0,0.2) 0%, transparent 55%), #0d0d1a',
-      }}
-    >
-      {/* Diagonal red accent */}
-      <div
-        className="absolute"
-        style={{
-          width: '200%',
-          height: '3px',
-          background: 'linear-gradient(90deg, transparent 0%, #cc0000 40%, transparent 100%)',
-          top: '38%',
-          left: '-50%',
-          transform: 'rotate(-12deg)',
-          opacity: 0.5,
-        }}
+    <div className="relative w-full overflow-hidden" style={{ height }}>
+      <Image
+        src="/blog/spiderman-cover.jpg"
+        alt="Spider-Man — Peter Parker"
+        fill
+        className="object-cover object-center"
+        sizes="(max-width: 768px) 100vw, 50vw"
       />
-      <div
-        className="absolute"
-        style={{
-          width: '200%',
-          height: '1px',
-          background: 'linear-gradient(90deg, transparent 0%, #1a44cc 50%, transparent 100%)',
-          top: '55%',
-          left: '-50%',
-          transform: 'rotate(-12deg)',
-          opacity: 0.35,
-        }}
-      />
-      {/* Subtle web radial */}
+      {/* Dark overlay */}
       <div
         className="absolute inset-0"
-        style={{
-          background: 'radial-gradient(circle at 70% 30%, rgba(26, 68, 204, 0.12) 0%, transparent 60%)',
-        }}
+        style={{ background: 'linear-gradient(to top, rgba(13,12,20,0.75) 0%, rgba(13,12,20,0.2) 60%, transparent 100%)' }}
       />
-      {/* Spider icon hint */}
-      <div
-        className="absolute inset-0 flex items-center justify-center"
-      >
-        <span
-          className="material-symbols-outlined select-none pointer-events-none"
-          style={{
-            fontSize: 'clamp(56px, 12vw, 96px)',
-            color: '#ffffff',
-            opacity: 0.04,
-          }}
-        >
-          bug_report
-        </span>
-      </div>
     </div>
   );
 }
