@@ -23,6 +23,12 @@ export const BLOG_THEMES: Record<string, BlogTheme> = {
     primary: '#cc1a1a',
     onSurface: '#ede8f0',
   },
+  karate: {
+    bg: '#080808',
+    surface: '#111010',
+    primary: '#c82020',
+    onSurface: '#f0eeec',
+  },
 };
 
 export function getTheme(key?: string): BlogTheme {

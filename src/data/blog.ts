@@ -3,7 +3,7 @@ export interface BlogPost {
   date: string;
   category: string;
   readTime: string;
-  coverTheme: 'pilots' | 'spiderman';
+  coverTheme: 'pilots' | 'spiderman' | 'karate';
   theme?: string;
   youtubeId?: string;
 }
@@ -25,5 +25,13 @@ export const blogPosts: BlogPost[] = [
     readTime: '7 min read',
     coverTheme: 'spiderman',
     theme: 'spiderman',
+  },
+  {
+    slug: 'karate',
+    date: 'April 2026',
+    category: 'Life',
+    readTime: '5 min read',
+    coverTheme: 'karate',
+    theme: 'karate',
   },
 ];
