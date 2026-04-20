@@ -18,7 +18,6 @@ const SHOW_TEXT = false;
 const SPEEDS = [0.45, 0.62, 0.38, 0.55, 0.48, 0.60, 0.40, 0.52, 0.44];
 const BASE_OPACITIES = [0.14, 0.10, 0.18, 0.12, 0.16, 0.10, 0.20, 0.12, 0.15];
 
-// No |-/ in the text — only the central symbol
 const UNIT_TEXT = TOP_SONGS.join('  ·  ') + '  ·  ';
 const TEXT_TRACK = UNIT_TEXT.repeat(6);
 
@@ -176,7 +175,6 @@ export default function SongHero() {
       className="relative w-full h-[480px] overflow-hidden select-none"
       style={{ background: '#050505' }}
     >
-      {/* Background photo */}
       <Image
         src="/blog/top-live-ao-arena.webp"
         alt="Twenty One Pilots live"
@@ -185,10 +183,8 @@ export default function SongHero() {
         sizes="100vw"
         priority
       />
-      {/* Dark overlay to keep text legible */}
       <div className="absolute inset-0" style={{ background: 'rgba(5,5,5,0.72)' }} />
 
-      {/* |-/ symbol */}
       <div
         ref={symbolRef}
         className="absolute z-20 pointer-events-none"
@@ -229,7 +225,6 @@ export default function SongHero() {
         </motion.span>
       </div>
 
-      {/* Bottom fade */}
       <div
         className="absolute bottom-0 left-0 w-full pointer-events-none z-10"
         style={{ height: '35%', background: 'linear-gradient(to top, var(--ds-bg) 0%, transparent 100%)' }}

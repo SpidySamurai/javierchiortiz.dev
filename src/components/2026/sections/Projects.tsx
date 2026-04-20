@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaGithub } from 'react-icons/fa';
 import { useTranslations } from 'next-intl';
@@ -61,9 +62,10 @@ function ProjectImage({ imageUrl, title }: { imageUrl: string; title: string }) 
     );
   }
   return (
-    <img
+    <Image
       src={imageUrl}
       alt={title}
+      fill
       className="absolute inset-0 w-full object-cover object-top transition-transform duration-[3500ms] ease-out group-hover:translate-y-[-8%]"
       style={{ height: '115%', top: 0 }}
     />
