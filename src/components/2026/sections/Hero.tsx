@@ -220,28 +220,25 @@ export default function Hero() {
     requestAnimationFrame(animate);
   };
 
-  // Comets during typing — fire a couple while text appears
   useEffect(() => {
     if (!particlesReady) return;
     const timers = [600, 1400].map((d) => setTimeout(fireComet, d));
     return () => timers.forEach(clearTimeout);
-  }, [particlesReady]);
+  }, [particlesReady, fireComet]);
 
-  // Burst after typing finishes
   useEffect(() => {
     if (!particlesReady || !typingDone) return;
     const timers = [100, 600, 1200, 2000].map((d) => setTimeout(fireComet, d));
     return () => timers.forEach(clearTimeout);
-  }, [particlesReady, typingDone]);
+  }, [particlesReady, typingDone, fireComet]);
 
-  // Ongoing probabilistic comet every 5s
   useEffect(() => {
     if (!particlesReady || !typingDone) return;
     const interval = setInterval(() => {
       if (Math.random() < 0.4) fireComet();
     }, 5000);
     return () => clearInterval(interval);
-  }, [particlesReady, typingDone]);
+  }, [particlesReady, typingDone, fireComet]);
 
   return (
     <section
