@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { LuTrophy } from 'react-icons/lu';
 import { useMarvelRivals } from '@/hooks/useMarvelRivals';
 
-// UID could be moved to a config or passed as prop, but keeping it here for self-containment as requested.
 const MARVEL_UID = '1774670402';
 
 export const MarvelRivalsWidget = () => {
@@ -27,9 +27,11 @@ export const MarvelRivalsWidget = () => {
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 flex items-center justify-center">
             {marvelData.rankIcon && !rankIconError ? (
-              <img
+              <Image
                 src={marvelData.rankIcon}
                 alt="Rank"
+                width={16}
+                height={16}
                 className="w-full h-full object-contain"
                 onError={() => setRankIconError(true)}
               />
@@ -43,15 +45,16 @@ export const MarvelRivalsWidget = () => {
         </div>
       </div>
 
-      {/* Peak Rank Row */}
       <div className="flex items-center justify-between">
         <span className="text-xs text-gray-500 font-medium">Max Rank</span>
         <div className="flex items-center gap-2 opacity-80">
           <div className="w-4 h-4 flex items-center justify-center">
             {marvelData.peakRankIcon && !peakRankIconError ? (
-              <img
+              <Image
                 src={marvelData.peakRankIcon}
                 alt="Max Rank"
+                width={16}
+                height={16}
                 className="w-full h-full object-contain"
                 onError={() => setPeakRankIconError(true)}
               />

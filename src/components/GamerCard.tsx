@@ -3,7 +3,6 @@
 import React from 'react';
 import { useLanyard } from '@/hooks/useLanyard';
 
-// Atomic Components
 import { UserProfile } from './gamer-card/UserProfile';
 import { BadgeList } from './gamer-card/BadgeList';
 import { MarvelRivalsWidget } from './gamer-card/MarvelRivalsWidget';
@@ -21,7 +20,6 @@ const DISCORD_ID = '363896212874723331';
 export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
   const { data: lanyardData } = useLanyard({ userId: DISCORD_ID });
 
-  // Live Timer for progress bars
   const [currentTime, setCurrentTime] = React.useState(Date.now());
 
   React.useEffect(() => {
@@ -31,7 +29,6 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
     return () => clearInterval(interval);
   }, [isOpen]);
 
-  // Lock body scroll
   React.useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -43,7 +40,6 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
     };
   }, [isOpen]);
 
-  // Derived Status Color & Label
   const getStatusInfo = (status?: string) => {
     switch (status) {
       case 'online':

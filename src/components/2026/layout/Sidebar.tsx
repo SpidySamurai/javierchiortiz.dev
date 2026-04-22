@@ -125,21 +125,6 @@ export default function Sidebar() {
           </button>
         )}
 
-        {/* Download CV button */}
-        <a
-          href="/cv-javier-chi.pdf"
-          download
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-bold uppercase tracking-widest text-xs transition-opacity hover:opacity-90"
-          style={{
-            background: 'linear-gradient(135deg, #c0c1ff, #8083ff)',
-            color: '#1000a9',
-            fontFamily: 'var(--font-manrope), sans-serif',
-          }}
-        >
-          <span className="material-symbols-outlined text-[18px]">download</span>
-          {t('download_cv')}
-        </a>
-
         {/* Social links */}
         <div className="flex flex-col gap-2 pt-4 px-1">
           <a

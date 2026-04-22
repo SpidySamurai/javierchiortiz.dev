@@ -4,26 +4,14 @@ import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
-// |-/ as constellation — 3 stars per symbol
 const STARS = [
-  // |
-  { x: 0.28, y: 0.22 }, // 0
-  { x: 0.28, y: 0.50 }, // 1
-  { x: 0.28, y: 0.78 }, // 2
-  // -
-  { x: 0.42, y: 0.50 }, // 3
-  { x: 0.50, y: 0.50 }, // 4
-  { x: 0.58, y: 0.50 }, // 5
-  // /
-  { x: 0.64, y: 0.78 }, // 6
-  { x: 0.68, y: 0.50 }, // 7
-  { x: 0.72, y: 0.22 }, // 8
+  { x: 0.28, y: 0.22 }, { x: 0.28, y: 0.50 }, { x: 0.28, y: 0.78 },
+  { x: 0.42, y: 0.50 }, { x: 0.50, y: 0.50 }, { x: 0.58, y: 0.50 },
+  { x: 0.64, y: 0.78 }, { x: 0.68, y: 0.50 }, { x: 0.72, y: 0.22 },
 ];
 
 const LINES: [number, number][] = [
-  [0, 1], [1, 2], // |
-  [3, 4], [4, 5], // -
-  [6, 7], [7, 8], // /
+  [0, 1], [1, 2], [3, 4], [4, 5], [6, 7], [7, 8],
 ];
 
 const AMBIENT = [
@@ -43,7 +31,6 @@ const GROUPS = [
   { starStart: 0.65, lineStart: 0.76, starIndices: [6, 7, 8], lineIndices: [4, 5] },
 ];
 
-// Blurryface era: red and black
 const CONFETTI_COLORS = ['#e63946', '#cc0000', '#ff1a1a', '#1a1a1a', '#2a2a2a', '#ff4444'];
 
 function easeOut(t: number) { return 1 - Math.pow(1 - t, 3); }
@@ -53,12 +40,10 @@ function remap(t: number, a: number, b: number) { return clamp01((t - a) / (b - 
 export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Confetti rain from above — like TØP concert finale
   useEffect(() => {
     let stopped = false;
     let frame: number;
 
-    // Fire small batches continuously for 4s, raining from top
     const rain = () => {
       if (stopped) return;
       confetti({
@@ -77,7 +62,6 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
       frame = requestAnimationFrame(rain);
     };
 
-    // Initial burst from both sides to kick it off
     confetti({
       particleCount: 120,
       angle: 60,
