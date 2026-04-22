@@ -67,7 +67,6 @@ function ProjectImage({ imageUrl, title }: { imageUrl: string; title: string }) 
       alt={title}
       fill
       className="absolute inset-0 w-full object-cover object-top transition-transform duration-[3500ms] ease-out group-hover:translate-y-[-8%]"
-      style={{ height: '115%', top: 0 }}
     />
   );
 }
