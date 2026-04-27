@@ -65,27 +65,27 @@
     "enti": {
       "title": "Full Stack at ENTI",
       "date": "Aug 2023 - Present",
-      "description": "Built and maintained scalable UI interfaces for data-intensive applications, enabling internal teams and external clients to query dynamic dashboards and tools. Led the development of a multipage responsive portal and collaborated with backend to integrate secure APIs and optimize user flows. Currently developing a mobile-first web e-wallet focused on account views and real-time transactions with secure sessions."
+      "description": "End-to-end web product delivery for US and LATAM clients.\n\nCurrently in production: mobile-first e-wallet in Next.js with secure sessions — HTTPOnly cookies, token refresh, and protected REST endpoints. Migrated the data layer from DynamoDB to Django microservices and legacy Power BI dashboards to SparkSQL jobs in Scala on Superset."
     },
     "softtek": {
       "title": "Full Stack at Softtek",
-      "date": "Jun 2022 - Mar 2024",
-      "description": "Provided maintenance support by migrating pages, resolving incidents, and implementing solutions together with developers and QA. Contributed to system improvements and ensured operation through testing, communication with users, and backend data adjustments."
+      "date": "Jun 2022 - Aug 2023",
+      "description": "Regulated loan management platform for US lending operations across multiple state jurisdictions.\n\nBuilt jurisdiction-configurable form rules: one codebase enforcing state-by-state regulatory requirements without forking. Contributed to a multi-quarter .NET legacy migration and took end-to-end ownership of triage — bugs, new form fields, and registration logic in a regulated environment."
     },
     "scandia": {
-      "title": "FrontEnd at Scandia",
+      "title": "Full Stack at Scandia",
       "date": "Jan 2020 - Jun 2022",
-      "description": "Implemented and optimized e-commerce interfaces focused on performance, SEO, and multi-device responsiveness. Worked with a semi-senior UI/UX and the marketing team to bring designs to production, customize stores, and improve customer experience with interactive elements and optimized layouts."
+      "description": "Frontend and technical SEO for Scandia's e-commerce storefront portfolio — saunas, spas, and wellness products.\n\nPerformance and SEO optimizations that improved organic ranking and top-of-funnel traffic across multiple brands. Shopify theme customization, third-party API integration, and pixel-accurate responsive layouts from Figma."
     },
     "iotam": {
-      "title": "FrontEnd at IOTAM",
+      "title": "Full Stack at IOTAM",
       "date": "Jul 2021 - Dec 2021",
-      "description": "Refactored and improved the responsiveness of key application components. Collaborated with backend to ensure reliable data flow from meters, supported data visualization, and elevated the overall interface in coordination with the design team."
+      "description": "IoT startup (field data metering) — refactored the client app to support product growth. Improved component responsiveness and maintainability, coordinated with backend for reliable data flow from physical meters, and worked with design on data visualization and UI states."
     },
     "brightcoders": {
-      "title": "FrontEnd Internship at BrightCoders",
+      "title": "Full Stack Internship at BrightCoders",
       "date": "Feb 2021 - Jul 2021",
-      "description": "Participated in a collaborative program resolving code challenges and iterating solutions in small teams. Built pages based on designs and contributed to a final project with multiple features applying the skills developed during the stay."
+      "description": "Intensive professional development program using Ruby on Rails — code challenges in small teams and a collaborative final project."
     }
   },
   "project_items": {
