@@ -151,7 +151,7 @@ export default function Product() {
                 }}
               >
                 <Image
-                  src="/utils/img/lab2next-screenshot.png"
+                  src="/utils/img/lab2next-app-screenshot.png"
                   alt="Lab2Next SaaS screenshot"
                   width={1280}
                   height={800}
