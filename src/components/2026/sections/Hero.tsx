@@ -305,6 +305,28 @@ export default function Hero() {
           >
             {t('hero_description_long')}
           </motion.p>
+
+          {/* CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: 'easeOut' }}
+            className="flex flex-col gap-1"
+          >
+            <a
+              href="mailto:javierchiortiz@gmail.com"
+              className="text-base font-semibold transition-colors hover:opacity-80"
+              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
+            >
+              {t('hero_cta')}
+            </a>
+            <span
+              className="text-xs italic tracking-widest"
+              style={{ color: 'color-mix(in srgb, var(--ds-primary) 55%, transparent)', fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              {t('hero_cta_sub')}
+            </span>
+          </motion.div>
         </div>
 
         {/* Right — empty until real images are ready */}

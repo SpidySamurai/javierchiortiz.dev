@@ -24,7 +24,7 @@ const TIMELINE_ENTRIES: TimelineEntry[] = [
   {
     key: 'softtek',
     tier: 'tier_enterprise',
-    yearDisplay: ['2022', '2024'],
+    yearDisplay: ['2022', '2023'],
     tech: ['React', 'TypeScript', 'C#', '.NET', 'SQL'],
     url: 'https://www.softtek.com/',
   },
@@ -120,6 +120,23 @@ function TechChip({ label }: { label: string }) {
     >
       {label}
     </motion.span>
+  );
+}
+
+function Description({ text }: { text: string }) {
+  const parts = text.split('\n\n');
+  return (
+    <div className="space-y-2" style={{ fontFamily: 'var(--font-inter), sans-serif' }}>
+      {parts.map((part, i) => (
+        <p
+          key={i}
+          className="text-lg leading-relaxed"
+          style={{ color: i === 0 ? 'var(--ds-on-surface-variant)' : 'color-mix(in srgb, var(--ds-on-surface-variant) 80%, transparent)' }}
+        >
+          {part}
+        </p>
+      ))}
+    </div>
   );
 }
 
@@ -269,12 +286,7 @@ export default function Timeline() {
                           <TechChip key={tech} label={tech} />
                         ))}
                       </motion.div>
-                      <p
-                        className="text-lg leading-relaxed"
-                        style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
-                      >
-                        {item.description}
-                      </p>
+                      <Description text={item.description} />
                     </div>
 
                     {/* Center dot — on the row, aligned with the center line */}
@@ -348,12 +360,7 @@ export default function Timeline() {
                           <TechChip key={tech} label={tech} />
                         ))}
                       </motion.div>
-                      <p
-                        className="text-lg leading-relaxed"
-                        style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
-                      >
-                        {item.description}
-                      </p>
+                      <Description text={item.description} />
                     </div>
                   </div>
                 </motion.div>
