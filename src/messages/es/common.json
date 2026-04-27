@@ -1,5 +1,5 @@
 {
-  "hero_subtitle": "Desarrollador Full Stack",
+  "hero_subtitle": "Ingeniero Full Stack",
   "hero_description": "Creo experiencias web accesibles, pixel-perfect, performantes y atractivas.",
   "about": "Sobre mí",
   "about_label": "La persona detrás del código",
@@ -32,7 +32,9 @@
   "hero_headline_pre": "Creando ",
   "hero_headline_accent": "Artefactos",
   "hero_headline_post": " Digitales",
-  "hero_description_long": "Ingeniero full-stack en la intersección de la precisión estética y la robustez técnica. Cinco años construyendo interfaces accesibles y mobile-first — desde productos SaaS y dashboards de datos hasta componentes reutilizables hechos para durar.",
+  "hero_description_long": "Ingeniero full-stack en la intersección de la precisión estética y la robustez técnica. Cinco años entregando productos reales para el mercado US — wallets con autenticación segura, SaaS regulado y plataformas e-commerce mobile-first.",
+  "hero_cta": "Hablemos →",
+  "hero_cta_sub": "disponible · remote · us timezone",
   "hero_comet_caption": "cometas como ideas — breves, únicas, irrepetibles",
   "hero_ticker": "Curador • Desarrollador • Diseñador",
   "projects_label": "Portafolio",
