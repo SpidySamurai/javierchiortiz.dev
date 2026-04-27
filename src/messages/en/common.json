@@ -1,5 +1,5 @@
 {
-  "hero_subtitle": "Full Stack Developer",
+  "hero_subtitle": "Full Stack Engineer",
   "hero_description": "I build scalable, mobile-first digital experiences for the web.",
   "about": "About me",
   "about_label": "The person behind the code",
@@ -32,7 +32,9 @@
   "hero_headline_pre": "Crafting ",
   "hero_headline_accent": "Digital",
   "hero_headline_post": " Artifacts",
-  "hero_description_long": "A full-stack engineer at the intersection of aesthetic precision and technical robustness. Five years crafting accessible, mobile-first interfaces — from SaaS products and data dashboards to reusable components built to last.",
+  "hero_description_long": "A full-stack engineer at the intersection of aesthetic precision and technical robustness. Five years delivering real products for the US market — secure-auth fintech wallets, regulated SaaS, and mobile-first e-commerce platforms.",
+  "hero_cta": "Let's talk →",
+  "hero_cta_sub": "available · remote · us timezone",
   "hero_comet_caption": "comets like ideas — brief, unique, unrepeatable",
   "hero_ticker": "Curator • Developer • Designer",
   "projects_label": "Showcase",
