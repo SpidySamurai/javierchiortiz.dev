@@ -106,25 +106,36 @@ export default function Product() {
                 ))}
               </div>
 
-              <div className="flex flex-col gap-1 pt-2">
+              <div className="flex flex-col gap-3 pt-2">
+                <div className="flex flex-col gap-1">
+                  <a
+                    href="https://app.lab2next.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-base font-semibold transition-colors hover:opacity-80 w-fit"
+                    style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                  >
+                    {t('product_cta')}
+                  </a>
+                  <span
+                    className="text-xs italic tracking-widest"
+                    style={{
+                      color: 'color-mix(in srgb, var(--ds-primary) 55%, transparent)',
+                      fontFamily: 'var(--font-inter), sans-serif',
+                    }}
+                  >
+                    {t('product_cta_sub')}
+                  </span>
+                </div>
                 <a
-                  href="https://app.lab2next.com/"
+                  href="https://lab2next.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-base font-semibold transition-colors hover:opacity-80 w-fit"
-                  style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                  className="text-sm font-medium transition-colors hover:opacity-80 w-fit"
+                  style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-manrope), sans-serif' }}
                 >
-                  {t('product_cta')}
+                  {t('product_info')}
                 </a>
-                <span
-                  className="text-xs italic tracking-widest"
-                  style={{
-                    color: 'color-mix(in srgb, var(--ds-primary) 55%, transparent)',
-                    fontFamily: 'var(--font-inter), sans-serif',
-                  }}
-                >
-                  {t('product_cta_sub')}
-                </span>
               </div>
             </div>
           </div>
