@@ -65,27 +65,27 @@
     "enti": {
       "title": "Full Stack en ENTI",
       "date": "Ago 2023 - Presente",
-      "description": "Construí y mantuve interfaces UI escalables para aplicaciones con datos intensivos, habilitando a equipos internos y clientes externos a consultar tableros dinámicos y herramientas. Lideré el desarrollo de un portal responsivo multipágina y colaboré con backend para integrar APIs seguras y optimizar los flujos de usuario. Actualmente desarrollo una e-wallet web mobile-first enfocada en vistas de cuentas y transacciones en tiempo real con sesiones seguras."
+      "description": "Diseño y entrego productos web de extremo a extremo para clientes del mercado US y LATAM.\n\nActualmente en producción: e-wallet mobile-first en Next.js con sesiones seguras — cookies HTTPOnly, refresh tokens y endpoints REST protegidos. Migré el data layer de DynamoDB a microservicios Django y de dashboards Power BI a jobs SparkSQL en Scala sobre Superset."
     },
     "softtek": {
       "title": "Full Stack en Softtek",
-      "date": "Jun 2022 - Mar 2024",
-      "description": "Brindé soporte de mantenimiento migrando páginas, resolviendo incidencias e implementando soluciones junto a desarrolladores y QA. Contribuí a mejoras del sistema y aseguré la operación mediante pruebas, comunicación con usuarios y ajustes de datos en backend."
+      "date": "Jun 2022 - Ago 2023",
+      "description": "Plataforma regulada de loan management para operaciones de US lending en múltiples jurisdicciones estatales.\n\nConstruí reglas de formulario configurables por jurisdicción: un codebase que cumple requisitos regulatorios estado por estado sin forkear. Contribuí a la migración de .NET legacy hacia framework moderno y tomé ownership del triaje end-to-end — bugs, nuevos campos y lógica de registro en entorno regulado."
     },
     "scandia": {
-      "title": "FrontEnd en Scandia",
+      "title": "Full Stack en Scandia",
       "date": "Ene 2020 - Jun 2022",
-      "description": "Implementé y optimicé interfaces e-commerce enfocadas en rendimiento, SEO y respuesta en múltiples dispositivos. Trabajé con un UI/UX semi senior y el equipo de marketing para llevar diseños a producción, personalizar tiendas y mejorar la experiencia del cliente con elementos interactivos y layouts optimizados."
+      "description": "Frontend y SEO técnico para el portafolio de storefronts e-commerce de Scandia — saunas, spas y productos de bienestar.\n\nOptimizaciones de performance y SEO que mejoraron ranking orgánico y tráfico top-of-funnel a través de múltiples marcas. Customización de temas Shopify, integración de APIs de terceros y layouts responsive pixel-accurate desde Figma."
     },
     "iotam": {
-      "title": "FrontEnd en IOTAM",
+      "title": "Full Stack en IOTAM",
       "date": "Jul 2021 - Dic 2021",
-      "description": "Refactoricé y mejoré la responsividad de componentes clave de la aplicación. Colaboré con backend para asegurar el flujo confiable de datos desde medidores, apoyé la visualización de datos y elevé la interfaz general en coordinación con el equipo de diseño."
+      "description": "Startup de IoT (medición de datos en campo) — refactorización de la app cliente para soportar el crecimiento del producto. Mejoré responsividad y mantenibilidad de componentes clave, coordiné con backend para flujo confiable desde medidores físicos y trabajé con diseño en visualización de datos y estados de UI."
     },
     "brightcoders": {
-      "title": "FrontEnd Internship en BrightCoders",
+      "title": "Full Stack Internship en BrightCoders",
       "date": "Feb 2021 - Jul 2021",
-      "description": "Participé en un programa colaborativo resolviendo retos de código e iterando soluciones en equipos pequeños. Construí páginas basadas en diseños y contribuí a un proyecto final con múltiples features aplicando las habilidades desarrolladas durante la estancia."
+      "description": "Programa intensivo de desarrollo profesional con Ruby on Rails — resolución de retos en equipos pequeños y proyecto final colaborativo."
     }
   },
   "project_items": {
