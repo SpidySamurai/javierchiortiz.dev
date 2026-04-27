@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 const STACK = ['Next.js', 'React', 'TypeScript', 'NestJS', 'Node.js', 'PostgreSQL', 'Prisma'];
 
@@ -60,9 +61,9 @@ export default function Product() {
             }}
           />
 
-          <div className="relative z-10 flex flex-col md:flex-row gap-10 md:gap-16 items-start">
+          <div className="relative z-10 flex flex-col md:flex-row gap-10 md:gap-12 items-center">
             {/* Left: content */}
-            <div className="flex-1 space-y-6">
+            <div className="flex-1 space-y-6 md:w-1/2">
               <div className="flex items-center gap-3 flex-wrap">
                 <span
                   className="text-3xl md:text-4xl font-black tracking-tight"
@@ -136,6 +137,34 @@ export default function Product() {
                 >
                   {t('product_info')}
                 </a>
+              </div>
+            </div>
+
+            {/* Right: screenshot */}
+            <div className="md:w-1/2 w-full flex-shrink-0">
+              <div
+                className="relative rounded-xl overflow-hidden border"
+                style={{
+                  borderColor: 'color-mix(in srgb, var(--ds-primary) 20%, transparent)',
+                  boxShadow: '0 24px 60px color-mix(in srgb, var(--ds-primary) 12%, transparent)',
+                  transform: 'perspective(1000px) rotateY(-4deg) rotateX(2deg)',
+                }}
+              >
+                <Image
+                  src="/utils/img/lab2next-screenshot.png"
+                  alt="Lab2Next SaaS screenshot"
+                  width={1280}
+                  height={800}
+                  className="w-full h-auto block"
+                  style={{ maxHeight: '340px', objectFit: 'cover', objectPosition: 'top' }}
+                />
+                {/* Bottom fade */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(to bottom, transparent, var(--ds-surface))',
+                  }}
+                />
               </div>
             </div>
           </div>
