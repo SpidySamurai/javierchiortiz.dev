@@ -1,16 +1,16 @@
 {
-  "hero_subtitle": "Full Stack Developer",
+  "hero_subtitle": "Full Stack Engineer",
   "hero_description": "I build scalable, mobile-first digital experiences for the web.",
   "about": "About me",
   "about_label": "The person behind the code",
   "about_title": "Who",
   "about_title_accent": "I Am",
-  "about_paragraph_1": "I am a Full Stack Developer with over 5 years of experience building accessible, responsive, and secure interfaces. I focus on creating clean, maintainable code while collaborating with other teams to deliver intuitive experiences.",
-  "about_paragraph_2": "My main stack includes React, Next.js, TypeScript, and Tailwind CSS. I have worked on e-wallets, data dashboards, component libraries, and internal tools, always with a mobile-first mindset and attention to performance.",
-  "about_paragraph_3": "I am self-taught, proactive, and strive to improve DX, product quality, and accessibility. I enjoy programming, debugging, and refactoring as a team with design, backend, and QA.",
+  "about_paragraph_1": "I'm a full-stack engineer with 5+ years delivering production web products for the US market — fintech with secure authentication, regulated multi-state SaaS, and performance-focused e-commerce platforms.",
+  "about_paragraph_2": "My main stack is React, Next.js, TypeScript, and Tailwind. I've built secure-session e-wallets, data-intensive portals, jurisdiction-configurable platforms, and legacy BI migrations to Spark + Superset.",
+  "about_paragraph_3": "I take end-to-end ownership: from spec to post-launch maintenance. Self-taught, proactive, and obsessive about DX, product quality, and accessibility.",
   "about_paragraph_4": "Outside of work, I practice Shotokan Karate (2nd Dan), learn about technology, and play exploration and fantasy titles. I believe that good code and martial arts share clarity, discipline, and constant improvement.",
-  "about_quote": "I know of no better life purpose than to perish in attempting the great and the impossible.",
-  "about_quote_author": "Friedrich Nietzsche",
+  "about_quote": "I fear not the man who has practiced 10,000 kicks once, but I fear the man who has practiced one kick 10,000 times.",
+  "about_quote_author": "Bruce Lee",
   "duration_yr": "yr",
   "duration_mo": "mo",
   "stack": "Stack",
@@ -32,9 +32,19 @@
   "hero_headline_pre": "Crafting ",
   "hero_headline_accent": "Digital",
   "hero_headline_post": " Artifacts",
-  "hero_description_long": "A full-stack engineer at the intersection of aesthetic precision and technical robustness. Five years crafting accessible, mobile-first interfaces — from SaaS products and data dashboards to reusable components built to last.",
+  "hero_description_long": "A full-stack engineer at the intersection of aesthetic precision and technical robustness. Five years delivering real products for the US market — secure-auth fintech wallets, regulated SaaS, and mobile-first e-commerce platforms.",
+  "hero_cta": "Let's talk →",
+  "hero_cta_sub": "available · remote · us timezone",
   "hero_comet_caption": "comets like ideas — brief, unique, unrepeatable",
   "hero_ticker": "Curator • Developer • Designer",
+  "product_label": "Own Product",
+  "product_title": "SaaS",
+  "product_title_accent": "in Production",
+  "product_badge": "Launched",
+  "product_description": "Lab2Next is a SaaS for clinical laboratories — patient registration, quality control, digital-signature result delivery, full audit trails, and role-based staff management. Guided workflows that reduce errors and accelerate report turnaround. Built, launched, and maintained independently.",
+  "product_cta": "Try free demo →",
+  "product_cta_sub": "free registration · no credit card",
+  "product_info": "Visit site →",
   "projects_label": "Showcase",
   "projects_title": "Gallery of",
   "projects_title_accent": "Work",
@@ -63,27 +73,27 @@
     "enti": {
       "title": "Full Stack at ENTI",
       "date": "Aug 2023 - Present",
-      "description": "Built and maintained scalable UI interfaces for data-intensive applications, enabling internal teams and external clients to query dynamic dashboards and tools. Led the development of a multipage responsive portal and collaborated with backend to integrate secure APIs and optimize user flows. Currently developing a mobile-first web e-wallet focused on account views and real-time transactions with secure sessions."
+      "description": "End-to-end web product delivery for US and LATAM clients.\n\nCurrently in production: mobile-first e-wallet in Next.js with secure sessions — HTTPOnly cookies, token refresh, and protected REST endpoints. Migrated the data layer from DynamoDB to Django microservices and legacy Power BI dashboards to SparkSQL jobs in Scala on Superset."
     },
     "softtek": {
       "title": "Full Stack at Softtek",
-      "date": "Jun 2022 - Mar 2024",
-      "description": "Provided maintenance support by migrating pages, resolving incidents, and implementing solutions together with developers and QA. Contributed to system improvements and ensured operation through testing, communication with users, and backend data adjustments."
+      "date": "Jun 2022 - Aug 2023",
+      "description": "Regulated loan management platform for US lending operations across multiple state jurisdictions.\n\nBuilt jurisdiction-configurable form rules: one codebase enforcing state-by-state regulatory requirements without forking. Contributed to a multi-quarter .NET legacy migration and took end-to-end ownership of triage — bugs, new form fields, and registration logic in a regulated environment."
     },
     "scandia": {
-      "title": "FrontEnd at Scandia",
+      "title": "Full Stack at Scandia",
       "date": "Jan 2020 - Jun 2022",
-      "description": "Implemented and optimized e-commerce interfaces focused on performance, SEO, and multi-device responsiveness. Worked with a semi-senior UI/UX and the marketing team to bring designs to production, customize stores, and improve customer experience with interactive elements and optimized layouts."
+      "description": "Frontend and technical SEO for Scandia's e-commerce storefront portfolio — saunas, spas, and wellness products.\n\nPerformance and SEO optimizations that improved organic ranking and top-of-funnel traffic across multiple brands. Shopify theme customization, third-party API integration, and pixel-accurate responsive layouts from Figma."
     },
     "iotam": {
-      "title": "FrontEnd at IOTAM",
+      "title": "Full Stack at IOTAM",
       "date": "Jul 2021 - Dec 2021",
-      "description": "Refactored and improved the responsiveness of key application components. Collaborated with backend to ensure reliable data flow from meters, supported data visualization, and elevated the overall interface in coordination with the design team."
+      "description": "IoT startup (field data metering) — refactored the client app to support product growth. Improved component responsiveness and maintainability, coordinated with backend for reliable data flow from physical meters, and worked with design on data visualization and UI states."
     },
     "brightcoders": {
-      "title": "FrontEnd Internship at BrightCoders",
+      "title": "Full Stack Internship at BrightCoders",
       "date": "Feb 2021 - Jul 2021",
-      "description": "Participated in a collaborative program resolving code challenges and iterating solutions in small teams. Built pages based on designs and contributed to a final project with multiple features applying the skills developed during the stay."
+      "description": "Intensive professional development program using Ruby on Rails — code challenges in small teams and a collaborative final project."
     }
   },
   "project_items": {

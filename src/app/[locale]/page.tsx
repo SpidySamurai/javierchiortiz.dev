@@ -5,6 +5,7 @@ import Sidebar from '@/components/2026/layout/Sidebar';
 import Hero from '@/components/2026/sections/Hero';
 import Timeline from '@/components/2026/sections/Timeline';
 import Projects from '@/components/2026/sections/Projects';
+import Product from '@/components/2026/sections/Product';
 import About from '@/components/2026/sections/About';
 import Footer from '@/components/2026/sections/Footer';
 import BlogPreview from '@/components/2026/sections/BlogPreview';
@@ -28,6 +29,7 @@ export default function Home() {
       <main className="lg:ml-64 pt-20">
         <Hero />
         <Timeline />
+        <Product />
         <Projects />
         <About />
         <BlogPreview />
