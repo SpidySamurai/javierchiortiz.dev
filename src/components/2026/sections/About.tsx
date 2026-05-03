@@ -79,9 +79,8 @@ function TechChip({ tech, globalIndex, muted = false }: { tech: Tech; globalInde
       whileHover={{ scale: 1.08 }}
       className="flex items-center gap-2 px-3 py-2 rounded-xl cursor-default select-none"
       style={{
-        backgroundColor: muted ? 'color-mix(in srgb, var(--ds-primary) 3%, transparent)' : 'color-mix(in srgb, var(--ds-primary) 6%, transparent)',
-        border: '1px solid color-mix(in srgb, var(--ds-primary) 10%, transparent)',
-        backdropFilter: 'blur(8px)',
+        backgroundColor: muted ? 'color-mix(in srgb, var(--ds-primary) 3%, var(--ds-surface))' : 'color-mix(in srgb, var(--ds-primary) 8%, var(--ds-surface))',
+        border: '1px solid color-mix(in srgb, var(--ds-primary) 12%, transparent)',
         animation: `float-y ${floatDuration(globalIndex)}s ease-in-out ${floatDelay(globalIndex)}s infinite`,
         transition: 'box-shadow 0.3s ease, border-color 0.3s ease',
       }}
@@ -213,15 +212,22 @@ export default function About() {
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="pt-4 pl-5 relative"
-            style={{ borderLeft: '2px solid color-mix(in srgb, var(--ds-primary) 30%, transparent)' }}
+            transition={{ delay: 0.3, duration: 0.35 }}
+            className="pt-5 px-5 pb-5 rounded-xl relative"
+            style={{ backgroundColor: 'color-mix(in srgb, var(--ds-primary) 6%, transparent)' }}
           >
+            <span
+              className="block text-3xl font-black leading-none mb-2 select-none"
+              style={{ color: 'var(--ds-primary)', opacity: 0.4, fontFamily: 'var(--font-manrope), sans-serif' }}
+              aria-hidden="true"
+            >
+              &ldquo;
+            </span>
             <p
-              className="text-sm leading-relaxed italic mb-2"
+              className="text-sm leading-relaxed italic mb-3"
               style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
             >
-              &ldquo;{t('about_quote')}&rdquo;
+              {t('about_quote')}
             </p>
             <cite
               className="text-xs not-italic tracking-widest uppercase"

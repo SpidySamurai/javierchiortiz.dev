@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import ThemeToggle from '@/components/2026/ui/ThemeToggle';
 import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 
 const NAV_IDS = [
@@ -44,7 +45,7 @@ function MobileDrawer({
       <div
         aria-hidden
         onClick={onClose}
-        className="ds-2026 fixed inset-0 transition-opacity duration-200 lg:hidden"
+        className="ds-2026 fixed inset-0 transition-opacity duration-200 xl:hidden"
         style={{
           background: 'color-mix(in srgb, var(--ds-bg) 80%, transparent)',
           opacity: open ? 1 : 0,
@@ -58,7 +59,7 @@ function MobileDrawer({
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
-        className="ds-2026 fixed top-0 left-0 h-full w-64 flex flex-col pt-6 p-6 transition-transform duration-300 lg:hidden"
+        className="ds-2026 fixed top-0 left-0 h-full w-64 flex flex-col pt-6 p-6 transition-transform duration-300 xl:hidden"
         style={{
           backgroundColor: 'var(--ds-surface)',
           transform: open ? 'translateX(0)' : 'translateX(-100%)',
@@ -75,8 +76,8 @@ function MobileDrawer({
               Javier Chi Ortíz
             </span>
             <span
-              className="uppercase tracking-widest"
-              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif', fontSize: '10px' }}
+              className="uppercase tracking-widest text-xs"
+              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
             >
               {t('hero_subtitle')}
             </span>
@@ -147,20 +148,20 @@ function MobileDrawer({
               href="https://github.com/SpidySamurai"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-medium transition-colors"
+              className="flex items-center gap-1.5 text-xs font-medium transition-colors hover:text-[color:var(--ds-on-surface-variant)]"
               style={{ color: 'var(--ds-outline)' }}
             >
-              <span className="material-symbols-outlined text-[16px]">code</span>
+              <FaGithub size={14} aria-hidden="true" />
               GitHub
             </a>
             <a
               href="https://www.linkedin.com/in/javier-fernando-chi-ortiz/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-medium transition-colors"
+              className="flex items-center gap-1.5 text-xs font-medium transition-colors hover:text-[color:var(--ds-on-surface-variant)]"
               style={{ color: 'var(--ds-outline)' }}
             >
-              <span className="material-symbols-outlined text-[16px]">account_circle</span>
+              <FaLinkedin size={14} aria-hidden="true" />
               LinkedIn
             </a>
           </div>
@@ -202,7 +203,7 @@ export default function Header() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 w-full lg:left-64 lg:w-[calc(100%-16rem)] flex justify-between items-center px-8 py-4 z-50"
+        className="fixed top-0 left-0 w-full xl:left-64 xl:w-[calc(100%-16rem)] flex justify-between items-center px-8 py-4 z-50"
         style={{
           backgroundColor: 'color-mix(in srgb, var(--ds-bg) 60%, transparent)',
           backdropFilter: 'blur(24px)',
@@ -213,13 +214,13 @@ export default function Header() {
         <div />
 
         {/* Desktop controls */}
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden xl:flex items-center gap-3">
           <ThemeToggle />
           <LanguageSwitcher />
         </div>
 
         {/* Mobile controls */}
-        <div className="lg:hidden flex items-center gap-2">
+        <div className="xl:hidden flex items-center gap-2">
           <ThemeToggle />
           <LanguageSwitcher />
           <button

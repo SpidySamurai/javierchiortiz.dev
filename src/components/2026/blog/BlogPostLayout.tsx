@@ -42,7 +42,7 @@ export default function BlogPostLayout({ post, locale, heroSlot, midSlot }: Blog
       <Header />
       <Sidebar />
 
-      <main className="lg:ml-64 pt-20">
+      <main className="xl:ml-64 pt-20">
         <article style={{ backgroundColor: 'var(--ds-bg)' }}>
           {/* Hero */}
           <motion.div

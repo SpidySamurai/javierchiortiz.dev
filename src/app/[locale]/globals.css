@@ -251,3 +251,9 @@ html[data-theme='light'] .ds-2026 {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-7px); }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="float-y"] {
+    animation: none !important;
+  }
+}

@@ -13,9 +13,8 @@ function CategoryPill({ label }: { label: string }) {
     <span
       className="self-start px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
       style={{
-        backgroundColor: 'color-mix(in srgb, var(--ds-secondary-container) 80%, transparent)',
+        backgroundColor: 'var(--ds-secondary-container)',
         color: 'var(--ds-on-secondary)',
-        backdropFilter: 'blur(8px)',
       }}
     >
       {label}
@@ -26,7 +25,7 @@ function CategoryPill({ label }: { label: string }) {
 function SmallChip({ label }: { label: string }) {
   return (
     <span
-      className="px-2 py-0.5 rounded text-[9px] uppercase border"
+      className="px-2 py-0.5 rounded text-[11px] uppercase border"
       style={{
         color: 'var(--ds-outline)',
         borderColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)',
@@ -39,13 +38,15 @@ function SmallChip({ label }: { label: string }) {
 }
 
 function getCategoryLabel(project: DataProject): string {
+  if (project.category === 'entry') return 'Practice';
+  if (project.isWork && project.company) return project.company;
   if (project.isWork) return 'Work';
-  if (project.category === 'entry') return 'Entry';
+  if (project.id === 'lab2next') return 'SaaS';
   return 'Personal';
 }
 
 
-function ProjectImage({ imageUrl, title }: { imageUrl: string; title: string }) {
+function ProjectImage({ imageUrl, title, imagePosition }: { imageUrl: string; title: string; imagePosition?: string }) {
   if (!imageUrl) {
     return (
       <div
@@ -62,12 +63,15 @@ function ProjectImage({ imageUrl, title }: { imageUrl: string; title: string }) 
     );
   }
   return (
-    <Image
-      src={imageUrl}
-      alt={title}
-      fill
-      className="absolute inset-0 w-full object-cover object-top transition-transform duration-[3500ms] ease-out group-hover:translate-y-[-8%]"
-    />
+    <>
+      <Image
+        src={imageUrl}
+        alt={title}
+        fill
+        className="absolute inset-0 w-full object-cover"
+        style={{ objectPosition: imagePosition ?? 'center 8%' }}
+      />
+    </>
   );
 }
 
@@ -101,10 +105,10 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
       exit={{ opacity: 0, y: -40, scale: 0.95 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.55, ease: 'easeOut', delay: (index % 4) * 0.08 }}
-      className={`${shapeClass} group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[0_0_0_1px_rgba(192,193,255,0.15),0_8px_32px_rgba(11,19,38,0.4)]`}
+      className={`${shapeClass} group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[inset_0_0_0_1px_rgba(192,193,255,0.4),0_8px_32px_rgba(11,19,38,0.4)]`}
       style={{ backgroundColor: bgColor }}
     >
-      <ProjectImage imageUrl={project.imageUrl} title={project.title} />
+      <ProjectImage imageUrl={project.imageUrl} title={project.title} imagePosition={project.imagePosition} />
 
       {/* Gradients */}
       {isLarge && (
@@ -117,10 +121,14 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
         />
       )}
       {isTall && (
-        <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(to top, var(--ds-bg) 0%, transparent 60%)' }}
-        />
+        <>
+          {/* Full-card dark tint so light-bg screenshots blend with dark theme */}
+          <div className="absolute inset-0" style={{ backgroundColor: 'rgba(11,19,38,0.35)' }} />
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 20%, transparent) 55%, transparent 100%)' }}
+          />
+        </>
       )}
       {(isSquare || isShort) && (
         <div
@@ -198,7 +206,7 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
               className="text-sm font-medium transition-opacity hover:opacity-70"
               style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
             >
-              {t('project_view_study')}
+              {t('project_view_demo')} →
             </a>
           )}
         </div>
@@ -260,7 +268,7 @@ export default function Projects() {
         <motion.div
           layout
           className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8"
-          style={{ gridAutoRows: 'minmax(240px, auto)' }}
+          style={{ gridAutoRows: 'minmax(280px, auto)' }}
         >
           <AnimatePresence mode="popLayout">
             {displayedProjects.map((project, i) => (

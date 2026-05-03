@@ -40,6 +40,10 @@ const targets = [
     url: 'https://app.lab2next.com/',
     out: 'public/utils/img/lab2next-app-screenshot.png',
   },
+  {
+    url: 'http://checker.lab2next.com/',
+    out: 'public/utils/img/checker-screenshot.png',
+  },
 ];
 
 (async () => {
