@@ -19,7 +19,7 @@ export default function Product() {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-16"
         >
           <div className="space-y-2">
@@ -45,7 +45,7 @@ export default function Product() {
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
+          transition={{ duration: 0.35, delay: 0.08, ease: 'easeOut' }}
           className="relative rounded-2xl p-8 md:p-12 border overflow-hidden"
           style={{
             backgroundColor: 'var(--ds-surface)',

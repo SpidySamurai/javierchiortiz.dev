@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 
 const NAV_IDS = [
@@ -44,27 +45,26 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="hidden lg:flex flex-col fixed left-0 top-0 h-full w-64 z-40 pt-24 p-6"
+      className="hidden xl:flex flex-col fixed left-0 top-0 h-full w-64 z-40 pt-24 p-6"
       style={{ backgroundColor: 'var(--ds-surface)' }}
     >
       {/* Profile + Nav grouped and centered vertically */}
       <div className="flex-1 flex flex-col justify-center gap-8">
         {/* Profile */}
         <div className="px-2">
-          <a
-            href="#"
-            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            className="text-lg font-bold block hover:text-[#c0c1ff] transition-colors cursor-pointer"
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="text-lg font-bold block hover:text-[#c0c1ff] transition-colors cursor-pointer text-left"
             style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
             Javier Chi Ortíz
-          </a>
+          </button>
           <p
-            className="uppercase tracking-widest mt-1"
+            className="uppercase tracking-widest mt-1 text-xs"
             style={{
               color: 'var(--ds-primary)',
               fontFamily: 'var(--font-manrope), sans-serif',
-              fontSize: '10px',
             }}
           >
             {t('hero_subtitle')}
@@ -79,6 +79,7 @@ export default function Sidebar() {
             <a
               key={id}
               href={sectionHref(id)}
+              aria-current={isActive ? 'true' : undefined}
               className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
               style={{
                 transform: isActive ? 'translateX(4px)' : 'translateX(0)',
@@ -88,13 +89,14 @@ export default function Sidebar() {
                 backgroundColor: isActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
               }}
             >
-              <span className="material-symbols-outlined text-[20px]">{icon}</span>
+              <span className="material-symbols-outlined text-[20px]" aria-hidden="true">{icon}</span>
               {t(key)}
             </a>
           );
         })}
         <Link
           href={`/${locale}/blog`}
+          aria-current={isBlogActive ? 'page' : undefined}
           className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
           style={{
             transform: isBlogActive ? 'translateX(4px)' : 'translateX(0)',
@@ -104,7 +106,7 @@ export default function Sidebar() {
             backgroundColor: isBlogActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
           }}
         >
-          <span className="material-symbols-outlined text-[20px]">edit_note</span>
+          <span className="material-symbols-outlined text-[20px]" aria-hidden="true">edit_note</span>
           Blog
         </Link>
       </nav>
@@ -131,20 +133,20 @@ export default function Sidebar() {
             href="https://github.com/SpidySamurai"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-medium transition-colors"
+            className="flex items-center gap-1.5 text-xs font-medium transition-colors hover:text-[color:var(--ds-on-surface-variant)]"
             style={{ color: 'var(--ds-outline)' }}
           >
-            <span className="material-symbols-outlined text-[16px]">code</span>
+            <FaGithub size={14} aria-hidden="true" />
             GitHub
           </a>
           <a
             href="https://www.linkedin.com/in/javier-fernando-chi-ortiz/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-medium transition-colors"
+            className="flex items-center gap-1.5 text-xs font-medium transition-colors hover:text-[color:var(--ds-on-surface-variant)]"
             style={{ color: 'var(--ds-outline)' }}
           >
-            <span className="material-symbols-outlined text-[16px]">account_circle</span>
+            <FaLinkedin size={14} aria-hidden="true" />
             LinkedIn
           </a>
         </div>

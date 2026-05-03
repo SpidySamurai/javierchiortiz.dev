@@ -35,6 +35,7 @@ export type DataProject = {
   id?: string;
   title: string;
   imageUrl: string;
+  imagePosition?: string;
   description?: string;
   stack?: string[];
   projectUrl?: string; // legacy
