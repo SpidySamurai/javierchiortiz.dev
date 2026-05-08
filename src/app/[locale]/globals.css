@@ -15,6 +15,38 @@ body {
 /* Smooth scrolling for in-page anchors */
 html {
   scroll-behavior: smooth;
+  --sidebar-w: 16rem;
+}
+
+/* Sidebar layout — responsive margin driven by CSS var set from JS */
+@media (min-width: 1280px) {
+  .sidebar-main {
+    margin-left: var(--sidebar-w, 16rem);
+  }
+}
+
+/* CSS-driven collapsed state — applied by inline script before first paint */
+html[data-sidebar-collapsed] .sidebar-aside {
+  width: 4rem !important;
+}
+html[data-sidebar-collapsed] .sidebar-label {
+  display: none !important;
+}
+html[data-sidebar-collapsed] .sidebar-nav-item {
+  justify-content: center !important;
+  padding: 0.75rem 0 !important;
+  gap: 0 !important;
+}
+html[data-sidebar-collapsed] .sidebar-toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Transitions — only after first paint to avoid initial-load animation */
+[data-sidebar-ready] .sidebar-aside {
+  transition: width 0.25s ease;
+}
+[data-sidebar-ready] .sidebar-main {
+  transition: margin-left 0.25s ease;
 }
 
 /* Avoid anchored sections being hidden under the sticky header */
@@ -250,4 +282,10 @@ html[data-theme='light'] .ds-2026 {
 @keyframes float-y {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-7px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="float-y"] {
+    animation: none !important;
+  }
 }

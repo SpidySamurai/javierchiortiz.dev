@@ -6,12 +6,36 @@ export const projects: DataProject[] = [
   {
     id: 'lab2next',
     title: 'Lab2Next',
-    imageUrl: '/utils/img/lab2next-screenshot.png', // Generated via script
+    imageUrl: '/utils/img/lab2next-screenshot.png',
     description:
-      'Official site for Lab2Next App. Showcases features, pricing packages, and system capabilities.',
+      'Landing page for Lab2Next — clinical lab SaaS. Showcases features, pricing, and product capabilities.',
     stack: ['Next.js', 'React', 'Tailwind CSS'],
     liveUrl: 'https://lab2next.com/',
     repoUrl: null,
+    category: 'featured',
+    status: 'wip',
+  },
+  {
+    id: 'portfolio-personal',
+    title: 'Portafolio Personal',
+    imageUrl: '/utils/img/portfolio-personal-live-screenshot.png',
+    description: 'This site. Dark space-gaming aesthetic, bento projects grid, i18n, blog, and a hidden easter egg.',
+    stack: ['Next.js', 'Tailwind', 'TypeScript', 'Framer Motion'],
+    liveUrl: 'https://javierchiortiz.dev',
+    repoUrl: 'https://github.com/SpidySamurai/web-portfolio2025',
+    category: 'featured',
+    status: 'complete',
+    hidden: true,
+  },
+  {
+    id: 'checker',
+    title: 'Checker',
+    imageUrl: '/utils/img/checker-screenshot.png',
+    imagePosition: 'center top',
+    description: 'Fleet management SaaS for gig drivers on Uber, Didi, Cabify and InDrive — shifts, earnings, and vehicle tracking in one place.',
+    stack: ['Next.js', 'TypeScript', 'React'],
+    liveUrl: 'http://checker.lab2next.com/',
+    repoUrl: 'https://github.com/SpidySamurai/checker',
     category: 'featured',
     status: 'wip',
   },
@@ -20,8 +44,8 @@ export const projects: DataProject[] = [
     title: 'Scandia Manufacturing',
     imageUrl: '/utils/img/scandia-manufacturing-screenshot.png',
     description:
-      'E-commerce platform build with special focus on shopify sections, components and responsiveness.',
-    stack: ['Shopify', 'HTML', 'CSS', 'JavaScript'],
+      'E-commerce storefront with custom Shopify sections, mobile-first layout, and SEO technical optimizations.',
+    stack: ['Shopify', 'Liquid', 'HTML', 'CSS', 'JavaScript'],
     liveUrl: 'https://scandiamfg.com/',
     repoUrl: null,
     category: 'featured',
@@ -33,10 +57,10 @@ export const projects: DataProject[] = [
   {
     id: 'saunas-com',
     title: 'Saunas.com',
-    imageUrl: '/utils/img/saunas-screenshot.png', // Generated via script
+    imageUrl: '/utils/img/saunas-screenshot.png',
     description:
-      'E-commerce platform for sauna and steam room products. Feature-rich implementation related to Scandia Mfg.',
-    stack: ['Shopify', 'HTML', 'Liquid', 'JavaScript'],
+      'High-traffic e-commerce for sauna and steam products. Custom Shopify theme with performance and conversion focus.',
+    stack: ['Shopify', 'Liquid', 'HTML', 'JavaScript'],
     liveUrl: 'https://saunas.com/',
     repoUrl: null,
     category: 'featured',
@@ -48,10 +72,10 @@ export const projects: DataProject[] = [
   {
     id: 'sun-valley-salt',
     title: 'Sun Valley Salt',
-    imageUrl: '/utils/img/sunvalleysalt-screenshot.png', // Generated via script
+    imageUrl: '/utils/img/sunvalleysalt-screenshot.png',
     description:
-      'E-commerce platform for Himalayan salt wall panels. Manufacturing and customization focus.',
-    stack: ['Shopify', 'HTML', 'Liquid', 'JavaScript'],
+      'E-commerce for Himalayan salt wall panels with manufacturing and custom-order focus.',
+    stack: ['Shopify', 'Liquid', 'HTML', 'JavaScript'],
     liveUrl: 'https://sunvalleysalt.com/',
     repoUrl: null,
     category: 'featured',
@@ -59,18 +83,6 @@ export const projects: DataProject[] = [
     isWork: true,
     company: 'Scandia',
     companyUrl: 'https://scandiamfg.com/',
-  },
-
-  {
-    id: 'portfolio-personal',
-    title: 'Portafolio Personal',
-    imageUrl: '/utils/img/portfolio-personal-live-screenshot.png',
-    description: 'Sitio personal para mostrar mi experiencia y proyectos recientes.',
-    stack: ['Next', 'Tailwind', 'TypeScript'],
-    liveUrl: 'https://javierchiortiz.dev',
-    repoUrl: 'https://github.com/SpidySamurai/web-portfolio2025',
-    category: 'featured',
-    status: 'complete',
   },
   {
     id: 'wallet-app',
@@ -84,7 +96,7 @@ export const projects: DataProject[] = [
     repoUrl: 'https://github.com/SpidySamurai/wallet-app',
     category: 'featured',
     status: 'wip',
-    hidden: true, // ocultada según petición
+    hidden: true,
   },
 
   // Entry-level / pinned repos
