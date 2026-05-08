@@ -24,7 +24,7 @@ function getParticlesOptions(isDark: boolean) {
           : (['#4042c8', '#5254d0', '#6668e8'] as string[]),
       },
       opacity: {
-        value: { min: isDark ? 0.1 : 0.15, max: isDark ? 0.6 : 0.45 },
+        value: { min: isDark ? 0.1 : 0.2, max: isDark ? 0.6 : 0.65 },
         animation: { enable: true, speed: 0.6, sync: false },
       },
       size: { value: { min: 1, max: 3 } },
@@ -39,13 +39,15 @@ function getParticlesOptions(isDark: boolean) {
         attract: { enable: true, rotate: { x: 600, y: 1200 } },
       },
       shape: { type: 'circle' },
-      repulse: { enable: true, distance: 80, duration: 0.4 },
     },
     interactivity: {
-      events: { onHover: { enable: true, mode: ['repulse', 'bubble'] as string[] } },
+      events: {
+        onHover: { enable: true, mode: 'repulse' as const },
+        onClick: { enable: true, mode: ['push', 'repulse'] as string[] },
+      },
       modes: {
-        repulse: { distance: 160, duration: 2, speed: 12, factor: 20 },
-        bubble: { distance: 120, size: 6, duration: 0.3, opacity: 0.9 },
+        repulse: { distance: 110, duration: 1.4, speed: 1.2, factor: 3, easing: 'ease-out-sine' },
+        push: { quantity: 8 },
       },
     },
     detectRetina: true,
@@ -125,7 +127,7 @@ function AnimatedHeadline({
 
   return (
     <h1
-      className="text-6xl md:text-8xl font-extrabold tracking-tighter leading-none"
+      className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tighter leading-[0.95]"
       style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
     >
       {words.map((word, i) => (
@@ -242,7 +244,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative px-8 md:px-16 pt-24 pb-40 overflow-hidden"
+      className="relative px-8 md:px-16 pt-24 pb-24 md:pb-40 overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
     >
       {/* Unified particles — background + comets in one container */}
@@ -252,10 +254,17 @@ export default function Hero() {
       <div
         className="absolute -top-40 -right-20 w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{
-          background: 'rgba(128,131,255,0.06)',
+          background: isDark ? 'rgba(128,131,255,0.06)' : 'rgba(64,66,200,0.09)',
           filter: 'blur(120px)',
         }}
       />
+      {/* Secondary glow — light mode only, bottom-left anchor */}
+      {!isDark && (
+        <div
+          className="absolute -bottom-20 -left-20 w-[500px] h-[500px] rounded-full pointer-events-none"
+          style={{ background: 'rgba(96,100,232,0.07)', filter: 'blur(100px)' }}
+        />
+      )}
 
       {/* |-/ easter egg trigger — drifts like a particle */}
       <motion.span
@@ -299,8 +308,8 @@ export default function Hero() {
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="text-xl leading-relaxed max-w-lg"
+            transition={{ duration: 0.38, ease: 'easeOut' }}
+            className="text-lg md:text-xl leading-relaxed max-w-lg"
             style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
           >
             {t('hero_description_long')}
@@ -310,7 +319,7 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: 'easeOut' }}
+            transition={{ duration: 0.38, delay: 0.1, ease: 'easeOut' }}
             className="flex flex-col gap-1"
           >
             <a
@@ -334,7 +343,7 @@ export default function Hero() {
       </div>
 
       {/* Comet caption */}
-      <p className="absolute bottom-10 right-8 md:right-16 text-xs italic pointer-events-none">
+      <p className="hidden md:block absolute bottom-10 right-8 md:right-16 text-xs italic pointer-events-none">
         <TypingText
           text={t('hero_comet_caption')}
           start={typingDone}
@@ -354,7 +363,7 @@ export default function Hero() {
       {/* Editorial ticker */}
       <div
         className="absolute bottom-0 left-0 w-full overflow-hidden pointer-events-none"
-        style={{ opacity: 0.05 }}
+        style={{ opacity: isDark ? 0.05 : 0.1 }}
         aria-hidden
       >
         <span

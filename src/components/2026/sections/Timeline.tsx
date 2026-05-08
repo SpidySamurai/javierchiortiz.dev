@@ -57,9 +57,9 @@ const entryVariants = {
     opacity: 1,
     x: 0,
     transition: {
-      duration: 0.7,
+      duration: 0.38,
       ease: [0.25, 0.46, 0.45, 0.94] as const,
-      staggerChildren: 0.08,
+      staggerChildren: 0.06,
     },
   },
 };
@@ -70,7 +70,7 @@ const yearVariants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] as const, delay: 0.15 },
+    transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] as const, delay: 0.1 },
   },
 };
 
@@ -208,7 +208,7 @@ export default function Timeline() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
         >
           <div className="space-y-2">
             <span

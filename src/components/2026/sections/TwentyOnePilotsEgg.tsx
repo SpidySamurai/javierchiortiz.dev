@@ -41,6 +41,12 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [onClose]);
+
+  useEffect(() => {
     let stopped = false;
     let frame: number;
 
@@ -134,7 +140,7 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
         const twinkle = 0.45 + 0.55 * Math.sin(now * 0.0012 + s.ph);
         ctx.beginPath();
         ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(192,193,255,${ambientIn * 0.28 * twinkle})`;
+        ctx.fillStyle = `rgba(192,193,255,${ambientIn * 0.55 * twinkle})`;
         ctx.fill();
       });
 
@@ -146,17 +152,17 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
           const sx = STARS[si].x * W;
           const sy = STARS[si].y * H;
 
-          const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, 16 * p);
-          grd.addColorStop(0, `rgba(192,193,255,${0.28 * p})`);
+          const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, 28 * p);
+          grd.addColorStop(0, `rgba(192,193,255,${0.55 * p})`);
           grd.addColorStop(1, 'rgba(192,193,255,0)');
           ctx.beginPath();
-          ctx.arc(sx, sy, 16 * p, 0, Math.PI * 2);
+          ctx.arc(sx, sy, 28 * p, 0, Math.PI * 2);
           ctx.fillStyle = grd;
           ctx.fill();
 
           const scale = p < 0.6 ? p * (1 / 0.6) * 1.35 : 1.35 - (p - 0.6) * (1 / 0.4) * 0.35;
           ctx.beginPath();
-          ctx.arc(sx, sy, 2.8 * scale, 0, Math.PI * 2);
+          ctx.arc(sx, sy, 3.8 * scale, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(225,226,255,${p})`;
           ctx.fill();
         });
@@ -172,8 +178,8 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
           ctx.beginPath();
           ctx.moveTo(sx, sy);
           ctx.lineTo(sx + (ex - sx) * p, sy + (ey - sy) * p);
-          ctx.strokeStyle = `rgba(192,193,255,${0.38 * Math.min(p * 2.5, 1)})`;
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = `rgba(192,193,255,${0.65 * Math.min(p * 2.5, 1)})`;
+          ctx.lineWidth = 1.5;
           ctx.stroke();
         });
       });
@@ -208,13 +214,23 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
       </motion.p>
 
       <motion.p
+        initial={{ opacity: 0, letterSpacing: '0.05em' }}
+        animate={{ opacity: 0.38, letterSpacing: '0.22em' }}
+        transition={{ delay: 4.6, duration: 1.6, ease: 'easeOut' }}
+        className="absolute bottom-24 left-1/2 -translate-x-1/2 text-[11px] italic whitespace-nowrap pointer-events-none"
+        style={{ color: 'rgba(192,193,255,1)', fontFamily: 'var(--font-inter), sans-serif' }}
+      >
+        sometimes quiet is violent
+      </motion.p>
+
+      <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.28 }}
         transition={{ delay: 0.8, duration: 0.7 }}
         className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.3em] whitespace-nowrap pointer-events-none"
         style={{ color: 'rgba(192,193,255,1)', fontFamily: 'var(--font-inter), sans-serif' }}
       >
-        click to dismiss
+        click anywhere · esc
       </motion.p>
     </motion.div>
   );

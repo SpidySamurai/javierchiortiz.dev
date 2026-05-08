@@ -19,7 +19,7 @@ export default function BlogPage({ params }: { params: Promise<{ locale: string 
       <Header />
       <Sidebar />
 
-      <main className="lg:ml-64 pt-20">
+      <main className="xl:ml-64 pt-20">
         <section className="py-28 px-8" style={{ backgroundColor: 'var(--ds-bg)' }}>
           <div className="max-w-7xl mx-auto">
             {/* Section header */}
