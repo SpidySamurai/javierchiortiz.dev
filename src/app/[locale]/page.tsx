@@ -26,7 +26,7 @@ export default function Home() {
       <Sidebar />
       <FlatCat onUnlock={unlockCard} />
       <BackToTop />
-      <main className="xl:ml-64 pt-20">
+      <main className="sidebar-main pt-20">
         <Hero />
         <Timeline />
         <Product />
