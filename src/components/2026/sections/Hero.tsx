@@ -39,7 +39,6 @@ function getParticlesOptions(isDark: boolean) {
         attract: { enable: true, rotate: { x: 600, y: 1200 } },
       },
       shape: { type: 'circle' },
-      repulse: { enable: true, distance: 80, duration: 0.4 },
     },
     interactivity: {
       events: {
@@ -47,7 +46,7 @@ function getParticlesOptions(isDark: boolean) {
         onClick: { enable: true, mode: ['push', 'repulse'] as string[] },
       },
       modes: {
-        repulse: { distance: 130, duration: 0.6, speed: 6, factor: 6, easing: 'ease-out-quad' },
+        repulse: { distance: 110, duration: 1.4, speed: 1.2, factor: 3, easing: 'ease-out-sine' },
         push: { quantity: 8 },
       },
     },
