@@ -41,6 +41,27 @@ const MORPH_TRANSITION = [
   'box-shadow 0.35s ease',
 ].join(', ');
 
+const KEYFRAMES = `
+  @keyframes mc-shimmer {
+    0%,100% { background-position: 100% 0; filter: brightness(1); }
+    50%      { background-position: 0% 0;   filter: brightness(1.13); }
+  }
+  @keyframes mc-pulse-dot {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%     { opacity: 0.4; transform: scale(1.6); }
+  }
+`;
+
+// Triangle tail for chat bubbles
+const TAIL = (
+  <div style={{
+    position: 'absolute', bottom: -6, left: 9,
+    width: 0, height: 0,
+    borderLeft: '7px solid transparent',
+    borderRight: '7px solid transparent',
+    borderTop: `7px solid ${MC.orange}`,
+  }} />
+);
 
 function CatEar({ side }: { side: 'left' | 'right' }) {
   return (
@@ -88,7 +109,7 @@ function TypingDots() {
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
-          style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: MC.orange, display: 'inline-block' }}
+          style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: MC.white, display: 'inline-block' }}
           animate={{ y: [0, -5, 0] }}
           transition={{ duration: 0.55, repeat: Infinity, delay: i * 0.14, ease: 'easeInOut' }}
         />
@@ -177,264 +198,271 @@ export default function MantecadoChat() {
   const isChat = phase === 'chat';
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: '0.75rem',
-        right: '0.75rem',
-        zIndex: 9999,
-        overflow: 'visible',
-        width: isChat ? 320 : 100,
-        height: isChat ? 460 : 100,
-        transition: MORPH_TRANSITION,
-      }}
-    >
-      <AnimatePresence>
-        {isChat && <><CatEar side="left" /><CatEar side="right" /></>}
-      </AnimatePresence>
-
+    <>
+      <style>{KEYFRAMES}</style>
       <div
         style={{
-          position: 'absolute',
-          inset: 0,
-          overflow: isChat ? 'hidden' : 'visible',
-          borderRadius: isChat ? 18 : 0,
-          backgroundColor: isChat ? MC.white : 'transparent',
-          boxShadow: isChat ? MC.shadow : 'none',
-          transition: 'border-radius 0.4s ease, background-color 0.3s ease, box-shadow 0.35s ease',
+          position: 'fixed',
+          bottom: '0.75rem',
+          right: '0.75rem',
+          zIndex: 9999,
+          overflow: 'visible',
+          width: isChat ? 320 : 100,
+          height: isChat ? 460 : 100,
+          transition: MORPH_TRANSITION,
         }}
       >
-        <AnimatePresence mode="wait">
-          {!isChat ? (
-            /* ── Idle / Greeting cat ── */
-            <motion.div
-              key="cat"
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0, scale: 0.7, transition: { duration: 0.15 } }}
-              style={{ width: '100%', height: '100%', position: 'relative', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', ...CAT_VARS }}
-              onClick={handleCatClick}
-              title="¡Miau!"
-            >
-              <div className={styles['flat-cat-anim']}>
-                <div className={styles['flat-cat']}>
-                  <div className={styles['cat-tail']} />
-                  <div className={styles['cat-body']} />
-                  <div className={styles['cat-head']} ref={idleFaceRef}>
-                    <div className={`${styles['cat-ear']} ${styles.left}`} />
-                    <div className={`${styles['cat-ear']} ${styles.right}`} />
-                    <div className={styles['cat-face']}>
-                      <div className={styles['cat-eye']} />
-                      <div className={styles['cat-nose']} />
-                      <div className={styles['cat-eye']} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ) : (
-            /* ── Chat box ── */
-            <motion.div
-              key="chat"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.2, delay: 0.1 }}
-              style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}
-            >
-              {/* ── Header (cat face) ── */}
-              <div
-                style={{
-                  flexShrink: 0,
-                  backgroundColor: MC.white,
-                  backgroundImage: `linear-gradient(135deg, ${MC.orange} 38%, transparent 38%)`,
-                  padding: '12px 14px 10px',
-                  position: 'relative',
-                }}
+        <AnimatePresence>
+          {isChat && <><CatEar side="left" /><CatEar side="right" /></>}
+        </AnimatePresence>
+
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            overflow: isChat ? 'hidden' : 'visible',
+            borderRadius: isChat ? 18 : 0,
+            backgroundColor: isChat ? MC.white : 'transparent',
+            boxShadow: isChat ? MC.shadow : 'none',
+            transition: 'border-radius 0.4s ease, background-color 0.3s ease, box-shadow 0.35s ease',
+          }}
+        >
+          <AnimatePresence mode="wait">
+            {!isChat ? (
+              /* ── Idle / FlatCat ── */
+              <motion.div
+                key="cat"
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0, scale: 0.7, transition: { duration: 0.15 } }}
+                style={{ width: '100%', height: '100%', position: 'relative', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', ...CAT_VARS }}
+                onClick={handleCatClick}
+                title="¡Miau!"
               >
-                {/* Close */}
-                <button
-                  onClick={handleClose}
-                  style={{
-                    position: 'absolute', top: 8, right: 10,
-                    background: 'rgba(51,41,43,0.12)', border: 'none', cursor: 'pointer',
-                    color: MC.dark, padding: '3px 5px', display: 'flex',
-                    alignItems: 'center', borderRadius: '6px', zIndex: 1,
-                  }}
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: 15 }}>close</span>
-                </button>
-
-                {/* Face: whiskers + eyes + nose */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, position: 'relative', marginBottom: 6 }}>
-                  {/* Left whiskers */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginRight: 10 }}>
-                    <div style={{ width: 28, height: 1.5, backgroundColor: 'rgba(51,41,43,0.28)', borderRadius: 2, transform: 'rotate(-6deg)' }} />
-                    <div style={{ width: 24, height: 1.5, backgroundColor: 'rgba(51,41,43,0.28)', borderRadius: 2, transform: 'rotate(6deg)' }} />
-                  </div>
-
-                  {/* Eyes + nose */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, position: 'relative' }}>
-                    <div ref={leftEyeRef}><ChatEye offset={pupils.left} /></div>
-                    {/* Nose */}
-                    <div style={{ position: 'relative', width: 10, height: 16 }}>
-                      <div style={{ position: 'absolute', bottom: 0, left: '50%', marginLeft: -5, width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: `7px solid ${MC.nose}` }} />
-                    </div>
-                    <div ref={rightEyeRef}><ChatEye offset={pupils.right} /></div>
-                  </div>
-
-                  {/* Right whiskers */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginLeft: 10 }}>
-                    <div style={{ width: 28, height: 1.5, backgroundColor: 'rgba(51,41,43,0.28)', borderRadius: 2, transform: 'rotate(6deg)' }} />
-                    <div style={{ width: 24, height: 1.5, backgroundColor: 'rgba(51,41,43,0.28)', borderRadius: 2, transform: 'rotate(-6deg)' }} />
-                  </div>
-                </div>
-
-                {/* Name + status */}
-                <div style={{ textAlign: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 800, fontSize: '0.85rem', color: MC.dark }}>
-                    Mantecado
-                  </span>
-                  <span style={{ marginLeft: 6, fontSize: '0.65rem', color: MC.darkMid, display: 'inline-flex', alignItems: 'center', gap: 3 }}>
-                    <span style={{ width: 5, height: 5, borderRadius: '50%', backgroundColor: '#56c464', display: 'inline-block' }} />
-                    {t('online')}
-                  </span>
-                </div>
-              </div>
-
-              {/* ── Messages ── */}
-              <div
-                style={{
-                  flex: 1, overflowY: 'auto', padding: '14px 12px',
-                  display: 'flex', flexDirection: 'column', gap: 10,
-                  backgroundColor: MC.white,
-                }}
-              >
-                {/* Greeting bubble */}
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.18 }}
-                  style={{
-                    alignSelf: 'flex-start', maxWidth: '88%',
-                    padding: '8px 12px', borderRadius: '12px 12px 12px 3px',
-                    backgroundColor: MC.orangeLight, border: `1px solid ${MC.border}`,
-                    color: MC.dark, fontSize: '0.82rem', lineHeight: 1.5,
-                    fontFamily: 'var(--font-inter), sans-serif',
-                  }}
-                >
-                  {greeting}
-                </motion.div>
-
-                {/* Typing indicator */}
-                <AnimatePresence>
-                  {showTyping && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.85 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.85 }}
-                      transition={{ duration: 0.18 }}
-                      style={{
-                        alignSelf: 'flex-start',
-                        padding: '10px 14px', borderRadius: '12px 12px 12px 3px',
-                        backgroundColor: MC.orangeLight, border: `1px solid ${MC.border}`,
-                      }}
-                    >
-                      <TypingDots />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* WhatsApp card bubble */}
-                <AnimatePresence>
-                  {showWA && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-                      style={{
-                        alignSelf: 'flex-start', maxWidth: '92%',
-                        borderRadius: '12px 12px 12px 3px',
-                        overflow: 'hidden',
-                        border: `1px solid ${MC.border}`,
-                        boxShadow: '0 2px 8px rgba(120,60,0,0.1)',
-                      }}
-                    >
-                      {/* Text part */}
-                      <div style={{
-                        padding: '8px 12px 8px',
-                        backgroundColor: MC.orangeLight,
-                        color: MC.dark, fontSize: '0.82rem', lineHeight: 1.5,
-                        fontFamily: 'var(--font-inter), sans-serif',
-                      }}>
-                        {t('wa_bubble')}
+                <div className={styles['flat-cat-anim']}>
+                  <div className={styles['flat-cat']}>
+                    <div className={styles['cat-tail']} />
+                    <div className={styles['cat-body']} />
+                    <div className={styles['cat-head']} ref={idleFaceRef}>
+                      <div className={`${styles['cat-ear']} ${styles.left}`} />
+                      <div className={`${styles['cat-ear']} ${styles.right}`} />
+                      <div className={styles['cat-face']}>
+                        <div className={styles['cat-eye']} />
+                        <div className={styles['cat-nose']} />
+                        <div className={styles['cat-eye']} />
                       </div>
-                      {/* WhatsApp action */}
-                      <a
-                        href={waHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: 'flex', alignItems: 'center', gap: 10,
-                          padding: '9px 12px',
-                          backgroundColor: '#e8f9ee',
-                          borderTop: '1px solid #b8e6c8',
-                          textDecoration: 'none',
-                          transition: 'background-color 0.15s',
-                        }}
-                      >
-                        <span style={{ color: '#25d366' }}><WhatsAppIcon /></span>
-                        <div>
-                          <div style={{ fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 700, fontSize: '0.78rem', color: '#128c7e' }}>
-                            {t('wa_cta')}
-                          </div>
-                          <div style={{ fontSize: '0.68rem', color: '#5a9070', fontFamily: 'var(--font-inter), sans-serif' }}>
-                            {t('wa_phone')}
-                          </div>
-                        </div>
-                      </a>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                <div ref={messagesEndRef} />
-              </div>
-
-              {/* ── Locked input ── */}
-              <div
-                style={{
-                  padding: '10px 12px',
-                  borderTop: `1px solid ${MC.border}`,
-                  backgroundColor: MC.orangeLight,
-                  flexShrink: 0,
-                  display: 'flex',
-                  gap: 8,
-                  alignItems: 'center',
-                }}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              /* ── Chat box ── */
+              <motion.div
+                key="chat"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.18 } }}
+                transition={{ duration: 0.2, delay: 0.1 }}
+                style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}
               >
+                {/* ── Header (shimmer + cat face) ── */}
                 <div
                   style={{
-                    flex: 1,
-                    background: 'rgba(255,255,255,0.6)',
-                    border: `1px solid ${MC.border}`,
-                    borderRadius: 20,
-                    padding: '8px 14px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    color: MC.darkMid,
-                    fontSize: '0.76rem',
-                    fontFamily: 'var(--font-inter), sans-serif',
-                    userSelect: 'none',
-                    cursor: 'default',
+                    flexShrink: 0,
+                    backgroundColor: MC.white,
+                    backgroundImage: `linear-gradient(135deg, ${MC.orange} 38%, transparent 38%)`,
+                    backgroundSize: '250% 100%',
+                    animation: 'mc-shimmer 2.6s ease-in-out infinite',
+                    padding: '12px 14px 10px',
+                    position: 'relative',
                   }}
                 >
-                  <span className="material-symbols-outlined" style={{ fontSize: 14, opacity: 0.6 }}>lock</span>
-                  {t('coming_soon')}
+                  {/* Close button → triggers morph-back */}
+                  <button
+                    onClick={handleClose}
+                    style={{
+                      position: 'absolute', top: 8, right: 10,
+                      background: 'rgba(51,41,43,0.12)', border: 'none', cursor: 'pointer',
+                      color: MC.dark, padding: '3px 5px', display: 'flex',
+                      alignItems: 'center', borderRadius: '6px', zIndex: 1,
+                    }}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: 15 }}>close</span>
+                  </button>
+
+                  {/* Face: whiskers + eyes + nose */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0, position: 'relative', marginBottom: 6 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginRight: 10 }}>
+                      <div style={{ width: 28, height: 1.5, backgroundColor: 'rgba(51,41,43,0.28)', borderRadius: 2, transform: 'rotate(-6deg)' }} />
+                      <div style={{ width: 24, height: 1.5, backgroundColor: 'rgba(51,41,43,0.28)', borderRadius: 2, transform: 'rotate(6deg)' }} />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 14, position: 'relative' }}>
+                      <div ref={leftEyeRef}><ChatEye offset={pupils.left} /></div>
+                      <div style={{ position: 'relative', width: 10, height: 16 }}>
+                        <div style={{ position: 'absolute', bottom: 0, left: '50%', marginLeft: -5, width: 0, height: 0, borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: `7px solid ${MC.nose}` }} />
+                      </div>
+                      <div ref={rightEyeRef}><ChatEye offset={pupils.right} /></div>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginLeft: 10 }}>
+                      <div style={{ width: 28, height: 1.5, backgroundColor: 'rgba(51,41,43,0.28)', borderRadius: 2, transform: 'rotate(6deg)' }} />
+                      <div style={{ width: 24, height: 1.5, backgroundColor: 'rgba(51,41,43,0.28)', borderRadius: 2, transform: 'rotate(-6deg)' }} />
+                    </div>
+                  </div>
+
+                  {/* Name + pulsing status */}
+                  <div style={{ textAlign: 'center' }}>
+                    <span style={{ fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 800, fontSize: '0.85rem', color: MC.dark }}>
+                      Mantecado
+                    </span>
+                    <span style={{ marginLeft: 6, fontSize: '0.65rem', color: MC.darkMid, display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                      <span style={{ width: 5, height: 5, borderRadius: '50%', backgroundColor: '#56c464', display: 'inline-block', animation: 'mc-pulse-dot 1.4s ease infinite' }} />
+                      {t('online')}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+
+                {/* ── Messages — paw-print bg ── */}
+                <div
+                  style={{
+                    flex: 1, overflowY: 'auto', padding: '14px 12px',
+                    display: 'flex', flexDirection: 'column', gap: 10,
+                    backgroundColor: '#fef9f4',
+                    backgroundImage: 'radial-gradient(circle, rgba(230,126,34,0.07) 2px, transparent 2px)',
+                    backgroundSize: '20px 20px',
+                  }}
+                >
+                  {/* Greeting bubble */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.18 }}
+                    style={{ alignSelf: 'flex-start', maxWidth: '88%', position: 'relative' }}
+                  >
+                    <div style={{
+                      padding: '8px 12px',
+                      borderRadius: '12px 12px 12px 3px',
+                      backgroundColor: MC.orange,
+                      color: MC.white,
+                      fontSize: '0.82rem',
+                      lineHeight: 1.5,
+                      fontFamily: 'var(--font-inter), sans-serif',
+                    }}>
+                      {greeting}
+                    </div>
+                    {TAIL}
+                  </motion.div>
+
+                  {/* Typing indicator */}
+                  <AnimatePresence>
+                    {showTyping && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.85 }}
+                        transition={{ duration: 0.18 }}
+                        style={{ alignSelf: 'flex-start', position: 'relative' }}
+                      >
+                        <div style={{ padding: '10px 14px', borderRadius: '12px 12px 12px 3px', backgroundColor: MC.orange }}>
+                          <TypingDots />
+                        </div>
+                        {TAIL}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* WhatsApp card bubble */}
+                  <AnimatePresence>
+                    {showWA && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+                        style={{ alignSelf: 'flex-start', maxWidth: '92%', position: 'relative' }}
+                      >
+                        <div style={{
+                          borderRadius: '12px 12px 12px 3px',
+                          overflow: 'hidden',
+                          boxShadow: '0 2px 8px rgba(120,60,0,0.1)',
+                        }}>
+                          <div style={{
+                            padding: '8px 12px',
+                            backgroundColor: MC.orange,
+                            color: MC.white,
+                            fontSize: '0.82rem',
+                            lineHeight: 1.5,
+                            fontFamily: 'var(--font-inter), sans-serif',
+                          }}>
+                            {t('wa_bubble')}
+                          </div>
+                          <a
+                            href={waHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              display: 'flex', alignItems: 'center', gap: 10,
+                              padding: '9px 12px',
+                              backgroundColor: '#e8f9ee',
+                              borderTop: '1px solid #b8e6c8',
+                              textDecoration: 'none',
+                              transition: 'background-color 0.15s',
+                            }}
+                          >
+                            <span style={{ color: '#25d366' }}><WhatsAppIcon /></span>
+                            <div>
+                              <div style={{ fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 700, fontSize: '0.78rem', color: '#128c7e' }}>
+                                {t('wa_cta')}
+                              </div>
+                              <div style={{ fontSize: '0.68rem', color: '#5a9070', fontFamily: 'var(--font-inter), sans-serif' }}>
+                                {t('wa_phone')}
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                        {TAIL}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <div ref={messagesEndRef} />
+                </div>
+
+                {/* ── Locked input ── */}
+                <div
+                  style={{
+                    padding: '10px 12px',
+                    borderTop: `1px solid ${MC.border}`,
+                    backgroundColor: MC.orangeLight,
+                    flexShrink: 0,
+                    display: 'flex',
+                    gap: 8,
+                    alignItems: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      flex: 1,
+                      background: 'rgba(255,255,255,0.6)',
+                      border: `1px solid ${MC.border}`,
+                      borderRadius: 20,
+                      padding: '8px 14px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      color: MC.darkMid,
+                      fontSize: '0.76rem',
+                      fontFamily: 'var(--font-inter), sans-serif',
+                      userSelect: 'none',
+                      cursor: 'default',
+                    }}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: 14, opacity: 0.6 }}>lock</span>
+                    {t('coming_soon')}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
