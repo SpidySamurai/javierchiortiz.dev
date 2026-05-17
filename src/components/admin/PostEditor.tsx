@@ -79,7 +79,7 @@ export default function PostEditor({ post }: { post?: Post }) {
     name: 'youtube',
     keyCommand: 'youtube',
     buttonProps: { title: 'Insert YouTube embed', style: { fontSize: 13, padding: '4px 8px' } },
-    icon: <span>▶ YT</span>,
+    icon: <span>YT</span>,
     execute: (_state: ExecuteState, api: TextAreaTextApi) => {
       const id = prompt('YouTube Video ID (e.g. dQw4w9WgXcQ):');
       if (!id?.trim()) return;
@@ -192,7 +192,7 @@ export default function PostEditor({ post }: { post?: Post }) {
           ))}
         </div>
         <div style={{ display: 'flex', gap: 4 }}>
-          {([['edit', '✏ Edit'], ['split', '⚡ Split'], ['blog', '👁 Blog']] as const).map(([m, label]) => (
+          {([['edit', 'Edit'], ['split', 'Split'], ['blog', 'Blog']] as const).map(([m, label]) => (
             <button key={m} onClick={() => setMode(m)} style={{ padding: '6px 14px', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12, background: mode === m ? '#3e3c8f' : '#1e1e2e', color: mode === m ? '#c0c1ff' : '#64748b', fontWeight: mode === m ? 700 : 400 }}>
               {label}
             </button>
