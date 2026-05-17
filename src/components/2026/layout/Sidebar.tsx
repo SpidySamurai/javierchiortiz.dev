@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
@@ -14,7 +14,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [active, setActive] = useState<string>('');
   const [collapsed, setCollapsed] = useState(false);
-  const { isUnlocked, openCard } = useGamerCard();
+  const { openCard } = useGamerCard();
   const isBlogActive = pathname.startsWith(`/${locale}/blog`);
   const isHome = !isBlogActive;
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
@@ -136,37 +136,30 @@ export default function Sidebar() {
 
         {/* Bottom */}
         <div className="mt-auto p-4 space-y-3">
-          {/* GamerCard — space always reserved, pop animation on first unlock */}
-          <div style={{ minHeight: '42px' }}>
-            <AnimatePresence initial={false}>
-              {isUnlocked && (
-                <motion.button
-                  key="gamer-btn"
-                  initial={{ scale: 0.5, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.5, opacity: 0 }}
-                  transition={{ type: 'spring', stiffness: 420, damping: 18 }}
-                  onClick={openCard}
-                  aria-label="Open Gamer Card"
-                  title={collapsed ? t('gamer_card') : undefined}
-                  className="flex items-center rounded-lg text-sm font-medium"
-                  style={{
-                    width: '100%',
-                    justifyContent: collapsed ? 'center' : 'flex-start',
-                    gap: collapsed ? '0' : '0.5rem',
-                    padding: collapsed ? '0.5rem' : '0.625rem 0.75rem',
-                    color: 'var(--ds-on-surface-variant)',
-                    backgroundColor: 'color-mix(in srgb, var(--ds-primary) 5%, transparent)',
-                  }}
-                >
-                  <span className="material-symbols-outlined text-[18px] shrink-0">
-                    sports_esports
-                  </span>
-                  <span className="sidebar-label">{t('gamer_card')}</span>
-                </motion.button>
-              )}
-            </AnimatePresence>
-          </div>
+          {/* GamerCard */}
+          <motion.button
+            key="gamer-btn"
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 420, damping: 18 }}
+            onClick={openCard}
+            aria-label="Open Gamer Card"
+            title={collapsed ? t('gamer_card') : undefined}
+            className="flex items-center rounded-lg text-sm font-medium"
+            style={{
+              width: '100%',
+              justifyContent: collapsed ? 'center' : 'flex-start',
+              gap: collapsed ? '0' : '0.5rem',
+              padding: collapsed ? '0.5rem' : '0.625rem 0.75rem',
+              color: 'var(--ds-on-surface-variant)',
+              backgroundColor: 'color-mix(in srgb, var(--ds-primary) 5%, transparent)',
+            }}
+          >
+            <span className="material-symbols-outlined text-[18px] shrink-0">
+              sports_esports
+            </span>
+            <span className="sidebar-label">{t('gamer_card')}</span>
+          </motion.button>
 
           {/* Social */}
           <div

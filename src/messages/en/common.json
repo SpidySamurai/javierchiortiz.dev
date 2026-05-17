@@ -163,5 +163,18 @@
   "contact_sending": "Sending...",
   "contact_success": "Message sent! I'll get back to you soon.",
   "contact_error": "Something went wrong. Try again.",
-  "last_visitor_from": "Last visitor from"
+  "last_visitor_from": "Last visitor from",
+  "mantecado": {
+    "greeting_0": "Meow! How can I help you?",
+    "greeting_1": "Purrr... hi there!",
+    "greeting_2": "You woke me up! But that's okay — what do you need?",
+    "greeting_3": "Nyaaa~ ask me anything!",
+    "greeting_4": "Hi! I'm Mantecado, Javier's cat.",
+    "online": "Online",
+    "coming_soon": "Chat coming soon...",
+    "wa_bubble": "Purrr... the chat is under construction, but you can talk directly to my owner.",
+    "wa_cta": "Write to Javier",
+    "wa_phone": "+52 999 487 5155",
+    "wa_message": "Hi Javier, I saw your portfolio and I want to get in touch"
+  }
 }

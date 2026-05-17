@@ -167,5 +167,18 @@
   "contact_sending": "Enviando...",
   "contact_success": "¡Mensaje enviado! Te responderé pronto.",
   "contact_error": "Algo salió mal. Intenta de nuevo.",
-  "last_visitor_from": "Último visitante de"
+  "last_visitor_from": "Último visitante de",
+  "mantecado": {
+    "greeting_0": "¡Miau! ¿En qué te puedo ayudar?",
+    "greeting_1": "Purrr... ¡hola, hola!",
+    "greeting_2": "¡Me despertaste! Pero no importa — ¿qué necesitas?",
+    "greeting_3": "Nyaaa~ ¡pregúntame lo que quieras!",
+    "greeting_4": "¡Hola! Soy Mantecado, el gato de Javier.",
+    "online": "Online",
+    "coming_soon": "Chat próximamente...",
+    "wa_bubble": "Purrr... el chat está en construcción, pero puedes hablarle directamente a mi dueño.",
+    "wa_cta": "Escríbele a Javier",
+    "wa_phone": "+52 999 487 5155",
+    "wa_message": "Hola Javier, vi tu portfolio y quiero contactarte"
+  }
 }
