@@ -29,7 +29,7 @@ export default function CustomCursor() {
     <>
       {/* Dot — follows exactly */}
       <motion.div
-        className="fixed top-0 left-0 z-[9999] pointer-events-none"
+        className="fixed top-0 left-0 z-[10001] pointer-events-none"
         style={{
           x: mx,
           y: my,
@@ -43,7 +43,7 @@ export default function CustomCursor() {
       />
       {/* Ring — lags behind */}
       <motion.div
-        className="fixed top-0 left-0 z-[9998] pointer-events-none"
+        className="fixed top-0 left-0 z-[10000] pointer-events-none"
         style={{
           x: rx,
           y: ry,
