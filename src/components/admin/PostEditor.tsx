@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import type { Post } from '@/types/database';
+import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
@@ -36,10 +37,21 @@ const EMPTY: PostForm = {
   youtube_id: '',
 };
 
+const youtubeCommand = {
+  name: 'youtube',
+  keyCommand: 'youtube',
+  buttonProps: { title: 'Insert YouTube embed', style: { fontSize: 13, padding: '4px 8px' } },
+  icon: <span>▶ YT</span>,
+  execute: (_state: unknown, api: { replaceSelection: (text: string) => void }) => {
+    const id = prompt('YouTube Video ID (e.g. dQw4w9WgXcQ):');
+    if (!id?.trim()) return;
+    api.replaceSelection(`\n::youtube[${id.trim()}]\n`);
+  },
+};
+
 export default function PostEditor({ post }: { post?: Post }) {
   const router = useRouter();
   const supabase = createClient();
-
   const [form, setForm] = useState<PostForm>(
     post
       ? {
@@ -59,6 +71,7 @@ export default function PostEditor({ post }: { post?: Post }) {
   );
 
   const [tab, setTab] = useState<'en' | 'es'>('en');
+  const [mode, setMode] = useState<'edit' | 'preview'>('edit');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -115,6 +128,9 @@ export default function PostEditor({ post }: { post?: Post }) {
     boxSizing: 'border-box',
   };
 
+  const currentContent = form[`content_${tab}`];
+  const currentTitle = form[`title_${tab}`];
+
   return (
     <div style={{ maxWidth: 900 }}>
       <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0', marginBottom: 24 }}>
@@ -122,14 +138,7 @@ export default function PostEditor({ post }: { post?: Post }) {
       </h1>
 
       {/* Meta fields */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 12,
-          marginBottom: 16,
-        }}
-      >
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
         <input
           placeholder="slug (e.g. my-first-post)"
           value={form.slug}
@@ -156,61 +165,125 @@ export default function PostEditor({ post }: { post?: Post }) {
           style={inputStyle}
         />
         <input
-          placeholder="YouTube ID (optional)"
+          placeholder="YouTube ID for hero (optional)"
           value={form.youtube_id}
           onChange={setField('youtube_id')}
           style={inputStyle}
         />
       </div>
 
-      {/* Language tabs */}
-      <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
-        {(['en', 'es'] as const).map((l) => (
-          <button
-            key={l}
-            onClick={() => setTab(l)}
-            style={{
-              padding: '6px 16px',
-              borderRadius: 6,
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: 13,
-              background: tab === l ? '#c0c1ff' : '#1e1e2e',
-              color: tab === l ? '#0a0a0f' : '#94a3b8',
-              fontWeight: tab === l ? 700 : 400,
-            }}
-          >
-            {l.toUpperCase()}
-          </button>
-        ))}
-      </div>
-
-      {/* Per-language fields */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <input
-          placeholder={`Title (${tab.toUpperCase()})`}
-          value={form[`title_${tab}`]}
-          onChange={(e) => setForm((f) => ({ ...f, [`title_${tab}`]: e.target.value }))}
-          style={inputStyle}
-        />
-        <input
-          placeholder={`Excerpt (${tab.toUpperCase()})`}
-          value={form[`excerpt_${tab}`]}
-          onChange={(e) => setForm((f) => ({ ...f, [`excerpt_${tab}`]: e.target.value }))}
-          style={inputStyle}
-        />
-        <div data-color-mode="dark">
-          <MDEditor
-            value={form[`content_${tab}`]}
-            onChange={(v) => setForm((f) => ({ ...f, [`content_${tab}`]: v ?? '' }))}
-            height={400}
-          />
+      {/* Language + mode tabs */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <div style={{ display: 'flex', gap: 4 }}>
+          {(['en', 'es'] as const).map((l) => (
+            <button
+              key={l}
+              onClick={() => setTab(l)}
+              style={{
+                padding: '6px 16px',
+                borderRadius: 6,
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 13,
+                background: tab === l ? '#c0c1ff' : '#1e1e2e',
+                color: tab === l ? '#0a0a0f' : '#94a3b8',
+                fontWeight: tab === l ? 700 : 400,
+              }}
+            >
+              {l.toUpperCase()}
+            </button>
+          ))}
+        </div>
+        <div style={{ display: 'flex', gap: 4 }}>
+          {(['edit', 'preview'] as const).map((m) => (
+            <button
+              key={m}
+              onClick={() => setMode(m)}
+              style={{
+                padding: '6px 14px',
+                borderRadius: 6,
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 12,
+                background: mode === m ? '#3e3c8f' : '#1e1e2e',
+                color: mode === m ? '#c0c1ff' : '#64748b',
+                fontWeight: mode === m ? 700 : 400,
+                textTransform: 'capitalize',
+              }}
+            >
+              {m === 'edit' ? '✏ Edit' : '👁 Preview'}
+            </button>
+          ))}
         </div>
       </div>
 
-      {error && (
-        <p style={{ color: '#f87171', fontSize: 13, marginTop: 12 }}>{error}</p>
+      {/* Title + excerpt (always visible) */}
+      <input
+        placeholder={`Title (${tab.toUpperCase()})`}
+        value={form[`title_${tab}`]}
+        onChange={(e) => setForm((f) => ({ ...f, [`title_${tab}`]: e.target.value }))}
+        style={{ ...inputStyle, marginBottom: 12 }}
+      />
+      <input
+        placeholder={`Excerpt (${tab.toUpperCase()})`}
+        value={form[`excerpt_${tab}`]}
+        onChange={(e) => setForm((f) => ({ ...f, [`excerpt_${tab}`]: e.target.value }))}
+        style={{ ...inputStyle, marginBottom: 12 }}
+      />
+
+      {/* Edit mode */}
+      {mode === 'edit' && (
+        <div data-color-mode="dark">
+          <MDEditor
+            value={currentContent}
+            onChange={(v) => setForm((f) => ({ ...f, [`content_${tab}`]: v ?? '' }))}
+            height={400}
+            extraCommands={[youtubeCommand]}
+          />
+        </div>
       )}
+
+      {/* Preview mode */}
+      {mode === 'preview' && (
+        <div
+          style={{
+            minHeight: 400,
+            background: '#0b1326',
+            borderRadius: 8,
+            padding: '2rem',
+            '--ds-bg': '#0b1326',
+            '--ds-surface': '#131b2e',
+            '--ds-on-surface': '#dae2fd',
+            '--ds-on-surface-variant': '#c7c4d7',
+            '--ds-primary': '#c0c1ff',
+            '--ds-outline-variant': '#464554',
+          } as React.CSSProperties}
+        >
+          {currentTitle && (
+            <h1
+              style={{
+                fontSize: '2.5rem',
+                fontWeight: 900,
+                color: '#dae2fd',
+                fontFamily: 'var(--font-manrope), sans-serif',
+                marginTop: 0,
+                marginBottom: '1.5rem',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.1,
+              }}
+            >
+              {currentTitle}
+            </h1>
+          )}
+          {currentContent ? (
+            <MarkdownRenderer content={currentContent} />
+          ) : (
+            <p style={{ color: '#464554', fontStyle: 'italic' }}>No content yet.</p>
+          )}
+        </div>
+      )}
+
+      {error && <p style={{ color: '#f87171', fontSize: 13, marginTop: 12 }}>{error}</p>}
 
       <div style={{ display: 'flex', gap: 12, marginTop: 20 }}>
         <button
