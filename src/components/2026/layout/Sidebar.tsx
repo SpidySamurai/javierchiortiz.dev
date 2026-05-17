@@ -6,6 +6,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
+import GamerCard from '@/components/GamerCard';
 import { NAV_ITEMS, SECTION_IDS } from '@/config/navigation';
 
 export default function Sidebar() {
@@ -14,7 +15,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [active, setActive] = useState<string>('');
   const [collapsed, setCollapsed] = useState(false);
-  const { isUnlocked, openCard } = useGamerCard();
+  const { isUnlocked, openCard, isOpen, closeCard } = useGamerCard();
   const isBlogActive = pathname.startsWith(`/${locale}/blog`);
   const isHome = !isBlogActive;
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
@@ -225,6 +226,9 @@ export default function Sidebar() {
           chevron_left
         </span>
       </button>
+
+      {/* GamerCard popover */}
+      <GamerCard isOpen={isOpen} onClose={closeCard} />
     </>
   );
 }
