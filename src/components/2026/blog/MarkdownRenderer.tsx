@@ -81,12 +81,16 @@ const components: Components = {
   ),
   p: ({ children }) => {
     const text = Array.isArray(children)
-      ? children.map((c) => (typeof c === 'string' ? c : '')).join('')
+      ? children.map((c) => (typeof c === 'string' ? c : ' ')).join('')
       : typeof children === 'string'
       ? children
       : '';
-    const match = text.match(/^::youtube\[([^\]]+)\]$/);
-    if (match) return <YouTubeEmbed id={match[1]} />;
+    const youtubePattern = /^::youtube(?:\[([^\]]+)\]|\{#?([^}]+)\})$/;
+    const match = text
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .reduce<RegExpMatchArray | null>((found, line) => found ?? line.match(youtubePattern), null);
+    if (match) return <YouTubeEmbed id={match[1] || match[2]} />;
     return (
       <p
         style={{
