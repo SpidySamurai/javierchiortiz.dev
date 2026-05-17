@@ -32,7 +32,7 @@ export default function MarkdownPost({ post, locale }: { post: Post; locale: str
     >
       <Header />
       <Sidebar />
-      <main className="xl:ml-64 pt-20">
+      <main className="sidebar-main pt-20">
         {/* Hero */}
         {hasImageHero && (
           <div style={{ width: '100%', height: 420, overflow: 'hidden' }}>

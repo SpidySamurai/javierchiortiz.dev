@@ -16,7 +16,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
       <CustomCursor />
       <Header />
       <Sidebar />
-      <main className="xl:ml-64 pt-20">
+      <main className="sidebar-main pt-20">
         <section className="py-28 px-8" style={{ backgroundColor: 'var(--ds-bg)' }}>
           <div className="max-w-7xl mx-auto">
             <div className="space-y-2 mb-16">
