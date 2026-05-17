@@ -77,7 +77,10 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
 
         <p
           className="text-sm leading-relaxed line-clamp-3"
-          style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
+          style={{
+            color: 'var(--ds-on-surface-variant)',
+            fontFamily: 'var(--font-inter), sans-serif',
+          }}
         >
           {excerpt}
         </p>

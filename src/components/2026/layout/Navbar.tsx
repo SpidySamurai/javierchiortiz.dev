@@ -40,12 +40,16 @@ export default function Navbar() {
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     setTimeout(() => closeRef.current?.focus(), 50);
-    return () => { document.body.style.overflow = prev; };
+    return () => {
+      document.body.style.overflow = prev;
+    };
   }, [mobileOpen]);
 
   // Close on ESC
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMobileOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileOpen(false);
+    };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, []);
@@ -62,9 +66,10 @@ export default function Navbar() {
               style={{
                 color: active === id ? 'var(--ds-primary)' : 'var(--ds-on-surface-variant)',
                 fontWeight: active === id ? 600 : 400,
-                background: active === id
-                  ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
-                  : 'transparent',
+                background:
+                  active === id
+                    ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+                    : 'transparent',
               }}
               aria-current={active === id ? 'page' : undefined}
             >
@@ -100,9 +105,21 @@ export default function Navbar() {
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             {mobileOpen ? (
-              <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M6 18L18 6M6 6l12 12"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M4 6h16M4 12h16M4 18h16"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             )}
           </svg>
         </button>
@@ -144,13 +161,21 @@ export default function Navbar() {
               style={{ color: 'var(--ds-on-surface-variant)' }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M6 18L18 6M6 6l12 12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
           </div>
 
           <div className="flex items-center justify-between mb-6 px-1">
-            <span className="text-sm" style={{ color: 'var(--ds-on-surface-variant)' }}>{t('theme')}</span>
+            <span className="text-sm" style={{ color: 'var(--ds-on-surface-variant)' }}>
+              {t('theme')}
+            </span>
             <div className="flex items-center gap-2">
               {isUnlocked && (
                 <button onClick={openCard} aria-label="Open Gamer Card" className="p-1 rounded">
@@ -175,9 +200,10 @@ export default function Navbar() {
                   style={{
                     color: active === id ? 'var(--ds-primary)' : 'var(--ds-on-surface-variant)',
                     fontWeight: active === id ? 600 : 400,
-                    background: active === id
-                      ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
-                      : 'transparent',
+                    background:
+                      active === id
+                        ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+                        : 'transparent',
                   }}
                 >
                   {t(key)}

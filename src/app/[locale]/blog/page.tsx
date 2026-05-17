@@ -28,7 +28,10 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
               </span>
               <h1
                 className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
-                style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                style={{
+                  color: 'var(--ds-on-surface)',
+                  fontFamily: 'var(--font-manrope), sans-serif',
+                }}
               >
                 Thoughts &{' '}
                 <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>Beyond Code</span>
@@ -50,10 +53,10 @@ function adaptPost(post: Post, locale: string) {
   return {
     slug: post.slug,
     date: post.published_at
-      ? new Date(post.published_at).toLocaleDateString(
-          locale === 'es' ? 'es-MX' : 'en-US',
-          { month: 'long', year: 'numeric' }
-        )
+      ? new Date(post.published_at).toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', {
+          month: 'long',
+          year: 'numeric',
+        })
       : '',
     category: post.category,
     readTime: post.read_time,

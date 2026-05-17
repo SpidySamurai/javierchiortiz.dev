@@ -83,9 +83,7 @@ export default function LoginPage() {
             outline: 'none',
           }}
         />
-        {error && (
-          <p style={{ color: '#f87171', fontSize: 13, margin: 0 }}>{error}</p>
-        )}
+        {error && <p style={{ color: '#f87171', fontSize: 13, margin: 0 }}>{error}</p>}
         <button
           type="submit"
           disabled={loading}

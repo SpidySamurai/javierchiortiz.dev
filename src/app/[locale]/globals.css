@@ -151,30 +151,30 @@ html[data-theme='light'] {
    Scoped under .ds-2026 to avoid conflicts with 2025 styles
    ============================================================ */
 .ds-2026 {
-  --ds-bg:                  #0b1326;
-  --ds-surface:             #131b2e;
-  --ds-surface-container:   #171f33;
-  --ds-surface-high:        #222a3d;
-  --ds-surface-highest:     #2d3449;
-  --ds-surface-bright:      #31394d;
+  --ds-bg: #0b1326;
+  --ds-surface: #131b2e;
+  --ds-surface-container: #171f33;
+  --ds-surface-high: #222a3d;
+  --ds-surface-highest: #2d3449;
+  --ds-surface-bright: #31394d;
 
-  --ds-on-surface:          #dae2fd;
-  --ds-on-surface-variant:  #c7c4d7;
+  --ds-on-surface: #dae2fd;
+  --ds-on-surface-variant: #c7c4d7;
 
-  --ds-primary:             #c0c1ff;
-  --ds-primary-container:   #8083ff;
-  --ds-on-primary:          #1000a9;
+  --ds-primary: #c0c1ff;
+  --ds-primary-container: #8083ff;
+  --ds-on-primary: #1000a9;
 
   --ds-secondary-container: #3e3c8f;
-  --ds-on-secondary:        #afadff;
+  --ds-on-secondary: #afadff;
 
-  --ds-tertiary:            #b8c4ff;
+  --ds-tertiary: #b8c4ff;
 
-  --ds-outline-variant:     #464554;
-  --ds-outline:             #908fa0;
+  --ds-outline-variant: #464554;
+  --ds-outline: #908fa0;
 
-  --ds-font-display:        var(--font-manrope), sans-serif;
-  --ds-font-body:           var(--font-inter), sans-serif;
+  --ds-font-display: var(--font-manrope), sans-serif;
+  --ds-font-body: var(--font-inter), sans-serif;
 
   background-color: var(--ds-bg);
   color: var(--ds-on-surface);
@@ -182,27 +182,27 @@ html[data-theme='light'] {
 }
 
 html[data-theme='light'] .ds-2026 {
-  --ds-bg:                  #eef1fa;
-  --ds-surface:             #e4e9f5;
-  --ds-surface-container:   #d9e0ef;
-  --ds-surface-high:        #cdd6ea;
-  --ds-surface-highest:     #c2cce4;
-  --ds-surface-bright:      #f2f5fc;
+  --ds-bg: #eef1fa;
+  --ds-surface: #e4e9f5;
+  --ds-surface-container: #d9e0ef;
+  --ds-surface-high: #cdd6ea;
+  --ds-surface-highest: #c2cce4;
+  --ds-surface-bright: #f2f5fc;
 
-  --ds-on-surface:          #141d35;
-  --ds-on-surface-variant:  #3a4260;
+  --ds-on-surface: #141d35;
+  --ds-on-surface-variant: #3a4260;
 
-  --ds-primary:             #4042c8;
-  --ds-primary-container:   #6668e8;
-  --ds-on-primary:          #ffffff;
+  --ds-primary: #4042c8;
+  --ds-primary-container: #6668e8;
+  --ds-on-primary: #ffffff;
 
   --ds-secondary-container: #d0d2f5;
-  --ds-on-secondary:        #2f2ebe;
+  --ds-on-secondary: #2f2ebe;
 
-  --ds-tertiary:            #3a4a9e;
+  --ds-tertiary: #3a4a9e;
 
-  --ds-outline-variant:     #b0b8d0;
-  --ds-outline:             #626a88;
+  --ds-outline-variant: #b0b8d0;
+  --ds-outline: #626a88;
 }
 
 /* global.css */
@@ -280,12 +280,17 @@ html[data-theme='light'] .ds-2026 {
 
 /* Ambient float for tech icon chips */
 @keyframes float-y {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-7px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [style*="float-y"] {
+  [style*='float-y'] {
     animation: none !important;
   }
 }

@@ -52,9 +52,11 @@ LIMIT 2
 Return index 1 (the row before the most recent). If fewer than 2 rows exist, return `null`.
 
 Response shape:
+
 ```json
 { "city": "Hamilton", "country": "New Zealand", "countryCode": "NZ" }
 ```
+
 or `{ "visitor": null }` when unavailable.
 
 ### 4. `LastVisitorChip` component
@@ -66,7 +68,7 @@ or `{ "visitor": null }` when unavailable.
 - Flag emoji derived from country code — no external flag API:
   ```ts
   const flag = (code: string) =>
-    code.toUpperCase().replace(/./g, c => String.fromCodePoint(c.charCodeAt(0) + 127397));
+    code.toUpperCase().replace(/./g, (c) => String.fromCodePoint(c.charCodeAt(0) + 127397));
   ```
 - Renders nothing while loading, on error, or when `visitor === null`
 - Style: Inter 11px, `var(--ds-outline)` color, no background, no border
@@ -78,13 +80,13 @@ Keep chip hidden on mobile via `hidden xl:block` (or equivalent).
 
 ## Edge Cases
 
-| Case | Behavior |
-|------|----------|
-| ip-api.com fails / timeout | Skip geo insert silently |
-| VPN or localhost IP | city may be wrong — only skip if city empty |
-| First-ever visitor | Fewer than 2 rows → chip hidden |
-| Rate limit (45/min) | Fail silently, no geo stored |
-| No city in response | Skip insert |
+| Case                       | Behavior                                    |
+| -------------------------- | ------------------------------------------- |
+| ip-api.com fails / timeout | Skip geo insert silently                    |
+| VPN or localhost IP        | city may be wrong — only skip if city empty |
+| First-ever visitor         | Fewer than 2 rows → chip hidden             |
+| Rate limit (45/min)        | Fail silently, no geo stored                |
+| No city in response        | Skip insert                                 |
 
 ## What We Are NOT Building
 
@@ -95,10 +97,10 @@ Keep chip hidden on mobile via `hidden xl:block` (or equivalent).
 
 ## Files Affected
 
-| File | Change |
-|------|--------|
-| `src/app/api/analytics/route.ts` | Add geo lookup + insert to `visitor_locations` |
-| `src/app/api/last-visitor/route.ts` | New GET route |
-| `src/components/2026/ui/LastVisitorChip.tsx` | New component |
-| `src/components/2026/layout/Header.tsx` | Replace `<div />` with `<LastVisitorChip />` |
-| Supabase migration | Create `visitor_locations` table |
+| File                                         | Change                                         |
+| -------------------------------------------- | ---------------------------------------------- |
+| `src/app/api/analytics/route.ts`             | Add geo lookup + insert to `visitor_locations` |
+| `src/app/api/last-visitor/route.ts`          | New GET route                                  |
+| `src/components/2026/ui/LastVisitorChip.tsx` | New component                                  |
+| `src/components/2026/layout/Header.tsx`      | Replace `<div />` with `<LastVisitorChip />`   |
+| Supabase migration                           | Create `visitor_locations` table               |

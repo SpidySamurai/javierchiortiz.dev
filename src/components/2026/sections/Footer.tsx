@@ -25,7 +25,12 @@ export default function Footer() {
           >
             Javier Chi Ortíz
           </h2>
-          <p style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}>
+          <p
+            style={{
+              color: 'var(--ds-on-surface-variant)',
+              fontFamily: 'var(--font-inter), sans-serif',
+            }}
+          >
             {t('footer_available')}
           </p>
         </div>

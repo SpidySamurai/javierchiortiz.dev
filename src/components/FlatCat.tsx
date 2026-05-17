@@ -34,8 +34,8 @@ export default function FlatCat({ onUnlock }: FlatCatProps) {
       clicks <= 2
         ? ['Miau~', 'Purrr...', 'Nyaa!', 'Mrrrow?', '=^.^=']
         : clicks <= 5
-          ? ['Miau miau!', '*purring intensifies*', 'Prrt!', 'Nyaaaa~', 'Miau??']
-          : ['¡Sigue, sigue!', '*tail wags*', 'Mrrr!!!', 'Miau miau miau!'];
+        ? ['Miau miau!', '*purring intensifies*', 'Prrt!', 'Nyaaaa~', 'Miau??']
+        : ['¡Sigue, sigue!', '*tail wags*', 'Mrrr!!!', 'Miau miau miau!'];
     const randomText = variations[Math.floor(Math.random() * variations.length)];
     setBubbleText(randomText);
 

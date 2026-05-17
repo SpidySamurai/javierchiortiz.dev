@@ -68,7 +68,15 @@ const ALSO: Tech[] = [
 const floatDuration = (i: number) => 3.2 + (i % 5) * 0.42;
 const floatDelay = (i: number) => (i * 0.38) % 2.2;
 
-function TechChip({ tech, globalIndex, muted = false }: { tech: Tech; globalIndex: number; muted?: boolean }) {
+function TechChip({
+  tech,
+  globalIndex,
+  muted = false,
+}: {
+  tech: Tech;
+  globalIndex: number;
+  muted?: boolean;
+}) {
   const Icon = tech.icon;
   return (
     <motion.div
@@ -79,9 +87,13 @@ function TechChip({ tech, globalIndex, muted = false }: { tech: Tech; globalInde
       whileHover={{ scale: 1.08 }}
       className="flex items-center gap-2 px-3 py-2 rounded-xl cursor-default select-none"
       style={{
-        backgroundColor: muted ? 'color-mix(in srgb, var(--ds-primary) 3%, var(--ds-surface))' : 'color-mix(in srgb, var(--ds-primary) 8%, var(--ds-surface))',
+        backgroundColor: muted
+          ? 'color-mix(in srgb, var(--ds-primary) 3%, var(--ds-surface))'
+          : 'color-mix(in srgb, var(--ds-primary) 8%, var(--ds-surface))',
         border: '1px solid color-mix(in srgb, var(--ds-primary) 12%, transparent)',
-        animation: `float-y ${floatDuration(globalIndex)}s ease-in-out ${floatDelay(globalIndex)}s infinite`,
+        animation: `float-y ${floatDuration(globalIndex)}s ease-in-out ${floatDelay(
+          globalIndex
+        )}s infinite`,
         transition: 'box-shadow 0.3s ease, border-color 0.3s ease',
       }}
       onMouseEnter={(e) => {
@@ -90,13 +102,11 @@ function TechChip({ tech, globalIndex, muted = false }: { tech: Tech; globalInde
       }}
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLElement).style.boxShadow = '';
-        (e.currentTarget as HTMLElement).style.borderColor = 'color-mix(in srgb, var(--ds-primary) 10%, transparent)';
+        (e.currentTarget as HTMLElement).style.borderColor =
+          'color-mix(in srgb, var(--ds-primary) 10%, transparent)';
       }}
     >
-      <Icon
-        size={14}
-        style={{ color: tech.color, opacity: muted ? 0.6 : 0.85, flexShrink: 0 }}
-      />
+      <Icon size={14} style={{ color: tech.color, opacity: muted ? 0.6 : 0.85, flexShrink: 0 }} />
       <span
         className="text-xs font-medium whitespace-nowrap"
         style={{
@@ -130,7 +140,10 @@ function TechGroup({
         viewport={{ once: true }}
         transition={{ delay: startIndex * 0.045, duration: 0.4 }}
         className="text-[10px] uppercase tracking-[0.28em] font-bold"
-        style={{ color: muted ? 'var(--ds-outline)' : 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
+        style={{
+          color: muted ? 'var(--ds-outline)' : 'var(--ds-primary)',
+          fontFamily: 'var(--font-inter), sans-serif',
+        }}
       >
         {t(labelKey as Parameters<typeof t>[0])}
       </motion.p>
@@ -174,7 +187,8 @@ export default function About() {
             className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-10"
             style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
-            {t('about_title')} <em style={{ color: 'var(--ds-primary)' }}>{t('about_title_accent')}</em>
+            {t('about_title')}{' '}
+            <em style={{ color: 'var(--ds-primary)' }}>{t('about_title_accent')}</em>
           </motion.h2>
 
           <div className="flex flex-col gap-5">
@@ -193,20 +207,27 @@ export default function About() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
                 className="text-base leading-relaxed"
-                style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
+                style={{
+                  color: 'var(--ds-on-surface-variant)',
+                  fontFamily: 'var(--font-inter), sans-serif',
+                }}
               >
                 {t(key)}
               </motion.p>
             ))}
           </div>
-
         </div>
 
         {/* Right — tech groups */}
         <div className="flex flex-col gap-8">
           <TechGroup labelKey="stack" items={STACK} startIndex={0} />
           <TechGroup labelKey="about_tools" items={TOOLS} startIndex={STACK.length} />
-          <TechGroup labelKey="about_also" items={ALSO} startIndex={STACK.length + TOOLS.length} muted />
+          <TechGroup
+            labelKey="about_also"
+            items={ALSO}
+            startIndex={STACK.length + TOOLS.length}
+            muted
+          />
 
           <motion.blockquote
             initial={{ opacity: 0, y: 12 }}
@@ -218,14 +239,21 @@ export default function About() {
           >
             <span
               className="block text-3xl font-black leading-none mb-2 select-none"
-              style={{ color: 'var(--ds-primary)', opacity: 0.4, fontFamily: 'var(--font-manrope), sans-serif' }}
+              style={{
+                color: 'var(--ds-primary)',
+                opacity: 0.4,
+                fontFamily: 'var(--font-manrope), sans-serif',
+              }}
               aria-hidden="true"
             >
               &ldquo;
             </span>
             <p
               className="text-sm leading-relaxed italic mb-3"
-              style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
+              style={{
+                color: 'var(--ds-on-surface-variant)',
+                fontFamily: 'var(--font-inter), sans-serif',
+              }}
             >
               {t('about_quote')}
             </p>

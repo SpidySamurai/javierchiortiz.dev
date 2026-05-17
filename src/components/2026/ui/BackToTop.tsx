@@ -24,7 +24,8 @@ export default function BackToTop() {
           aria-label="Back to top"
           className="fixed bottom-24 right-4 z-50 flex items-center justify-center w-10 h-10 rounded-full"
           style={{
-            background: 'linear-gradient(135deg, var(--ds-primary), color-mix(in srgb, var(--ds-primary) 70%, #8083ff))',
+            background:
+              'linear-gradient(135deg, var(--ds-primary), color-mix(in srgb, var(--ds-primary) 70%, #8083ff))',
             boxShadow: '0 4px 20px color-mix(in srgb, var(--ds-primary) 35%, transparent)',
             color: 'var(--ds-bg)',
           }}

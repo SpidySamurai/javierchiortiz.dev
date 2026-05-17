@@ -70,11 +70,10 @@ export function useMarvelRivals(uid: string) {
     isLoading: currentLoading,
   } = useSWR<MarvelApiResponse>(uid ? `/api/marvel/player?uid=${uid}` : null, fetcher);
 
-  const {
-    data: s1Data,
-    error: s1Error,
-  } = useSWR<MarvelApiResponse>(uid ? `/api/marvel/player?uid=${uid}&season=1` : null, fetcher);
-
+  const { data: s1Data, error: s1Error } = useSWR<MarvelApiResponse>(
+    uid ? `/api/marvel/player?uid=${uid}&season=1` : null,
+    fetcher
+  );
 
   const error = currentError || s1Error;
 

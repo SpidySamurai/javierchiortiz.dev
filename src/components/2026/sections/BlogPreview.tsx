@@ -23,10 +23,10 @@ function adaptPost(post: Post, locale: string): BlogCardShape {
   return {
     slug: post.slug,
     date: post.published_at
-      ? new Date(post.published_at).toLocaleDateString(
-          locale === 'es' ? 'es-MX' : 'en-US',
-          { month: 'long', year: 'numeric' }
-        )
+      ? new Date(post.published_at).toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', {
+          month: 'long',
+          year: 'numeric',
+        })
       : '',
     category: post.category,
     readTime: post.read_time,

@@ -13,6 +13,7 @@
 ## File Map
 
 **Created:**
+
 - `src/lib/supabase/client.ts` — browser Supabase client (singleton)
 - `src/lib/supabase/server.ts` — server Supabase client (cookies-based)
 - `src/types/database.ts` — TypeScript types matching DB schema
@@ -35,6 +36,7 @@
 - `src/hooks/usePageView.ts` — fires analytics on route change
 
 **Modified:**
+
 - `src/app/[locale]/blog/page.tsx` — fetch from Supabase (server component)
 - `src/app/[locale]/blog/[slug]/page.tsx` — fetch from Supabase + route to custom or markdown
 - `src/app/[locale]/page.tsx` — add `<Contact />` section
@@ -42,6 +44,7 @@
 - `src/data/blog.ts` — keep type `BlogPost` for legacy custom posts, mark deprecated
 
 **Deleted after Task 15 (seed):**
+
 - `src/data/blog.ts` (replace with DB queries)
 
 ---
@@ -51,17 +54,21 @@
 **Files:** `package.json`
 
 - [ ] Run:
+
 ```bash
 npm install @supabase/supabase-js @supabase/ssr react-markdown remark-gfm rehype-sanitize @uiw/react-md-editor
 ```
 
 - [ ] Verify install:
+
 ```bash
 npm ls @supabase/supabase-js @supabase/ssr react-markdown @uiw/react-md-editor 2>&1 | grep -v "npm warn"
 ```
+
 Expected: four packages listed with versions, no errors.
 
 - [ ] Commit:
+
 ```bash
 git add package.json package-lock.json
 git commit -m "chore: add supabase, react-markdown, md-editor deps"
@@ -74,6 +81,7 @@ git commit -m "chore: add supabase, react-markdown, md-editor deps"
 **Files:** `.env.local` (gitignored), `src/lib/supabase/client.ts`, `src/lib/supabase/server.ts`
 
 - [ ] Create `.env.local` (get values from Supabase dashboard → Project Settings → API):
+
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon-key>
@@ -81,6 +89,7 @@ SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
 ```
 
 - [ ] Create `src/lib/supabase/client.ts`:
+
 ```typescript
 import { createBrowserClient } from '@supabase/ssr';
 import type { Database } from '@/types/database';
@@ -94,6 +103,7 @@ export function createClient() {
 ```
 
 - [ ] Create `src/lib/supabase/server.ts`:
+
 ```typescript
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
@@ -106,7 +116,9 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() { return cookieStore.getAll(); },
+        getAll() {
+          return cookieStore.getAll();
+        },
         setAll(cookiesToSet) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
@@ -121,6 +133,7 @@ export async function createClient() {
 ```
 
 - [ ] Commit:
+
 ```bash
 git add src/lib/supabase/client.ts src/lib/supabase/server.ts
 git commit -m "feat(supabase): add browser and server clients"
@@ -133,6 +146,7 @@ git commit -m "feat(supabase): add browser and server clients"
 **Files:** `src/types/database.ts`
 
 - [ ] Create `src/types/database.ts`:
+
 ```typescript
 export interface Post {
   id: string;
@@ -172,15 +186,24 @@ export interface PageView {
 export interface Database {
   public: {
     Tables: {
-      posts: { Row: Post; Insert: Omit<Post, 'id' | 'created_at' | 'updated_at'>; Update: Partial<Omit<Post, 'id' | 'created_at'>>; };
-      contact_messages: { Row: ContactMessage; Insert: Omit<ContactMessage, 'id' | 'created_at'>; Update: never; };
-      page_views: { Row: PageView; Insert: Omit<PageView, 'id' | 'created_at'>; Update: never; };
+      posts: {
+        Row: Post;
+        Insert: Omit<Post, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<Post, 'id' | 'created_at'>>;
+      };
+      contact_messages: {
+        Row: ContactMessage;
+        Insert: Omit<ContactMessage, 'id' | 'created_at'>;
+        Update: never;
+      };
+      page_views: { Row: PageView; Insert: Omit<PageView, 'id' | 'created_at'>; Update: never };
     };
   };
 }
 ```
 
 - [ ] Commit:
+
 ```bash
 git add src/types/database.ts
 git commit -m "feat(supabase): add database TypeScript types"
@@ -193,6 +216,7 @@ git commit -m "feat(supabase): add database TypeScript types"
 **Files:** `docs/supabase/schema.sql` (save for reference)
 
 - [ ] Create `docs/supabase/schema.sql`:
+
 ```sql
 -- Posts
 create table if not exists posts (
@@ -269,6 +293,7 @@ create policy "auth read page_views"
 - [ ] Run this SQL in **Supabase Dashboard → SQL Editor**. Verify in **Table Editor** that `posts`, `contact_messages`, `page_views` tables exist.
 
 - [ ] Commit:
+
 ```bash
 git add docs/supabase/schema.sql
 git commit -m "feat(supabase): add db schema and RLS policies"
@@ -281,6 +306,7 @@ git commit -m "feat(supabase): add db schema and RLS policies"
 **Files:** `src/data/blog.ts` (add DB query), `src/app/[locale]/blog/page.tsx`, `src/app/[locale]/blog/[slug]/page.tsx`
 
 - [ ] Add query functions to `src/data/blog.ts` (keep existing `BlogPost` type for legacy custom components, add new functions below it):
+
 ```typescript
 // Existing BlogPost type and blogPosts array stays — used by legacy custom components
 
@@ -312,6 +338,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 ```
 
 - [ ] Convert `src/app/[locale]/blog/page.tsx` to a **server component** (remove `'use client'`, `use(params)` → `await params`):
+
 ```typescript
 import { getPublishedPosts } from '@/data/blog';
 import BlogCard from '@/components/2026/ui/BlogCard';
@@ -341,7 +368,10 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
               </span>
               <h1
                 className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
-                style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                style={{
+                  color: 'var(--ds-on-surface)',
+                  fontFamily: 'var(--font-manrope), sans-serif',
+                }}
               >
                 Thoughts &{' '}
                 <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>Beyond Code</span>
@@ -363,7 +393,12 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
 function adaptPost(post: Post, locale: string) {
   return {
     slug: post.slug,
-    date: post.published_at ? new Date(post.published_at).toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { month: 'long', year: 'numeric' }) : '',
+    date: post.published_at
+      ? new Date(post.published_at).toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', {
+          month: 'long',
+          year: 'numeric',
+        })
+      : '',
     category: post.category,
     readTime: post.read_time,
     coverTheme: (post.cover_theme ?? 'default') as 'pilots' | 'spiderman' | 'karate',
@@ -378,6 +413,7 @@ function adaptPost(post: Post, locale: string) {
 - [ ] Verify: start dev server (`npm run dev`), visit `http://localhost:3000/en/blog`. Should show empty grid (no posts in DB yet). No errors in console.
 
 - [ ] Commit:
+
 ```bash
 git add src/data/blog.ts src/app src/components/2026/ui/BlogCard.tsx
 git commit -m "feat(blog): fetch posts from Supabase, convert page to server component"
@@ -390,6 +426,7 @@ git commit -m "feat(blog): fetch posts from Supabase, convert page to server com
 **Files:** `src/components/2026/blog/MarkdownPost.tsx`, `src/app/[locale]/blog/[slug]/page.tsx`
 
 - [ ] Create `src/components/2026/blog/MarkdownPost.tsx`:
+
 ```typescript
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -417,14 +454,23 @@ export default function MarkdownPost({ post, locale }: { post: Post; locale: str
             </span>
             <h1
               className="text-4xl md:text-5xl font-black tracking-tight leading-tight"
-              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+              style={{
+                color: 'var(--ds-on-surface)',
+                fontFamily: 'var(--font-manrope), sans-serif',
+              }}
             >
               {title}
             </h1>
             <p className="text-sm" style={{ color: 'var(--ds-on-surface-variant)' }}>
               {post.read_time}
               {post.published_at && (
-                <> · {new Date(post.published_at).toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</>
+                <>
+                  {' '}
+                  · {new Date(post.published_at).toLocaleDateString(
+                    locale === 'es' ? 'es-MX' : 'en-US',
+                    { month: 'long', day: 'numeric', year: 'numeric' }
+                  )}
+                </>
               )}
             </p>
           </header>
@@ -444,6 +490,7 @@ export default function MarkdownPost({ post, locale }: { post: Post; locale: str
 ```
 
 - [ ] Update `src/app/[locale]/blog/[slug]/page.tsx` to a server component fetching from Supabase, routing to custom component or markdown:
+
 ```typescript
 import { getPostBySlug } from '@/data/blog';
 import { blogPosts } from '@/data/blog';
@@ -453,12 +500,30 @@ import SpiderManPost from '@/components/2026/blog/SpiderManPost';
 import MarkdownPost from '@/components/2026/blog/MarkdownPost';
 import Link from 'next/link';
 
-const CUSTOM_COMPONENTS: Record<string, React.ComponentType<{ post: { slug: string; date: string; category: string; readTime: string; coverTheme: 'pilots' | 'spiderman' | 'karate'; theme?: string; youtubeId?: string }; locale: string }>> = {
+const CUSTOM_COMPONENTS: Record<
+  string,
+  React.ComponentType<{
+    post: {
+      slug: string;
+      date: string;
+      category: string;
+      readTime: string;
+      coverTheme: 'pilots' | 'spiderman' | 'karate';
+      theme?: string;
+      youtubeId?: string;
+    };
+    locale: string;
+  }>
+> = {
   'twenty-one-pilots': TwentyOnePilotsPost,
   'spider-man': SpiderManPost,
 };
 
-export default async function BlogPostPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+export default async function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
   const { locale, slug } = await params;
   const post = await getPostBySlug(slug);
 
@@ -466,7 +531,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     return (
       <div className="ds-2026 py-28 px-8 text-center" style={{ minHeight: '100vh' }}>
         <p style={{ color: 'var(--ds-on-surface-variant)' }}>Post not found.</p>
-        <Link href={`/${locale}/blog`} style={{ color: 'var(--ds-primary)' }}>← Back to Blog</Link>
+        <Link href={`/${locale}/blog`} style={{ color: 'var(--ds-primary)' }}>
+          ← Back to Blog
+        </Link>
       </div>
     );
   }
@@ -485,6 +552,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 - [ ] Verify: `npm run lint` — no errors. Dev server renders blog page.
 
 - [ ] Commit:
+
 ```bash
 git add src/components/2026/blog/MarkdownPost.tsx src/app
 git commit -m "feat(blog): add markdown post renderer, route custom vs markdown posts"
@@ -497,6 +565,7 @@ git commit -m "feat(blog): add markdown post renderer, route custom vs markdown 
 **Files:** `src/app/api/contact/route.ts`, `src/components/2026/sections/Contact.tsx`, `src/app/[locale]/page.tsx`
 
 - [ ] Create `src/app/api/contact/route.ts`:
+
 ```typescript
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
@@ -528,6 +597,7 @@ export async function POST(req: NextRequest) {
 ```
 
 - [ ] Create `src/components/2026/sections/Contact.tsx`:
+
 ```typescript
 'use client';
 
@@ -572,7 +642,11 @@ export default function Contact() {
   } as React.CSSProperties;
 
   return (
-    <section id="contact" className="py-24 px-8 md:px-16" style={{ backgroundColor: 'var(--ds-bg)' }}>
+    <section
+      id="contact"
+      className="py-24 px-8 md:px-16"
+      style={{ backgroundColor: 'var(--ds-bg)' }}
+    >
       <div className="max-w-xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -639,7 +713,9 @@ export default function Contact() {
               style={{ ...inputStyle, resize: 'vertical' }}
             />
             {status === 'error' && (
-              <p className="text-sm" style={{ color: '#f87171' }}>{t('contact_error')}</p>
+              <p className="text-sm" style={{ color: '#f87171' }}>
+                {t('contact_error')}
+              </p>
             )}
             <button
               type="submit"
@@ -662,6 +738,7 @@ export default function Contact() {
 ```
 
 - [ ] Add translation keys to `src/messages/en/common.json` (or wherever `contact_*` keys should live):
+
 ```json
 "contact_label": "Contact",
 "contact_heading": "Let's work together",
@@ -673,9 +750,11 @@ export default function Contact() {
 "contact_success": "Message sent! I'll get back to you soon.",
 "contact_error": "Something went wrong. Try again."
 ```
+
 Add the same keys in Spanish to `src/messages/es/common.json`.
 
 - [ ] Add `<Contact />` to `src/app/[locale]/page.tsx` — after `<About />`, before `<BlogPreview />`:
+
 ```typescript
 import Contact from '@/components/2026/sections/Contact';
 // ... inside return:
@@ -687,6 +766,7 @@ import Contact from '@/components/2026/sections/Contact';
 - [ ] Verify: dev server, submit the form, check Supabase **Table Editor → contact_messages** for the row.
 
 - [ ] Commit:
+
 ```bash
 git add src/app/api/contact src/components/2026/sections/Contact.tsx src/app src/messages
 git commit -m "feat(contact): add contact form section with Supabase persistence"
@@ -699,6 +779,7 @@ git commit -m "feat(contact): add contact form section with Supabase persistence
 **Files:** `src/app/api/analytics/route.ts`, `src/hooks/usePageView.ts`, `src/app/[locale]/page.tsx`, `src/app/[locale]/blog/page.tsx`
 
 - [ ] Create `src/app/api/analytics/route.ts`:
+
 ```typescript
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
@@ -721,6 +802,7 @@ export async function POST(req: NextRequest) {
 ```
 
 - [ ] Create `src/hooks/usePageView.ts`:
+
 ```typescript
 'use client';
 
@@ -743,6 +825,7 @@ export function usePageView() {
 ```
 
 - [ ] Add `usePageView()` call to `src/app/[locale]/page.tsx` inside the `Home` component:
+
 ```typescript
 import { usePageView } from '@/hooks/usePageView';
 // inside function Home():
@@ -750,6 +833,7 @@ usePageView();
 ```
 
 - [ ] Commit:
+
 ```bash
 git add src/app/api/analytics src/hooks/usePageView.ts src/app
 git commit -m "feat(analytics): track page views via Supabase"
@@ -762,6 +846,7 @@ git commit -m "feat(analytics): track page views via Supabase"
 **Files:** `middleware.ts` (root of project), `src/app/admin/login/page.tsx`
 
 - [ ] Create/replace `middleware.ts` at project root:
+
 ```typescript
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
@@ -774,7 +859,9 @@ export async function middleware(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() { return request.cookies.getAll(); },
+        getAll() {
+          return request.cookies.getAll();
+        },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
           supabaseResponse = NextResponse.next({ request });
@@ -786,7 +873,9 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin');
   const isLoginPage = request.nextUrl.pathname === '/admin/login';
 
@@ -806,6 +895,7 @@ export const config = {
 ```
 
 - [ ] Create `src/app/admin/login/page.tsx`:
+
 ```typescript
 'use client';
 
@@ -836,16 +926,44 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0a0a0f' }}>
-      <form onSubmit={handleLogin} style={{ width: 320, display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <h1 style={{ color: '#c0c1ff', fontFamily: 'sans-serif', fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Admin</h1>
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#0a0a0f',
+      }}
+    >
+      <form
+        onSubmit={handleLogin}
+        style={{ width: 320, display: 'flex', flexDirection: 'column', gap: 16 }}
+      >
+        <h1
+          style={{
+            color: '#c0c1ff',
+            fontFamily: 'sans-serif',
+            fontSize: 24,
+            fontWeight: 700,
+            marginBottom: 8,
+          }}
+        >
+          Admin
+        </h1>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid #2a2a3a', background: '#12121a', color: '#e2e8f0', fontSize: 14 }}
+          style={{
+            padding: '10px 14px',
+            borderRadius: 8,
+            border: '1px solid #2a2a3a',
+            background: '#12121a',
+            color: '#e2e8f0',
+            fontSize: 14,
+          }}
         />
         <input
           type="password"
@@ -853,13 +971,30 @@ export default function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          style={{ padding: '10px 14px', borderRadius: 8, border: '1px solid #2a2a3a', background: '#12121a', color: '#e2e8f0', fontSize: 14 }}
+          style={{
+            padding: '10px 14px',
+            borderRadius: 8,
+            border: '1px solid #2a2a3a',
+            background: '#12121a',
+            color: '#e2e8f0',
+            fontSize: 14,
+          }}
         />
         {error && <p style={{ color: '#f87171', fontSize: 13 }}>{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          style={{ padding: '10px 14px', borderRadius: 8, background: '#c0c1ff', color: '#0a0a0f', fontWeight: 700, fontSize: 14, cursor: 'pointer', border: 'none', opacity: loading ? 0.6 : 1 }}
+          style={{
+            padding: '10px 14px',
+            borderRadius: 8,
+            background: '#c0c1ff',
+            color: '#0a0a0f',
+            fontWeight: 700,
+            fontSize: 14,
+            cursor: 'pointer',
+            border: 'none',
+            opacity: loading ? 0.6 : 1,
+          }}
         >
           {loading ? 'Signing in…' : 'Sign in'}
         </button>
@@ -874,6 +1009,7 @@ export default function LoginPage() {
 - [ ] Verify: visit `http://localhost:3000/admin` → redirects to `/admin/login`. Sign in → redirects to `/admin/posts` (404 for now — that's fine).
 
 - [ ] Commit:
+
 ```bash
 git add middleware.ts src/app/admin/login
 git commit -m "feat(admin): add auth middleware and login page"
@@ -886,6 +1022,7 @@ git commit -m "feat(admin): add auth middleware and login page"
 **Files:** `src/app/admin/layout.tsx`, `src/app/admin/page.tsx`
 
 - [ ] Create `src/app/admin/layout.tsx`:
+
 ```typescript
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
@@ -893,14 +1030,42 @@ import Link from 'next/link';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) redirect('/admin/login');
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#0a0a0f', fontFamily: 'sans-serif' }}>
+    <div
+      style={{
+        display: 'flex',
+        minHeight: '100vh',
+        backgroundColor: '#0a0a0f',
+        fontFamily: 'sans-serif',
+      }}
+    >
       {/* Sidebar */}
-      <nav style={{ width: 200, borderRight: '1px solid #1a1a2e', padding: '2rem 1rem', display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <span style={{ color: '#c0c1ff', fontWeight: 700, fontSize: 16, marginBottom: 24, paddingLeft: 12 }}>CMS</span>
+      <nav
+        style={{
+          width: 200,
+          borderRight: '1px solid #1a1a2e',
+          padding: '2rem 1rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4,
+        }}
+      >
+        <span
+          style={{
+            color: '#c0c1ff',
+            fontWeight: 700,
+            fontSize: 16,
+            marginBottom: 24,
+            paddingLeft: 12,
+          }}
+        >
+          CMS
+        </span>
         {[
           { href: '/admin/posts', label: 'Posts' },
           { href: '/admin/messages', label: 'Messages' },
@@ -909,7 +1074,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link
             key={href}
             href={href}
-            style={{ color: '#94a3b8', padding: '8px 12px', borderRadius: 6, fontSize: 14, textDecoration: 'none' }}
+            style={{
+              color: '#94a3b8',
+              padding: '8px 12px',
+              borderRadius: 6,
+              fontSize: 14,
+              textDecoration: 'none',
+            }}
           >
             {label}
           </Link>
@@ -933,6 +1104,7 @@ function SignOutButton() {
 ```
 
 - [ ] Update `AdminLayout` to use a proper sign-out approach — replace the form with a client component button. Create `src/app/admin/_components/SignOutButton.tsx`:
+
 ```typescript
 'use client';
 
@@ -952,7 +1124,17 @@ export default function SignOutButton() {
   return (
     <button
       onClick={handleSignOut}
-      style={{ width: '100%', padding: '8px 12px', background: 'transparent', border: 'none', color: '#64748b', fontSize: 14, cursor: 'pointer', borderRadius: 6, textAlign: 'left' }}
+      style={{
+        width: '100%',
+        padding: '8px 12px',
+        background: 'transparent',
+        border: 'none',
+        color: '#64748b',
+        fontSize: 14,
+        cursor: 'pointer',
+        borderRadius: 6,
+        textAlign: 'left',
+      }}
     >
       Sign out
     </button>
@@ -963,12 +1145,16 @@ export default function SignOutButton() {
 - [ ] Update `AdminLayout` to import and use `SignOutButton` (remove the broken placeholder).
 
 - [ ] Create `src/app/admin/page.tsx`:
+
 ```typescript
 import { redirect } from 'next/navigation';
-export default function AdminRoot() { redirect('/admin/posts'); }
+export default function AdminRoot() {
+  redirect('/admin/posts');
+}
 ```
 
 - [ ] Commit:
+
 ```bash
 git add src/app/admin/layout.tsx src/app/admin/page.tsx src/app/admin/_components
 git commit -m "feat(admin): add admin layout with nav and sign-out"
@@ -981,6 +1167,7 @@ git commit -m "feat(admin): add admin layout with nav and sign-out"
 **Files:** `src/components/admin/PostList.tsx`, `src/app/admin/posts/page.tsx`
 
 - [ ] Create `src/components/admin/PostList.tsx`:
+
 ```typescript
 'use client';
 
@@ -999,7 +1186,7 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
       ? { is_published: true, published_at: new Date().toISOString() }
       : { is_published: false };
     const { error } = await supabase.from('posts').update(update).eq('id', post.id);
-    if (!error) setPosts((p) => p.map((pp) => pp.id === post.id ? { ...pp, ...update } : pp));
+    if (!error) setPosts((p) => p.map((pp) => (pp.id === post.id ? { ...pp, ...update } : pp)));
   };
 
   const deletePost = async (id: string) => {
@@ -1010,9 +1197,27 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 24,
+        }}
+      >
         <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0' }}>Posts</h1>
-        <Link href="/admin/posts/new" style={{ padding: '8px 16px', background: '#c0c1ff', color: '#0a0a0f', borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
+        <Link
+          href="/admin/posts/new"
+          style={{
+            padding: '8px 16px',
+            background: '#c0c1ff',
+            color: '#0a0a0f',
+            borderRadius: 8,
+            fontSize: 13,
+            fontWeight: 700,
+            textDecoration: 'none',
+          }}
+        >
           + New post
         </Link>
       </div>
@@ -1029,14 +1234,20 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
         <tbody>
           {posts.map((post) => (
             <tr key={post.id} style={{ borderBottom: '1px solid #12121a' }}>
-              <td style={{ padding: '10px 12px', color: '#94a3b8', fontFamily: 'monospace' }}>{post.slug}</td>
+              <td style={{ padding: '10px 12px', color: '#94a3b8', fontFamily: 'monospace' }}>
+                {post.slug}
+              </td>
               <td style={{ padding: '10px 12px', color: '#e2e8f0' }}>{post.title_en}</td>
               <td style={{ padding: '10px 12px', color: '#94a3b8' }}>{post.category}</td>
               <td style={{ padding: '10px 12px' }}>
                 <button
                   onClick={() => togglePublish(post)}
                   style={{
-                    padding: '3px 10px', borderRadius: 9999, fontSize: 12, border: 'none', cursor: 'pointer',
+                    padding: '3px 10px',
+                    borderRadius: 9999,
+                    fontSize: 12,
+                    border: 'none',
+                    cursor: 'pointer',
                     background: post.is_published ? '#16a34a22' : '#1e1e2e',
                     color: post.is_published ? '#4ade80' : '#64748b',
                   }}
@@ -1045,13 +1256,33 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
                 </button>
               </td>
               <td style={{ padding: '10px 12px', display: 'flex', gap: 8 }}>
-                <Link href={`/admin/posts/${post.id}`} style={{ color: '#c0c1ff', textDecoration: 'none', fontSize: 13 }}>Edit</Link>
-                <button onClick={() => deletePost(post.id)} style={{ color: '#f87171', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13 }}>Delete</button>
+                <Link
+                  href={`/admin/posts/${post.id}`}
+                  style={{ color: '#c0c1ff', textDecoration: 'none', fontSize: 13 }}
+                >
+                  Edit
+                </Link>
+                <button
+                  onClick={() => deletePost(post.id)}
+                  style={{
+                    color: '#f87171',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: 13,
+                  }}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
           {posts.length === 0 && (
-            <tr><td colSpan={5} style={{ padding: 24, color: '#64748b', textAlign: 'center' }}>No posts yet.</td></tr>
+            <tr>
+              <td colSpan={5} style={{ padding: 24, color: '#64748b', textAlign: 'center' }}>
+                No posts yet.
+              </td>
+            </tr>
           )}
         </tbody>
       </table>
@@ -1061,6 +1292,7 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
 ```
 
 - [ ] Create `src/app/admin/posts/page.tsx`:
+
 ```typescript
 import { createClient } from '@/lib/supabase/server';
 import PostList from '@/components/admin/PostList';
@@ -1079,6 +1311,7 @@ export default async function PostsPage() {
 - [ ] Verify: visit `http://localhost:3000/admin/posts` (while signed in). Should render empty table with "New post" button.
 
 - [ ] Commit:
+
 ```bash
 git add src/components/admin/PostList.tsx src/app/admin/posts/page.tsx
 git commit -m "feat(admin): add post list page"
@@ -1093,6 +1326,7 @@ git commit -m "feat(admin): add post list page"
 > Note: `@uiw/react-md-editor` requires `dynamic` import with `ssr: false` in Next.js.
 
 - [ ] Create `src/components/admin/PostEditor.tsx`:
+
 ```typescript
 'use client';
 
@@ -1119,27 +1353,39 @@ type PostForm = {
 };
 
 const EMPTY_FORM: PostForm = {
-  slug: '', title_en: '', title_es: '', excerpt_en: '', excerpt_es: '',
-  content_en: '', content_es: '', category: 'General', read_time: '5 min read',
-  cover_theme: '', youtube_id: '',
+  slug: '',
+  title_en: '',
+  title_es: '',
+  excerpt_en: '',
+  excerpt_es: '',
+  content_en: '',
+  content_es: '',
+  category: 'General',
+  read_time: '5 min read',
+  cover_theme: '',
+  youtube_id: '',
 };
 
 export default function PostEditor({ post }: { post?: Post }) {
   const router = useRouter();
   const supabase = createClient();
-  const [form, setForm] = useState<PostForm>(post ? {
-    slug: post.slug,
-    title_en: post.title_en,
-    title_es: post.title_es,
-    excerpt_en: post.excerpt_en ?? '',
-    excerpt_es: post.excerpt_es ?? '',
-    content_en: post.content_en ?? '',
-    content_es: post.content_es ?? '',
-    category: post.category,
-    read_time: post.read_time,
-    cover_theme: post.cover_theme ?? '',
-    youtube_id: post.youtube_id ?? '',
-  } : EMPTY_FORM);
+  const [form, setForm] = useState<PostForm>(
+    post
+      ? {
+          slug: post.slug,
+          title_en: post.title_en,
+          title_es: post.title_es,
+          excerpt_en: post.excerpt_en ?? '',
+          excerpt_es: post.excerpt_es ?? '',
+          content_en: post.content_en ?? '',
+          content_es: post.content_es ?? '',
+          category: post.category,
+          read_time: post.read_time,
+          cover_theme: post.cover_theme ?? '',
+          youtube_id: post.youtube_id ?? '',
+        }
+      : EMPTY_FORM
+  );
   const [tab, setTab] = useState<'en' | 'es'>('en');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -1166,14 +1412,23 @@ export default function PostEditor({ post }: { post?: Post }) {
       ? await supabase.from('posts').update(payload).eq('id', post.id)
       : await supabase.from('posts').insert(payload);
 
-    if (error) { setError(error.message); setSaving(false); return; }
+    if (error) {
+      setError(error.message);
+      setSaving(false);
+      return;
+    }
     router.push('/admin/posts');
     router.refresh();
   };
 
   const inputStyle: React.CSSProperties = {
-    width: '100%', padding: '8px 12px', background: '#12121a',
-    border: '1px solid #1e1e2e', borderRadius: 8, color: '#e2e8f0', fontSize: 14,
+    width: '100%',
+    padding: '8px 12px',
+    background: '#12121a',
+    border: '1px solid #1e1e2e',
+    borderRadius: 8,
+    color: '#e2e8f0',
+    fontSize: 14,
   };
 
   return (
@@ -1184,11 +1439,36 @@ export default function PostEditor({ post }: { post?: Post }) {
 
       {/* Meta fields */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
-        <input placeholder="slug (url-friendly)" value={form.slug} onChange={set('slug')} style={inputStyle} />
-        <input placeholder="Category" value={form.category} onChange={set('category')} style={inputStyle} />
-        <input placeholder="Read time (e.g. 5 min read)" value={form.read_time} onChange={set('read_time')} style={inputStyle} />
-        <input placeholder="cover_theme (pilots/spiderman/karate or blank)" value={form.cover_theme} onChange={set('cover_theme')} style={inputStyle} />
-        <input placeholder="YouTube ID (optional)" value={form.youtube_id} onChange={set('youtube_id')} style={inputStyle} />
+        <input
+          placeholder="slug (url-friendly)"
+          value={form.slug}
+          onChange={set('slug')}
+          style={inputStyle}
+        />
+        <input
+          placeholder="Category"
+          value={form.category}
+          onChange={set('category')}
+          style={inputStyle}
+        />
+        <input
+          placeholder="Read time (e.g. 5 min read)"
+          value={form.read_time}
+          onChange={set('read_time')}
+          style={inputStyle}
+        />
+        <input
+          placeholder="cover_theme (pilots/spiderman/karate or blank)"
+          value={form.cover_theme}
+          onChange={set('cover_theme')}
+          style={inputStyle}
+        />
+        <input
+          placeholder="YouTube ID (optional)"
+          value={form.youtube_id}
+          onChange={set('youtube_id')}
+          style={inputStyle}
+        />
       </div>
 
       {/* Language tabs */}
@@ -1198,7 +1478,11 @@ export default function PostEditor({ post }: { post?: Post }) {
             key={l}
             onClick={() => setTab(l)}
             style={{
-              padding: '6px 16px', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 13,
+              padding: '6px 16px',
+              borderRadius: 6,
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: 13,
               background: tab === l ? '#c0c1ff' : '#1e1e2e',
               color: tab === l ? '#0a0a0f' : '#94a3b8',
               fontWeight: tab === l ? 700 : 400,
@@ -1238,14 +1522,31 @@ export default function PostEditor({ post }: { post?: Post }) {
         <button
           onClick={() => handleSave(false)}
           disabled={saving}
-          style={{ padding: '10px 20px', background: '#1e1e2e', color: '#94a3b8', border: 'none', borderRadius: 8, cursor: 'pointer', fontSize: 14 }}
+          style={{
+            padding: '10px 20px',
+            background: '#1e1e2e',
+            color: '#94a3b8',
+            border: 'none',
+            borderRadius: 8,
+            cursor: 'pointer',
+            fontSize: 14,
+          }}
         >
           Save draft
         </button>
         <button
           onClick={() => handleSave(true)}
           disabled={saving}
-          style={{ padding: '10px 20px', background: '#c0c1ff', color: '#0a0a0f', border: 'none', borderRadius: 8, cursor: 'pointer', fontSize: 14, fontWeight: 700 }}
+          style={{
+            padding: '10px 20px',
+            background: '#c0c1ff',
+            color: '#0a0a0f',
+            border: 'none',
+            borderRadius: 8,
+            cursor: 'pointer',
+            fontSize: 14,
+            fontWeight: 700,
+          }}
         >
           Publish
         </button>
@@ -1256,12 +1557,16 @@ export default function PostEditor({ post }: { post?: Post }) {
 ```
 
 - [ ] Create `src/app/admin/posts/new/page.tsx`:
+
 ```typescript
 import PostEditor from '@/components/admin/PostEditor';
-export default function NewPostPage() { return <PostEditor />; }
+export default function NewPostPage() {
+  return <PostEditor />;
+}
 ```
 
 - [ ] Create `src/app/admin/posts/[id]/page.tsx`:
+
 ```typescript
 import { createClient } from '@/lib/supabase/server';
 import PostEditor from '@/components/admin/PostEditor';
@@ -1279,6 +1584,7 @@ export default async function EditPostPage({ params }: { params: Promise<{ id: s
 - [ ] Verify: create a test post from `/admin/posts/new`, publish it, check it appears at `/en/blog`.
 
 - [ ] Commit:
+
 ```bash
 git add src/components/admin/PostEditor.tsx src/app/admin/posts/new src/app/admin/posts/[id]
 git commit -m "feat(admin): add bilingual markdown post editor"
@@ -1291,6 +1597,7 @@ git commit -m "feat(admin): add bilingual markdown post editor"
 **Files:** `src/components/admin/MessageList.tsx`, `src/app/admin/messages/page.tsx`
 
 - [ ] Create `src/components/admin/MessageList.tsx`:
+
 ```typescript
 'use client';
 
@@ -1309,10 +1616,20 @@ export default function MessageList({ initialMessages }: { initialMessages: Cont
 
   return (
     <div>
-      <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0', marginBottom: 24 }}>Messages</h1>
+      <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0', marginBottom: 24 }}>
+        Messages
+      </h1>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {messages.map((msg) => (
-          <div key={msg.id} style={{ padding: 20, background: '#12121a', borderRadius: 12, border: '1px solid #1e1e2e' }}>
+          <div
+            key={msg.id}
+            style={{
+              padding: 20,
+              background: '#12121a',
+              borderRadius: 12,
+              border: '1px solid #1e1e2e',
+            }}
+          >
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
               <div>
                 <span style={{ color: '#e2e8f0', fontWeight: 600, fontSize: 15 }}>{msg.name}</span>
@@ -1320,17 +1637,29 @@ export default function MessageList({ initialMessages }: { initialMessages: Cont
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <span style={{ color: '#475569', fontSize: 12 }}>
-                  {new Date(msg.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  {new Date(msg.created_at).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
                 </span>
                 <button
                   onClick={() => deleteMessage(msg.id)}
-                  style={{ color: '#f87171', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13 }}
+                  style={{
+                    color: '#f87171',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: 13,
+                  }}
                 >
                   Delete
                 </button>
               </div>
             </div>
-            <p style={{ color: '#94a3b8', fontSize: 14, lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{msg.message}</p>
+            <p style={{ color: '#94a3b8', fontSize: 14, lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
+              {msg.message}
+            </p>
           </div>
         ))}
         {messages.length === 0 && (
@@ -1343,6 +1672,7 @@ export default function MessageList({ initialMessages }: { initialMessages: Cont
 ```
 
 - [ ] Create `src/app/admin/messages/page.tsx`:
+
 ```typescript
 import { createClient } from '@/lib/supabase/server';
 import MessageList from '@/components/admin/MessageList';
@@ -1359,6 +1689,7 @@ export default async function MessagesPage() {
 ```
 
 - [ ] Commit:
+
 ```bash
 git add src/components/admin/MessageList.tsx src/app/admin/messages
 git commit -m "feat(admin): add contact messages inbox"
@@ -1371,25 +1702,52 @@ git commit -m "feat(admin): add contact messages inbox"
 **Files:** `src/components/admin/AnalyticsView.tsx`, `src/app/admin/analytics/page.tsx`
 
 - [ ] Create `src/components/admin/AnalyticsView.tsx`:
+
 ```typescript
-interface PathCount { path: string; count: number; }
+interface PathCount {
+  path: string;
+  count: number;
+}
 
 export default function AnalyticsView({ data }: { data: PathCount[] }) {
   const max = data[0]?.count ?? 1;
 
   return (
     <div>
-      <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0', marginBottom: 24 }}>Analytics</h1>
+      <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0', marginBottom: 24 }}>
+        Analytics
+      </h1>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {data.map(({ path, count }) => (
           <div key={path} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <span style={{ width: 220, color: '#94a3b8', fontSize: 13, fontFamily: 'monospace', flexShrink: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <span
+              style={{
+                width: 220,
+                color: '#94a3b8',
+                fontSize: 13,
+                fontFamily: 'monospace',
+                flexShrink: 0,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
               {path}
             </span>
             <div style={{ flex: 1, background: '#12121a', borderRadius: 4, height: 8 }}>
-              <div style={{ width: `${(count / max) * 100}%`, background: '#c0c1ff', height: '100%', borderRadius: 4, transition: 'width 0.3s' }} />
+              <div
+                style={{
+                  width: `${(count / max) * 100}%`,
+                  background: '#c0c1ff',
+                  height: '100%',
+                  borderRadius: 4,
+                  transition: 'width 0.3s',
+                }}
+              />
             </div>
-            <span style={{ color: '#64748b', fontSize: 13, width: 40, textAlign: 'right' }}>{count}</span>
+            <span style={{ color: '#64748b', fontSize: 13, width: 40, textAlign: 'right' }}>
+              {count}
+            </span>
           </div>
         ))}
         {data.length === 0 && (
@@ -1402,15 +1760,14 @@ export default function AnalyticsView({ data }: { data: PathCount[] }) {
 ```
 
 - [ ] Create `src/app/admin/analytics/page.tsx`:
+
 ```typescript
 import { createClient } from '@/lib/supabase/server';
 import AnalyticsView from '@/components/admin/AnalyticsView';
 
 export default async function AnalyticsPage() {
   const supabase = await createClient();
-  const { data: views } = await supabase
-    .from('page_views')
-    .select('path');
+  const { data: views } = await supabase.from('page_views').select('path');
 
   const counts = (views ?? []).reduce<Record<string, number>>((acc, { path }) => {
     acc[path] = (acc[path] ?? 0) + 1;
@@ -1427,6 +1784,7 @@ export default async function AnalyticsPage() {
 ```
 
 - [ ] Commit:
+
 ```bash
 git add src/components/admin/AnalyticsView.tsx src/app/admin/analytics
 git commit -m "feat(admin): add page view analytics"
@@ -1439,6 +1797,7 @@ git commit -m "feat(admin): add page view analytics"
 **Files:** `docs/supabase/seed.sql`
 
 - [ ] Create `docs/supabase/seed.sql` and run in Supabase SQL Editor:
+
 ```sql
 insert into posts (slug, title_en, title_es, excerpt_en, excerpt_es, category, read_time, cover_theme, youtube_id, is_published, published_at)
 values
@@ -1492,6 +1851,7 @@ values
 - [ ] Run `npm run lint` — no errors.
 
 - [ ] Commit:
+
 ```bash
 git add docs/supabase/seed.sql
 git commit -m "feat(supabase): seed existing posts to database"

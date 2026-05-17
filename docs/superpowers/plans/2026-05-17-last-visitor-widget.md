@@ -12,20 +12,21 @@
 
 ## File Map
 
-| File | Action |
-|------|--------|
-| Supabase: `visitor_locations` table | Create via migration |
-| `src/types/database.ts` | Add `visitor_locations` types |
-| `src/app/api/analytics/route.ts` | Extend POST: geo lookup + insert |
-| `src/app/api/last-visitor/route.ts` | Create GET route |
-| `src/components/2026/ui/LastVisitorChip.tsx` | Create component |
-| `src/components/2026/layout/Header.tsx` | Replace `<div />` with `<LastVisitorChip />` |
+| File                                         | Action                                       |
+| -------------------------------------------- | -------------------------------------------- |
+| Supabase: `visitor_locations` table          | Create via migration                         |
+| `src/types/database.ts`                      | Add `visitor_locations` types                |
+| `src/app/api/analytics/route.ts`             | Extend POST: geo lookup + insert             |
+| `src/app/api/last-visitor/route.ts`          | Create GET route                             |
+| `src/components/2026/ui/LastVisitorChip.tsx` | Create component                             |
+| `src/components/2026/layout/Header.tsx`      | Replace `<div />` with `<LastVisitorChip />` |
 
 ---
 
 ## Task 1: Create `visitor_locations` Supabase table
 
 **Files:**
+
 - Supabase remote (via MCP `mcp__supabase__apply_migration`)
 
 - [ ] **Step 1: Apply migration**
@@ -67,6 +68,7 @@ git commit --allow-empty -m "feat(db): add visitor_locations table via Supabase 
 ## Task 2: Add types for `visitor_locations` to `database.ts`
 
 **Files:**
+
 - Modify: `src/types/database.ts`
 
 - [ ] **Step 1: Add table types**
@@ -105,7 +107,7 @@ In `src/types/database.ts`, inside the `Tables` object (after `page_views` block
 After the existing aliases (`Post`, `ContactMessage`, `PageView`), add:
 
 ```typescript
-export type VisitorLocation = Tables<'visitor_locations'>
+export type VisitorLocation = Tables<'visitor_locations'>;
 ```
 
 - [ ] **Step 3: Verify TypeScript**
@@ -128,6 +130,7 @@ git commit -m "feat(types): add visitor_locations table types"
 ## Task 3: Extend `/api/analytics` POST with geo lookup
 
 **Files:**
+
 - Modify: `src/app/api/analytics/route.ts`
 
 - [ ] **Step 1: Replace the entire file**
@@ -147,7 +150,9 @@ function getClientIp(req: NextRequest): string | null {
   return req.headers.get('x-real-ip');
 }
 
-async function geolocateIp(ip: string): Promise<{ city: string; country: string; countryCode: string } | null> {
+async function geolocateIp(
+  ip: string
+): Promise<{ city: string; country: string; countryCode: string } | null> {
   try {
     const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,countryCode,city`, {
       signal: AbortSignal.timeout(3000),
@@ -219,6 +224,7 @@ git commit -m "feat(api): geolocate visitor IP and store in visitor_locations"
 ## Task 4: Create GET `/api/last-visitor` route
 
 **Files:**
+
 - Create: `src/app/api/last-visitor/route.ts`
 
 - [ ] **Step 1: Create the file**
@@ -286,6 +292,7 @@ git commit -m "feat(api): add GET /api/last-visitor endpoint"
 ## Task 5: Create `LastVisitorChip` component
 
 **Files:**
+
 - Create: `src/components/2026/ui/LastVisitorChip.tsx`
 
 - [ ] **Step 1: Create the file**
@@ -306,9 +313,7 @@ interface VisitorData {
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 function countryFlag(code: string): string {
-  return code
-    .toUpperCase()
-    .replace(/./g, (c) => String.fromCodePoint(c.charCodeAt(0) + 127397));
+  return code.toUpperCase().replace(/./g, (c) => String.fromCodePoint(c.charCodeAt(0) + 127397));
 }
 
 export default function LastVisitorChip() {
@@ -366,6 +371,7 @@ git commit -m "feat(ui): add LastVisitorChip component"
 ## Task 6: Wire `LastVisitorChip` into Header
 
 **Files:**
+
 - Modify: `src/components/2026/layout/Header.tsx`
 
 - [ ] **Step 1: Add import**
@@ -381,15 +387,15 @@ import LastVisitorChip from '@/components/2026/ui/LastVisitorChip';
 In the `Header` component's return, find:
 
 ```tsx
-        <div />
+<div />
 ```
 
 Replace with:
 
 ```tsx
-        <div className="hidden xl:block">
-          <LastVisitorChip />
-        </div>
+<div className="hidden xl:block">
+  <LastVisitorChip />
+</div>
 ```
 
 - [ ] **Step 3: Verify TypeScript**

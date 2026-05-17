@@ -41,7 +41,11 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 px-8 md:px-16" style={{ backgroundColor: 'var(--ds-bg)' }}>
+    <section
+      id="contact"
+      className="py-24 px-8 md:px-16"
+      style={{ backgroundColor: 'var(--ds-bg)' }}
+    >
       <div className="max-w-xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -108,7 +112,9 @@ export default function Contact() {
               style={{ ...inputStyle, resize: 'vertical' }}
             />
             {status === 'error' && (
-              <p className="text-sm" style={{ color: '#f87171' }}>{t('contact_error')}</p>
+              <p className="text-sm" style={{ color: '#f87171' }}>
+                {t('contact_error')}
+              </p>
             )}
             <button
               type="submit"
