@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLanyard } from '@/hooks/useLanyard';
 import { useMarvelRivals } from '@/hooks/useMarvelRivals';
 import { LuFlame, LuStar, LuShield, LuCodeXml, LuGem, LuZap } from 'react-icons/lu';
@@ -74,7 +74,7 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
     : null;
 
   const spotifyProgress = spotify
-    ? Math.min(100, ((currentTime - spotify.timestamps.start) / (spotify.timestamps.end - spotify.timestamps.start)) * 100)
+    ? Math.max(0, Math.min(100, ((currentTime - spotify.timestamps.start) / (spotify.timestamps.end - spotify.timestamps.start)) * 100))
     : 0;
 
   const elapsedTime = (() => {
@@ -119,7 +119,7 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
         <>
           <div className="fixed inset-0 z-40" onClick={onClose} />
           <motion.div
-            className="fixed z-50"
+            className="fixed z-50 ds-2026"
             style={{ left: 'calc(var(--sidebar-w, 16rem) + 8px)', bottom: '3.5rem' }}
             initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
