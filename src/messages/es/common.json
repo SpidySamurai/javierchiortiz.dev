@@ -157,5 +157,14 @@
   "project_demo_unavailable": "Demo no disponible",
   "project_view_code": "Ver código",
   "project_live_aria": "Abrir demo de {title} (se abre en nueva pestaña)",
-  "project_code_aria": "Ver código de {title} en GitHub (se abre en nueva pestaña)"
+  "project_code_aria": "Ver código de {title} en GitHub (se abre en nueva pestaña)",
+  "contact_label": "Contacto",
+  "contact_heading": "Trabajemos juntos",
+  "contact_name": "Tu nombre",
+  "contact_email": "Tu email",
+  "contact_message": "Cuéntame sobre tu proyecto...",
+  "contact_submit": "Enviar mensaje",
+  "contact_sending": "Enviando...",
+  "contact_success": "¡Mensaje enviado! Te responderé pronto.",
+  "contact_error": "Algo salió mal. Intenta de nuevo."
 }
