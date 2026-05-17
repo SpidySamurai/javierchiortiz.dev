@@ -83,7 +83,6 @@ export const SpotifyWidget = ({ spotify, currentTime }: SpotifyWidgetProps) => {
           <p className="text-gray-400 text-sm">Not listening to anything right now.</p>
         </section>
       )}
-
     </article>
   );
 };

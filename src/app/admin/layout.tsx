@@ -66,9 +66,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <SignOutButton />
         </div>
       </nav>
-      <main
-        style={{ flex: 1, padding: '2rem', color: '#e2e8f0', overflowY: 'auto' }}
-      >
+      <main style={{ flex: 1, padding: '2rem', color: '#e2e8f0', overflowY: 'auto' }}>
         {children}
       </main>
     </div>

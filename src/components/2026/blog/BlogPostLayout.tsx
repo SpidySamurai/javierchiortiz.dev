@@ -25,15 +25,16 @@ export default function BlogPostLayout({ post, locale, heroSlot, midSlot }: Blog
   const sections = tb.raw(`${post.slug}.sections`) as Array<{ heading?: string; body: string[] }>;
   const theme = getTheme(post.theme);
 
-  const themeVars = post.theme && post.theme !== 'default'
-    ? {
-        '--ds-bg': theme.bg,
-        '--ds-surface': theme.surface,
-        '--ds-primary': theme.primary,
-        '--ds-on-surface': theme.onSurface,
-        backgroundColor: theme.bg,
-      } as React.CSSProperties
-    : { minHeight: '100vh' } as React.CSSProperties;
+  const themeVars =
+    post.theme && post.theme !== 'default'
+      ? ({
+          '--ds-bg': theme.bg,
+          '--ds-surface': theme.surface,
+          '--ds-primary': theme.primary,
+          '--ds-on-surface': theme.onSurface,
+          backgroundColor: theme.bg,
+        } as React.CSSProperties)
+      : ({ minHeight: '100vh' } as React.CSSProperties);
 
   return (
     <div className="ds-2026" style={{ minHeight: '100vh', ...themeVars }}>
@@ -52,9 +53,7 @@ export default function BlogPostLayout({ post, locale, heroSlot, midSlot }: Blog
             className="mt-8 overflow-hidden"
             style={{ height: '420px' }}
           >
-            {heroSlot ?? (
-              <BlogCover theme={post.coverTheme} height="420px" />
-            )}
+            {heroSlot ?? <BlogCover theme={post.coverTheme} height="420px" />}
           </motion.div>
 
           {/* Back button */}

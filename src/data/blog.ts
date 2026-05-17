@@ -35,4 +35,3 @@ export const blogPosts: BlogPost[] = [
     theme: 'karate',
   },
 ];
-

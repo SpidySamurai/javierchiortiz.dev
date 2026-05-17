@@ -27,7 +27,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${manrope.variable} ${inter.variable} antialiased`} style={{ margin: 0, padding: 0 }}>
+      <body
+        className={`${manrope.variable} ${inter.variable} antialiased`}
+        style={{ margin: 0, padding: 0 }}
+      >
         {children}
       </body>
     </html>

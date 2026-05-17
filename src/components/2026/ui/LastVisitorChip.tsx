@@ -13,9 +13,7 @@ interface VisitorData {
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 function countryFlag(code: string): string {
-  return code
-    .toUpperCase()
-    .replace(/./g, (c) => String.fromCodePoint(c.charCodeAt(0) + 127397));
+  return code.toUpperCase().replace(/./g, (c) => String.fromCodePoint(c.charCodeAt(0) + 127397));
 }
 
 export default function LastVisitorChip() {

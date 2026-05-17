@@ -56,7 +56,10 @@ export default function LanguageSwitcher() {
               style={{
                 color: locale === lng ? 'var(--ds-primary)' : 'var(--ds-on-surface-variant)',
                 fontWeight: locale === lng ? 600 : 400,
-                background: locale === lng ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
+                background:
+                  locale === lng
+                    ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+                    : 'transparent',
               }}
             >
               {lng === 'es' ? t('language_spanish') : t('language_english')}

@@ -33,7 +33,10 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
               {/* Subtle grain texture per stripe */}
               <div
                 className="absolute inset-0"
-                style={{ background: 'linear-gradient(90deg, rgba(0,0,0,0.18) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.18) 100%)' }}
+                style={{
+                  background:
+                    'linear-gradient(90deg, rgba(0,0,0,0.18) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.18) 100%)',
+                }}
               />
             </div>
           ))}
@@ -41,7 +44,10 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
         {/* Strong dark vignette overlay */}
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(to bottom, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.1) 40%, rgba(8,8,8,0.1) 60%, rgba(8,8,8,0.75) 100%)' }}
+          style={{
+            background:
+              'linear-gradient(to bottom, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.1) 40%, rgba(8,8,8,0.1) 60%, rgba(8,8,8,0.75) 100%)',
+          }}
         />
         {/* Center line — the knot */}
         <div
@@ -54,10 +60,7 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
 
   if (theme === 'pilots') {
     return (
-      <div
-        className="relative w-full overflow-hidden"
-        style={{ height }}
-      >
+      <div className="relative w-full overflow-hidden" style={{ height }}>
         <Image
           src="/blog/top-live-ao-arena.webp"
           alt="Twenty One Pilots live at AO Arena Manchester, May 2025"
@@ -68,7 +71,10 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
         {/* Dark overlay */}
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.2) 60%, transparent 100%)' }}
+          style={{
+            background:
+              'linear-gradient(to top, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.2) 60%, transparent 100%)',
+          }}
         />
         {/* Photo credit */}
         <span
@@ -94,7 +100,10 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
       {/* Dark overlay */}
       <div
         className="absolute inset-0"
-        style={{ background: 'linear-gradient(to top, rgba(13,12,20,0.75) 0%, rgba(13,12,20,0.2) 60%, transparent 100%)' }}
+        style={{
+          background:
+            'linear-gradient(to top, rgba(13,12,20,0.75) 0%, rgba(13,12,20,0.2) 60%, transparent 100%)',
+        }}
       />
     </div>
   );

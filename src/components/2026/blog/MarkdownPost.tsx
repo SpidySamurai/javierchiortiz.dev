@@ -3,6 +3,7 @@ import Header from '@/components/2026/layout/Header';
 import Sidebar from '@/components/2026/layout/Sidebar';
 import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
 import BlogCover from '@/components/2026/ui/BlogCover';
+import { getTheme } from '@/data/blogThemes';
 import Link from 'next/link';
 
 export default function MarkdownPost({ post, locale }: { post: Post; locale: string }) {
@@ -11,8 +12,24 @@ export default function MarkdownPost({ post, locale }: { post: Post; locale: str
   const hasImageHero = !!post.cover_image_url;
   const hasThemeHero = !!post.cover_theme && !hasImageHero;
 
+  // theme_config (DB override) → cover_theme key lookup → default
+  const baseTheme = getTheme(post.cover_theme ?? undefined);
+  const theme = post.theme_config ? { ...baseTheme, ...post.theme_config } : baseTheme;
+
   return (
-    <div className="ds-2026" style={{ minHeight: '100vh', backgroundColor: 'var(--ds-bg)' }}>
+    <div
+      className="ds-2026"
+      style={
+        {
+          minHeight: '100vh',
+          backgroundColor: theme.bg,
+          '--ds-bg': theme.bg,
+          '--ds-surface': theme.surface,
+          '--ds-primary': theme.primary,
+          '--ds-on-surface': theme.onSurface ?? 'var(--ds-on-surface)',
+        } as React.CSSProperties
+      }
+    >
       <Header />
       <Sidebar />
       <main className="xl:ml-64 pt-20">
@@ -32,10 +49,7 @@ export default function MarkdownPost({ post, locale }: { post: Post; locale: str
           </div>
         )}
         {hasThemeHero && (
-          <BlogCover
-            theme={post.cover_theme as 'pilots' | 'spiderman' | 'karate'}
-            height="420px"
-          />
+          <BlogCover theme={post.cover_theme as 'pilots' | 'spiderman' | 'karate'} height="420px" />
         )}
 
         <article className="max-w-3xl mx-auto px-8 py-16">
@@ -64,7 +78,10 @@ export default function MarkdownPost({ post, locale }: { post: Post; locale: str
             </span>
             <h1
               className="text-4xl md:text-5xl font-black tracking-tight leading-tight"
-              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+              style={{
+                color: 'var(--ds-on-surface)',
+                fontFamily: 'var(--font-manrope), sans-serif',
+              }}
             >
               {title}
             </h1>

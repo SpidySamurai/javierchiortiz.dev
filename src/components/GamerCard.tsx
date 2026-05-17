@@ -180,7 +180,6 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
           <SpotifyWidget spotify={spotify} currentTime={currentTime} />
         </section>
       </div>
-
     </div>
   );
 }
