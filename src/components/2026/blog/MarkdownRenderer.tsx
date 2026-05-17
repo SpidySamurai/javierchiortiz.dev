@@ -34,7 +34,11 @@ const components: Components = {
     </h3>
   ),
   p: ({ children }) => {
-    const text = typeof children === 'string' ? children : '';
+    const text = Array.isArray(children)
+      ? children.map((c) => (typeof c === 'string' ? c : '')).join('')
+      : typeof children === 'string'
+      ? children
+      : '';
     const match = text.match(/^::youtube\[([^\]]+)\]$/);
     if (match) return <YouTubeEmbed id={match[1]} />;
     return (
