@@ -199,7 +199,7 @@ export default function Header() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 w-full xl:left-64 xl:w-[calc(100%-16rem)] flex justify-between items-center px-8 py-4 z-50"
+        className="header-adaptive fixed top-0 left-0 w-full flex justify-between items-center px-8 py-4 z-50"
         style={{
           backgroundColor: 'color-mix(in srgb, var(--ds-bg) 60%, transparent)',
           backdropFilter: 'blur(24px)',

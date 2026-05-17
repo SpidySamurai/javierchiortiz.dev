@@ -23,6 +23,10 @@ html {
   .sidebar-main {
     margin-left: var(--sidebar-w, 16rem);
   }
+  .header-adaptive {
+    left: var(--sidebar-w, 16rem) !important;
+    width: calc(100% - var(--sidebar-w, 16rem)) !important;
+  }
 }
 
 /* CSS-driven collapsed state — applied by inline script before first paint */
@@ -47,6 +51,9 @@ html[data-sidebar-collapsed] .sidebar-toggle-icon {
 }
 [data-sidebar-ready] .sidebar-main {
   transition: margin-left 0.25s ease;
+}
+[data-sidebar-ready] .header-adaptive {
+  transition: left 0.25s ease, width 0.25s ease;
 }
 
 /* Avoid anchored sections being hidden under the sticky header */

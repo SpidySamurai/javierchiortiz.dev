@@ -19,15 +19,15 @@ function getClientIp(req: NextRequest): string | null {
 
 async function geolocateIp(
   ip: string
-): Promise<{ city: string; country: string; countryCode: string } | null> {
+): Promise<{ city: string; country: string; countryCode: string; region: string } | null> {
   try {
-    const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,countryCode,city`, {
+    const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,countryCode,city,regionName&lang=en`, {
       signal: AbortSignal.timeout(3000),
     });
     if (!res.ok) return null;
     const data = await res.json();
     if (data.status !== 'success' || !data.city) return null;
-    return { city: data.city, country: data.country, countryCode: data.countryCode };
+    return { city: data.city, country: data.country, countryCode: data.countryCode, region: data.regionName ?? '' };
   } catch {
     return null;
   }
@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
         city: geo.city,
         country: geo.country,
         country_code: geo.countryCode,
+        region: geo.region,
       });
     }
   }
