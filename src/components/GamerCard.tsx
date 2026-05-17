@@ -86,7 +86,7 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
   })();
 
   const surface = 'var(--ds-surface)';
-  const divider: React.CSSProperties = { height: 1, background: '#222a3d', margin: '0 14px' };
+  const divider: React.CSSProperties = { height: 1, background: 'var(--ds-surface-high)', margin: '0 14px' };
   const rowPad: React.CSSProperties = { padding: '9px 14px' };
   const label: React.CSSProperties = {
     color: 'var(--ds-outline)',
@@ -131,7 +131,7 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
                 width: 260,
                 background: surface,
                 borderRadius: 14,
-                border: '1px solid #31394d',
+                border: '1px solid var(--ds-surface-bright)',
                 boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
                 overflow: 'hidden',
               }}
@@ -146,10 +146,10 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
                       width={36}
                       height={36}
                       alt=""
-                      style={{ borderRadius: '50%', border: '2px solid #222a3d', display: 'block' }}
+                      style={{ borderRadius: '50%', border: '2px solid var(--ds-surface-high)', display: 'block' }}
                     />
                   ) : (
-                    <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#222a3d' }} />
+                    <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--ds-surface-high)' }} />
                   )}
                   <div
                     style={{
@@ -184,7 +184,7 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
                       <span style={value}>{spotify.song}</span>
                       <span style={muted}>{spotify.artist}</span>
                     </div>
-                    <div style={{ height: 2, background: '#222a3d', borderRadius: 1, marginTop: 6 }}>
+                    <div style={{ height: 2, background: 'var(--ds-surface-high)', borderRadius: 1, marginTop: 6 }}>
                       <div style={{ height: 2, borderRadius: 1, background: 'var(--ds-primary)', width: `${spotifyProgress}%`, transition: 'width 1s linear' }} />
                     </div>
                   </>
