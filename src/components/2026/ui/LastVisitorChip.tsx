@@ -2,6 +2,7 @@
 
 import useSWR from 'swr';
 import { useTranslations } from 'next-intl';
+import ReactCountryFlag from 'react-country-flag';
 
 interface VisitorData {
   visitor: {
@@ -12,10 +13,6 @@ interface VisitorData {
 }
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
-
-function countryFlag(code: string): string {
-  return code.toUpperCase().replace(/./g, (c) => String.fromCodePoint(c.charCodeAt(0) + 127397));
-}
 
 export default function LastVisitorChip() {
   const t = useTranslations('common');
@@ -30,11 +27,14 @@ export default function LastVisitorChip() {
   return (
     <div
       className="flex items-center gap-1.5 select-none"
-      title={`Last visitor from ${visitor.city}, ${visitor.country}`}
+      title={`${t('last_visitor_from')} ${visitor.city}, ${visitor.country}`}
     >
-      <span aria-hidden="true" className="text-sm leading-none">
-        {countryFlag(visitor.countryCode)}
-      </span>
+      <ReactCountryFlag
+        countryCode={visitor.countryCode}
+        svg
+        aria-hidden="true"
+        style={{ width: '1.1em', height: '1.1em' }}
+      />
       <span
         style={{
           fontFamily: 'var(--font-inter), sans-serif',
