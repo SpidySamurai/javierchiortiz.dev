@@ -207,12 +207,13 @@ export default function Header() {
           boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)',
         }}
       >
-        <div className="hidden xl:block">
+        {/* Centered chip — absolute so it doesn't shift the right controls */}
+        <div className="hidden xl:block absolute left-1/2 -translate-x-1/2">
           <LastVisitorChip />
         </div>
 
         {/* Desktop controls */}
-        <div className="hidden xl:flex items-center gap-3">
+        <div className="hidden xl:flex items-center gap-3 ml-auto">
           <ThemeToggle />
           <LanguageSwitcher />
         </div>
