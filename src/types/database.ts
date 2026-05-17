@@ -62,6 +62,30 @@ export type Database = {
         }
         Relationships: []
       }
+      visitor_locations: {
+        Row: {
+          id: number
+          city: string
+          country: string
+          country_code: string
+          created_at: string
+        }
+        Insert: {
+          id?: number
+          city: string
+          country: string
+          country_code: string
+          created_at?: string
+        }
+        Update: {
+          id?: number
+          city?: string
+          country?: string
+          country_code?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       posts: {
         Row: {
           category: string
@@ -271,3 +295,4 @@ export const Constants = {
 export type Post = Tables<'posts'>
 export type ContactMessage = Tables<'contact_messages'>
 export type PageView = Tables<'page_views'>
+export type VisitorLocation = Tables<'visitor_locations'>
