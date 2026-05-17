@@ -9,12 +9,7 @@ import ThemeToggle from '@/components/2026/ui/ThemeToggle';
 import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
-
-const NAV_IDS = [
-  { id: 'experience', icon: 'work', key: 'experience' },
-  { id: 'projects', icon: 'grid_view', key: 'projects' },
-  { id: 'about', icon: 'person', key: 'about' },
-] as const;
+import { NAV_ITEMS } from '@/config/navigation';
 
 function MobileDrawer({
   open,
@@ -97,7 +92,7 @@ function MobileDrawer({
 
         {/* Nav links */}
         <nav className="space-y-2 flex-1">
-          {NAV_IDS.map(({ id, icon, key }) => (
+          {NAV_ITEMS.map(({ id, icon, key }) => (
             <a
               key={id}
               href={sectionHref(id)}

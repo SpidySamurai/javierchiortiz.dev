@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import Header from '@/components/layout/Header';
-import Hero from '@/components/layout/Hero';
-import MainContent from '@/components/sections/MainContent';
-import Footer from '@/components/layout/Footer';
+import Header from '@/components/2025/layout/Header';
+import Hero from '@/components/2025/layout/Hero';
+import MainContent from '@/components/2025/sections/MainContent';
+import Footer from '@/components/2025/layout/Footer';
 import FlatCat from '@/components/FlatCat';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 

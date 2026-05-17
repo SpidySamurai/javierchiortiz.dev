@@ -1,4 +1,4 @@
-import ExperienceItem from '@/components/items/ExperienceItem';
+import ExperienceItem from '@/components/2025/items/ExperienceItem';
 import { experiences } from '@/data/experiences';
 import { useTranslations } from 'next-intl';
 
