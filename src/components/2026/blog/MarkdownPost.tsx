@@ -1,9 +1,7 @@
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeSanitize from 'rehype-sanitize';
 import type { Post } from '@/types/database';
 import Header from '@/components/2026/layout/Header';
 import Sidebar from '@/components/2026/layout/Sidebar';
+import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
 
 export default function MarkdownPost({ post, locale }: { post: Post; locale: string }) {
   const title = locale === 'es' ? post.title_es : post.title_en;
@@ -42,10 +40,8 @@ export default function MarkdownPost({ post, locale }: { post: Post; locale: str
               )}
             </p>
           </header>
-          <div style={{ color: 'var(--ds-on-surface-variant)', lineHeight: 1.8 }}>
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
-              {content ?? ''}
-            </ReactMarkdown>
+          <div>
+            <MarkdownRenderer content={content ?? ''} />
           </div>
         </article>
       </main>
