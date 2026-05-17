@@ -1,0 +1,45 @@
+'use client';
+
+import Header from '@/components/2026/layout/Header';
+import Sidebar from '@/components/2026/layout/Sidebar';
+import Hero from '@/components/2026/sections/Hero';
+import Timeline from '@/components/2026/sections/Timeline';
+import Projects from '@/components/2026/sections/Projects';
+import Product from '@/components/2026/sections/Product';
+import About from '@/components/2026/sections/About';
+import Contact from '@/components/2026/sections/Contact';
+import Footer from '@/components/2026/sections/Footer';
+import BlogPreview from '@/components/2026/sections/BlogPreview';
+import FlatCat from '@/components/FlatCat';
+import ScrollProgress from '@/components/2026/ui/ScrollProgress';
+import BackToTop from '@/components/2026/ui/BackToTop';
+import CustomCursor from '@/components/2026/ui/CustomCursor';
+import { useGamerCard } from '@/components/providers/GamerCardContext';
+import { usePageView } from '@/hooks/usePageView';
+import type { Post } from '@/types/database';
+
+export default function HomeShell({ posts }: { posts: Post[] }) {
+  const { unlockCard } = useGamerCard();
+  usePageView();
+
+  return (
+    <div className="ds-2026" style={{ minHeight: '100vh' }}>
+      <ScrollProgress />
+      <CustomCursor />
+      <Header />
+      <Sidebar />
+      <FlatCat onUnlock={unlockCard} />
+      <BackToTop />
+      <main className="sidebar-main pt-20">
+        <Hero />
+        <Timeline />
+        <Product />
+        <Projects />
+        <About />
+        <Contact />
+        <BlogPreview posts={posts} />
+        <Footer />
+      </main>
+    </div>
+  );
+}
