@@ -2,15 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import ThemeToggle from '@/components/ui/ThemeToggle';
+import ThemeToggle from '@/components/2026/ui/ThemeToggle';
 import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
-
-const NAV_SECTIONS = [
-  { id: 'projects', labelKey: 'projects' },
-  { id: 'experience', labelKey: 'experience' },
-  { id: 'about', labelKey: 'about' },
-] as const;
+import { NAV_ITEMS } from '@/config/navigation';
 
 export default function Navbar() {
   const t = useTranslations('common');
@@ -31,7 +26,7 @@ export default function Navbar() {
       { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
     );
 
-    NAV_SECTIONS.forEach(({ id }) => {
+    NAV_ITEMS.forEach(({ id }) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
@@ -59,7 +54,7 @@ export default function Navbar() {
     <nav className="flex items-center gap-6">
       {/* Desktop nav links */}
       <ul className="hidden lg:flex items-center gap-1">
-        {NAV_SECTIONS.map(({ id, labelKey }) => (
+        {NAV_ITEMS.map(({ id, key }) => (
           <li key={id}>
             <a
               href={`#${id}`}
@@ -73,7 +68,7 @@ export default function Navbar() {
               }}
               aria-current={active === id ? 'page' : undefined}
             >
-              {t(labelKey)}
+              {t(key)}
             </a>
           </li>
         ))}
@@ -171,7 +166,7 @@ export default function Navbar() {
           </div>
 
           <ul className="flex flex-col gap-1">
-            {NAV_SECTIONS.map(({ id, labelKey }) => (
+            {NAV_ITEMS.map(({ id, key }) => (
               <li key={id}>
                 <a
                   href={`#${id}`}
@@ -185,7 +180,7 @@ export default function Navbar() {
                       : 'transparent',
                   }}
                 >
-                  {t(labelKey)}
+                  {t(key)}
                 </a>
               </li>
             ))}

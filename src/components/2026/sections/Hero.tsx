@@ -171,7 +171,7 @@ export default function Hero() {
     }).then(() => setParticlesReady(true));
   }, []);
 
-  const fireComet = () => {
+  const fireComet = useCallback(() => {
     if (!cometContainerRef.current) return;
     const container = cometContainerRef.current;
     const { width, height } = container.canvas.size;
@@ -220,7 +220,7 @@ export default function Hero() {
       }
     };
     requestAnimationFrame(animate);
-  };
+  }, [isDark]);
 
   useEffect(() => {
     if (!particlesReady) return;

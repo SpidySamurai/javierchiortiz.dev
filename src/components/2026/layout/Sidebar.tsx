@@ -6,14 +6,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
-
-const NAV_IDS = [
-  { id: 'experience', icon: 'work', key: 'experience' },
-  { id: 'projects', icon: 'grid_view', key: 'projects' },
-  { id: 'about', icon: 'person', key: 'about' },
-] as const;
-
-const SECTION_IDS = ['experience', 'projects', 'about'];
+import { NAV_ITEMS, SECTION_IDS } from '@/config/navigation';
 
 export default function Sidebar() {
   const t = useTranslations('common');
@@ -26,7 +19,6 @@ export default function Sidebar() {
   const isHome = !isBlogActive;
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
 
-  // Sync React state with CSS state (inline script already handled visual before first paint)
   useLayoutEffect(() => {
     const saved = localStorage.getItem('sidebar-collapsed') === 'true';
     setCollapsed(saved);
@@ -35,16 +27,14 @@ export default function Sidebar() {
     });
   }, []);
 
-  const toggle = () => {
-    setCollapsed((prev) => {
-      const next = !prev;
-      localStorage.setItem('sidebar-collapsed', String(next));
-      document.documentElement.style.setProperty('--sidebar-w', next ? '4rem' : '16rem');
-      if (next) document.documentElement.setAttribute('data-sidebar-collapsed', '');
-      else document.documentElement.removeAttribute('data-sidebar-collapsed');
-      return next;
-    });
-  };
+  const toggle = () => setCollapsed((prev) => !prev);
+
+  useEffect(() => {
+    localStorage.setItem('sidebar-collapsed', String(collapsed));
+    document.documentElement.style.setProperty('--sidebar-w', collapsed ? '4rem' : '16rem');
+    if (collapsed) document.documentElement.setAttribute('data-sidebar-collapsed', '');
+    else document.documentElement.removeAttribute('data-sidebar-collapsed');
+  }, [collapsed]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -66,7 +56,7 @@ export default function Sidebar() {
     <>
     <aside
       className="sidebar-aside hidden xl:flex flex-col fixed left-0 top-0 h-full z-40 pt-24 overflow-hidden"
-      style={{ width: collapsed ? '4rem' : '16rem', backgroundColor: 'var(--ds-surface)' }}
+      style={{ width: 'var(--sidebar-w, 16rem)', backgroundColor: 'var(--ds-surface)' }}
       suppressHydrationWarning
     >
       {/* Profile + Nav */}
@@ -93,7 +83,7 @@ export default function Sidebar() {
 
         {/* Nav — key changes on expand to re-trigger stagger animation */}
         <nav key={collapsed ? 'nav-c' : 'nav-e'} className="space-y-1">
-          {[...NAV_IDS, { id: 'blog', icon: 'edit_note', key: 'blog' } as const].map(
+          {[...NAV_ITEMS, { id: 'blog', icon: 'edit_note', key: 'blog' } as const].map(
             ({ id, icon, key }, index) => {
               const isActive = id === 'blog' ? isBlogActive : active === id;
               const href = id === 'blog' ? `/${locale}/blog` : sectionHref(id);
