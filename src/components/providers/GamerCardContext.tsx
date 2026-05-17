@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import GamerCard from '@/components/GamerCard';
 
 interface GamerCardContextType {
   isOpen: boolean;
@@ -33,6 +34,7 @@ export function GamerCardProvider({ children }: { children: React.ReactNode }) {
   return (
     <GamerCardContext.Provider value={{ isOpen, isUnlocked, openCard, closeCard, unlockCard }}>
       {children}
+      <GamerCard isOpen={isOpen} onClose={closeCard} />
     </GamerCardContext.Provider>
   );
 }

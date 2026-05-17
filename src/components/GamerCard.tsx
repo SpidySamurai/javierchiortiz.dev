@@ -179,15 +179,36 @@ export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
               <div style={rowPad}>
                 <div style={label}>Spotify</div>
                 {spotify ? (
-                  <>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                      <span style={value}>{spotify.song}</span>
-                      <span style={muted}>{spotify.artist}</span>
+                  <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 2 }}>
+                    {/* Spinning disc */}
+                    <div style={{ position: 'relative', flexShrink: 0, width: 42, height: 42 }}>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                        style={{
+                          width: 42, height: 42, borderRadius: '50%',
+                          backgroundImage: `url(${spotify.album_art_url})`,
+                          backgroundSize: 'cover',
+                          border: '2px solid var(--ds-surface-bright)',
+                        }}
+                      />
+                      <div style={{
+                        position: 'absolute', top: '50%', left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: 9, height: 9, borderRadius: '50%',
+                        background: 'var(--ds-surface)',
+                        border: '1.5px solid var(--ds-surface-high)',
+                      }} />
                     </div>
-                    <div style={{ height: 2, background: 'var(--ds-surface-high)', borderRadius: 1, marginTop: 6 }}>
-                      <div style={{ height: 2, borderRadius: 1, background: 'var(--ds-primary)', width: `${spotifyProgress}%`, transition: 'width 1s linear' }} />
+                    {/* Text + progress */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ ...value, fontSize: 10 }}>{spotify.song}</div>
+                      <div style={{ ...muted, marginLeft: 0, marginTop: 1 }}>{spotify.artist}</div>
+                      <div style={{ height: 2, background: 'var(--ds-surface-high)', borderRadius: 1, marginTop: 5 }}>
+                        <div style={{ height: 2, borderRadius: 1, background: 'var(--ds-primary)', width: `${spotifyProgress}%`, transition: 'width 1s linear' }} />
+                      </div>
                     </div>
-                  </>
+                  </div>
                 ) : (
                   <span style={{ ...muted, marginLeft: 0 }}>Not listening</span>
                 )}

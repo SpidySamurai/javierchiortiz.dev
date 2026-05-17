@@ -153,10 +153,15 @@ export function useMarvelRivals(uid: string) {
     };
   }
 
+  const validRank = (r?: string | null) => (r && r !== 'Invalid level' ? r : null);
+  const currentRank = validRank(player?.rank?.rank);
+  const displayRank = currentRank ?? peakRank.rank;
+  const displayColor = currentRank ? (player?.rank?.color ?? null) : peakRank.color;
+
   return {
-    rank: player?.rank?.rank || 'Unranked', // Current Rank
-    rankIcon: getLocalRankIcon(player?.rank?.rank),
-    rankColor: player?.rank?.color || '#ffffff',
+    rank: displayRank || 'Unranked',
+    rankIcon: getLocalRankIcon(displayRank ?? undefined),
+    rankColor: displayColor || '#ffffff',
 
     peakRank: peakRank.rank,
     peakRankIcon: getLocalRankIcon(peakRank.rank),
