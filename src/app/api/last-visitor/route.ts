@@ -12,7 +12,7 @@ export const revalidate = 0;
 export async function GET() {
   const { data, error } = await supabase
     .from('visitor_locations')
-    .select('city, country, country_code')
+    .select('region, country_code')
     .order('created_at', { ascending: false })
     .limit(2);
 
@@ -23,8 +23,7 @@ export async function GET() {
   const prev = data[1];
   return NextResponse.json({
     visitor: {
-      city: prev.city,
-      country: prev.country,
+      region: prev.region ?? '',
       countryCode: prev.country_code,
     },
   });

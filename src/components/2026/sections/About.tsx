@@ -7,7 +7,7 @@ import {
   SiNextdotjs,
   SiTypescript,
   SiHtml5,
-  SiCss3,
+  SiCss,
   SiNodedotjs,
   SiNestjs,
   SiSass,
@@ -43,7 +43,7 @@ const STACK: Tech[] = [
   { name: 'JavaScript', icon: SiJavascript, color: '#F7DF1E' },
   { name: 'Tailwind', icon: SiTailwindcss, color: '#06B6D4' },
   { name: 'HTML', icon: SiHtml5, color: '#E34F26' },
-  { name: 'CSS', icon: SiCss3, color: '#1572B6' },
+  { name: 'CSS', icon: SiCss, color: '#1572B6' },
   { name: 'Sass', icon: SiSass, color: '#CC6699' },
   { name: 'Prisma', icon: SiPrisma, color: '#5a67d8' },
 ];

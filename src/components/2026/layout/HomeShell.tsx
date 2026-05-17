@@ -7,7 +7,6 @@ import Timeline from '@/components/2026/sections/Timeline';
 import Projects from '@/components/2026/sections/Projects';
 import Product from '@/components/2026/sections/Product';
 import About from '@/components/2026/sections/About';
-import Contact from '@/components/2026/sections/Contact';
 import Footer from '@/components/2026/sections/Footer';
 import BlogPreview from '@/components/2026/sections/BlogPreview';
 import FlatCat from '@/components/FlatCat';
@@ -36,8 +35,7 @@ export default function HomeShell({ posts }: { posts: Post[] }) {
         <Product />
         <Projects />
         <About />
-        <Contact />
-        <BlogPreview posts={posts} />
+<BlogPreview posts={posts} />
         <Footer />
       </main>
     </div>
