@@ -6,13 +6,20 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+const PRIVATE_IP_RE =
+  /^(127\.|10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|::1$|fd[0-9a-f]{2}:)/i;
+
 function getClientIp(req: NextRequest): string | null {
+  // x-forwarded-for leftmost value is client-supplied and spoofable;
+  // acceptable for a cosmetic last-visitor widget.
   const forwarded = req.headers.get('x-forwarded-for');
   if (forwarded) return forwarded.split(',')[0].trim();
   return req.headers.get('x-real-ip');
 }
 
-async function geolocateIp(ip: string): Promise<{ city: string; country: string; countryCode: string } | null> {
+async function geolocateIp(
+  ip: string
+): Promise<{ city: string; country: string; countryCode: string } | null> {
   try {
     const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,countryCode,city`, {
       signal: AbortSignal.timeout(3000),
@@ -35,7 +42,7 @@ export async function POST(req: NextRequest) {
   await supabase.from('page_views').insert({ path, locale: locale ?? null, referrer });
 
   const ip = getClientIp(req);
-  if (ip) {
+  if (ip && !PRIVATE_IP_RE.test(ip)) {
     const geo = await geolocateIp(ip);
     if (geo) {
       await supabase.from('visitor_locations').insert({
