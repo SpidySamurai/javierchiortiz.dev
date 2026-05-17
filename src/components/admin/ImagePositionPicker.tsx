@@ -1,17 +1,27 @@
 'use client';
 
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 
 interface Props {
   src: string;
-  value: string;           // CSS object-position e.g. "50% 30%"
+  value: string;
   onChange: (pos: string) => void;
   label: string;
-  previewHeight: number;   // px — 200 for card, 420 for hero
+  previewHeight: number;
 }
 
 export default function ImagePositionPicker({ src, value, onChange, label, previewHeight }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const listenersRef = useRef<{ move: (e: MouseEvent) => void; up: () => void } | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (listenersRef.current) {
+        document.removeEventListener('mousemove', listenersRef.current.move);
+        document.removeEventListener('mouseup', listenersRef.current.up);
+      }
+    };
+  }, []);
 
   const calcPos = useCallback((clientX: number, clientY: number) => {
     const rect = containerRef.current?.getBoundingClientRect();
@@ -29,15 +39,18 @@ export default function ImagePositionPicker({ src, value, onChange, label, previ
     const onUp = () => {
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onUp);
+      listenersRef.current = null;
     };
+    listenersRef.current = { move: onMove, up: onUp };
     document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseup', onUp);
   }, [calcPos]);
 
-  // Parse "50% 30%" → { x: 50, y: 30 }
   const [xStr, yStr] = value.split(' ');
-  const dotX = parseFloat(xStr ?? '50');
-  const dotY = parseFloat(yStr ?? '50');
+  const dotXRaw = parseFloat(xStr ?? '50');
+  const dotYRaw = parseFloat(yStr ?? '50');
+  const dotX = Number.isFinite(dotXRaw) ? dotXRaw : 50;
+  const dotY = Number.isFinite(dotYRaw) ? dotYRaw : 50;
 
   return (
     <div style={{ marginBottom: 16 }}>
@@ -69,14 +82,12 @@ export default function ImagePositionPicker({ src, value, onChange, label, previ
             pointerEvents: 'none',
           }}
         />
-        {/* Grid overlay */}
         <div style={{
           position: 'absolute', inset: 0,
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px)',
           backgroundSize: '25% 25%',
           pointerEvents: 'none',
         }} />
-        {/* Focal point dot */}
         <div style={{
           position: 'absolute',
           left: `${dotX}%`,
