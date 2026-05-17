@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import type { Post } from '@/types/database';
+import type { ICommand, ExecuteState, TextAreaTextApi } from '@uiw/react-md-editor';
 import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
@@ -37,19 +38,18 @@ const EMPTY: PostForm = {
   youtube_id: '',
 };
 
-const youtubeCommand = {
-  name: 'youtube',
-  keyCommand: 'youtube',
-  buttonProps: { title: 'Insert YouTube embed', style: { fontSize: 13, padding: '4px 8px' } },
-  icon: <span>▶ YT</span>,
-  execute: (_state: unknown, api: { replaceSelection: (text: string) => void }) => {
-    const id = prompt('YouTube Video ID (e.g. dQw4w9WgXcQ):');
-    if (!id?.trim()) return;
-    api.replaceSelection(`\n::youtube[${id.trim()}]\n`);
-  },
-};
-
 export default function PostEditor({ post }: { post?: Post }) {
+  const youtubeCommand: ICommand = {
+    name: 'youtube',
+    keyCommand: 'youtube',
+    buttonProps: { title: 'Insert YouTube embed', style: { fontSize: 13, padding: '4px 8px' } },
+    icon: <span>▶ YT</span>,
+    execute: (_state: ExecuteState, api: TextAreaTextApi) => {
+      const id = prompt('YouTube Video ID (e.g. dQw4w9WgXcQ):');
+      if (!id?.trim()) return;
+      api.replaceSelection(`\n::youtube[${id.trim()}]\n`);
+    },
+  };
   const router = useRouter();
   const supabase = createClient();
   const [form, setForm] = useState<PostForm>(
