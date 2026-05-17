@@ -1,4 +1,5 @@
-import { getPostBySlug, blogPosts } from '@/data/blog';
+import { getPostBySlug } from '@/lib/blogQueries';
+import { blogPosts } from '@/data/blog';
 import TwentyOnePilotsPost from '@/components/2026/blog/TwentyOnePilotsPost';
 import SpiderManPost from '@/components/2026/blog/SpiderManPost';
 import MarkdownPost from '@/components/2026/blog/MarkdownPost';

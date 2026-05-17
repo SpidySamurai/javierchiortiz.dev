@@ -1,4 +1,4 @@
-import { getPublishedPosts } from '@/data/blog';
+import { getPublishedPosts } from '@/lib/blogQueries';
 import BlogCard from '@/components/2026/ui/BlogCard';
 import Header from '@/components/2026/layout/Header';
 import Sidebar from '@/components/2026/layout/Sidebar';
