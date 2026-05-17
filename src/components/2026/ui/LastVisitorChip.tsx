@@ -1,6 +1,7 @@
 'use client';
 
 import useSWR from 'swr';
+import { useTranslations } from 'next-intl';
 
 interface VisitorData {
   visitor: {
@@ -17,6 +18,7 @@ function countryFlag(code: string): string {
 }
 
 export default function LastVisitorChip() {
+  const t = useTranslations('common');
   const { data } = useSWR<VisitorData>('/api/last-visitor', fetcher, {
     dedupingInterval: 60_000,
     revalidateOnFocus: false,
@@ -40,7 +42,7 @@ export default function LastVisitorChip() {
           color: 'var(--ds-outline)',
         }}
       >
-        {visitor.city}, {visitor.country}
+        {t('last_visitor_from')} {visitor.city}, {visitor.country}
       </span>
     </div>
   );
