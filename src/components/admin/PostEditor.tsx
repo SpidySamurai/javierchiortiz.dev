@@ -71,7 +71,7 @@ export default function PostEditor({ post }: { post?: Post }) {
   );
 
   const [tab, setTab] = useState<'en' | 'es'>('en');
-  const [mode, setMode] = useState<'edit' | 'preview'>('edit');
+  const [mode, setMode] = useState<'edit' | 'split' | 'blog'>('edit');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -147,7 +147,7 @@ export default function PostEditor({ post }: { post?: Post }) {
   const currentTitle = form[`title_${tab}`];
 
   return (
-    <div style={{ maxWidth: 900 }}>
+    <div style={{ maxWidth: mode === 'split' ? 1400 : 900 }}>
       <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0', marginBottom: 24 }}>
         {post ? 'Edit post' : 'New post'}
       </h1>
@@ -192,9 +192,9 @@ export default function PostEditor({ post }: { post?: Post }) {
           ))}
         </div>
         <div style={{ display: 'flex', gap: 4 }}>
-          {(['edit', 'preview'] as const).map((m) => (
-            <button key={m} onClick={() => setMode(m)} style={{ padding: '6px 14px', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12, background: mode === m ? '#3e3c8f' : '#1e1e2e', color: mode === m ? '#c0c1ff' : '#64748b', fontWeight: mode === m ? 700 : 400, textTransform: 'capitalize' }}>
-              {m === 'edit' ? '✏ Edit' : '👁 Preview'}
+          {([['edit', '✏ Edit'], ['split', '⚡ Split'], ['blog', '👁 Blog']] as const).map(([m, label]) => (
+            <button key={m} onClick={() => setMode(m)} style={{ padding: '6px 14px', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12, background: mode === m ? '#3e3c8f' : '#1e1e2e', color: mode === m ? '#c0c1ff' : '#64748b', fontWeight: mode === m ? 700 : 400 }}>
+              {label}
             </button>
           ))}
         </div>
@@ -205,11 +205,52 @@ export default function PostEditor({ post }: { post?: Post }) {
 
       {mode === 'edit' && (
         <div data-color-mode="dark">
-          <MDEditor value={currentContent} onChange={(v) => setForm((f) => ({ ...f, [`content_${tab}`]: v ?? '' }))} height={400} extraCommands={[youtubeCommand]} />
+          <MDEditor value={currentContent} onChange={(v) => setForm((f) => ({ ...f, [`content_${tab}`]: v ?? '' }))} height={500} extraCommands={[youtubeCommand]} />
         </div>
       )}
 
-      {mode === 'preview' && (
+      {mode === 'split' && (
+        <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+          <div data-color-mode="dark" style={{ flex: 1, minWidth: 0 }}>
+            <MDEditor value={currentContent} onChange={(v) => setForm((f) => ({ ...f, [`content_${tab}`]: v ?? '' }))} height={600} extraCommands={[youtubeCommand]} />
+          </div>
+          <div
+            style={{
+              flex: 1,
+              minWidth: 0,
+              maxHeight: 600,
+              overflowY: 'auto',
+              background: '#0b1326',
+              borderRadius: 8,
+              '--ds-bg': '#0b1326',
+              '--ds-surface': '#131b2e',
+              '--ds-on-surface': '#dae2fd',
+              '--ds-on-surface-variant': '#c7c4d7',
+              '--ds-primary': '#c0c1ff',
+              '--ds-outline-variant': '#464554',
+            } as React.CSSProperties}
+          >
+            {form.cover_image_url && (
+              <div style={{ width: '100%', height: 200, overflow: 'hidden', flexShrink: 0 }}>
+                <img src={form.cover_image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: form.cover_image_position_hero }} />
+              </div>
+            )}
+            <div style={{ padding: '1.5rem' }}>
+              {currentTitle && (
+                <h1 style={{ fontSize: '1.75rem', fontWeight: 900, color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif', marginTop: 0, marginBottom: '1rem', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+                  {currentTitle}
+                </h1>
+              )}
+              {currentContent
+                ? <MarkdownRenderer content={currentContent} />
+                : <p style={{ color: '#464554', fontStyle: 'italic' }}>No content yet.</p>
+              }
+            </div>
+          </div>
+        </div>
+      )}
+
+      {mode === 'blog' && (
         <div
           style={{
             minHeight: 400,
@@ -224,14 +265,9 @@ export default function PostEditor({ post }: { post?: Post }) {
             '--ds-outline-variant': '#464554',
           } as React.CSSProperties}
         >
-          {/* Hero preview */}
           {form.cover_image_url && (
             <div style={{ width: '100%', height: 280, overflow: 'hidden' }}>
-              <img
-                src={form.cover_image_url}
-                alt=""
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: form.cover_image_position_hero }}
-              />
+              <img src={form.cover_image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: form.cover_image_position_hero }} />
             </div>
           )}
           <div style={{ padding: '2rem' }}>
