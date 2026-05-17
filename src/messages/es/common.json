@@ -166,5 +166,6 @@
   "contact_submit": "Enviar mensaje",
   "contact_sending": "Enviando...",
   "contact_success": "¡Mensaje enviado! Te responderé pronto.",
-  "contact_error": "Algo salió mal. Intenta de nuevo."
+  "contact_error": "Algo salió mal. Intenta de nuevo.",
+  "last_visitor_from": "Último visitante de"
 }
