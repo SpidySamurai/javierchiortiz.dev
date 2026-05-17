@@ -3,18 +3,26 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import BlogCover from './BlogCover';
-import type { BlogPost } from '@/data/blog';
 import { getTheme } from '@/data/blogThemes';
 
 interface BlogCardProps {
-  post: BlogPost;
+  post: {
+    slug: string;
+    date: string;
+    category: string;
+    readTime: string;
+    coverTheme: 'pilots' | 'spiderman' | 'karate';
+    theme?: string;
+    title?: string;
+    excerpt?: string;
+  };
   locale: string;
 }
 
 export default function BlogCard({ post, locale }: BlogCardProps) {
   const tb = useTranslations('blog');
-  const title = tb(`${post.slug}.title`);
-  const excerpt = tb(`${post.slug}.excerpt`);
+  const title = post.title ?? tb(`${post.slug}.title`);
+  const excerpt = post.excerpt ?? tb(`${post.slug}.excerpt`);
   const theme = getTheme(post.theme);
 
   return (
