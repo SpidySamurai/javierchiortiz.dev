@@ -48,16 +48,6 @@ const KEYFRAMES = `
   }
 `;
 
-// Triangle tail for chat bubbles
-const TAIL = (
-  <div style={{
-    position: 'absolute', bottom: -6, left: 9,
-    width: 0, height: 0,
-    borderLeft: '7px solid transparent',
-    borderRight: '7px solid transparent',
-    borderTop: `7px solid ${MC.orange}`,
-  }} />
-);
 
 function CatEar({ side }: { side: 'left' | 'right' }) {
   return (
@@ -343,7 +333,6 @@ export default function MantecadoChat() {
                     }}>
                       {greeting}
                     </div>
-                    {TAIL}
                   </motion.div>
 
                   {/* Typing indicator */}
@@ -359,7 +348,6 @@ export default function MantecadoChat() {
                         <div style={{ padding: '10px 14px', borderRadius: '12px 12px 12px 3px', backgroundColor: MC.orange }}>
                           <TypingDots />
                         </div>
-                        {TAIL}
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -412,7 +400,6 @@ export default function MantecadoChat() {
                             </div>
                           </a>
                         </div>
-                        {TAIL}
                       </motion.div>
                     )}
                   </AnimatePresence>
