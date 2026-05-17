@@ -10,6 +10,7 @@ import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 import { NAV_ITEMS } from '@/config/navigation';
+import LastVisitorChip from '@/components/2026/ui/LastVisitorChip';
 
 function MobileDrawer({
   open,
@@ -206,7 +207,9 @@ export default function Header() {
           boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)',
         }}
       >
-        <div />
+        <div className="hidden xl:block">
+          <LastVisitorChip />
+        </div>
 
         {/* Desktop controls */}
         <div className="hidden xl:flex items-center gap-3">
