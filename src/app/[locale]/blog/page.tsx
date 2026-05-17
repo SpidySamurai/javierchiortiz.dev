@@ -61,5 +61,7 @@ function adaptPost(post: Post, locale: string) {
     theme: post.cover_theme ?? undefined,
     title: locale === 'es' ? post.title_es : post.title_en,
     excerpt: (locale === 'es' ? post.excerpt_es : post.excerpt_en) ?? undefined,
+    coverImageUrl: post.cover_image_url,
+    coverImagePositionCard: post.cover_image_position_card,
   };
 }
