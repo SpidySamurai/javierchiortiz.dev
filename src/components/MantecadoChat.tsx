@@ -42,10 +42,6 @@ const MORPH_TRANSITION = [
 ].join(', ');
 
 const KEYFRAMES = `
-  @keyframes mc-shimmer {
-    0%,100% { background-position: 100% 0; filter: brightness(1); }
-    50%      { background-position: 0% 0;   filter: brightness(1.13); }
-  }
   @keyframes mc-pulse-dot {
     0%,100% { opacity: 1; transform: scale(1); }
     50%     { opacity: 0.4; transform: scale(1.6); }
@@ -270,8 +266,7 @@ export default function MantecadoChat() {
                     flexShrink: 0,
                     backgroundColor: MC.white,
                     backgroundImage: `linear-gradient(135deg, ${MC.orange} 38%, transparent 38%)`,
-                    backgroundSize: '250% 100%',
-                    animation: 'mc-shimmer 2.6s ease-in-out infinite',
+                    backgroundSize: '100% 100%',
                     padding: '12px 14px 10px',
                     position: 'relative',
                   }}
