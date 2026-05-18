@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import VisitorsGlobe from '@/components/2026/sections/VisitorsGlobe';
-import LeaveMemory from '@/components/2026/sections/LeaveMemory';
 
 export async function generateMetadata({
   params,
@@ -17,7 +16,6 @@ export default function VisitorsPage() {
   return (
     <main>
       <VisitorsGlobe />
-      <LeaveMemory />
     </main>
   );
 }
