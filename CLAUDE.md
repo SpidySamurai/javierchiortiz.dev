@@ -87,6 +87,7 @@ style={{ fontFamily: 'var(--font-inter), sans-serif' }}    // body/labels
 - Commits use only user's git identity — no `Co-Authored-By` lines.
 - No `console.log` in production code.
 - No 1px solid borders — use background shifts for section separation.
+- No emojis in UI, code, or docs — use Material Symbols Outlined icons instead.
 - Images pending: use `<div>` placeholder with `background: #222a3d` + "Pending" label.
 
 ## Pending
