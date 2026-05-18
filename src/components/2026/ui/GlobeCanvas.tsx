@@ -33,18 +33,24 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
       diffuse: 1.2,
       mapSamples: 16000,
       mapBrightness: 6,
-      baseColor: [0.13, 0.18, 0.31],
+      baseColor: [0.3, 0.35, 0.6],
       markerColor: [0.75, 0.75, 1],
       glowColor: [0.38, 0.40, 1],
       markers: points.map((p) => ({
         location: [p.lat, p.lng] as [number, number],
         size: 0.05,
       })),
-      onRender(state) {
-        if (!isDragging.current) phi.current += 0.005;
-        state.phi = phi.current;
-      },
     });
+
+    let rafId: number;
+
+    const animate = () => {
+      if (!isDragging.current) phi.current += 0.005;
+      globe.update({ phi: phi.current });
+      rafId = requestAnimationFrame(animate);
+    };
+
+    rafId = requestAnimationFrame(animate);
 
     const onPointerDown = (e: PointerEvent) => {
       isDragging.current = true;
@@ -55,15 +61,14 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
       phi.current += (e.clientX - lastX.current) / 100;
       lastX.current = e.clientX;
     };
-    const onPointerUp = () => {
-      isDragging.current = false;
-    };
+    const onPointerUp = () => { isDragging.current = false; };
 
     canvas.addEventListener('pointerdown', onPointerDown);
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', onPointerUp);
 
     return () => {
+      cancelAnimationFrame(rafId);
       globe.destroy();
       canvas.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('pointermove', onPointerMove);
@@ -75,9 +80,11 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
     <canvas
       ref={canvasRef}
       style={{
+        display: 'block',
         width: size,
         height: size,
         maxWidth: '100%',
+        margin: '0 auto',
         cursor: 'grab',
         aspectRatio: '1',
       }}
