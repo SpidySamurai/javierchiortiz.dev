@@ -13,15 +13,19 @@ export default function Sidebar() {
   const locale = useLocale();
   const pathname = usePathname();
   const [active, setActive] = useState<string>('');
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('sidebar-collapsed') === 'true';
+    } catch {
+      return false;
+    }
+  });
   const { openCard } = useGamerCard();
   const isBlogActive = pathname.startsWith(`/${locale}/blog`);
   const isHome = !isBlogActive;
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
 
   useLayoutEffect(() => {
-    const saved = localStorage.getItem('sidebar-collapsed') === 'true';
-    setCollapsed(saved);
     requestAnimationFrame(() => {
       document.documentElement.setAttribute('data-sidebar-ready', '');
     });
