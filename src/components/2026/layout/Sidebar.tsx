@@ -4,7 +4,6 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 import { NAV_ITEMS, SECTION_IDS } from '@/config/navigation';
@@ -59,38 +58,28 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
         style={{ width: 'var(--sidebar-w, 16rem)', backgroundColor: 'var(--ds-surface)' }}
         suppressHydrationWarning
       >
-        {/* Profile + Nav */}
+        {/* Nav */}
         <div className="flex-1 flex flex-col justify-center gap-8 min-w-0">
-          {/* Profile */}
-          <div className="px-4">
-            <Link
-              href={`/${locale}`}
-              className="text-lg font-bold block hover:text-[#c0c1ff] transition-colors cursor-pointer text-left whitespace-nowrap"
-              style={{
-                color: 'var(--ds-on-surface)',
-                fontFamily: 'var(--font-manrope), sans-serif',
-                textDecoration: 'none',
-              }}
-              suppressHydrationWarning
-            >
-              <span className="sidebar-label">Javier Chi Ortíz</span>
-            </Link>
-            <p
-              className="sidebar-label uppercase tracking-widest mt-1 text-xs whitespace-nowrap"
-              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
-              suppressHydrationWarning
-            >
-              {t('hero_subtitle')}
-            </p>
-          </div>
-
           {/* Nav — key changes on expand to re-trigger stagger animation */}
           <nav key={collapsed ? 'nav-c' : 'nav-e'} className="space-y-1">
-            {[...NAV_ITEMS, { id: 'blog', icon: 'edit_note', key: 'blog' } as const].map(
+            {[
+              ...NAV_ITEMS,
+              { id: 'blog', icon: 'edit_note', key: 'blog' } as const,
+              { id: 'visitors', icon: 'public', key: 'visitors' } as const,
+            ].map(
               ({ id, icon, key }, index) => {
-                const isActive = id === 'blog' ? isBlogActive : active === id;
-                const href = id === 'blog' ? `/${locale}/blog` : sectionHref(id);
-                const label = id === 'blog' ? 'Blog' : t(key as Parameters<typeof t>[0]);
+                const isActive =
+                  id === 'blog' ? isBlogActive :
+                  id === 'visitors' ? pathname.startsWith(`/${locale}/visitors`) :
+                  active === id;
+                const href =
+                  id === 'blog' ? `/${locale}/blog` :
+                  id === 'visitors' ? `/${locale}/visitors` :
+                  sectionHref(id);
+                const label =
+                  id === 'blog' ? 'Blog' :
+                  id === 'visitors' ? t('visitors_nav' as Parameters<typeof t>[0]) :
+                  t(key as Parameters<typeof t>[0]);
                 return (
                   <motion.a
                     key={id}

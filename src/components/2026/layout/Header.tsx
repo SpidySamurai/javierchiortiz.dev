@@ -18,6 +18,7 @@ function MobileDrawer({
   t,
   locale,
   isBlogActive,
+  isVisitorsActive,
   sectionHref,
   isUnlocked,
   openCard,
@@ -28,6 +29,7 @@ function MobileDrawer({
   t: ReturnType<typeof useTranslations>;
   locale: string;
   isBlogActive: boolean;
+  isVisitorsActive: boolean;
   sectionHref: (id: string) => string;
   isUnlocked: boolean;
   openCard: () => void;
@@ -124,6 +126,20 @@ function MobileDrawer({
             <span translate="no" className="material-symbols-outlined text-[20px]">edit_note</span>
             Blog
           </Link>
+          <Link
+            href={`/${locale}/visitors`}
+            onClick={onClose}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
+            style={{
+              fontFamily: 'var(--font-manrope), sans-serif',
+              fontWeight: 700,
+              color: isVisitorsActive ? 'var(--ds-primary)' : 'var(--ds-outline)',
+              backgroundColor: isVisitorsActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
+            }}
+          >
+            <span translate="no" className="material-symbols-outlined text-[20px]">public</span>
+            {t('visitors_nav')}
+          </Link>
         </nav>
 
         {/* Bottom — social + gamer card */}
@@ -177,7 +193,8 @@ export default function Header() {
   const [mounted, setMounted] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const isBlogActive = pathname.startsWith(`/${locale}/blog`);
-  const isHome = !isBlogActive;
+  const isVisitorsActive = pathname.startsWith(`/${locale}/visitors`);
+  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
 
   useEffect(() => { setMounted(true); }, []);
@@ -199,7 +216,7 @@ export default function Header() {
   return (
     <>
       <header
-        className="header-adaptive fixed top-0 left-0 w-full flex justify-between items-center px-8 py-4 z-50"
+        className="header-adaptive fixed top-0 left-0 w-full flex items-center px-8 py-4 z-50"
         style={{
           backgroundColor: 'color-mix(in srgb, var(--ds-bg) 60%, transparent)',
           backdropFilter: 'blur(24px)',
@@ -207,7 +224,22 @@ export default function Header() {
           boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)',
         }}
       >
-        {/* Centered chip — absolute so it doesn't shift the right controls */}
+        {/* Name — home link, always visible */}
+        <Link
+          href={`/${locale}`}
+          style={{
+            color: 'var(--ds-on-surface)',
+            fontFamily: 'var(--font-manrope), sans-serif',
+            fontWeight: 700,
+            fontSize: '1rem',
+            textDecoration: 'none',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Javier Chi Ortíz
+        </Link>
+
+        {/* Centered chip — absolute so it doesn't shift controls */}
         <div className="absolute left-1/2 -translate-x-1/2">
           <LastVisitorChip />
         </div>
@@ -219,7 +251,7 @@ export default function Header() {
         </div>
 
         {/* Mobile controls */}
-        <div className="xl:hidden flex items-center gap-2">
+        <div className="xl:hidden flex items-center gap-2 ml-auto">
           <ThemeToggle />
           <LanguageSwitcher />
           <button
@@ -247,6 +279,7 @@ export default function Header() {
           t={t}
           locale={locale}
           isBlogActive={isBlogActive}
+          isVisitorsActive={isVisitorsActive}
           sectionHref={sectionHref}
           isUnlocked={isUnlocked}
           openCard={openCard}
