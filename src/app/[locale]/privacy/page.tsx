@@ -1,5 +1,4 @@
 import { getLocale } from 'next-intl/server';
-import Link from 'next/link';
 
 const content = {
   en: {
@@ -81,21 +80,8 @@ export default async function PrivacyPage() {
   const c = locale === 'es' ? content.es : content.en;
 
   return (
-    <div
-      className="ds-2026"
-      style={{ minHeight: '100vh', backgroundColor: 'var(--ds-bg)', padding: '5rem 1.5rem 4rem' }}
-    >
+    <div style={{ padding: '3rem 1.5rem 4rem' }}>
       <div style={{ maxWidth: 680, margin: '0 auto' }}>
-        <Link
-          href="/"
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: '2.5rem',
-            fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em',
-            color: 'var(--ds-primary)', textDecoration: 'none', fontFamily: 'var(--font-inter), sans-serif',
-          }}
-        >
-          ← {locale === 'es' ? 'Volver' : 'Back'}
-        </Link>
 
         <h1
           style={{
@@ -145,3 +131,4 @@ export default async function PrivacyPage() {
     </div>
   );
 }
+
