@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { GamerCardProvider } from '@/components/providers/GamerCardContext';
+import { PostHogProvider } from '@/components/providers/PostHogProvider';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 
@@ -68,12 +69,14 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <NextIntlClientProvider messages={messages}>
-      <GamerCardProvider>
-        <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
-      </GamerCardProvider>
-    </NextIntlClientProvider>
+    <PostHogProvider>
+      <NextIntlClientProvider messages={messages}>
+        <GamerCardProvider>
+          <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
+            {children}
+          </ThemeProvider>
+        </GamerCardProvider>
+      </NextIntlClientProvider>
+    </PostHogProvider>
   );
 }

@@ -11,6 +11,7 @@ export default function Product() {
 
   return (
     <section
+      data-track-section="product"
       className="px-8 lg:px-20 py-32 overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
     >
