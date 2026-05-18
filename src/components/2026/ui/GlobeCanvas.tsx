@@ -38,7 +38,7 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
       glowColor: [0.38, 0.40, 1],
       markers: points.map((p) => ({
         location: [p.lat, p.lng] as [number, number],
-        size: 0.05,
+        size: 0.03,
       })),
     });
 
@@ -46,7 +46,14 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
 
     const animate = () => {
       if (!isDragging.current) phi.current += 0.005;
-      globe.update({ phi: phi.current });
+      const pulse = 0.03 + Math.abs(Math.sin(Date.now() / 800)) * 0.02;
+      globe.update({
+        phi: phi.current,
+        markers: points.map((p) => ({
+          location: [p.lat, p.lng] as [number, number],
+          size: pulse,
+        })),
+      });
       rafId = requestAnimationFrame(animate);
     };
 
