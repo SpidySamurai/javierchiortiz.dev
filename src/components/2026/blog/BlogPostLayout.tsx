@@ -17,9 +17,10 @@ interface BlogPostLayoutProps {
   locale: string;
   heroSlot?: React.ReactNode;
   midSlot?: React.ReactNode;
+  sidebarCollapsed?: boolean;
 }
 
-export default function BlogPostLayout({ post, locale, heroSlot, midSlot }: BlogPostLayoutProps) {
+export default function BlogPostLayout({ post, locale, heroSlot, midSlot, sidebarCollapsed }: BlogPostLayoutProps) {
   const tb = useTranslations('blog');
   const title = tb(`${post.slug}.title`);
   const sections = tb.raw(`${post.slug}.sections`) as Array<{ heading?: string; body: string[] }>;
@@ -41,7 +42,7 @@ export default function BlogPostLayout({ post, locale, heroSlot, midSlot }: Blog
       <ScrollProgress />
       <CustomCursor />
       <Header />
-      <Sidebar />
+      <Sidebar defaultCollapsed={sidebarCollapsed} />
 
       <main className="sidebar-main pt-20">
         <article style={{ backgroundColor: 'var(--ds-bg)' }}>
