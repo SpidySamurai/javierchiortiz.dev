@@ -41,6 +41,8 @@ export async function POST(req: NextRequest) {
   const referrer = req.headers.get('referer') ?? null;
   await supabase.from('page_views').insert({ path, locale: locale ?? null, referrer });
 
+  let visitorGeo: { city: string; countryCode: string } | null = null;
+
   if (newVisitor) {
     const ip = getClientIp(req);
     if (ip && !PRIVATE_IP_RE.test(ip)) {
@@ -52,9 +54,10 @@ export async function POST(req: NextRequest) {
           country_code: geo.countryCode,
           region: geo.region,
         });
+        visitorGeo = { city: geo.city, countryCode: geo.countryCode };
       }
     }
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, geo: visitorGeo });
 }

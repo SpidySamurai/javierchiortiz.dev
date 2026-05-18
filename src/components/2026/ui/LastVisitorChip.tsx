@@ -3,6 +3,7 @@
 import useSWR from 'swr';
 import { useTranslations, useLocale } from 'next-intl';
 import ReactCountryFlag from 'react-country-flag';
+import { useMemo } from 'react';
 
 interface VisitorData {
   visitor: {
@@ -16,7 +17,19 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json());
 export default function LastVisitorChip() {
   const t = useTranslations('common');
   const locale = useLocale();
-  const { data } = useSWR<VisitorData>('/api/last-visitor', fetcher, {
+
+  const apiUrl = useMemo(() => {
+    try {
+      const raw = sessionStorage.getItem('visitor_geo');
+      if (!raw) return '/api/last-visitor';
+      const geo = JSON.parse(raw) as { city: string; countryCode: string };
+      return `/api/last-visitor?city=${encodeURIComponent(geo.city)}&country=${encodeURIComponent(geo.countryCode)}`;
+    } catch {
+      return '/api/last-visitor';
+    }
+  }, []);
+
+  const { data } = useSWR<VisitorData>(apiUrl, fetcher, {
     dedupingInterval: 60_000,
     revalidateOnFocus: false,
   });
