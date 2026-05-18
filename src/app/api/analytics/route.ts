@@ -35,22 +35,24 @@ async function geolocateIp(
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { path, locale } = body;
+  const { path, locale, newVisitor } = body;
   if (!path) return NextResponse.json({ error: 'Missing path' }, { status: 400 });
 
   const referrer = req.headers.get('referer') ?? null;
   await supabase.from('page_views').insert({ path, locale: locale ?? null, referrer });
 
-  const ip = getClientIp(req);
-  if (ip && !PRIVATE_IP_RE.test(ip)) {
-    const geo = await geolocateIp(ip);
-    if (geo) {
-      await supabase.from('visitor_locations').insert({
-        city: geo.city,
-        country: geo.country,
-        country_code: geo.countryCode,
-        region: geo.region,
-      });
+  if (newVisitor) {
+    const ip = getClientIp(req);
+    if (ip && !PRIVATE_IP_RE.test(ip)) {
+      const geo = await geolocateIp(ip);
+      if (geo) {
+        await supabase.from('visitor_locations').insert({
+          city: geo.city,
+          country: geo.country,
+          country_code: geo.countryCode,
+          region: geo.region,
+        });
+      }
     }
   }
 
