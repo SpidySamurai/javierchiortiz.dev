@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
 import { NAV_ITEMS, SECTION_IDS } from '@/config/navigation';
@@ -62,18 +63,18 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
         <div className="flex-1 flex flex-col justify-center gap-8 min-w-0">
           {/* Profile */}
           <div className="px-4">
-            <button
-              type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            <Link
+              href={`/${locale}`}
               className="text-lg font-bold block hover:text-[#c0c1ff] transition-colors cursor-pointer text-left whitespace-nowrap"
               style={{
                 color: 'var(--ds-on-surface)',
                 fontFamily: 'var(--font-manrope), sans-serif',
+                textDecoration: 'none',
               }}
               suppressHydrationWarning
             >
               <span className="sidebar-label">Javier Chi Ortíz</span>
-            </button>
+            </Link>
             <p
               className="sidebar-label uppercase tracking-widest mt-1 text-xs whitespace-nowrap"
               style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
