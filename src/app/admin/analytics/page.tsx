@@ -15,5 +15,7 @@ export default async function AnalyticsPage() {
     .sort((a, b) => b.count - a.count)
     .slice(0, 20);
 
-  return <AnalyticsView data={data} />;
+  const postHogUrl = process.env.POSTHOG_DASHBOARD_URL ?? null;
+
+  return <AnalyticsView data={data} postHogUrl={postHogUrl} />;
 }
