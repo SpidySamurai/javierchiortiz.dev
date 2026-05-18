@@ -16,6 +16,13 @@ export function usePageView() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ path: pathname, locale, newVisitor }),
-    }).catch(() => {});
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.geo && !sessionStorage.getItem('visitor_geo')) {
+          sessionStorage.setItem('visitor_geo', JSON.stringify(data.geo));
+        }
+      })
+      .catch(() => {});
   }, [pathname, locale]);
 }
