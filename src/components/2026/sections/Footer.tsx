@@ -62,13 +62,22 @@ export default function Footer() {
           </a>
         </div>
 
-        {/* Copyright */}
-        <p
-          className="text-[10px] uppercase tracking-widest"
-          style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
-        >
-          © {year} Javier Chi Ortíz
-        </p>
+        {/* Copyright + Privacy */}
+        <div className="flex flex-col items-center md:items-end gap-1">
+          <p
+            className="text-[10px] uppercase tracking-widest"
+            style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif', margin: 0 }}
+          >
+            © {year} Javier Chi Ortíz
+          </p>
+          <a
+            href="/privacy"
+            className="text-[10px] uppercase tracking-widest transition-colors"
+            style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif', textDecoration: 'none' }}
+          >
+            {t('privacy')}
+          </a>
+        </div>
       </div>
     </footer>
   );
