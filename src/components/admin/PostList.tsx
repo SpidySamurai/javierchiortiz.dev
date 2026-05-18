@@ -26,98 +26,125 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
 
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 24,
-        }}
-      >
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0', margin: 0 }}>Posts</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
+        <div>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#dae2fd', margin: 0, fontFamily: 'var(--font-manrope, system-ui, sans-serif)' }}>
+            Posts
+          </h1>
+          <p style={{ color: '#464554', fontSize: 13, margin: '4px 0 0' }}>
+            {posts.length} {posts.length === 1 ? 'post' : 'posts'}
+          </p>
+        </div>
         <Link
           href="/admin/posts/new"
           style={{
-            padding: '8px 16px',
-            background: '#c0c1ff',
-            color: '#0a0a0f',
-            borderRadius: 8,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '9px 18px',
+            background: 'linear-gradient(135deg, #8083ff 0%, #c0c1ff 100%)',
+            color: '#0f0060',
+            borderRadius: 10,
             fontSize: 13,
             fontWeight: 700,
             textDecoration: 'none',
+            boxShadow: '0 4px 12px rgba(128,131,255,0.25)',
           }}
         >
-          + New post
+          <span className="material-symbols-outlined" style={{ fontSize: 16 }}>add</span>
+          New post
         </Link>
       </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
-        <thead>
-          <tr style={{ borderBottom: '1px solid #1e1e2e', color: '#64748b', textAlign: 'left' }}>
-            <th style={{ padding: '8px 12px', fontWeight: 500 }}>Slug</th>
-            <th style={{ padding: '8px 12px', fontWeight: 500 }}>Title (EN)</th>
-            <th style={{ padding: '8px 12px', fontWeight: 500 }}>Category</th>
-            <th style={{ padding: '8px 12px', fontWeight: 500 }}>Status</th>
-            <th style={{ padding: '8px 12px', fontWeight: 500 }}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.map((post) => (
-            <tr key={post.id} style={{ borderBottom: '1px solid #12121a' }}>
-              <td style={{ padding: '10px 12px', color: '#94a3b8', fontFamily: 'monospace' }}>
-                {post.slug}
-              </td>
-              <td style={{ padding: '10px 12px', color: '#e2e8f0' }}>{post.title_en}</td>
-              <td style={{ padding: '10px 12px', color: '#94a3b8' }}>{post.category}</td>
-              <td style={{ padding: '10px 12px' }}>
-                <button
-                  onClick={() => togglePublish(post)}
+
+      <div style={{ borderRadius: 14, border: '1px solid #222a3d', overflow: 'hidden' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+          <thead>
+            <tr style={{ backgroundColor: '#131b2e' }}>
+              {['Slug', 'Title', 'Category', 'Status', 'Actions'].map((h) => (
+                <th
+                  key={h}
                   style={{
-                    padding: '3px 10px',
-                    borderRadius: 9999,
-                    fontSize: 12,
-                    border: 'none',
-                    cursor: 'pointer',
-                    background: post.is_published ? 'rgba(22,163,74,0.13)' : '#1e1e2e',
-                    color: post.is_published ? '#4ade80' : '#64748b',
+                    padding: '12px 16px',
+                    color: '#464554',
+                    fontWeight: 600,
+                    textAlign: 'left',
+                    letterSpacing: '0.05em',
+                    textTransform: 'uppercase',
+                    fontSize: 11,
+                    borderBottom: '1px solid #222a3d',
                   }}
                 >
-                  {post.is_published ? 'Published' : 'Draft'}
-                </button>
-              </td>
-              <td style={{ padding: '10px 12px' }}>
-                <div style={{ display: 'flex', gap: 12 }}>
-                  <Link
-                    href={`/admin/posts/${post.id}`}
-                    style={{ color: '#c0c1ff', textDecoration: 'none', fontSize: 13 }}
-                  >
-                    Edit
-                  </Link>
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {posts.map((post, i) => (
+              <tr
+                key={post.id}
+                style={{
+                  backgroundColor: i % 2 === 0 ? '#0d1525' : '#0b1326',
+                  borderBottom: i < posts.length - 1 ? '1px solid #1a2340' : 'none',
+                }}
+              >
+                <td style={{ padding: '12px 16px', color: '#908fa0', fontFamily: 'monospace', fontSize: 12 }}>
+                  {post.slug}
+                </td>
+                <td style={{ padding: '12px 16px', color: '#dae2fd', maxWidth: 240 }}>
+                  <span style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {post.title_en}
+                  </span>
+                </td>
+                <td style={{ padding: '12px 16px' }}>
+                  <span style={{ padding: '3px 10px', borderRadius: 9999, fontSize: 11, fontWeight: 600, background: '#171f33', color: '#908fa0' }}>
+                    {post.category}
+                  </span>
+                </td>
+                <td style={{ padding: '12px 16px' }}>
                   <button
-                    onClick={() => deletePost(post.id)}
+                    onClick={() => togglePublish(post)}
                     style={{
-                      color: '#f87171',
-                      background: 'none',
+                      padding: '4px 12px',
+                      borderRadius: 9999,
+                      fontSize: 11,
+                      fontWeight: 700,
                       border: 'none',
                       cursor: 'pointer',
-                      fontSize: 13,
-                      padding: 0,
+                      background: post.is_published ? 'rgba(74,222,128,0.1)' : '#171f33',
+                      color: post.is_published ? '#4ade80' : '#464554',
                     }}
                   >
-                    Delete
+                    {post.is_published ? 'Published' : 'Draft'}
                   </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-          {posts.length === 0 && (
-            <tr>
-              <td colSpan={5} style={{ padding: 40, color: '#64748b', textAlign: 'center' }}>
-                No posts yet.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+                </td>
+                <td style={{ padding: '12px 16px' }}>
+                  <div style={{ display: 'flex', gap: 16 }}>
+                    <Link href={`/admin/posts/${post.id}`} style={{ color: '#c0c1ff', textDecoration: 'none', fontSize: 13, fontWeight: 500 }}>
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => deletePost(post.id)}
+                      style={{ color: '#464554', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, padding: 0 }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = '#464554')}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+            {posts.length === 0 && (
+              <tr>
+                <td colSpan={5} style={{ padding: 60, color: '#464554', textAlign: 'center' }}>
+                  No posts yet.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
