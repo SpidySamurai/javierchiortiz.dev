@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
+import Chip from '@/components/2026/ui/Chip';
 
 type ExperienceKey = 'enti' | 'softtek' | 'scandia' | 'iotam' | 'brightcoders';
 
@@ -122,16 +123,8 @@ function parseDuration(dateStr: string, yrLabel: string, moLabel: string): strin
 
 function TechChip({ label }: { label: string }) {
   return (
-    <motion.span
-      className="px-3 py-0.5 rounded text-[9px] font-medium uppercase border"
-      style={{
-        color: 'color-mix(in srgb, var(--ds-on-surface-variant) 70%, transparent)',
-        borderColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)',
-        fontFamily: 'var(--font-inter), sans-serif',
-      }}
-      variants={chipVariants}
-    >
-      {label}
+    <motion.span variants={chipVariants}>
+      <Chip variant="tech">{label}</Chip>
     </motion.span>
   );
 }
@@ -159,22 +152,7 @@ function Description({ text }: { text: string }) {
 }
 
 function TierBadge({ label, isLead }: { label: string; isLead?: boolean }) {
-  return (
-    <div
-      className="inline-block px-4 py-1 mb-4 rounded-full text-[10px] font-bold uppercase tracking-widest border"
-      style={{
-        color: isLead ? 'var(--ds-primary)' : 'var(--ds-outline)',
-        backgroundColor: isLead
-          ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
-          : 'color-mix(in srgb, var(--ds-outline) 8%, transparent)',
-        borderColor: isLead
-          ? 'color-mix(in srgb, var(--ds-primary) 20%, transparent)'
-          : 'color-mix(in srgb, var(--ds-outline) 15%, transparent)',
-      }}
-    >
-      {label}
-    </div>
-  );
+  return <Chip variant="tier" active={isLead}>{label}</Chip>;
 }
 
 function YearDisplay({ align = 'left', date }: { align?: 'left' | 'right'; date?: string }) {

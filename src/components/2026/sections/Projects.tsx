@@ -7,35 +7,7 @@ import { FaGithub } from 'react-icons/fa';
 import { useTranslations } from 'next-intl';
 import { projects } from '@/data/projects';
 import type { DataProject } from '@/types';
-
-function CategoryPill({ label }: { label: string }) {
-  return (
-    <span
-      className="self-start px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest"
-      style={{
-        backgroundColor: 'var(--ds-secondary-container)',
-        color: 'var(--ds-on-secondary)',
-      }}
-    >
-      {label}
-    </span>
-  );
-}
-
-function SmallChip({ label }: { label: string }) {
-  return (
-    <span
-      className="px-2 py-0.5 rounded text-[11px] uppercase border"
-      style={{
-        color: 'var(--ds-outline)',
-        borderColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)',
-        fontFamily: 'var(--font-inter), sans-serif',
-      }}
-    >
-      {label}
-    </span>
-  );
-}
+import Chip from '@/components/2026/ui/Chip';
 
 function getCategoryLabel(project: DataProject): string {
   if (project.category === 'entry') return 'Practice';
@@ -178,7 +150,7 @@ function ProjectCard({
             : 'inset-0 p-6 md:p-8 flex flex-col justify-end space-y-3'
         }`}
       >
-        <CategoryPill label={getCategoryLabel(project)} />
+        <Chip variant="category" className="self-start">{getCategoryLabel(project)}</Chip>
 
         <h4
           className={`font-bold line-clamp-1 ${
@@ -203,10 +175,10 @@ function ProjectCard({
 
         <div className="flex flex-wrap gap-2">
           {project.stack?.slice(0, isShort ? 2 : isLarge ? 6 : 4).map((tech) => (
-            <SmallChip key={tech} label={tech} />
+            <Chip key={tech} variant="outline" size="sm">{tech}</Chip>
           ))}
           {project.stack && project.stack.length > (isShort ? 2 : isLarge ? 6 : 4) && (
-            <SmallChip label={`+${project.stack.length - (isShort ? 2 : isLarge ? 6 : 4)}`} />
+            <Chip variant="outline" size="sm">{`+${project.stack.length - (isShort ? 2 : isLarge ? 6 : 4)}`}</Chip>
           )}
         </div>
 

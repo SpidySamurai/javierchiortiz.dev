@@ -1,7 +1,6 @@
-'use client';
-
 import Header from '@/components/2026/layout/Header';
 import Sidebar from '@/components/2026/layout/Sidebar';
+import AnalyticsTracker from '@/components/2026/layout/AnalyticsTracker';
 import Hero from '@/components/2026/sections/Hero';
 import Timeline from '@/components/2026/sections/Timeline';
 import Projects from '@/components/2026/sections/Projects';
@@ -14,16 +13,13 @@ import MantecadoChat from '@/components/MantecadoChat';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
 import BackToTop from '@/components/2026/ui/BackToTop';
 import CustomCursor from '@/components/2026/ui/CustomCursor';
-import { usePageView } from '@/hooks/usePageView';
-import { useSectionTracking } from '@/hooks/useSectionTracking';
 import type { Post } from '@/types/database';
 
 export default function HomeShell({ posts }: { posts: Post[] }) {
-  usePageView();
-  useSectionTracking();
 
   return (
     <div className="ds-2026" style={{ minHeight: '100vh' }}>
+      <AnalyticsTracker />
       <ScrollProgress />
       <CustomCursor />
       <Header />
