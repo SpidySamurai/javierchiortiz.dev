@@ -34,7 +34,7 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
       mapSamples: 16000,
       mapBrightness: 6,
       baseColor: [0.3, 0.35, 0.6],
-      markerColor: [0.75, 0.75, 1],
+      markerColor: [1, 0.65, 0.2],
       glowColor: [0.38, 0.40, 1],
       markers: points.map((p) => ({
         location: [p.lat, p.lng] as [number, number],
