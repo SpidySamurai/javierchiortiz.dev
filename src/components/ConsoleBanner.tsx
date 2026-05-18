@@ -1,6 +1,5 @@
 'use client';
 
-/* eslint-disable no-console */
 import { useEffect } from 'react';
 
 const ASCII = `
