@@ -1,12 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
-import Link from 'next/link';
+import AdminNav from './_components/AdminNav';
 import SignOutButton from './_components/SignOutButton';
-
-const NAV = [
-  { href: '/admin/posts', label: 'Posts', icon: 'edit_note' },
-  { href: '/admin/messages', label: 'Messages', icon: 'mail' },
-  { href: '/admin/analytics', label: 'Analytics', icon: 'bar_chart' },
-];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -86,35 +80,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         </div>
 
         {/* Nav */}
-        <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
-          {NAV.map(({ href, label, icon }) => (
-            <Link
-              key={href}
-              href={href}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                padding: '9px 12px',
-                borderRadius: 9,
-                fontSize: 13,
-                fontWeight: 500,
-                color: '#908fa0',
-                textDecoration: 'none',
-                transition: 'background 0.1s, color 0.1s',
-              }}
-              className="admin-nav-link"
-            >
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: 18, fontVariationSettings: "'FILL' 0" }}
-              >
-                {icon}
-              </span>
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <div style={{ flex: 1 }}>
+          <AdminNav />
+        </div>
 
         {/* Sign out */}
         <div
@@ -141,12 +109,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         {children}
       </main>
 
-      <style>{`
-        .admin-nav-link:hover {
-          background: #1a2340;
-          color: #c7c4d7;
-        }
-      `}</style>
     </div>
   );
 }
