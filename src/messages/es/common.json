@@ -168,6 +168,9 @@
   "contact_success": "¡Mensaje enviado! Te responderé pronto.",
   "contact_error": "Algo salió mal. Intenta de nuevo.",
   "last_visitor_from": "Último visitante de",
+  "not_found_title": "404 — Idea sin ejecutar.",
+  "not_found_message": "Las mejores ideas empiezan sin URL. Cuéntame la tuya.",
+  "not_found_cta": "Hablemos →",
   "mantecado": {
     "greeting_0": "¡Miau! ¿En qué te puedo ayudar?",
     "greeting_1": "Purrr... ¡hola, hola!",
