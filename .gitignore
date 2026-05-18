@@ -46,6 +46,9 @@ yarn-error.log*
 .claude/
 skills-lock.json
 
+# Internal dev docs (plans, specs)
+docs/superpowers/
+
 # Lanyard API debug dumps
 lanyard_*.json
 
