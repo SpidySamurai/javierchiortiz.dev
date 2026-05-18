@@ -88,12 +88,12 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
       ref={canvasRef}
       style={{
         display: 'block',
-        width: size,
-        height: size,
-        maxWidth: '100%',
+        width: '100%',
+        maxWidth: size,
+        height: 'auto',
+        aspectRatio: '1',
         margin: '0 auto',
         cursor: 'grab',
-        aspectRatio: '1',
       }}
     />
   );

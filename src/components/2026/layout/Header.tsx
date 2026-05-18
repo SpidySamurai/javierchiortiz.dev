@@ -15,6 +15,7 @@ import LastVisitorChip from '@/components/2026/ui/LastVisitorChip';
 function MobileDrawer({
   open,
   onClose,
+  onCloseDrawerOnly,
   t,
   locale,
   isBlogActive,
@@ -26,13 +27,14 @@ function MobileDrawer({
 }: {
   open: boolean;
   onClose: () => void;
+  onCloseDrawerOnly: () => void;
   t: ReturnType<typeof useTranslations>;
   locale: string;
   isBlogActive: boolean;
   isVisitorsActive: boolean;
   sectionHref: (id: string) => string;
   isUnlocked: boolean;
-  openCard: () => void;
+  openCard: (anchorY?: number) => void;
   closeRef: React.RefObject<HTMLButtonElement | null>;
 }) {
   if (typeof document === 'undefined') return null;
@@ -93,6 +95,11 @@ function MobileDrawer({
           </button>
         </div>
 
+        {/* Last visitor chip — only on small screens; md+ shows it in the header */}
+        <div className="md:hidden px-2 mb-4">
+          <LastVisitorChip />
+        </div>
+
         {/* Nav links */}
         <nav className="space-y-2 flex-1">
           {NAV_ITEMS.map(({ id, icon, key }) => (
@@ -146,7 +153,13 @@ function MobileDrawer({
         <div className="mt-auto space-y-4">
           {isUnlocked && (
             <button
-              onClick={() => { openCard(); onClose(); }}
+              onClick={(e) => {
+                const rect = (e.currentTarget as HTMLButtonElement).getBoundingClientRect();
+                const isMobile = window.innerWidth < 768;
+                openCard(isMobile ? undefined : rect.top);
+                // Mobile: close only the drawer — NOT the card (closeDrawer would cancel openCard)
+                if (isMobile) onCloseDrawerOnly();
+              }}
               aria-label="Open Gamer Card"
               className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all"
               style={{ color: 'var(--ds-on-surface-variant)', backgroundColor: 'color-mix(in srgb, var(--ds-primary) 5%, transparent)' }}
@@ -188,7 +201,7 @@ export default function Header() {
   const t = useTranslations('common');
   const locale = useLocale();
   const pathname = usePathname();
-  const { isUnlocked, openCard } = useGamerCard();
+  const { isUnlocked, openCard, closeCard } = useGamerCard();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -197,10 +210,15 @@ export default function Header() {
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
 
+  // Closes drawer + card (nav links, backdrop, close button)
+  const closeDrawer = () => { setMobileOpen(false); closeCard(); };
+  // Closes only the drawer — card stays open (used when opening card from drawer on mobile)
+  const closeDrawerOnly = () => setMobileOpen(false);
+
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMobileOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeDrawer(); };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, []);
@@ -239,8 +257,8 @@ export default function Header() {
           Javier Chi Ortíz
         </Link>
 
-        {/* Centered chip — absolute so it doesn't shift controls */}
-        <div className="absolute left-1/2 -translate-x-1/2">
+        {/* Centered chip — tablet+ only; on small mobile it's inside the drawer */}
+        <div className="hidden md:block absolute left-1/2 -translate-x-1/2">
           <LastVisitorChip />
         </div>
 
@@ -275,7 +293,8 @@ export default function Header() {
       {mounted && (
         <MobileDrawer
           open={mobileOpen}
-          onClose={() => setMobileOpen(false)}
+          onClose={closeDrawer}
+          onCloseDrawerOnly={closeDrawerOnly}
           t={t}
           locale={locale}
           isBlogActive={isBlogActive}

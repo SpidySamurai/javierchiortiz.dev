@@ -1,5 +1,6 @@
 import { Manrope, Inter } from 'next/font/google';
 import { headers } from 'next/headers';
+import ConsoleBanner from '@/components/ConsoleBanner';
 
 const manrope = Manrope({
   variable: '--font-manrope',
@@ -35,6 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         className={`${manrope.variable} ${inter.variable} antialiased`}
         style={{ margin: 0, padding: 0 }}
       >
+        <ConsoleBanner />
         {children}
       </body>
     </html>

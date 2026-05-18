@@ -6,7 +6,7 @@ import GamerCard from '@/components/GamerCard';
 interface GamerCardContextType {
   isOpen: boolean;
   isUnlocked: boolean;
-  openCard: () => void;
+  openCard: (anchorY?: number) => void;
   closeCard: () => void;
   unlockCard: () => void;
 }
@@ -16,13 +16,14 @@ const GamerCardContext = createContext<GamerCardContextType | undefined>(undefin
 export function GamerCardProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [anchorY, setAnchorY] = useState<number | null>(null);
 
   useEffect(() => {
     const unlocked = localStorage.getItem('gamer-card-unlocked') === 'true';
     setIsUnlocked(unlocked);
   }, []);
 
-  const openCard = () => setIsOpen(true);
+  const openCard = (y?: number) => { setAnchorY(y ?? null); setIsOpen(true); };
   const closeCard = () => setIsOpen(false);
 
   const unlockCard = () => {
@@ -34,7 +35,7 @@ export function GamerCardProvider({ children }: { children: React.ReactNode }) {
   return (
     <GamerCardContext.Provider value={{ isOpen, isUnlocked, openCard, closeCard, unlockCard }}>
       {children}
-      <GamerCard isOpen={isOpen} onClose={closeCard} />
+      <GamerCard isOpen={isOpen} onClose={closeCard} anchorY={anchorY} />
     </GamerCardContext.Provider>
   );
 }
