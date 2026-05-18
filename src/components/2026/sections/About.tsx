@@ -162,6 +162,7 @@ export default function About() {
   return (
     <section
       id="about"
+      data-track-section="about"
       className="py-28 px-8 lg:px-20"
       style={{ backgroundColor: 'var(--ds-bg)', scrollMarginTop: '5rem' }}
     >

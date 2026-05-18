@@ -256,6 +256,7 @@ export default function Hero() {
 
   return (
     <section
+      data-track-section="hero"
       className="relative px-8 md:px-16 pt-24 pb-24 md:pb-40 overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
     >

@@ -218,6 +218,7 @@ export default function Timeline() {
   return (
     <section
       id="experience"
+      data-track-section="experience"
       className="px-8 lg:px-20 py-32 overflow-hidden"
       style={{ backgroundColor: 'var(--ds-surface)', scrollMarginTop: '5rem' }}
     >

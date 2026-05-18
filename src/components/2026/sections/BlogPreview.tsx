@@ -46,6 +46,7 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
   return (
     <section
       id="blog"
+      data-track-section="blog"
       className="py-28 px-8"
       style={{ backgroundColor: 'var(--ds-surface)', scrollMarginTop: '5rem' }}
     >

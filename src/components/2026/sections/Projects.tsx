@@ -252,6 +252,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
+      data-track-section="projects"
       className="py-28 px-8"
       style={{ backgroundColor: 'var(--ds-bg)', scrollMarginTop: '5rem' }}
     >

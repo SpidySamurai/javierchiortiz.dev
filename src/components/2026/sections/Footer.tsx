@@ -9,6 +9,7 @@ export default function Footer() {
   return (
     <footer
       id="contact"
+      data-track-section="contact"
       className="py-20 px-8 md:px-16 border-t"
       style={{
         backgroundColor: 'var(--ds-bg)',
