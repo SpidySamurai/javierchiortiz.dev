@@ -32,7 +32,7 @@ export default function LeaveMemory() {
           rows={4}
           className="w-full rounded-lg p-4 resize-none mb-4"
           style={{
-            backgroundColor: 'var(--ds-container)',
+            backgroundColor: 'var(--ds-surface-container)',
             color: 'var(--ds-on-surface)',
             border: 'none',
             fontFamily: 'var(--font-inter), sans-serif',
