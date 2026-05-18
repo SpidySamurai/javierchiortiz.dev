@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 
@@ -86,7 +87,6 @@ export default function Services() {
         <div className="h-px mb-12" style={{ background: 'linear-gradient(to right, transparent, color-mix(in srgb, var(--ds-outline-variant) 30%, transparent), transparent)' }} />
         <motion.div
           className="mb-16"
-          style={{}}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
@@ -142,7 +142,7 @@ export default function Services() {
           viewport={{ once: true }}
           transition={{ duration: 0.35, ease: 'easeOut', delay: 0.15 }}
         >
-          <a
+          <Link
             href="/#contact"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-80"
             style={{
@@ -152,7 +152,7 @@ export default function Services() {
             }}
           >
             {t('services_cta')}
-          </a>
+          </Link>
         </motion.div>
 
       </div>
