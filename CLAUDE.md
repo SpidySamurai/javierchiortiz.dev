@@ -16,7 +16,7 @@
 - **Theming**: next-themes (`data-theme` attribute, `ThemeProvider`)
 - **Icons**: Material Symbols Outlined (Google Fonts, `<span className="material-symbols-outlined">`)
 - **Fonts**: Manrope (`--font-manrope`, headlines) + Inter (`--font-inter`, body) via next/font
-- **Data fetching**: SWR
+- **Data fetching**: SWR for client, direct Supabase for server components
 - **Dev tools**: ESLint 9, Prettier, Puppeteer (screenshots)
 
 ## Commands
@@ -38,7 +38,7 @@ src/
     2026/               # New design components
       layout/           # Header.tsx, Sidebar.tsx
       sections/         # Hero.tsx, Timeline.tsx, Projects.tsx, About.tsx, Footer.tsx
-      ui/               # LanguageSwitcher.tsx
+      ui/               # Chip, GlobeCanvas, LastVisitorChip, etc.
     ui/ThemeToggle.tsx  # Existing — reuse as-is
     providers/          # GamerCardContext.tsx, ThemeProvider.tsx
   messages/
@@ -48,14 +48,27 @@ src/
 
 ## Design System (2026)
 
-Colors (hex — no Tailwind config, use inline `style={{}}` or CSS vars):
+DS vars are scoped under `.ds-2026` — all pages must have that class on their root wrapper.
 
-- Background: `#0b1326` | Surface: `#131b2e` | Container: `#171f33`
-- Surface high: `#222a3d` | Surface highest: `#2d3449` | Surface bright: `#31394d`
-- On-surface: `#dae2fd` | On-surface-variant: `#c7c4d7`
-- Primary: `#c0c1ff` | Primary container: `#8083ff` | On-primary: `#1000a9`
-- Secondary container: `#3e3c8f` | On-secondary: `#afadff`
-- Outline: `#908fa0` | Outline-variant: `#464554`
+Colors (use CSS vars, not hardcoded hex):
+
+| Token | Hex |
+|-------|-----|
+| `--ds-bg` | `#0b1326` |
+| `--ds-surface` | `#131b2e` |
+| `--ds-surface-container` | `#171f33` |
+| `--ds-surface-high` | `#222a3d` |
+| `--ds-surface-highest` | `#2d3449` |
+| `--ds-surface-bright` | `#31394d` |
+| `--ds-on-surface` | `#dae2fd` |
+| `--ds-on-surface-variant` | `#c7c4d7` |
+| `--ds-primary` | `#c0c1ff` |
+| `--ds-primary-container` | `#8083ff` |
+| `--ds-on-primary` | `#1000a9` |
+| `--ds-secondary-container` | `#3e3c8f` |
+| `--ds-on-secondary` | `#afadff` |
+| `--ds-outline` | `#908fa0` |
+| `--ds-outline-variant` | `#464554` |
 
 Font usage:
 
@@ -63,6 +76,76 @@ Font usage:
 style={{ fontFamily: 'var(--font-manrope), sans-serif' }}  // headlines
 style={{ fontFamily: 'var(--font-inter), sans-serif' }}    // body/labels
 ```
+
+## Architecture
+
+### Layer model (dependencies flow downward only)
+
+| Layer | Path | Responsibility |
+|-------|------|----------------|
+| Route | `src/app/**/page.tsx` (Server) | Fetch data, compose sections, no UI logic |
+| Data | `src/lib/` | Supabase queries, pure logic — no JSX, no state |
+| Hooks | `src/hooks/` | Client stateful logic — no JSX, no direct DB calls |
+| Primitives | `src/components/2026/ui/` | Dumb atoms, DS tokens only |
+| Features | `src/components/2026/{sections,layout,blog}/` | Compose primitives + hooks |
+| Admin UI | `src/app/admin/_components/` | Admin-scoped, colocated with routes |
+| Providers | `src/components/providers/` | Cross-cutting context only |
+
+### `'use client'` rule
+
+Push the boundary to the **leaf**. A component gets `'use client'` only if **it itself** uses `useState`, `useEffect`, event handlers, or browser APIs. Layouts and pages are server components by default.
+
+```tsx
+// GOOD — thin client leaf
+'use client';
+export function GlobeCanvas() { useEffect(...); return <canvas />; }
+
+// BAD — layout forced client just to pass a prop
+'use client';
+export default function Layout({ children }) { return <div>{children}</div>; }
+```
+
+### Sub-page layouts
+
+Every `[locale]/*/layout.tsx` must be an **async server component** that calls `getSidebarCollapsed()` and passes `defaultCollapsed` to `<Sidebar>`. Never `'use client'` on a layout.
+
+### HTML structure
+
+- Pages return a fragment `<>` or a `<section>` — never `<main>`. The layout already provides `<main className="sidebar-main">`.
+- No double `<main>` nesting.
+
+### Shared primitives
+
+Before creating a new styled element, check `src/components/2026/ui/`. When a pattern appears in 2+ places, extract to `ui/` before the third use.
+
+## Supabase Patterns
+
+- **Writes / admin reads**: `SUPABASE_SERVICE_ROLE_KEY` — never expose to client
+- **Public reads**: `NEXT_PUBLIC_SUPABASE_ANON_KEY` — RLS must restrict what anon can see
+- **Avoid full table scans** for aggregates — use `COUNT(DISTINCT ...)` via RPC or a view, not `select('column')` + JS Set (Supabase paginates at 1000 rows by default)
+- **RLS required** on every table that holds user data
+
+## API Route Patterns
+
+Order of operations in every POST handler:
+
+```ts
+// 1. Early-exit checks (host, rate limit) — before any parsing
+if (LOCAL_HOST_RE.test(host)) return ...;
+
+// 2. Parse body with error handling
+let body; try { body = await req.json(); } catch { return 400; }
+
+// 3. Validate all inputs (type + length) before any DB call
+if (typeof path !== 'string' || path.length > 512) return 400;
+
+// 4. Cap all header values before storing
+const referrer = raw && raw.length <= 2048 ? raw : null;
+```
+
+- All user-supplied strings must have a length cap before insert
+- `req.json()` always wrapped in try/catch
+- Input validation before any side effects
 
 ## Stitch MCP (Design Reference)
 
@@ -78,10 +161,6 @@ style={{ fontFamily: 'var(--font-inter), sans-serif' }}    // body/labels
 - **Fullstack Dev** (`.claude/agents/fullstack.md`): All implementation (components, pages, API, styling)
 - **UI/UX Designer** (`.claude/agents/ui-ux-designer.md`): Design review vs Stitch specs
 
-## Architecture
-
-See `docs/ARCHITECTURE.md` for the full layer model, SOLID rules, `'use client'` guidelines, data flow pattern, and shared primitives reference. All new features must follow it.
-
 ## Conventions
 
 - User communicates in Spanish. Code, commits, docs in English.
@@ -90,9 +169,10 @@ See `docs/ARCHITECTURE.md` for the full layer model, SOLID rules, `'use client'`
 - Atomic React components — no logic in layout components, no HTML dumps from Stitch.
 - Commits use only user's git identity — no `Co-Authored-By` lines.
 - No `console.log` in production code.
-- No 1px solid borders — use background shifts for section separation.
+- No 1px solid borders — use `box-shadow` or background shifts for separation.
 - No emojis in UI, code, or docs — use Material Symbols Outlined icons instead.
 - Images pending: use `<div>` placeholder with `background: #222a3d` + "Pending" label.
+- Never push to `main` directly — always feature branch + PR.
 
 ## Pending
 
