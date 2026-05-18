@@ -46,7 +46,7 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
 
     const animate = () => {
       if (!isDragging.current) phi.current += 0.005;
-      const pulse = 0.03 + Math.abs(Math.sin(Date.now() / 800)) * 0.02;
+      const pulse = 0.018 + Math.abs(Math.sin(Date.now() / 1200)) * 0.007;
       globe.update({
         phi: phi.current,
         markers: points.map((p) => ({
