@@ -169,6 +169,23 @@
   "contact_error": "Algo salió mal. Intenta de nuevo.",
   "last_visitor_from": "Último visitante de",
   "privacy": "Privacidad",
+  "services_label": "Servicios",
+  "services_title": "Construyamos",
+  "services_title_accent": "algo",
+  "services_cta": "Hablemos de tu proyecto →",
+  "services_items": {
+    "landing": { "name": "Landing Pages",     "desc": "conversión desde el primer scroll" },
+    "webapp":  { "name": "Web Apps",          "desc": "producto completo, de spec a producción" },
+    "mvp":     { "name": "MVPs",              "desc": "de idea a validación rápida" },
+    "cms":     { "name": "CMS",               "desc": "contenido que tú controlas" },
+    "crm":     { "name": "CRM",               "desc": "flujos de cliente a tu medida" },
+    "ai":      { "name": "AI Automations",    "desc": "procesos manuales que desaparecen" }
+  },
+  "services_process": {
+    "idea":   { "name": "Idea",   "desc": "Entendemos el problema y el objetivo" },
+    "build":  { "name": "Build",  "desc": "Construimos rápido, iteramos contigo" },
+    "launch": { "name": "Launch", "desc": "Entrega, soporte, evolución" }
+  },
   "not_found_title": "404 — Idea sin ejecutar.",
   "not_found_message": "Las mejores ideas empiezan sin URL. Cuéntame la tuya.",
   "not_found_cta": "Hablemos →",
