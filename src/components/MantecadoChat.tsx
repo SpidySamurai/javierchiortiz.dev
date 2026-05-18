@@ -271,7 +271,7 @@ export default function MantecadoChat() {
                       alignItems: 'center', borderRadius: '6px', zIndex: 1,
                     }}
                   >
-                    <span className="material-symbols-outlined" style={{ fontSize: 15 }}>close</span>
+                    <span translate="no" className="material-symbols-outlined" style={{ fontSize: 15 }}>close</span>
                   </button>
 
                   {/* Face: whiskers + eyes + nose */}
@@ -436,7 +436,7 @@ export default function MantecadoChat() {
                       cursor: 'default',
                     }}
                   >
-                    <span className="material-symbols-outlined" style={{ fontSize: 14, opacity: 0.6 }}>lock</span>
+                    <span translate="no" className="material-symbols-outlined" style={{ fontSize: 14, opacity: 0.6 }}>lock</span>
                     {t('coming_soon')}
                   </div>
                 </div>

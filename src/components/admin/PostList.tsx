@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import type { Post } from '@/types/database';
+import SectionHeader from '@/app/admin/_components/SectionHeader';
 
 export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
   const [posts, setPosts] = useState(initialPosts);
@@ -26,98 +27,114 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
 
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 24,
-        }}
-      >
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0', margin: 0 }}>Posts</h1>
+      <div className="flex justify-between items-center mb-7">
+        <SectionHeader
+          eyebrow="Content"
+          title="All"
+          accent="Posts"
+          subtitle={`${posts.length} ${posts.length === 1 ? 'post' : 'posts'}`}
+        />
         <Link
           href="/admin/posts/new"
+          className="flex items-center gap-1.5 px-[18px] py-[9px] rounded-[10px] text-[13px] font-bold no-underline"
           style={{
-            padding: '8px 16px',
-            background: '#c0c1ff',
-            color: '#0a0a0f',
-            borderRadius: 8,
-            fontSize: 13,
-            fontWeight: 700,
-            textDecoration: 'none',
+            background: 'linear-gradient(135deg, var(--ds-primary-container) 0%, var(--ds-primary) 100%)',
+            color: '#0f0060',
+            boxShadow: '0 4px 12px color-mix(in srgb, var(--ds-primary-container) 25%, transparent)',
           }}
         >
-          + New post
+          <span className="material-symbols-outlined" style={{ fontSize: 16 }}>add</span>
+          New post
         </Link>
       </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
-        <thead>
-          <tr style={{ borderBottom: '1px solid #1e1e2e', color: '#64748b', textAlign: 'left' }}>
-            <th style={{ padding: '8px 12px', fontWeight: 500 }}>Slug</th>
-            <th style={{ padding: '8px 12px', fontWeight: 500 }}>Title (EN)</th>
-            <th style={{ padding: '8px 12px', fontWeight: 500 }}>Category</th>
-            <th style={{ padding: '8px 12px', fontWeight: 500 }}>Status</th>
-            <th style={{ padding: '8px 12px', fontWeight: 500 }}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.map((post) => (
-            <tr key={post.id} style={{ borderBottom: '1px solid #12121a' }}>
-              <td style={{ padding: '10px 12px', color: '#94a3b8', fontFamily: 'monospace' }}>
-                {post.slug}
-              </td>
-              <td style={{ padding: '10px 12px', color: '#e2e8f0' }}>{post.title_en}</td>
-              <td style={{ padding: '10px 12px', color: '#94a3b8' }}>{post.category}</td>
-              <td style={{ padding: '10px 12px' }}>
-                <button
-                  onClick={() => togglePublish(post)}
+
+      <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid var(--ds-surface-high)' }}>
+        <table className="w-full border-collapse text-[13px]">
+          <thead>
+            <tr style={{ backgroundColor: 'var(--ds-surface)' }}>
+              {['Slug', 'Title', 'Category', 'Status', 'Actions'].map((h) => (
+                <th
+                  key={h}
+                  className="px-4 py-3 font-semibold text-left uppercase tracking-[0.05em] text-[11px]"
                   style={{
-                    padding: '3px 10px',
-                    borderRadius: 9999,
-                    fontSize: 12,
-                    border: 'none',
-                    cursor: 'pointer',
-                    background: post.is_published ? 'rgba(22,163,74,0.13)' : '#1e1e2e',
-                    color: post.is_published ? '#4ade80' : '#64748b',
+                    color: 'var(--ds-outline-variant)',
+                    borderBottom: '1px solid var(--ds-surface-high)',
                   }}
                 >
-                  {post.is_published ? 'Published' : 'Draft'}
-                </button>
-              </td>
-              <td style={{ padding: '10px 12px' }}>
-                <div style={{ display: 'flex', gap: 12 }}>
-                  <Link
-                    href={`/admin/posts/${post.id}`}
-                    style={{ color: '#c0c1ff', textDecoration: 'none', fontSize: 13 }}
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {posts.map((post, i) => (
+              <tr
+                key={post.id}
+                style={{
+                  backgroundColor: i % 2 === 0 ? '#0d1525' : 'var(--ds-bg)',
+                  borderBottom: i < posts.length - 1 ? '1px solid #1a2340' : 'none',
+                }}
+              >
+                <td className="px-4 py-3 font-mono text-[12px]" style={{ color: 'var(--ds-outline)' }}>
+                  {post.slug}
+                </td>
+                <td className="px-4 py-3 max-w-[240px]" style={{ color: 'var(--ds-on-surface)' }}>
+                  <span className="block overflow-hidden text-ellipsis whitespace-nowrap">
+                    {post.title_en}
+                  </span>
+                </td>
+                <td className="px-4 py-3">
+                  <span
+                    className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold"
+                    style={{ background: 'var(--ds-surface-container)', color: 'var(--ds-outline)' }}
                   >
-                    Edit
-                  </Link>
+                    {post.category}
+                  </span>
+                </td>
+                <td className="px-4 py-3">
                   <button
-                    onClick={() => deletePost(post.id)}
+                    onClick={() => togglePublish(post)}
+                    className="px-3 py-1 rounded-full text-[11px] font-bold border-none cursor-pointer"
                     style={{
-                      color: '#f87171',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontSize: 13,
-                      padding: 0,
+                      background: post.is_published ? 'rgba(74,222,128,0.1)' : 'var(--ds-surface-container)',
+                      color: post.is_published ? '#4ade80' : 'var(--ds-outline-variant)',
                     }}
                   >
-                    Delete
+                    {post.is_published ? 'Published' : 'Draft'}
                   </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-          {posts.length === 0 && (
-            <tr>
-              <td colSpan={5} style={{ padding: 40, color: '#64748b', textAlign: 'center' }}>
-                No posts yet.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex gap-4">
+                    <Link
+                      href={`/admin/posts/${post.id}`}
+                      className="no-underline text-[13px] font-medium"
+                      style={{ color: 'var(--ds-primary)' }}
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => deletePost(post.id)}
+                      className="border-none bg-transparent cursor-pointer text-[13px] p-0 transition-colors duration-100"
+                      style={{ color: 'var(--ds-outline-variant)' }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline-variant)')}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+            {posts.length === 0 && (
+              <tr>
+                <td colSpan={5} className="py-[60px] text-center" style={{ color: 'var(--ds-outline-variant)' }}>
+                  No posts yet.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -18,7 +18,7 @@ export default function ThemeToggle2026() {
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       className="w-9 h-9 flex items-center justify-center rounded-full transition-colors cursor-pointer text-[#94a3b8] hover:text-[#c0c1ff]"
     >
-      <span className="material-symbols-outlined text-[22px]">
+      <span translate="no" className="material-symbols-outlined text-[22px]">
         {isDark ? 'dark_mode' : 'light_mode'}
       </span>
     </button>

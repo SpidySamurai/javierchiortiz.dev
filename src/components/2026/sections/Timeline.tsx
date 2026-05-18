@@ -423,7 +423,7 @@ export default function Timeline() {
                   padding: '0.5rem 1rem',
                 }}
               >
-                <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
+                <span translate="no" className="material-symbols-outlined" style={{ fontSize: 16 }}>
                   {showAll ? 'expand_less' : 'expand_more'}
                 </span>
                 {showAll ? t('show_less') : t('show_more')}

@@ -33,10 +33,22 @@ async function geolocateIp(
   }
 }
 
+const LOCAL_HOST_RE = /^(localhost|127\.0\.0\.1)(:\d+)?$/;
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const { path, locale, newVisitor } = body;
   if (!path) return NextResponse.json({ error: 'Missing path' }, { status: 400 });
+
+  const host = req.headers.get('host') ?? '';
+  if (LOCAL_HOST_RE.test(host)) return NextResponse.json({ ok: true, geo: null });
+
+  if (typeof path !== 'string' || path.length > 512) {
+    return NextResponse.json({ error: 'Invalid path' }, { status: 400 });
+  }
+  if (locale !== undefined && (typeof locale !== 'string' || locale.length > 10)) {
+    return NextResponse.json({ error: 'Invalid locale' }, { status: 400 });
+  }
 
   const referrer = req.headers.get('referer') ?? null;
   await supabase.from('page_views').insert({ path, locale: locale ?? null, referrer });

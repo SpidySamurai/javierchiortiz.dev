@@ -1,66 +1,69 @@
-# Javier Chi - Professional Portfolio 2025
+# Javier Chi Ortíz — Portfolio 2025/2026
 
-Personal portfolio built with Next.js 15. Showcases my experience, projects, and skills with a modern, performance-focused stack. Features a 2026 redesign and a legacy 2025 version.
+Personal portfolio built with Next.js 15. Features a 2026 redesign at `/` and a legacy 2025 version at `/2025`.
 
-## 🚀 Tech Stack
+## Tech Stack
 
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Internationalization**: [next-intl](https://next-intl-docs.vercel.app/) (En/Es support)
-- **Theme**: [next-themes](https://github.com/pacocoursey/next-themes) (Dark/Light mode)
-- **Automation**: [Puppeteer](https://pptr.dev/) for generating project screenshots.
+- **Framework**: Next.js 15 (App Router) + React 19 + TypeScript
+- **Styling**: Tailwind CSS v4 + PostCSS (no config file, uses CSS `@theme`)
+- **i18n**: next-intl — EN/ES locale routing at `src/app/[locale]/`
+- **Theming**: next-themes (dark/light mode via `data-theme`)
+- **Database**: Supabase (blog posts, analytics, visitor tracking)
+- **Fonts**: Manrope (headlines) + Inter (body) via next/font
+- **Icons**: Material Symbols Outlined (Google Fonts)
+- **Data fetching**: SWR
+- **Package manager**: pnpm
 
-## ✨ Key Features
+## Routes
 
-- **Dynamic Project List**: data-driven project showcase (`src/data/projects.ts`) with category filtering.
-- **"Flat Cat" Mascot**: A custom interactive, eye-tracking SVG component (`src/components/FlatCat.tsx`) paying homage to a beloved pet.
-- **Confidentiality Awareness**: Built-in logic to handle private/NDA projects while still showcasing selected highlighted work.
-- **Automated Screenshots**: Custom script to keep portfolio thumbnails up-to-date programmatically.
+| Route     | Content                  |
+| --------- | ------------------------ |
+| `/`       | 2026 redesign (Timeline) |
+| `/2025`   | Legacy 2025 design       |
+| `/v2025/` | Original version         |
+| `/blog`   | Blog                     |
+| `/admin`  | CMS (authenticated)      |
 
-## 🛠️ Getting Started
+## Features
 
-1.  **Install dependencies:**
+- EN/ES internationalization
+- Dark/light mode
+- Blog with Supabase-backed CMS and admin panel
+- Visitor tracking: last visitor chip (header) + session visitor counter (footer)
+- Page view analytics
+- Marvel Rivals live stats widget
+- Lanyard Discord presence integration
+- Automated project screenshots via Puppeteer
 
-    ```bash
-    npm install
-    ```
-
-2.  **Run development server:**
-    ```bash
-    npm run dev
-    ```
-    Open [http://localhost:3000](http://localhost:3000) to view it.
-
-## 📸 Scripts
-
-### Capture Screenshots
-
-This project uses Puppeteer to automatically generate thumbnails for the featured projects.
-Add new URLs to `scripts/capture-screenshots.js` and run:
+## Getting Started
 
 ```bash
-npm run screenshots
+pnpm install
+pnpm dev
 ```
 
-This will save images to `public/utils/img/`.
+Open [http://localhost:3000](http://localhost:3000).
 
-## 📂 Project Structure
+## Environment Variables
 
-- `src/app`: App Router pages and global layouts.
-- `src/components`: UI components, organized by `sections`, `layout`, etc.
-- `src/data`: Static data sources (projects, experiences).
-- `src/messages`: JSON translation files (en/es).
-- `src/utils`: Helper styles and assets.
-
-## 📋 Environment Variables
-
-Create a `.env.local` file at the root with the following variables:
+Create a `.env.local` file:
 
 ```env
-MARVEL_RIVALS_API_KEY=   # API key from marvelrivalsapi.com
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+MARVEL_RIVALS_API_KEY=
 ```
 
-## 🔒 License
+## Commands
+
+```bash
+pnpm dev        # Start dev server (Turbopack)
+pnpm build      # Production build
+pnpm lint       # ESLint
+pnpm format     # Prettier
+```
+
+## License
 
 MIT

@@ -1,4 +1,5 @@
 import { Manrope, Inter } from 'next/font/google';
+import { headers } from 'next/headers';
 
 const manrope = Manrope({
   variable: '--font-manrope',
@@ -12,9 +13,12 @@ const inter = Inter({
   display: 'swap',
 });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const headersList = await headers();
+  const locale = headersList.get('x-locale') ?? 'en';
+
   return (
-    <html suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <link
           rel="stylesheet"
