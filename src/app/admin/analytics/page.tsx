@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import AnalyticsView from '@/components/admin/AnalyticsView';
+import AnalyticsView from '@/app/admin/_components/AnalyticsView';
 
 export default async function AnalyticsPage() {
   const supabase = await createClient();

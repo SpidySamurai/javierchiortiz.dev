@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import MessageList from '@/components/admin/MessageList';
+import MessageList from '@/app/admin/_components/MessageList';
 
 export default async function MessagesPage() {
   const supabase = await createClient();

@@ -157,7 +157,7 @@ export default function ForgotPasswordPage() {
                   Reset <em style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>password</em>
                 </h2>
                 <p className="text-[13px] m-0" style={{ color: 'var(--ds-outline)' }}>
-                  Enter your email and we'll send a reset link.
+                  Enter your email and we&apos;ll send a reset link.
                 </p>
               </div>
 

@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import PostEditor from '@/components/admin/PostEditor';
+import PostEditor from '@/app/admin/_components/PostEditor';
 import { notFound } from 'next/navigation';
 
 export default async function EditPostPage({ params }: { params: Promise<{ id: string }> }) {

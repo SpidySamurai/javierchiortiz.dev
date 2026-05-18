@@ -78,6 +78,10 @@ style={{ fontFamily: 'var(--font-inter), sans-serif' }}    // body/labels
 - **Fullstack Dev** (`.claude/agents/fullstack.md`): All implementation (components, pages, API, styling)
 - **UI/UX Designer** (`.claude/agents/ui-ux-designer.md`): Design review vs Stitch specs
 
+## Architecture
+
+See `docs/ARCHITECTURE.md` for the full layer model, SOLID rules, `'use client'` guidelines, data flow pattern, and shared primitives reference. All new features must follow it.
+
 ## Conventions
 
 - User communicates in Spanish. Code, commits, docs in English.

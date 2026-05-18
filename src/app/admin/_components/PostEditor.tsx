@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 import type { ICommand, ExecuteState, TextAreaTextApi } from '@uiw/react-md-editor';
 import type { Post } from '@/types/database';
 import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
-import ImagePositionPicker from '@/components/admin/ImagePositionPicker';
+import ImagePositionPicker from '@/app/admin/_components/ImagePositionPicker';
 import { BLOG_THEMES } from '@/data/blogThemes';
 import SectionHeader from '@/app/admin/_components/SectionHeader';
 

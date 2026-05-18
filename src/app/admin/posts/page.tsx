@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import PostList from '@/components/admin/PostList';
+import PostList from '@/app/admin/_components/PostList';
 
 export default async function PostsPage() {
   const supabase = await createClient();
