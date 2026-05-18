@@ -73,7 +73,7 @@ export default function LoginPage() {
         <div>
           <p
             style={{
-              color: '#464554',
+              color: '#5e5c72',
               fontSize: 11,
               fontWeight: 600,
               letterSpacing: '0.12em',
@@ -111,11 +111,11 @@ export default function LoginPage() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: 10,
-                  color: '#2d3449',
+                  color: '#424060',
                   fontSize: 13,
                 }}
               >
-                <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#2d3449' }} />
+                <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#424060' }} />
                 {item}
               </div>
             ))}
@@ -126,7 +126,7 @@ export default function LoginPage() {
         <a
           href="/"
           style={{
-            color: '#464554',
+            color: '#6b6880',
             fontSize: 12,
             textDecoration: 'none',
             display: 'flex',
@@ -135,7 +135,7 @@ export default function LoginPage() {
             transition: 'color 0.15s',
           }}
           onMouseEnter={(e) => (e.currentTarget.style.color = '#908fa0')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = '#464554')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#6b6880')}
         >
           <span className="material-symbols-outlined" style={{ fontSize: 14 }}>arrow_back</span>
           Back to portfolio
@@ -167,14 +167,14 @@ export default function LoginPage() {
             >
               Sign in
             </h2>
-            <p style={{ color: '#464554', fontSize: 13, margin: 0 }}>
+            <p style={{ color: '#6b6880', fontSize: 13, margin: 0 }}>
               Access restricted to authorized users.
             </p>
           </div>
 
           <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-              <label style={{ color: '#464554', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              <label style={{ color: '#6b6880', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                 Email
               </label>
               <input
@@ -201,7 +201,7 @@ export default function LoginPage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-              <label style={{ color: '#464554', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+              <label style={{ color: '#6b6880', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                 Password
               </label>
               <input
@@ -250,7 +250,7 @@ export default function LoginPage() {
                 padding: '13px 16px',
                 borderRadius: 10,
                 background: loading ? '#1a2340' : 'linear-gradient(135deg, #8083ff, #c0c1ff)',
-                color: loading ? '#464554' : '#0f0060',
+                color: loading ? '#6b6880' : '#0f0060',
                 fontWeight: 700,
                 fontSize: 14,
                 cursor: loading ? 'not-allowed' : 'pointer',
