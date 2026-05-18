@@ -132,7 +132,7 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: 'spring', stiffness: 420, damping: 18 }}
-            onClick={openCard}
+            onClick={() => openCard()}
             aria-label="Open Gamer Card"
             title={collapsed ? t('gamer_card') : undefined}
             className="flex items-center rounded-lg text-sm font-medium"
