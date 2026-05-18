@@ -32,7 +32,7 @@ export default function BackToTop() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >
-          <span className="material-symbols-outlined text-[20px]">arrow_upward</span>
+          <span translate="no" className="material-symbols-outlined text-[20px]">arrow_upward</span>
         </motion.button>
       )}
     </AnimatePresence>

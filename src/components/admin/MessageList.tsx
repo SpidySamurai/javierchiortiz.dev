@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { ContactMessage } from '@/types/database';
+import SectionHeader from '@/app/admin/_components/SectionHeader';
 
 export default function MessageList({ initialMessages }: { initialMessages: ContactMessage[] }) {
   const [messages, setMessages] = useState(initialMessages);
@@ -16,50 +17,49 @@ export default function MessageList({ initialMessages }: { initialMessages: Cont
 
   return (
     <div>
-      <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--ds-on-surface)', margin: 0, fontFamily: 'var(--ds-font-display)' }}>
-          Messages
-        </h1>
-        <p style={{ color: 'var(--ds-outline-variant)', fontSize: 13, margin: '4px 0 0' }}>
-          {messages.length} {messages.length === 1 ? 'message' : 'messages'}
-        </p>
+      <div className="mb-7">
+        <SectionHeader
+          eyebrow="Inbox"
+          title="Contact"
+          accent="Messages"
+          subtitle={`${messages.length} ${messages.length === 1 ? 'message' : 'messages'}`}
+        />
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div className="flex flex-col gap-2.5">
         {messages.map((msg) => (
           <div
             key={msg.id}
+            className="px-6 py-5 rounded-[14px]"
             style={{
-              padding: '20px 24px',
               background: 'var(--ds-surface)',
-              borderRadius: 14,
               border: '1px solid var(--ds-surface-high)',
             }}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                <span style={{ color: 'var(--ds-on-surface)', fontWeight: 600, fontSize: 14 }}>{msg.name}</span>
+            <div className="flex justify-between items-start mb-3">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span className="font-semibold text-[14px]" style={{ color: 'var(--ds-on-surface)' }}>
+                  {msg.name}
+                </span>
                 <a
                   href={`mailto:${msg.email}`}
+                  className="text-[12px] no-underline px-2 py-0.5 rounded-md"
                   style={{
                     color: 'var(--ds-primary-container)',
-                    fontSize: 12,
-                    textDecoration: 'none',
-                    padding: '2px 8px',
                     background: 'color-mix(in srgb, var(--ds-primary-container) 10%, transparent)',
-                    borderRadius: 6,
                   }}
                 >
                   {msg.email}
                 </a>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
-                <span style={{ color: 'var(--ds-outline-variant)', fontSize: 12 }}>
+              <div className="flex items-center gap-4 shrink-0">
+                <span className="text-[12px]" style={{ color: 'var(--ds-outline-variant)' }}>
                   {new Date(msg.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </span>
                 <button
                   onClick={() => deleteMessage(msg.id)}
-                  style={{ color: 'var(--ds-outline-variant)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, padding: 0 }}
+                  className="border-none bg-transparent cursor-pointer text-[13px] p-0 transition-colors duration-100"
+                  style={{ color: 'var(--ds-outline-variant)' }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
                   onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline-variant)')}
                 >
@@ -67,19 +67,20 @@ export default function MessageList({ initialMessages }: { initialMessages: Cont
                 </button>
               </div>
             </div>
-            <p style={{ color: 'var(--ds-on-surface-variant)', fontSize: 14, lineHeight: 1.7, whiteSpace: 'pre-wrap', margin: 0 }}>
+            <p
+              className="text-[14px] leading-[1.7] whitespace-pre-wrap m-0"
+              style={{ color: 'var(--ds-on-surface-variant)' }}
+            >
               {msg.message}
             </p>
           </div>
         ))}
         {messages.length === 0 && (
           <div
+            className="py-[60px] text-center rounded-[14px]"
             style={{
-              padding: 60,
-              textAlign: 'center',
               color: 'var(--ds-outline-variant)',
               background: 'var(--ds-surface)',
-              borderRadius: 14,
               border: '1px solid var(--ds-surface-high)',
             }}
           >

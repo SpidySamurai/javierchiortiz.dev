@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import type { Post } from '@/types/database';
+import SectionHeader from '@/app/admin/_components/SectionHeader';
 
 export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
   const [posts, setPosts] = useState(initialPosts);
@@ -26,28 +27,19 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
-        <div>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--ds-on-surface)', margin: 0, fontFamily: 'var(--ds-font-display)' }}>
-            Posts
-          </h1>
-          <p style={{ color: 'var(--ds-outline-variant)', fontSize: 13, margin: '4px 0 0' }}>
-            {posts.length} {posts.length === 1 ? 'post' : 'posts'}
-          </p>
-        </div>
+      <div className="flex justify-between items-center mb-7">
+        <SectionHeader
+          eyebrow="Content"
+          title="All"
+          accent="Posts"
+          subtitle={`${posts.length} ${posts.length === 1 ? 'post' : 'posts'}`}
+        />
         <Link
           href="/admin/posts/new"
+          className="flex items-center gap-1.5 px-[18px] py-[9px] rounded-[10px] text-[13px] font-bold no-underline"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '9px 18px',
             background: 'linear-gradient(135deg, var(--ds-primary-container) 0%, var(--ds-primary) 100%)',
             color: '#0f0060',
-            borderRadius: 10,
-            fontSize: 13,
-            fontWeight: 700,
-            textDecoration: 'none',
             boxShadow: '0 4px 12px color-mix(in srgb, var(--ds-primary-container) 25%, transparent)',
           }}
         >
@@ -56,21 +48,16 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
         </Link>
       </div>
 
-      <div style={{ borderRadius: 14, border: '1px solid var(--ds-surface-high)', overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+      <div className="rounded-[14px] overflow-hidden" style={{ border: '1px solid var(--ds-surface-high)' }}>
+        <table className="w-full border-collapse text-[13px]">
           <thead>
             <tr style={{ backgroundColor: 'var(--ds-surface)' }}>
               {['Slug', 'Title', 'Category', 'Status', 'Actions'].map((h) => (
                 <th
                   key={h}
+                  className="px-4 py-3 font-semibold text-left uppercase tracking-[0.05em] text-[11px]"
                   style={{
-                    padding: '12px 16px',
                     color: 'var(--ds-outline-variant)',
-                    fontWeight: 600,
-                    textAlign: 'left',
-                    letterSpacing: '0.05em',
-                    textTransform: 'uppercase',
-                    fontSize: 11,
                     borderBottom: '1px solid var(--ds-surface-high)',
                   }}
                 >
@@ -88,29 +75,27 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
                   borderBottom: i < posts.length - 1 ? '1px solid #1a2340' : 'none',
                 }}
               >
-                <td style={{ padding: '12px 16px', color: 'var(--ds-outline)', fontFamily: 'monospace', fontSize: 12 }}>
+                <td className="px-4 py-3 font-mono text-[12px]" style={{ color: 'var(--ds-outline)' }}>
                   {post.slug}
                 </td>
-                <td style={{ padding: '12px 16px', color: 'var(--ds-on-surface)', maxWidth: 240 }}>
-                  <span style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <td className="px-4 py-3 max-w-[240px]" style={{ color: 'var(--ds-on-surface)' }}>
+                  <span className="block overflow-hidden text-ellipsis whitespace-nowrap">
                     {post.title_en}
                   </span>
                 </td>
-                <td style={{ padding: '12px 16px' }}>
-                  <span style={{ padding: '3px 10px', borderRadius: 9999, fontSize: 11, fontWeight: 600, background: 'var(--ds-surface-container)', color: 'var(--ds-outline)' }}>
+                <td className="px-4 py-3">
+                  <span
+                    className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold"
+                    style={{ background: 'var(--ds-surface-container)', color: 'var(--ds-outline)' }}
+                  >
                     {post.category}
                   </span>
                 </td>
-                <td style={{ padding: '12px 16px' }}>
+                <td className="px-4 py-3">
                   <button
                     onClick={() => togglePublish(post)}
+                    className="px-3 py-1 rounded-full text-[11px] font-bold border-none cursor-pointer"
                     style={{
-                      padding: '4px 12px',
-                      borderRadius: 9999,
-                      fontSize: 11,
-                      fontWeight: 700,
-                      border: 'none',
-                      cursor: 'pointer',
                       background: post.is_published ? 'rgba(74,222,128,0.1)' : 'var(--ds-surface-container)',
                       color: post.is_published ? '#4ade80' : 'var(--ds-outline-variant)',
                     }}
@@ -118,14 +103,19 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
                     {post.is_published ? 'Published' : 'Draft'}
                   </button>
                 </td>
-                <td style={{ padding: '12px 16px' }}>
-                  <div style={{ display: 'flex', gap: 16 }}>
-                    <Link href={`/admin/posts/${post.id}`} style={{ color: 'var(--ds-primary)', textDecoration: 'none', fontSize: 13, fontWeight: 500 }}>
+                <td className="px-4 py-3">
+                  <div className="flex gap-4">
+                    <Link
+                      href={`/admin/posts/${post.id}`}
+                      className="no-underline text-[13px] font-medium"
+                      style={{ color: 'var(--ds-primary)' }}
+                    >
                       Edit
                     </Link>
                     <button
                       onClick={() => deletePost(post.id)}
-                      style={{ color: 'var(--ds-outline-variant)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, padding: 0 }}
+                      className="border-none bg-transparent cursor-pointer text-[13px] p-0 transition-colors duration-100"
+                      style={{ color: 'var(--ds-outline-variant)' }}
                       onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
                       onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline-variant)')}
                     >
@@ -137,7 +127,7 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
             ))}
             {posts.length === 0 && (
               <tr>
-                <td colSpan={5} style={{ padding: 60, color: 'var(--ds-outline-variant)', textAlign: 'center' }}>
+                <td colSpan={5} className="py-[60px] text-center" style={{ color: 'var(--ds-outline-variant)' }}>
                   No posts yet.
                 </td>
               </tr>

@@ -106,7 +106,7 @@ function MobileDrawer({
                 backgroundColor: 'transparent',
               }}
             >
-              <span className="material-symbols-outlined text-[20px]">{icon}</span>
+              <span translate="no" className="material-symbols-outlined text-[20px]">{icon}</span>
               {t(key)}
             </a>
           ))}
@@ -121,7 +121,7 @@ function MobileDrawer({
               backgroundColor: isBlogActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
             }}
           >
-            <span className="material-symbols-outlined text-[20px]">edit_note</span>
+            <span translate="no" className="material-symbols-outlined text-[20px]">edit_note</span>
             Blog
           </Link>
         </nav>
@@ -135,7 +135,7 @@ function MobileDrawer({
               className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all"
               style={{ color: 'var(--ds-on-surface-variant)', backgroundColor: 'color-mix(in srgb, var(--ds-primary) 5%, transparent)' }}
             >
-              <span className="material-symbols-outlined text-[18px]">sports_esports</span>
+              <span translate="no" className="material-symbols-outlined text-[18px]">sports_esports</span>
               {t('gamer_card')}
             </button>
           )}

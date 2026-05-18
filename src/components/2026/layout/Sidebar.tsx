@@ -121,6 +121,7 @@ export default function Sidebar() {
                     suppressHydrationWarning
                   >
                     <span
+                      translate="no"
                       className="material-symbols-outlined text-[20px] shrink-0"
                       aria-hidden="true"
                     >
@@ -155,7 +156,7 @@ export default function Sidebar() {
               backgroundColor: 'color-mix(in srgb, var(--ds-primary) 5%, transparent)',
             }}
           >
-            <span className="material-symbols-outlined text-[18px] shrink-0">
+            <span translate="no" className="material-symbols-outlined text-[18px] shrink-0">
               sports_esports
             </span>
             <span className="sidebar-label">{t('gamer_card')}</span>
@@ -212,6 +213,7 @@ export default function Sidebar() {
         }}
       >
         <span
+          translate="no"
           className="sidebar-toggle-icon material-symbols-outlined text-[14px] leading-none"
           style={{ transition: 'transform 0.25s ease' }}
         >

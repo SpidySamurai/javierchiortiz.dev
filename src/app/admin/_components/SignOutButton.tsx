@@ -16,32 +16,12 @@ export default function SignOutButton() {
   return (
     <button
       onClick={handleSignOut}
-      style={{
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 10,
-        padding: '9px 12px',
-        background: 'transparent',
-        border: 'none',
-        color: '#464554',
-        fontSize: 13,
-        fontWeight: 500,
-        cursor: 'pointer',
-        borderRadius: 9,
-        textAlign: 'left',
-        fontFamily: 'var(--font-inter, system-ui, sans-serif)',
-        transition: 'color 0.1s',
-      }}
+      className="w-full flex items-center gap-2.5 px-3 py-[9px] bg-transparent border-none cursor-pointer rounded-[9px] text-left text-[13px] font-medium transition-colors duration-100"
+      style={{ color: 'var(--ds-outline)', fontFamily: 'var(--ds-font-body)' }}
       onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
-      onMouseLeave={(e) => (e.currentTarget.style.color = '#464554')}
+      onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline)')}
     >
-      <span
-        className="material-symbols-outlined"
-        style={{ fontSize: 18 }}
-      >
-        logout
-      </span>
+      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>logout</span>
       Sign out
     </button>
   );

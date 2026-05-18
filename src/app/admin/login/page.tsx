@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
+import PasswordInput from '@/app/admin/_components/PasswordInput';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -29,95 +30,57 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'var(--ds-font-body)' }}>
+    <div className="ds-2026 flex min-h-screen" translate="no" style={{ fontFamily: 'var(--ds-font-body)' }}>
 
       {/* Left — brand panel */}
       <div
+        className="hidden sm:flex shrink-0 flex-col justify-between p-12"
         style={{
           flex: '0 0 42%',
           background: 'var(--ds-bg)',
-          borderRight: '1px solid #1a2340',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '48px 52px',
+          borderRight: '1px solid var(--ds-surface-high)',
         }}
-        className="admin-brand-panel"
       >
-        {/* Top: initials badge */}
-        <div
-          style={{
-            width: 44,
-            height: 44,
-            borderRadius: 12,
-            background: 'linear-gradient(135deg, var(--ds-primary-container), var(--ds-primary))',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 20px color-mix(in srgb, var(--ds-primary-container) 30%, transparent)',
-          }}
+        {/* Top: icon mark */}
+        <span
+          className="material-symbols-outlined"
+          style={{ fontSize: 28, color: 'var(--ds-primary)', fontVariationSettings: "'FILL' 1" }}
         >
-          <span
-            style={{
-              fontFamily: 'var(--ds-font-display)',
-              fontWeight: 800,
-              fontSize: 16,
-              color: '#0f0060',
-              letterSpacing: '-0.5px',
-            }}
-          >
-            JC
-          </span>
-        </div>
+          manage_accounts
+        </span>
 
         {/* Center: identity */}
         <div>
           <p
-            style={{
-              color: '#5e5c72',
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              margin: '0 0 14px',
-            }}
+            className="text-[11px] font-bold uppercase tracking-[0.25em] mb-3.5"
+            style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
           >
             Content Management
           </p>
           <h1
-            style={{
-              fontFamily: 'var(--ds-font-display)',
-              fontWeight: 800,
-              fontSize: 38,
-              color: 'var(--ds-on-surface)',
-              margin: 0,
-              lineHeight: 1.1,
-              letterSpacing: '-1px',
-            }}
+            className="text-[38px] font-black m-0 leading-[1.1] tracking-tighter uppercase"
+            style={{ fontFamily: 'var(--ds-font-display)', color: 'var(--ds-on-surface)' }}
           >
-            Javier<br />Chi Ortíz
+            Javier<br /><em style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>Chi Ortíz</em>
           </h1>
-          <div
-            style={{
-              marginTop: 24,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 10,
-            }}
-          >
-            {['Posts', 'Messages', 'Analytics'].map((item) => (
+          <div className="mt-6 flex flex-col gap-2">
+            {[
+              { label: 'Posts', icon: 'edit_note' },
+              { label: 'Messages', icon: 'mail' },
+              { label: 'Analytics', icon: 'bar_chart' },
+            ].map(({ label, icon }) => (
               <div
-                key={item}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 10,
-                  color: '#424060',
-                  fontSize: 13,
-                }}
+                key={label}
+                className="flex items-center gap-2.5 text-[13px]"
+                style={{ color: 'var(--ds-on-surface-variant)' }}
               >
-                <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#424060' }} />
-                {item}
+                <span
+                  className="material-symbols-outlined"
+                  style={{ fontSize: 15, color: 'var(--ds-outline)', fontVariationSettings: "'FILL' 0" }}
+                >
+                  {icon}
+                </span>
+                {label}
               </div>
             ))}
           </div>
@@ -126,17 +89,10 @@ export default function LoginPage() {
         {/* Bottom: portfolio link */}
         <Link
           href="/"
-          style={{
-            color: '#6b6880',
-            fontSize: 12,
-            textDecoration: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            transition: 'color 0.15s',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ds-outline)')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = '#6b6880')}
+          className="flex items-center gap-1.5 text-xs no-underline transition-colors duration-150"
+          style={{ color: 'var(--ds-outline)' }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ds-on-surface-variant)')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline)')}
         >
           <span className="material-symbols-outlined" style={{ fontSize: 14 }}>arrow_back</span>
           Back to portfolio
@@ -145,98 +101,104 @@ export default function LoginPage() {
 
       {/* Right — form panel */}
       <div
-        style={{
-          flex: 1,
-          background: '#060d1a',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '48px 40px',
-        }}
+        className="flex-1 flex items-center justify-center p-10"
+        style={{ background: 'var(--ds-surface-container)' }}
       >
-        <div style={{ width: '100%', maxWidth: 360 }}>
-          <div style={{ marginBottom: 36 }}>
-            <h2
-              style={{
-                fontFamily: 'var(--ds-font-display)',
-                fontWeight: 700,
-                fontSize: 22,
-                color: 'var(--ds-on-surface)',
-                margin: '0 0 6px',
-                letterSpacing: '-0.3px',
-              }}
+        <div className="w-full max-w-[360px]">
+          <div className="mb-8">
+            <span
+              className="text-[10px] font-bold uppercase tracking-[0.25em] block mb-1.5"
+              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
             >
-              Sign in
+              Admin Access
+            </span>
+            <h2
+              className="text-[26px] font-black m-0 mb-2 tracking-tighter uppercase"
+              style={{ fontFamily: 'var(--ds-font-display)', color: 'var(--ds-on-surface)' }}
+            >
+              Sign <em style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>in</em>
             </h2>
-            <p style={{ color: '#6b6880', fontSize: 13, margin: 0 }}>
+            <p className="text-[13px] m-0" style={{ color: 'var(--ds-outline)' }}>
               Access restricted to authorized users.
             </p>
           </div>
 
-          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-              <label style={{ color: '#6b6880', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+          <form onSubmit={handleLogin} className="flex flex-col gap-4">
+            {/* Email field */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                className="text-[11px] font-semibold uppercase tracking-[0.1em]"
+                style={{ color: 'var(--ds-on-surface-variant)' }}
+              >
                 Email
               </label>
-              <input
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onFocus={() => setFocused('email')}
-                onBlur={() => setFocused(null)}
-                required
-                style={{
-                  padding: '12px 16px',
-                  borderRadius: 10,
-                  border: 'none',
-                  outline: focused === 'email' ? '2px solid var(--ds-primary-container)' : '2px solid #1a2340',
-                  background: focused === 'email' ? '#0f1e3a' : 'var(--ds-bg)',
-                  color: 'var(--ds-on-surface)',
-                  fontSize: 14,
-                  transition: 'outline-color 0.15s, background 0.15s',
-                  width: '100%',
-                  boxSizing: 'border-box',
-                }}
-              />
+              <div className="relative">
+                <span
+                  className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+                  style={{
+                    fontSize: 18,
+                    color: focused === 'email' ? 'var(--ds-primary-container)' : 'var(--ds-outline)',
+                    fontVariationSettings: "'FILL' 0",
+                    transition: 'color 0.15s',
+                  }}
+                >
+                  person
+                </span>
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onFocus={() => setFocused('email')}
+                  onBlur={() => setFocused(null)}
+                  required
+                  className="pl-10 pr-4 py-3 rounded-[10px] border-none text-sm w-full box-border transition-[outline-color,background] duration-150"
+                  style={{
+                    outline: focused === 'email' ? '2px solid var(--ds-primary-container)' : '2px solid var(--ds-surface-high)',
+                    background: focused === 'email' ? 'var(--ds-surface)' : 'var(--ds-surface)',
+                    color: 'var(--ds-on-surface)',
+                  }}
+                />
+              </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-              <label style={{ color: '#6b6880', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            {/* Password field */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                className="text-[11px] font-semibold uppercase tracking-[0.1em]"
+                style={{ color: 'var(--ds-on-surface-variant)' }}
+              >
                 Password
               </label>
-              <input
-                type="password"
-                placeholder="••••••••"
+              <PasswordInput
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onFocus={() => setFocused('password')}
                 onBlur={() => setFocused(null)}
+                focused={focused === 'password'}
                 required
-                style={{
-                  padding: '12px 16px',
-                  borderRadius: 10,
-                  border: 'none',
-                  outline: focused === 'password' ? '2px solid var(--ds-primary-container)' : '2px solid #1a2340',
-                  background: focused === 'password' ? '#0f1e3a' : 'var(--ds-bg)',
-                  color: 'var(--ds-on-surface)',
-                  fontSize: 14,
-                  transition: 'outline-color 0.15s, background 0.15s',
-                  width: '100%',
-                  boxSizing: 'border-box',
-                }}
               />
+            </div>
+
+            <div className="flex justify-end -mt-1">
+              <Link
+                href="/admin/forgot-password"
+                className="text-[12px] no-underline transition-colors duration-150"
+                style={{ color: 'var(--ds-outline)' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ds-primary)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline)')}
+              >
+                Forgot password?
+              </Link>
             </div>
 
             {error && (
               <div
+                className="px-3.5 py-[11px] rounded-lg text-[13px]"
                 style={{
-                  padding: '11px 14px',
-                  borderRadius: 8,
-                  background: 'rgba(248,113,113,0.06)',
-                  border: '1px solid rgba(248,113,113,0.18)',
+                  background: 'rgba(248,113,113,0.08)',
+                  border: '1px solid rgba(248,113,113,0.2)',
                   color: '#f87171',
-                  fontSize: 13,
                 }}
               >
                 {error}
@@ -246,18 +208,12 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
+              className="mt-1 px-4 py-3 rounded-[10px] font-bold text-sm border-none tracking-wide transition-opacity duration-150"
               style={{
-                marginTop: 4,
-                padding: '13px 16px',
-                borderRadius: 10,
-                background: loading ? '#1a2340' : 'linear-gradient(135deg, var(--ds-primary-container), var(--ds-primary))',
-                color: loading ? '#6b6880' : '#0f0060',
-                fontWeight: 700,
-                fontSize: 14,
+                background: loading ? 'var(--ds-surface-high)' : 'var(--ds-primary)',
+                color: loading ? 'var(--ds-outline)' : 'var(--ds-on-primary)',
                 cursor: loading ? 'not-allowed' : 'pointer',
-                border: 'none',
-                transition: 'opacity 0.15s',
-                letterSpacing: '0.01em',
+                opacity: loading ? 0.7 : 1,
               }}
             >
               {loading ? 'Signing in…' : 'Sign in'}
@@ -265,12 +221,6 @@ export default function LoginPage() {
           </form>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 640px) {
-          .admin-brand-panel { display: none !important; }
-        }
-      `}</style>
     </div>
   );
 }
