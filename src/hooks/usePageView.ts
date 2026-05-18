@@ -9,10 +9,13 @@ export function usePageView() {
   const locale = useLocale();
 
   useEffect(() => {
+    const newVisitor = !sessionStorage.getItem('visitor_tracked');
+    if (newVisitor) sessionStorage.setItem('visitor_tracked', '1');
+
     fetch('/api/analytics', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ path: pathname, locale }),
+      body: JSON.stringify({ path: pathname, locale, newVisitor }),
     }).catch(() => {});
   }, [pathname, locale]);
 }
