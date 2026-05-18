@@ -1,15 +1,21 @@
 'use client';
 
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 const SERVICE_KEYS = ['landing', 'webapp', 'mvp', 'cms', 'crm', 'ai'] as const;
 const PROCESS_KEYS = ['idea', 'build', 'launch'] as const;
 const PROCESS_ICONS = { idea: 'lightbulb', build: 'build', launch: 'rocket_launch' } as const;
 
+const WA_PHONE = '529994875155';
+
 export default function Services() {
   const t = useTranslations('common');
+  const locale = useLocale();
+  const waMessage = locale === 'es'
+    ? 'Hola Javier, vi tu portfolio y quiero contactarte'
+    : 'Hi Javier, I saw your portfolio and want to get in touch';
+  const waHref = `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(waMessage)}`;
 
   return (
     <section
@@ -142,8 +148,10 @@ export default function Services() {
           viewport={{ once: true }}
           transition={{ duration: 0.35, ease: 'easeOut', delay: 0.15 }}
         >
-          <Link
-            href="/#contact"
+          <a
+            href={waHref}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-sm uppercase tracking-widest transition-opacity hover:opacity-80"
             style={{
               backgroundColor: 'var(--ds-primary)',
@@ -152,7 +160,7 @@ export default function Services() {
             }}
           >
             {t('services_cta')}
-          </Link>
+          </a>
         </motion.div>
 
       </div>
