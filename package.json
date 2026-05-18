@@ -17,6 +17,7 @@
     "@supabase/supabase-js": "^2.105.4",
     "@tsparticles/confetti": "^3.9.1",
     "@tsparticles/effect-trail": "^3.9.1",
+    "@tsparticles/engine": "^3.9.1",
     "@tsparticles/interaction-external-trail": "^3.9.1",
     "@tsparticles/plugin-emitters": "^3.9.1",
     "@tsparticles/react": "^3.0.0",

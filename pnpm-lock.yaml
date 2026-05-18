@@ -26,6 +26,9 @@ importers:
       '@tsparticles/effect-trail':
         specifier: ^3.9.1
         version: 3.9.1
+      '@tsparticles/engine':
+        specifier: ^3.9.1
+        version: 3.9.1
       '@tsparticles/interaction-external-trail':
         specifier: ^3.9.1
         version: 3.9.1
