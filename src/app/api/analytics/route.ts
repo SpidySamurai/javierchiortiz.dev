@@ -23,9 +23,9 @@ const COUNTRY_CENTROIDS: Record<string, [number, number]> = {
   GB: [55.38, -3.44],   DE: [51.17, 10.45],  FR: [46.23, 2.21],
   ES: [40.46, -3.75],   IT: [41.87, 12.57],  BR: [-14.24, -51.93],
   AR: [-38.42, -63.62], CO: [4.57, -74.30],  PE: [-9.19, -75.02],
-  VE: [6.42, -66.59],   CL: [-35.68, -71.54],MX: [23.63, -102.55],
-  JP: [36.20, 138.25],  KR: [35.91, 127.77], CN: [35.86, 104.20],
-  IN: [20.59, 78.96],   AU: [-25.27, 133.78],NZ: [-40.90, 174.89],
+  VE: [6.42, -66.59],   CL: [-35.68, -71.54],JP: [36.20, 138.25],
+  KR: [35.91, 127.77],  CN: [35.86, 104.20], IN: [20.59, 78.96],
+  AU: [-25.27, 133.78], NZ: [-40.90, 174.89],
 };
 
 function countryFallbackCoords(countryCode: string): [number, number] | null {
@@ -80,21 +80,27 @@ function dailyVisitorHash(ip: string): string {
 const LOCAL_HOST_RE = /^(localhost|127\.0\.0\.1)(:\d+)?$/;
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { path, locale, newVisitor } = body;
-  if (!path) return NextResponse.json({ error: 'Missing path' }, { status: 400 });
-
   const host = req.headers.get('host') ?? '';
   if (LOCAL_HOST_RE.test(host)) return NextResponse.json({ ok: true, geo: null });
 
-  if (typeof path !== 'string' || path.length > 512) {
+  let body: Record<string, unknown>;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+  }
+
+  const { path, locale, newVisitor } = body;
+
+  if (typeof path !== 'string' || !path || path.length > 512) {
     return NextResponse.json({ error: 'Invalid path' }, { status: 400 });
   }
   if (locale !== undefined && (typeof locale !== 'string' || locale.length > 10)) {
     return NextResponse.json({ error: 'Invalid locale' }, { status: 400 });
   }
 
-  const referrer = req.headers.get('referer') ?? null;
+  const rawReferrer = req.headers.get('referer');
+  const referrer = rawReferrer && rawReferrer.length <= 2048 ? rawReferrer : null;
   await supabase.from('page_views').insert({ path, locale: locale ?? null, referrer });
 
   let visitorGeo: { city: string; countryCode: string } | null = null;

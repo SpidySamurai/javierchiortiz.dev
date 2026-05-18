@@ -191,12 +191,12 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
       <button
         onClick={toggle}
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        className="hidden xl:flex fixed top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 items-center justify-center cursor-pointer rounded-full border"
+        className="hidden xl:flex fixed top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 items-center justify-center cursor-pointer rounded-full"
         style={{
           left: 'var(--sidebar-w, 16rem)',
           zIndex: 50,
-          backgroundColor: 'var(--ds-surface)',
-          borderColor: 'var(--ds-outline-variant)',
+          backgroundColor: 'var(--ds-surface-high)',
+          boxShadow: '0 0 0 1.5px var(--ds-outline-variant)',
           color: 'var(--ds-outline)',
           transition: 'left 0.25s ease',
         }}
