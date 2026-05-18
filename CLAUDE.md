@@ -118,6 +118,99 @@ Every `[locale]/*/layout.tsx` must be an **async server component** that calls `
 
 Before creating a new styled element, check `src/components/2026/ui/`. When a pattern appears in 2+ places, extract to `ui/` before the third use.
 
+## Rendering & Data Fetching
+
+### Decision tree: SSR vs CSR
+
+| Needs | Pattern |
+|-------|---------|
+| Static data, SEO, no interactivity | Server Component — fetch directly |
+| Data that refreshes in-session | Client Component + SWR |
+| Server-only logic (secrets, geolocation, hashing) | API Route Handler |
+| User interaction (forms, clicks, animations) | Client Component |
+
+### Server Components (SSR)
+
+Pages and layouts are server components by default. Fetch data directly — no SWR, no `useEffect`.
+
+```tsx
+// src/app/[locale]/blog/page.tsx
+export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;               // params is a Promise in Next.js 15
+  const posts = await getPublishedPosts();        // direct DB call via service role
+  const t = await getTranslations({ locale, namespace: 'common' }); // server i18n
+  const sidebarCollapsed = await getSidebarCollapsed(); // cookie via next/headers
+
+  return <PostList posts={posts} />;             // pass as props to client component
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'common' });
+  return { title: t('page_title') };
+}
+```
+
+**Server-only imports:** `cookies()`, `headers()` from `next/headers` — crash if used in client components.
+
+### Client Components (CSR)
+
+Use `'use client'` only when the component itself needs hooks, events, or browser APIs.
+
+```tsx
+// src/components/2026/sections/VisitorsGlobe.tsx
+'use client';
+export default function VisitorsGlobe() {
+  const t = useTranslations('common');           // sync — client i18n
+  const { data } = useSWR('/api/visitors/globe', fetcher, {
+    revalidateOnFocus: false,
+    dedupingInterval: 60_000,                    // standard SWR config for this project
+  });
+  return <GlobeCanvas points={data?.points ?? []} />;
+}
+```
+
+**SWR standard config** for non-critical data:
+```ts
+{ revalidateOnFocus: false, dedupingInterval: 60_000 }
+```
+
+### Data flow: server → client
+
+Server fetches, passes as props. Client components never call Supabase directly for public pages.
+
+```
+page.tsx (server)
+  └─ fetches posts via getPublishedPosts()
+  └─ <PostList initialPosts={posts} />  ← props, not fetch
+       └─ renders immediately, no loading state needed
+```
+
+Client components fetch their own data only when:
+- Data must refresh without page reload (SWR)
+- Data depends on client state (user interaction, locale switch)
+
+### API Route Handlers
+
+Use when the client needs server-side processing: secrets, external APIs, IP geolocation, hashing.
+
+```ts
+// src/app/api/analytics/route.ts
+export async function POST(req: NextRequest) {
+  // Runs on server — can use SUPABASE_SERVICE_ROLE_KEY, read IPs, call ip-api
+}
+```
+
+Route handlers have access to `request.headers` (real IP, user agent) — client components do not.
+
+### next-intl quick reference
+
+| Context | Hook | Notes |
+|---------|------|-------|
+| Server Component / layout / page | `await getTranslations({ locale, namespace })` | `locale` from `params` |
+| Client Component | `useTranslations('common')` | No await, sync |
+| Server metadata | `await getTranslations({ locale, namespace })` | Same as server component |
+
 ## Supabase Patterns
 
 - **Writes / admin reads**: `SUPABASE_SERVICE_ROLE_KEY` — never expose to client
