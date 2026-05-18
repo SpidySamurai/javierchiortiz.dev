@@ -83,9 +83,10 @@ export default function Services() {
         </motion.div>
 
         {/* Process */}
+        <div className="h-px mb-12" style={{ background: 'linear-gradient(to right, transparent, color-mix(in srgb, var(--ds-outline-variant) 30%, transparent), transparent)' }} />
         <motion.div
-          className="mb-16 pt-12"
-          style={{ borderTop: '1px solid color-mix(in srgb, var(--ds-outline-variant) 25%, transparent)' }}
+          className="mb-16"
+          style={{}}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
