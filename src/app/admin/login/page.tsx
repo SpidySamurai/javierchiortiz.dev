@@ -9,7 +9,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [focused, setFocused] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createClient();
 
@@ -27,182 +27,249 @@ export default function LoginPage() {
     }
   };
 
-  const inputStyle = (field: string): React.CSSProperties => ({
-    padding: '11px 14px',
-    borderRadius: 10,
-    border: 'none',
-    outline: focusedField === field ? '2px solid #8083ff' : '2px solid transparent',
-    background: focusedField === field ? '#1a2340' : '#131b2e',
-    color: '#dae2fd',
-    fontSize: 14,
-    fontFamily: 'var(--font-inter, system-ui, sans-serif)',
-    transition: 'background 0.15s, outline-color 0.15s',
-    width: '100%',
-    boxSizing: 'border-box',
-  });
-
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: '#0b1326',
-        backgroundImage:
-          'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(128,131,255,0.08) 0%, transparent 70%)',
-      }}
-    >
+    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'var(--font-inter, system-ui, sans-serif)' }}>
+
+      {/* Left — brand panel */}
       <div
         style={{
-          width: 360,
-          background: '#131b2e',
-          borderRadius: 20,
-          padding: '40px 36px',
-          boxShadow: '0 0 0 1px #222a3d, 0 24px 64px rgba(0,0,0,0.5)',
+          flex: '0 0 42%',
+          background: '#0b1326',
+          borderRight: '1px solid #1a2340',
           display: 'flex',
           flexDirection: 'column',
-          gap: 20,
+          justifyContent: 'space-between',
+          padding: '48px 52px',
         }}
+        className="admin-brand-panel"
       >
-        {/* Header */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 4 }}>
-          <div
+        {/* Top: initials badge */}
+        <div
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: 12,
+            background: 'linear-gradient(135deg, #8083ff, #c0c1ff)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 20px rgba(128,131,255,0.3)',
+          }}
+        >
+          <span
             style={{
-              width: 40,
-              height: 40,
-              borderRadius: 12,
-              background: 'linear-gradient(135deg, #8083ff 0%, #c0c1ff 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: 12,
-              boxShadow: '0 4px 16px rgba(128,131,255,0.35)',
-            }}
-          >
-            <span
-              className="material-symbols-outlined"
-              style={{ fontSize: 20, color: '#1000a9', fontVariationSettings: "'FILL' 1" }}
-            >
-              lock
-            </span>
-          </div>
-          <h1
-            style={{
-              color: '#dae2fd',
               fontFamily: 'var(--font-manrope, system-ui, sans-serif)',
-              fontSize: 22,
-              fontWeight: 700,
-              margin: 0,
-              letterSpacing: '-0.3px',
+              fontWeight: 800,
+              fontSize: 16,
+              color: '#0f0060',
+              letterSpacing: '-0.5px',
             }}
           >
-            Admin
-          </h1>
-          <p
-            style={{
-              color: '#908fa0',
-              fontFamily: 'var(--font-inter, system-ui, sans-serif)',
-              fontSize: 13,
-              margin: 0,
-            }}
-          >
-            Sign in to access the CMS
-          </p>
+            JC
+          </span>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <label
-              style={{
-                color: '#908fa0',
-                fontFamily: 'var(--font-inter, system-ui, sans-serif)',
-                fontSize: 12,
-                fontWeight: 500,
-                letterSpacing: '0.04em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onFocus={() => setFocusedField('email')}
-              onBlur={() => setFocusedField(null)}
-              required
-              style={inputStyle('email')}
-            />
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <label
-              style={{
-                color: '#908fa0',
-                fontFamily: 'var(--font-inter, system-ui, sans-serif)',
-                fontSize: 12,
-                fontWeight: 500,
-                letterSpacing: '0.04em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onFocus={() => setFocusedField('password')}
-              onBlur={() => setFocusedField(null)}
-              required
-              style={inputStyle('password')}
-            />
-          </div>
-
-          {error && (
-            <div
-              style={{
-                background: 'rgba(248,113,113,0.08)',
-                border: '1px solid rgba(248,113,113,0.2)',
-                borderRadius: 8,
-                padding: '10px 14px',
-                color: '#f87171',
-                fontFamily: 'var(--font-inter, system-ui, sans-serif)',
-                fontSize: 13,
-              }}
-            >
-              {error}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
+        {/* Center: identity */}
+        <div>
+          <p
             style={{
-              marginTop: 4,
-              padding: '12px 14px',
-              borderRadius: 10,
-              background: loading
-                ? '#464554'
-                : 'linear-gradient(135deg, #8083ff 0%, #c0c1ff 100%)',
-              color: loading ? '#908fa0' : '#0f0060',
-              fontWeight: 700,
-              fontSize: 14,
-              fontFamily: 'var(--font-inter, system-ui, sans-serif)',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              border: 'none',
-              transition: 'opacity 0.15s, background 0.15s',
-              letterSpacing: '0.01em',
+              color: '#464554',
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              margin: '0 0 14px',
             }}
           >
-            {loading ? 'Signing in…' : 'Sign in'}
-          </button>
-        </form>
+            Content Management
+          </p>
+          <h1
+            style={{
+              fontFamily: 'var(--font-manrope, system-ui, sans-serif)',
+              fontWeight: 800,
+              fontSize: 38,
+              color: '#dae2fd',
+              margin: 0,
+              lineHeight: 1.1,
+              letterSpacing: '-1px',
+            }}
+          >
+            Javier<br />Chi Ortíz
+          </h1>
+          <div
+            style={{
+              marginTop: 24,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+            }}
+          >
+            {['Posts', 'Messages', 'Analytics'].map((item) => (
+              <div
+                key={item}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  color: '#2d3449',
+                  fontSize: 13,
+                }}
+              >
+                <div style={{ width: 4, height: 4, borderRadius: '50%', background: '#2d3449' }} />
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom: portfolio link */}
+        <a
+          href="/"
+          style={{
+            color: '#464554',
+            fontSize: 12,
+            textDecoration: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            transition: 'color 0.15s',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = '#908fa0')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#464554')}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 14 }}>arrow_back</span>
+          Back to portfolio
+        </a>
       </div>
+
+      {/* Right — form panel */}
+      <div
+        style={{
+          flex: 1,
+          background: '#060d1a',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '48px 40px',
+        }}
+      >
+        <div style={{ width: '100%', maxWidth: 360 }}>
+          <div style={{ marginBottom: 36 }}>
+            <h2
+              style={{
+                fontFamily: 'var(--font-manrope, system-ui, sans-serif)',
+                fontWeight: 700,
+                fontSize: 22,
+                color: '#dae2fd',
+                margin: '0 0 6px',
+                letterSpacing: '-0.3px',
+              }}
+            >
+              Sign in
+            </h2>
+            <p style={{ color: '#464554', fontSize: 13, margin: 0 }}>
+              Access restricted to authorized users.
+            </p>
+          </div>
+
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+              <label style={{ color: '#464554', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onFocus={() => setFocused('email')}
+                onBlur={() => setFocused(null)}
+                required
+                style={{
+                  padding: '12px 16px',
+                  borderRadius: 10,
+                  border: 'none',
+                  outline: focused === 'email' ? '2px solid #8083ff' : '2px solid #1a2340',
+                  background: focused === 'email' ? '#0f1e3a' : '#0b1326',
+                  color: '#dae2fd',
+                  fontSize: 14,
+                  transition: 'outline-color 0.15s, background 0.15s',
+                  width: '100%',
+                  boxSizing: 'border-box',
+                }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+              <label style={{ color: '#464554', fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onFocus={() => setFocused('password')}
+                onBlur={() => setFocused(null)}
+                required
+                style={{
+                  padding: '12px 16px',
+                  borderRadius: 10,
+                  border: 'none',
+                  outline: focused === 'password' ? '2px solid #8083ff' : '2px solid #1a2340',
+                  background: focused === 'password' ? '#0f1e3a' : '#0b1326',
+                  color: '#dae2fd',
+                  fontSize: 14,
+                  transition: 'outline-color 0.15s, background 0.15s',
+                  width: '100%',
+                  boxSizing: 'border-box',
+                }}
+              />
+            </div>
+
+            {error && (
+              <div
+                style={{
+                  padding: '11px 14px',
+                  borderRadius: 8,
+                  background: 'rgba(248,113,113,0.06)',
+                  border: '1px solid rgba(248,113,113,0.18)',
+                  color: '#f87171',
+                  fontSize: 13,
+                }}
+              >
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                marginTop: 4,
+                padding: '13px 16px',
+                borderRadius: 10,
+                background: loading ? '#1a2340' : 'linear-gradient(135deg, #8083ff, #c0c1ff)',
+                color: loading ? '#464554' : '#0f0060',
+                fontWeight: 700,
+                fontSize: 14,
+                cursor: loading ? 'not-allowed' : 'pointer',
+                border: 'none',
+                transition: 'opacity 0.15s',
+                letterSpacing: '0.01em',
+              }}
+            >
+              {loading ? 'Signing in…' : 'Sign in'}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .admin-brand-panel { display: none !important; }
+        }
+      `}</style>
     </div>
   );
 }
