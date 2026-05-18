@@ -18,6 +18,20 @@ function getClientIp(req: NextRequest): string | null {
   return req.headers.get('x-real-ip');
 }
 
+const COUNTRY_CENTROIDS: Record<string, [number, number]> = {
+  MX: [23.63, -102.55], US: [37.09, -95.71], CA: [56.13, -106.35],
+  GB: [55.38, -3.44],   DE: [51.17, 10.45],  FR: [46.23, 2.21],
+  ES: [40.46, -3.75],   IT: [41.87, 12.57],  BR: [-14.24, -51.93],
+  AR: [-38.42, -63.62], CO: [4.57, -74.30],  PE: [-9.19, -75.02],
+  VE: [6.42, -66.59],   CL: [-35.68, -71.54],MX: [23.63, -102.55],
+  JP: [36.20, 138.25],  KR: [35.91, 127.77], CN: [35.86, 104.20],
+  IN: [20.59, 78.96],   AU: [-25.27, 133.78],NZ: [-40.90, 174.89],
+};
+
+function countryFallbackCoords(countryCode: string): [number, number] | null {
+  return COUNTRY_CENTROIDS[countryCode] ?? null;
+}
+
 async function geolocateIp(ip: string): Promise<{
   city: string;
   country: string;
@@ -33,14 +47,24 @@ async function geolocateIp(ip: string): Promise<{
     );
     if (!res.ok) return null;
     const data = await res.json();
-    if (data.status !== 'success' || !data.city || data.lat == null || data.lon == null) return null;
+    if (data.status !== 'success' || !data.city) return null;
+
+    let lat: number = data.lat;
+    let lon: number = data.lon;
+
+    if (lat == null || lon == null) {
+      const fallback = countryFallbackCoords(data.countryCode);
+      if (!fallback) return null;
+      [lat, lon] = fallback;
+    }
+
     return {
       city: data.city,
       country: data.country,
       countryCode: data.countryCode,
       region: data.regionName ?? '',
-      lat: data.lat,
-      lon: data.lon,
+      lat,
+      lon,
     };
   } catch {
     return null;
