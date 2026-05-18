@@ -4,9 +4,11 @@ import Sidebar from '@/components/2026/layout/Sidebar';
 import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
 import BlogCover from '@/components/2026/ui/BlogCover';
 import { getTheme } from '@/data/blogThemes';
+import { getSidebarCollapsed } from '@/lib/sidebarState';
 import Link from 'next/link';
 
-export default function MarkdownPost({ post, locale }: { post: Post; locale: string }) {
+export default async function MarkdownPost({ post, locale }: { post: Post; locale: string }) {
+  const sidebarCollapsed = await getSidebarCollapsed();
   const title = locale === 'es' ? post.title_es : post.title_en;
   const content = locale === 'es' ? post.content_es : post.content_en;
   const hasImageHero = !!post.cover_image_url;
@@ -31,7 +33,7 @@ export default function MarkdownPost({ post, locale }: { post: Post; locale: str
       }
     >
       <Header />
-      <Sidebar />
+      <Sidebar defaultCollapsed={sidebarCollapsed} />
       <main className="sidebar-main pt-20">
         {/* Hero */}
         {hasImageHero && (
