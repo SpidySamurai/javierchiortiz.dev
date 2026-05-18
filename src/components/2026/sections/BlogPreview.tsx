@@ -3,21 +3,54 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useLocale } from 'next-intl';
-import { blogPosts } from '@/data/blog';
+import type { Post } from '@/types/database';
 import BlogCard from '@/components/2026/ui/BlogCard';
 
-export default function BlogPreview() {
+interface BlogCardShape {
+  slug: string;
+  date: string;
+  category: string;
+  readTime: string;
+  coverTheme: 'pilots' | 'spiderman' | 'karate';
+  theme?: string;
+  title?: string;
+  excerpt?: string;
+  coverImageUrl?: string | null;
+  coverImagePositionCard?: string | null;
+}
+
+function adaptPost(post: Post, locale: string): BlogCardShape {
+  return {
+    slug: post.slug,
+    date: post.published_at
+      ? new Date(post.published_at).toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', {
+          month: 'long',
+          year: 'numeric',
+        })
+      : '',
+    category: post.category,
+    readTime: post.read_time,
+    coverTheme: (post.cover_theme as 'pilots' | 'spiderman' | 'karate') ?? 'pilots',
+    theme: post.cover_theme ?? undefined,
+    title: locale === 'es' ? post.title_es : post.title_en,
+    excerpt: (locale === 'es' ? post.excerpt_es : post.excerpt_en) ?? undefined,
+    coverImageUrl: post.cover_image_url,
+    coverImagePositionCard: post.cover_image_position_card,
+  };
+}
+
+export default function BlogPreview({ posts }: { posts: Post[] }) {
   const locale = useLocale();
-  const posts = blogPosts.slice(0, 2);
+  const adapted = posts.slice(0, 2).map((p) => adaptPost(p, locale));
 
   return (
     <section
       id="blog"
+      data-track-section="blog"
       className="py-28 px-8"
       style={{ backgroundColor: 'var(--ds-surface)', scrollMarginTop: '5rem' }}
     >
       <div className="max-w-7xl mx-auto">
-        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -40,7 +73,6 @@ export default function BlogPreview() {
           </h2>
         </motion.div>
 
-        {/* Cards grid */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -48,12 +80,11 @@ export default function BlogPreview() {
           transition={{ duration: 0.55, ease: 'easeOut', delay: 0.1 }}
           className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
-          {posts.map((post) => (
+          {adapted.map((post) => (
             <BlogCard key={post.slug} post={post} locale={locale} />
           ))}
         </motion.div>
 
-        {/* View all link */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -70,7 +101,7 @@ export default function BlogPreview() {
               fontFamily: 'var(--font-manrope), sans-serif',
             }}
           >
-            View all posts →
+            View all posts
           </Link>
         </motion.div>
       </div>

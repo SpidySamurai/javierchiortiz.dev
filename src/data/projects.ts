@@ -19,7 +19,8 @@ export const projects: DataProject[] = [
     id: 'portfolio-personal',
     title: 'Portafolio Personal',
     imageUrl: '/utils/img/portfolio-personal-live-screenshot.png',
-    description: 'This site. Dark space-gaming aesthetic, bento projects grid, i18n, blog, and a hidden easter egg.',
+    description:
+      'This site. Dark space-gaming aesthetic, bento projects grid, i18n, blog, and a hidden easter egg.',
     stack: ['Next.js', 'Tailwind', 'TypeScript', 'Framer Motion'],
     liveUrl: 'https://javierchiortiz.dev',
     repoUrl: 'https://github.com/SpidySamurai/web-portfolio2025',
@@ -32,7 +33,8 @@ export const projects: DataProject[] = [
     title: 'Checker',
     imageUrl: '/utils/img/checker-screenshot.png',
     imagePosition: 'center top',
-    description: 'Fleet management SaaS for gig drivers on Uber, Didi, Cabify and InDrive — shifts, earnings, and vehicle tracking in one place.',
+    description:
+      'Fleet management SaaS for gig drivers on Uber, Didi, Cabify and InDrive — shifts, earnings, and vehicle tracking in one place.',
     stack: ['Next.js', 'TypeScript', 'React'],
     liveUrl: 'http://checker.lab2next.com/',
     repoUrl: 'https://github.com/SpidySamurai/checker',

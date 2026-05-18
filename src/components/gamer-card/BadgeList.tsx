@@ -53,7 +53,10 @@ export const BadgeList = ({ user, userId }: BadgeListProps) => {
           className="flex items-center gap-1.5 bg-white/5 backdrop-blur-md px-2.5 py-1 md:px-3 md:py-1.5 rounded-full border border-white/10 group cursor-default hover:bg-white/10 transition-colors"
           title={b.name}
         >
-          <span className={`text-base md:text-lg ${b.color} group-hover:text-white transition-colors`} aria-hidden="true">
+          <span
+            className={`text-base md:text-lg ${b.color} group-hover:text-white transition-colors`}
+            aria-hidden="true"
+          >
             {b.icon}
           </span>
           <span

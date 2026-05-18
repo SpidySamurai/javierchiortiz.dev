@@ -153,5 +153,49 @@
   "project_demo_unavailable": "Demo unavailable",
   "project_view_code": "View code",
   "project_live_aria": "Open {title} demo (opens in new tab)",
-  "project_code_aria": "View {title} code on GitHub (opens in new tab)"
+  "project_code_aria": "View {title} code on GitHub (opens in new tab)",
+  "contact_label": "Contact",
+  "contact_heading": "Let's work together",
+  "contact_name": "Your name",
+  "contact_email": "Your email",
+  "contact_message": "Tell me about your project...",
+  "contact_submit": "Send message",
+  "contact_sending": "Sending...",
+  "contact_success": "Message sent! I'll get back to you soon.",
+  "contact_error": "Something went wrong. Try again.",
+  "last_visitor_from": "Last visitor from",
+  "privacy": "Privacy",
+  "services_label": "Services",
+  "services_title": "Let's build",
+  "services_title_accent": "something",
+  "services_cta": "Let's talk about your project →",
+  "services_items": {
+    "landing": { "name": "Landing Pages", "desc": "conversion from the first scroll" },
+    "webapp":  { "name": "Web Apps",      "desc": "full product, from spec to production" },
+    "mvp":     { "name": "MVPs",          "desc": "from idea to fast validation" },
+    "cms":     { "name": "CMS",           "desc": "content you control" },
+    "crm":     { "name": "CRM",           "desc": "client flows tailored to you" },
+    "ai":      { "name": "AI Automations","desc": "manual processes that disappear" }
+  },
+  "services_process": {
+    "idea":   { "name": "Idea",   "desc": "We understand the problem and goal" },
+    "build":  { "name": "Build",  "desc": "We build fast, iterate with you" },
+    "launch": { "name": "Launch", "desc": "Delivery, support, evolution" }
+  },
+  "not_found_title": "404 — Unexecuted idea.",
+  "not_found_message": "The best ideas start without a URL. Tell me yours.",
+  "not_found_cta": "Let's talk →",
+  "mantecado": {
+    "greeting_0": "Meow! How can I help you?",
+    "greeting_1": "Purrr... hi there!",
+    "greeting_2": "You woke me up! But that's okay — what do you need?",
+    "greeting_3": "Nyaaa~ ask me anything!",
+    "greeting_4": "Hi! I'm Mantecado, Javier's cat.",
+    "online": "Online",
+    "coming_soon": "Chat coming soon...",
+    "wa_bubble": "Purrr... the chat is under construction, but you can talk directly to my owner.",
+    "wa_cta": "Write to Javier",
+    "wa_phone": "+52 990 414 7791",
+    "wa_message": "Hi Javier, I saw your portfolio and I want to get in touch"
+  }
 }

@@ -1,14 +1,16 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function Footer() {
   const t = useTranslations('common');
+  const locale = useLocale();
   const year = new Date().getFullYear();
 
   return (
     <footer
       id="contact"
+      data-track-section="contact"
       className="py-20 px-8 md:px-16 border-t"
       style={{
         backgroundColor: 'var(--ds-bg)',
@@ -25,7 +27,12 @@ export default function Footer() {
           >
             Javier Chi Ortíz
           </h2>
-          <p style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}>
+          <p
+            style={{
+              color: 'var(--ds-on-surface-variant)',
+              fontFamily: 'var(--font-inter), sans-serif',
+            }}
+          >
             {t('footer_available')}
           </p>
         </div>
@@ -56,13 +63,22 @@ export default function Footer() {
           </a>
         </div>
 
-        {/* Copyright */}
-        <p
-          className="text-[10px] uppercase tracking-widest"
-          style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
-        >
-          © {year} Javier Chi Ortíz
-        </p>
+        {/* Copyright + Privacy */}
+        <div className="flex flex-col items-center md:items-end gap-1">
+          <p
+            className="text-[10px] uppercase tracking-widest"
+            style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif', margin: 0 }}
+          >
+            © {year} Javier Chi Ortíz
+          </p>
+          <a
+            href={`/${locale}/privacy`}
+            className="text-[10px] uppercase tracking-widest transition-colors"
+            style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif', textDecoration: 'none' }}
+          >
+            {t('privacy')}
+          </a>
+        </div>
       </div>
     </footer>
   );

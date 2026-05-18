@@ -1,5 +1,5 @@
 'use client';
-import TechStack from '@/components/items/TechStack';
+import TechStack from '@/components/2025/items/TechStack';
 
 type ExperienceItemProps = {
   title: string;

@@ -45,8 +45,15 @@ function getCategoryLabel(project: DataProject): string {
   return 'Personal';
 }
 
-
-function ProjectImage({ imageUrl, title, imagePosition }: { imageUrl: string; title: string; imagePosition?: string }) {
+function ProjectImage({
+  imageUrl,
+  title,
+  imagePosition,
+}: {
+  imageUrl: string;
+  title: string;
+  imagePosition?: string;
+}) {
   if (!imageUrl) {
     return (
       <div
@@ -75,7 +82,15 @@ function ProjectImage({ imageUrl, title, imagePosition }: { imageUrl: string; ti
   );
 }
 
-function ProjectCard({ project, index, t }: { project: DataProject; index: number; t: ReturnType<typeof useTranslations> }) {
+function ProjectCard({
+  project,
+  index,
+  t,
+}: {
+  project: DataProject;
+  index: number;
+  t: ReturnType<typeof useTranslations>;
+}) {
   // Common span and layout classes strictly designed to fit 8 projects into a perfect 6-row by 12-column Grid
   const shapes = [
     'md:col-span-8 md:row-span-2', // 0: Large (Rows 1-2, cols 1-8)
@@ -108,15 +123,18 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
       className={`${shapeClass} group relative overflow-hidden rounded-xl transition-shadow duration-300 hover:shadow-[inset_0_0_0_1px_rgba(192,193,255,0.4),0_8px_32px_rgba(11,19,38,0.4)]`}
       style={{ backgroundColor: bgColor }}
     >
-      <ProjectImage imageUrl={project.imageUrl} title={project.title} imagePosition={project.imagePosition} />
+      <ProjectImage
+        imageUrl={project.imageUrl}
+        title={project.title}
+        imagePosition={project.imagePosition}
+      />
 
       {/* Gradients */}
       {isLarge && (
         <div
           className="absolute inset-0"
           style={{
-            background:
-              `linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 20%, transparent) 50%, transparent 100%)`,
+            background: `linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 20%, transparent) 50%, transparent 100%)`,
           }}
         />
       )}
@@ -126,7 +144,10 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
           <div className="absolute inset-0" style={{ backgroundColor: 'rgba(11,19,38,0.35)' }} />
           <div
             className="absolute inset-0"
-            style={{ background: 'linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 20%, transparent) 55%, transparent 100%)' }}
+            style={{
+              background:
+                'linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 20%, transparent) 55%, transparent 100%)',
+            }}
           />
         </>
       )}
@@ -144,7 +165,8 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
       <div
         className="absolute inset-0 md:hidden"
         style={{
-          background: 'linear-gradient(to top, var(--ds-surface-container) 0%, color-mix(in srgb, var(--ds-surface-container) 60%, transparent) 55%, transparent 100%)',
+          background:
+            'linear-gradient(to top, var(--ds-surface-container) 0%, color-mix(in srgb, var(--ds-surface-container) 60%, transparent) 55%, transparent 100%)',
         }}
       />
 
@@ -170,7 +192,10 @@ function ProjectCard({ project, index, t }: { project: DataProject; index: numbe
         {!isShort && (
           <p
             className={`text-sm leading-relaxed line-clamp-2 ${isLarge ? 'max-w-md' : ''}`}
-            style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
+            style={{
+              color: 'var(--ds-on-surface-variant)',
+              fontFamily: 'var(--font-inter), sans-serif',
+            }}
           >
             {project.description}
           </p>
@@ -227,6 +252,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
+      data-track-section="projects"
       className="py-28 px-8"
       style={{ backgroundColor: 'var(--ds-bg)', scrollMarginTop: '5rem' }}
     >
@@ -248,7 +274,10 @@ export default function Projects() {
             </span>
             <h2
               className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
-              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+              style={{
+                color: 'var(--ds-on-surface)',
+                fontFamily: 'var(--font-manrope), sans-serif',
+              }}
             >
               {t('projects_title')}{' '}
               <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
@@ -286,7 +315,10 @@ export default function Projects() {
                 transition={{ duration: 0.4, ease: 'easeOut', delay: 0.2 }}
                 onClick={() => setShowMore(true)}
                 className="col-span-1 md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-8 transition-colors duration-300 hover:bg-[#222a3d] border border-dashed text-left w-full h-full"
-                style={{ backgroundColor: 'var(--ds-surface)', borderColor: 'color-mix(in srgb, var(--ds-primary) 20%, transparent)' }}
+                style={{
+                  backgroundColor: 'var(--ds-surface)',
+                  borderColor: 'color-mix(in srgb, var(--ds-primary) 20%, transparent)',
+                }}
               >
                 <div className="text-center">
                   <span
@@ -297,7 +329,10 @@ export default function Projects() {
                   </span>
                   <h4
                     className="text-sm font-bold uppercase tracking-widest"
-                    style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                    style={{
+                      color: 'var(--ds-on-surface)',
+                      fontFamily: 'var(--font-manrope), sans-serif',
+                    }}
                   >
                     {t('projects_more')}
                   </h4>
@@ -320,7 +355,10 @@ export default function Projects() {
                   }, 500);
                 }}
                 className="col-span-1 md:col-start-10 md:col-span-3 md:row-start-6 md:row-span-1 group relative overflow-hidden rounded-xl flex items-center justify-center p-6 transition-colors duration-300 hover:bg-[#222a3d] border border-dashed"
-                style={{ backgroundColor: 'var(--ds-surface)', borderColor: 'color-mix(in srgb, var(--ds-primary) 20%, transparent)' }}
+                style={{
+                  backgroundColor: 'var(--ds-surface)',
+                  borderColor: 'color-mix(in srgb, var(--ds-primary) 20%, transparent)',
+                }}
               >
                 <div className="flex flex-col items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
                   <span
@@ -331,7 +369,10 @@ export default function Projects() {
                   </span>
                   <span
                     className="text-xs font-bold uppercase tracking-widest"
-                    style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
+                    style={{
+                      color: 'var(--ds-primary)',
+                      fontFamily: 'var(--font-inter), sans-serif',
+                    }}
                   >
                     Less
                   </span>

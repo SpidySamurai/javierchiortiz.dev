@@ -1,186 +1,243 @@
 'use client';
 
-import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 import { useLanyard } from '@/hooks/useLanyard';
-
-import { UserProfile } from './gamer-card/UserProfile';
-import { BadgeList } from './gamer-card/BadgeList';
-import { MarvelRivalsWidget } from './gamer-card/MarvelRivalsWidget';
-import { SocialLinks } from './gamer-card/SocialLinks';
-import { SpotifyWidget } from './gamer-card/SpotifyWidget';
-import { ActivityWidget } from './gamer-card/ActivityWidget';
-
-type GamerCardProps = {
-  isOpen: boolean;
-  onClose: () => void;
-};
+import { useMarvelRivals } from '@/hooks/useMarvelRivals';
+import { LuFlame, LuStar, LuShield, LuCodeXml, LuGem, LuZap } from 'react-icons/lu';
+import type { LanyardUser } from '@/types/lanyard';
 
 const DISCORD_ID = '363896212874723331';
+const MARVEL_UID = '1774670402';
 
-export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
-  const { data: lanyardData } = useLanyard({ userId: DISCORD_ID });
+const STATUS_COLOR: Record<string, string> = {
+  online: '#22c55e',
+  idle: '#eab308',
+  dnd: '#ef4444',
+  offline: '#6b7280',
+};
 
-  const [currentTime, setCurrentTime] = React.useState(Date.now());
+function InlineBadges({ user }: { user?: LanyardUser }) {
+  if (!user) return null;
+  const flags = user.public_flags ?? 0;
+  const badges: { icon: React.ReactNode; color: string; title: string }[] = [];
 
-  React.useEffect(() => {
-    if (!isOpen) return;
-    const interval = setInterval(() => setCurrentTime(Date.now()), 1000);
-    setCurrentTime(Date.now()); // Update immediately on open
-    return () => clearInterval(interval);
-  }, [isOpen]);
+  if (flags & (1 << 6)) badges.push({ icon: <LuFlame size={10} />, color: '#a855f7', title: 'HypeSquad Bravery' });
+  if (flags & (1 << 7)) badges.push({ icon: <LuStar size={10} />, color: '#ef4444', title: 'HypeSquad Brilliance' });
+  if (flags & (1 << 8)) badges.push({ icon: <LuShield size={10} />, color: '#22c55e', title: 'HypeSquad Balance' });
+  if (flags & (1 << 22)) badges.push({ icon: <LuCodeXml size={10} />, color: '#22c55e', title: 'Active Developer' });
+  if (flags & (1 << 2)) badges.push({ icon: <LuGem size={10} />, color: '#c0c1ff', title: 'Discord Staff' });
+  if (flags & (1 << 17)) badges.push({ icon: <LuZap size={10} />, color: '#f59e0b', title: 'Early Supporter' });
 
-  React.useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
-
-  const getStatusInfo = (status?: string) => {
-    switch (status) {
-      case 'online':
-        return { color: 'bg-green-500', shadow: 'shadow-[0_0_10px_#22c55e]', label: 'Online' };
-      case 'idle':
-        return { color: 'bg-yellow-500', shadow: 'shadow-[0_0_10px_#eab308]', label: 'Idle' };
-      case 'dnd':
-        return {
-          color: 'bg-red-500',
-          shadow: 'shadow-[0_0_10px_#ef4444]',
-          label: 'Do Not Disturb',
-        };
-      default:
-        return { color: 'bg-gray-500', shadow: 'shadow-[0_0_10px_#6b7280]', label: 'Offline' };
-    }
-  };
-
-  const statusInfo = getStatusInfo(lanyardData?.discord_status);
-
-  const mainActivity = lanyardData?.activities?.find((a) => a.type === 0);
-
-  const spotify = lanyardData?.listening_to_spotify ? lanyardData.spotify : null;
-
-  const customStatus = lanyardData?.activities?.find((a) => a.type === 4)?.state;
+  if (badges.length === 0) return null;
 
   return (
-    <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-2 md:p-8 overflow-y-auto transition-all duration-300 ${
-        isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-      }`}
-      role="dialog"
-      aria-modal="true"
-      aria-hidden={!isOpen}
-    >
-      <div
-        className="relative w-full max-w-5xl my-auto bg-[#0b1326] rounded-3xl md:rounded-[2rem] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.9)] flex flex-col md:flex-row border border-white/5"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* --- LEFT PANEL: PROFILE OVERVIEW --- */}
-        <aside className="w-full md:w-[340px] bg-[#131b2e] flex flex-col items-center relative overflow-hidden shrink-0 border-b md:border-b-0 md:border-r border-white/5">
-          {/* Top Decorative Banner */}
-          <div className="absolute top-0 w-full h-32 md:h-40 bg-gradient-to-br from-[#c0c1ff]/10 via-purple-900/20 to-transparent pointer-events-none"></div>
-          <div className="absolute top-0 w-full h-32 md:h-40 bg-[url('/utils/img/grid-pattern.svg')] opacity-10 pointer-events-none"></div>
+    <div style={{ display: 'flex', gap: 3, flexShrink: 0 }}>
+      {badges.slice(0, 4).map((b, i) => (
+        <span key={i} title={b.title} style={{ color: b.color, display: 'flex', alignItems: 'center' }}>
+          {b.icon}
+        </span>
+      ))}
+    </div>
+  );
+}
 
-          {/* Close Button Mobile */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 z-50 text-white/50 p-2 md:hidden"
-            aria-label="Close"
+type GamerCardProps = { isOpen: boolean; onClose: () => void };
+
+export default function GamerCard({ isOpen, onClose }: GamerCardProps) {
+  const { data } = useLanyard({ userId: DISCORD_ID });
+  const marvel = useMarvelRivals(MARVEL_UID);
+  const [currentTime, setCurrentTime] = useState(Date.now());
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const id = setInterval(() => setCurrentTime(Date.now()), 1000);
+    setCurrentTime(Date.now());
+    return () => clearInterval(id);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
+
+  const status = data?.discord_status ?? 'offline';
+  const user = data?.discord_user;
+  const spotify = data?.listening_to_spotify ? data.spotify : null;
+  const activity = data?.activities?.find((a) => a.type === 0);
+  const customStatus = data?.activities?.find((a) => a.type === 4)?.state;
+
+  const avatarUrl = user?.avatar
+    ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=64`
+    : null;
+
+  const spotifyProgress = spotify
+    ? Math.max(0, Math.min(100, ((currentTime - spotify.timestamps.start) / (spotify.timestamps.end - spotify.timestamps.start)) * 100))
+    : 0;
+
+  const elapsedTime = (() => {
+    if (!activity?.timestamps?.start) return null;
+    const diff = currentTime - activity.timestamps.start;
+    const h = Math.floor(diff / 3_600_000);
+    const m = Math.floor((diff % 3_600_000) / 60_000);
+    return h > 0 ? `${h}h ${m}m` : `${m}m`;
+  })();
+
+  const surface = 'var(--ds-surface)';
+  const divider: React.CSSProperties = { height: 1, background: 'var(--ds-surface-high)', margin: '0 14px' };
+  const rowPad: React.CSSProperties = { padding: '9px 14px' };
+  const label: React.CSSProperties = {
+    color: 'var(--ds-outline)',
+    fontSize: 8,
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
+    marginBottom: 3,
+    fontFamily: 'var(--font-inter), sans-serif',
+  };
+  const value: React.CSSProperties = {
+    color: 'var(--ds-on-surface)',
+    fontWeight: 700,
+    fontSize: 11,
+    fontFamily: 'var(--font-inter), sans-serif',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  };
+  const muted: React.CSSProperties = {
+    color: 'var(--ds-outline)',
+    fontSize: 10,
+    fontFamily: 'var(--font-inter), sans-serif',
+    flexShrink: 0,
+    marginLeft: 8,
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={onClose} />
+          <motion.div
+            className="fixed z-50 ds-2026"
+            style={{ left: 'calc(var(--sidebar-w, 16rem) + 8px)', bottom: '3.5rem' }}
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -8 }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
+            <div
+              style={{
+                width: 260,
+                background: surface,
+                borderRadius: 14,
+                border: '1px solid var(--ds-surface-bright)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+                overflow: 'hidden',
+              }}
             >
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          </button>
-
-          <div className="pt-12 md:pt-20 pb-8 px-6 md:px-8 relative z-10 w-full flex flex-col items-center">
-            {lanyardData && (
-              <UserProfile
-                discordUser={lanyardData.discord_user}
-                statusInfo={statusInfo}
-                avatarDecoration={
-                  lanyardData?.discord_user?.avatar_decoration_data?.asset &&
-                  `https://cdn.discordapp.com/avatar-decoration-presets/${lanyardData.discord_user.avatar_decoration_data.asset}.png`
-                }
-                customStatus={customStatus}
-                activeOn={{
-                  desktop: lanyardData.active_on_discord_desktop,
-                  mobile: lanyardData.active_on_discord_mobile,
-                  web: lanyardData.active_on_discord_web,
-                }}
-              />
-            )}
-
-            <BadgeList user={lanyardData?.discord_user} userId={DISCORD_ID} />
-
-            <MarvelRivalsWidget />
-
-            <SocialLinks />
-          </div>
-        </aside>
-
-        {/* --- RIGHT PANEL: DYNAMIC WIDGET DASHBOARD --- */}
-        <section className="flex-1 bg-[#0b1326] p-5 md:p-6 lg:p-12 relative flex flex-col min-w-0">
-          {/* Mobile Header */}
-          <header className="flex md:hidden justify-between items-center mb-6">
-            <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest">
-              Live Activity
-            </p>
-            <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${statusInfo.color} animate-pulse`}></div>
-              <p className="text-white text-xs font-bold uppercase">{statusInfo.label}</p>
-            </div>
-          </header>
-
-          {/* Desktop Header Stats */}
-          <header className="hidden md:flex justify-between items-center mb-12">
-            <div className="flex gap-8">
-              <div>
-                <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-1">
-                  Current Activity
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${statusInfo.color} animate-pulse`}></div>
-                  <p className="text-white font-bold">
-                    {mainActivity ? `Playing ${mainActivity.name}` : statusInfo.label}
-                  </p>
+              {/* Header */}
+              <div style={{ padding: '12px 14px', display: 'flex', gap: 10, alignItems: 'center' }}>
+                <div style={{ position: 'relative', flexShrink: 0 }}>
+                  {avatarUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={avatarUrl}
+                      width={36}
+                      height={36}
+                      alt=""
+                      style={{ borderRadius: '50%', border: '2px solid var(--ds-surface-high)', display: 'block' }}
+                    />
+                  ) : (
+                    <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--ds-surface-high)' }} />
+                  )}
+                  <div
+                    style={{
+                      position: 'absolute', bottom: -1, right: -1,
+                      width: 10, height: 10, borderRadius: '50%',
+                      background: STATUS_COLOR[status] ?? '#6b7280',
+                      border: `2px solid ${surface}`,
+                    }}
+                  />
                 </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ ...value, fontSize: 12 }}>
+                    {user?.global_name ?? user?.username ?? 'Javier'}
+                  </div>
+                  {customStatus && (
+                    <div style={{ color: 'var(--ds-outline)', fontSize: 10, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginTop: 1, fontFamily: 'var(--font-inter), sans-serif' }}>
+                      {customStatus}
+                    </div>
+                  )}
+                </div>
+                <InlineBadges user={user} />
+              </div>
+
+              <div style={divider} />
+
+              {/* Spotify */}
+              <div style={rowPad}>
+                <div style={label}>Spotify</div>
+                {spotify ? (
+                  <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 2 }}>
+                    {/* Spinning disc */}
+                    <div style={{ position: 'relative', flexShrink: 0, width: 42, height: 42 }}>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                        style={{
+                          width: 42, height: 42, borderRadius: '50%',
+                          backgroundImage: `url(${spotify.album_art_url})`,
+                          backgroundSize: 'cover',
+                          border: '2px solid var(--ds-surface-bright)',
+                        }}
+                      />
+                      <div style={{
+                        position: 'absolute', top: '50%', left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: 9, height: 9, borderRadius: '50%',
+                        background: 'var(--ds-surface)',
+                        border: '1.5px solid var(--ds-surface-high)',
+                      }} />
+                    </div>
+                    {/* Text + progress */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ ...value, fontSize: 10 }}>{spotify.song}</div>
+                      <div style={{ ...muted, marginLeft: 0, marginTop: 1 }}>{spotify.artist}</div>
+                      <div style={{ height: 2, background: 'var(--ds-surface-high)', borderRadius: 1, marginTop: 5 }}>
+                        <div style={{ height: 2, borderRadius: 1, background: 'var(--ds-primary)', width: `${spotifyProgress}%`, transition: 'width 1s linear' }} />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <span style={{ ...muted, marginLeft: 0 }}>Not listening</span>
+                )}
+              </div>
+
+              <div style={divider} />
+
+              {/* Activity */}
+              <div style={{ ...rowPad, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div style={label}>Activity</div>
+                  <div style={value}>{activity?.name ?? 'Idle'}</div>
+                </div>
+                {elapsedTime && <span style={muted}>{elapsedTime}</span>}
+              </div>
+
+              <div style={divider} />
+
+              {/* Marvel Rivals */}
+              <div style={{ ...rowPad, paddingBottom: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={label}>Marvel Rivals</div>
+                <span style={{ ...value, color: marvel.isLoading ? 'var(--ds-outline)' : (marvel.rankColor || 'var(--ds-on-surface)') }}>
+                  {marvel.isLoading ? '...' : marvel.rank}
+                </span>
               </div>
             </div>
-            <button
-              onClick={onClose}
-              className="text-gray-500 hover:text-white bg-white/5 hover:bg-white/10 p-3 rounded-full transition-all"
-              aria-label="Close"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M18 6L6 18M6 6l12 12" />
-              </svg>
-            </button>
-          </header>
-          {/* --- ACTIVITY WIDGET --- */}
-          <ActivityWidget activity={mainActivity} currentTime={currentTime} />
-
-          {/* --- LARGE WIDGET: SPOTIFY OR HERO --- */}
-          <SpotifyWidget spotify={spotify} currentTime={currentTime} />
-        </section>
-      </div>
-
-    </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 }

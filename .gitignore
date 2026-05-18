@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /.pnp
+pnpm-lock.yaml
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -56,3 +57,4 @@ src/app/*/test-gamercard/
 *.tsbuildinfo
 next-env.d.ts
 PROFILE_README.md
+.superpowers/

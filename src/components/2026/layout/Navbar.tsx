@@ -2,15 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import ThemeToggle from '@/components/ui/ThemeToggle';
+import ThemeToggle from '@/components/2026/ui/ThemeToggle';
 import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
-
-const NAV_SECTIONS = [
-  { id: 'projects', labelKey: 'projects' },
-  { id: 'experience', labelKey: 'experience' },
-  { id: 'about', labelKey: 'about' },
-] as const;
+import { NAV_ITEMS } from '@/config/navigation';
 
 export default function Navbar() {
   const t = useTranslations('common');
@@ -31,7 +26,7 @@ export default function Navbar() {
       { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
     );
 
-    NAV_SECTIONS.forEach(({ id }) => {
+    NAV_ITEMS.forEach(({ id }) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
@@ -45,12 +40,16 @@ export default function Navbar() {
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     setTimeout(() => closeRef.current?.focus(), 50);
-    return () => { document.body.style.overflow = prev; };
+    return () => {
+      document.body.style.overflow = prev;
+    };
   }, [mobileOpen]);
 
   // Close on ESC
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMobileOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileOpen(false);
+    };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, []);
@@ -59,7 +58,7 @@ export default function Navbar() {
     <nav className="flex items-center gap-6">
       {/* Desktop nav links */}
       <ul className="hidden lg:flex items-center gap-1">
-        {NAV_SECTIONS.map(({ id, labelKey }) => (
+        {NAV_ITEMS.map(({ id, key }) => (
           <li key={id}>
             <a
               href={`#${id}`}
@@ -67,13 +66,14 @@ export default function Navbar() {
               style={{
                 color: active === id ? 'var(--ds-primary)' : 'var(--ds-on-surface-variant)',
                 fontWeight: active === id ? 600 : 400,
-                background: active === id
-                  ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
-                  : 'transparent',
+                background:
+                  active === id
+                    ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+                    : 'transparent',
               }}
               aria-current={active === id ? 'page' : undefined}
             >
-              {t(labelKey)}
+              {t(key)}
             </a>
           </li>
         ))}
@@ -105,9 +105,21 @@ export default function Navbar() {
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             {mobileOpen ? (
-              <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M6 18L18 6M6 6l12 12"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M4 6h16M4 12h16M4 18h16"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             )}
           </svg>
         </button>
@@ -149,13 +161,21 @@ export default function Navbar() {
               style={{ color: 'var(--ds-on-surface-variant)' }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M6 18L18 6M6 6l12 12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
           </div>
 
           <div className="flex items-center justify-between mb-6 px-1">
-            <span className="text-sm" style={{ color: 'var(--ds-on-surface-variant)' }}>{t('theme')}</span>
+            <span className="text-sm" style={{ color: 'var(--ds-on-surface-variant)' }}>
+              {t('theme')}
+            </span>
             <div className="flex items-center gap-2">
               {isUnlocked && (
                 <button onClick={openCard} aria-label="Open Gamer Card" className="p-1 rounded">
@@ -171,7 +191,7 @@ export default function Navbar() {
           </div>
 
           <ul className="flex flex-col gap-1">
-            {NAV_SECTIONS.map(({ id, labelKey }) => (
+            {NAV_ITEMS.map(({ id, key }) => (
               <li key={id}>
                 <a
                   href={`#${id}`}
@@ -180,12 +200,13 @@ export default function Navbar() {
                   style={{
                     color: active === id ? 'var(--ds-primary)' : 'var(--ds-on-surface-variant)',
                     fontWeight: active === id ? 600 : 400,
-                    background: active === id
-                      ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
-                      : 'transparent',
+                    background:
+                      active === id
+                        ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+                        : 'transparent',
                   }}
                 >
-                  {t(labelKey)}
+                  {t(key)}
                 </a>
               </li>
             ))}

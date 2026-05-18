@@ -24,7 +24,10 @@ function TechItem({ name }: { name: string }) {
       className="flex items-center gap-3 py-2.5 border-b"
       style={{ borderColor: 'rgba(70,69,84,0.2)' }}
     >
-      <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: '#c0c1ff' }} />
+      <div
+        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+        style={{ backgroundColor: '#c0c1ff' }}
+      />
       <span
         className="text-sm"
         style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}

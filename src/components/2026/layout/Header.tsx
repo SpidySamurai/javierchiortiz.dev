@@ -9,12 +9,8 @@ import ThemeToggle from '@/components/2026/ui/ThemeToggle';
 import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
-
-const NAV_IDS = [
-  { id: 'experience', icon: 'work', key: 'experience' },
-  { id: 'projects', icon: 'grid_view', key: 'projects' },
-  { id: 'about', icon: 'person', key: 'about' },
-] as const;
+import { NAV_ITEMS } from '@/config/navigation';
+import LastVisitorChip from '@/components/2026/ui/LastVisitorChip';
 
 function MobileDrawer({
   open,
@@ -97,7 +93,7 @@ function MobileDrawer({
 
         {/* Nav links */}
         <nav className="space-y-2 flex-1">
-          {NAV_IDS.map(({ id, icon, key }) => (
+          {NAV_ITEMS.map(({ id, icon, key }) => (
             <a
               key={id}
               href={sectionHref(id)}
@@ -203,7 +199,7 @@ export default function Header() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 w-full xl:left-64 xl:w-[calc(100%-16rem)] flex justify-between items-center px-8 py-4 z-50"
+        className="header-adaptive fixed top-0 left-0 w-full flex justify-between items-center px-8 py-4 z-50"
         style={{
           backgroundColor: 'color-mix(in srgb, var(--ds-bg) 60%, transparent)',
           backdropFilter: 'blur(24px)',
@@ -211,10 +207,13 @@ export default function Header() {
           boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)',
         }}
       >
-        <div />
+        {/* Centered chip — absolute so it doesn't shift the right controls */}
+        <div className="absolute left-1/2 -translate-x-1/2">
+          <LastVisitorChip />
+        </div>
 
         {/* Desktop controls */}
-        <div className="hidden xl:flex items-center gap-3">
+        <div className="hidden xl:flex items-center gap-3 ml-auto">
           <ThemeToggle />
           <LanguageSwitcher />
         </div>

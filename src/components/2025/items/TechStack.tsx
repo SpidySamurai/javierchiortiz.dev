@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { techIcons } from '@/data/techStack';
-import TechPill from '@/components/ui/TechPill';
+import TechPill from '@/components/2025/ui/TechPill';
 import type { TechId } from '@/types';
 
 type TechStackProps = {

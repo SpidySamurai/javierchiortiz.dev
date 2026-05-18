@@ -157,5 +157,49 @@
   "project_demo_unavailable": "Demo no disponible",
   "project_view_code": "Ver código",
   "project_live_aria": "Abrir demo de {title} (se abre en nueva pestaña)",
-  "project_code_aria": "Ver código de {title} en GitHub (se abre en nueva pestaña)"
+  "project_code_aria": "Ver código de {title} en GitHub (se abre en nueva pestaña)",
+  "contact_label": "Contacto",
+  "contact_heading": "Trabajemos juntos",
+  "contact_name": "Tu nombre",
+  "contact_email": "Tu email",
+  "contact_message": "Cuéntame sobre tu proyecto...",
+  "contact_submit": "Enviar mensaje",
+  "contact_sending": "Enviando...",
+  "contact_success": "¡Mensaje enviado! Te responderé pronto.",
+  "contact_error": "Algo salió mal. Intenta de nuevo.",
+  "last_visitor_from": "Último visitante de",
+  "privacy": "Privacidad",
+  "services_label": "Servicios",
+  "services_title": "Construyamos",
+  "services_title_accent": "algo",
+  "services_cta": "Hablemos de tu proyecto →",
+  "services_items": {
+    "landing": { "name": "Landing Pages",     "desc": "conversión desde el primer scroll" },
+    "webapp":  { "name": "Web Apps",          "desc": "producto completo, de spec a producción" },
+    "mvp":     { "name": "MVPs",              "desc": "de idea a validación rápida" },
+    "cms":     { "name": "CMS",               "desc": "contenido que tú controlas" },
+    "crm":     { "name": "CRM",               "desc": "flujos de cliente a tu medida" },
+    "ai":      { "name": "AI Automations",    "desc": "procesos manuales que desaparecen" }
+  },
+  "services_process": {
+    "idea":   { "name": "Idea",   "desc": "Entendemos el problema y el objetivo" },
+    "build":  { "name": "Build",  "desc": "Construimos rápido, iteramos contigo" },
+    "launch": { "name": "Launch", "desc": "Entrega, soporte, evolución" }
+  },
+  "not_found_title": "404 — Idea sin ejecutar.",
+  "not_found_message": "Las mejores ideas empiezan sin URL. Cuéntame la tuya.",
+  "not_found_cta": "Hablemos →",
+  "mantecado": {
+    "greeting_0": "¡Miau! ¿En qué te puedo ayudar?",
+    "greeting_1": "Purrr... ¡hola, hola!",
+    "greeting_2": "¡Me despertaste! Pero no importa — ¿qué necesitas?",
+    "greeting_3": "Nyaaa~ ¡pregúntame lo que quieras!",
+    "greeting_4": "¡Hola! Soy Mantecado, el gato de Javier.",
+    "online": "Online",
+    "coming_soon": "Chat próximamente...",
+    "wa_bubble": "Purrr... el chat está en construcción, pero puedes hablarle directamente a mi dueño.",
+    "wa_cta": "Escríbele a Javier",
+    "wa_phone": "+52 990 414 7791",
+    "wa_message": "Hola Javier, vi tu portfolio y quiero contactarte"
+  }
 }
