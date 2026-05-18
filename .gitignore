@@ -3,7 +3,6 @@
 # dependencies
 /node_modules
 /.pnp
-pnpm-lock.yaml
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -45,6 +44,9 @@ yarn-error.log*
 .agents/
 .claude/
 skills-lock.json
+
+# Internal dev docs (plans, specs)
+docs/superpowers/
 
 # Lanyard API debug dumps
 lanyard_*.json
