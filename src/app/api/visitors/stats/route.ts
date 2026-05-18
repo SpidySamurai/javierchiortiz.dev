@@ -16,7 +16,8 @@ export async function GET() {
     supabase
       .from('visitor_locations')
       .select('*', { count: 'exact', head: true }),
-    supabase.rpc('count_distinct_countries'),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (supabase as any).rpc('count_distinct_countries'),
     supabase
       .from('visitor_locations')
       .select('*', { count: 'exact', head: true })
