@@ -32,7 +32,7 @@ async function geolocateIp(ip: string): Promise<{
     );
     if (!res.ok) return null;
     const data = await res.json();
-    if (data.status !== 'success' || !data.city) return null;
+    if (data.status !== 'success' || !data.city || data.lat == null || data.lon == null) return null;
     return {
       city: data.city,
       country: data.country,
