@@ -159,6 +159,7 @@ export default function Sidebar() {
               color: 'var(--ds-on-surface-variant)',
               backgroundColor: 'color-mix(in srgb, var(--ds-primary) 5%, transparent)',
             }}
+            suppressHydrationWarning
           >
             <span translate="no" className="material-symbols-outlined text-[18px] shrink-0">
               sports_esports
@@ -183,6 +184,7 @@ export default function Sidebar() {
               title={collapsed ? 'GitHub' : undefined}
               className="flex items-center gap-1.5 text-xs font-medium transition-colors hover:text-[color:var(--ds-on-surface-variant)]"
               style={{ color: 'var(--ds-outline)' }}
+              suppressHydrationWarning
             >
               <FaGithub size={14} aria-hidden="true" />
               <span className="sidebar-label">GitHub</span>
@@ -194,6 +196,7 @@ export default function Sidebar() {
               title={collapsed ? 'LinkedIn' : undefined}
               className="flex items-center gap-1.5 text-xs font-medium transition-colors hover:text-[color:var(--ds-on-surface-variant)]"
               style={{ color: 'var(--ds-outline)' }}
+              suppressHydrationWarning
             >
               <FaLinkedin size={14} aria-hidden="true" />
               <span className="sidebar-label">LinkedIn</span>
@@ -207,6 +210,7 @@ export default function Sidebar() {
         onClick={toggle}
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         className="hidden xl:flex fixed top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 items-center justify-center cursor-pointer rounded-full border"
+        suppressHydrationWarning
         style={{
           left: 'var(--sidebar-w, 16rem)',
           zIndex: 50,
