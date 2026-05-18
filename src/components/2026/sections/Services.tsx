@@ -126,7 +126,7 @@ function BeltItem({ delay }: { delay: string }) {
       </div>
       <div className="conv-state conv-state-idea" style={{ animationDelay: delay }}>
         <div className="conv-idea-icon">
-          <span className="material-symbols-outlined" style={{ fontSize: 22 }}>lightbulb</span>
+          <span translate="no" className="material-symbols-outlined" style={{ fontSize: 22 }}>lightbulb</span>
         </div>
         <div className="conv-idea-lines">
           <div className="conv-il" />
@@ -151,6 +151,7 @@ function BeltItem({ delay }: { delay: string }) {
       <div className="conv-state conv-state-launch" style={{ animationDelay: delay }}>
         <div className="conv-launch-check">
           <span
+            translate="no"
             className="material-symbols-outlined"
             style={{
               fontSize: 26,
@@ -282,6 +283,7 @@ export default function Services() {
                       }}
                     >
                       <span
+                        translate="no"
                         className="material-symbols-outlined"
                         style={{ fontSize: 18, color: 'var(--ds-primary)' }}
                       >

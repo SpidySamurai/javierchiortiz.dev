@@ -1,114 +1,75 @@
 import { createClient } from '@/lib/supabase/server';
 import AdminNav from './_components/AdminNav';
 import SignOutButton from './_components/SignOutButton';
+import { headers } from 'next/headers';
+import '../globals.css';
+
+const PUBLIC_ADMIN_PAGES = ['/admin/login', '/admin/forgot-password', '/admin/reset-password'];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') ?? '';
+
+  if (PUBLIC_ADMIN_PAGES.includes(pathname)) return <>{children}</>;
+
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Middleware already redirects unauthenticated users to /admin/login.
-  // Rendering children here avoids an infinite redirect loop on the login page itself.
   if (!user) return <>{children}</>;
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        minHeight: '100vh',
-        backgroundColor: '#0b1326',
-        fontFamily: 'var(--font-inter, system-ui, sans-serif)',
-      }}
-    >
-      {/* Sidebar */}
+    <div className="ds-2026 flex min-h-screen" translate="no">
       <aside
+        className="shrink-0 flex flex-col px-4 py-7 gap-1"
         style={{
           width: 220,
-          flexShrink: 0,
-          backgroundColor: '#131b2e',
-          borderRight: '1px solid #222a3d',
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '28px 16px',
-          gap: 4,
+          backgroundColor: 'var(--ds-surface)',
+          borderRight: '1px solid var(--ds-surface-high)',
         }}
       >
-        {/* Logo */}
-        <div style={{ padding: '0 12px', marginBottom: 28 }}>
+        <div className="px-3 mb-7">
           <div
+            className="w-8 h-8 rounded-[10px] flex items-center justify-center mb-3"
             style={{
-              width: 32,
-              height: 32,
-              borderRadius: 10,
-              background: 'linear-gradient(135deg, #8083ff 0%, #c0c1ff 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: 12,
+              background: 'linear-gradient(135deg, var(--ds-primary-container) 0%, var(--ds-primary) 100%)',
               boxShadow: '0 4px 12px rgba(128,131,255,0.3)',
             }}
           >
             <span
-              className="material-symbols-outlined"
-              style={{ fontSize: 16, color: '#1000a9', fontVariationSettings: "'FILL' 1" }}
+              className="material-symbols-outlined text-base"
+              style={{ color: 'var(--ds-on-primary)', fontVariationSettings: "'FILL' 1" }}
             >
               manage_accounts
             </span>
           </div>
           <span
-            style={{
-              color: '#dae2fd',
-              fontWeight: 700,
-              fontSize: 15,
-              display: 'block',
-              fontFamily: 'var(--font-manrope, system-ui, sans-serif)',
-            }}
+            className="block text-[15px] font-bold"
+            style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--ds-font-display)' }}
           >
             CMS
           </span>
-          <span
-            style={{
-              color: '#464554',
-              fontSize: 11,
-              display: 'block',
-              marginTop: 2,
-            }}
-          >
+          <span className="block text-[11px] mt-0.5" style={{ color: 'var(--ds-outline-variant)' }}>
             {user.email}
           </span>
         </div>
 
-        {/* Nav */}
-        <div style={{ flex: 1 }}>
+        <div className="flex-1">
           <AdminNav />
         </div>
 
-        {/* Sign out */}
-        <div
-          style={{
-            borderTop: '1px solid #222a3d',
-            paddingTop: 12,
-            marginTop: 8,
-          }}
-        >
+        <div className="pt-3 mt-2" style={{ borderTop: '1px solid var(--ds-surface-high)' }}>
           <SignOutButton />
         </div>
       </aside>
 
-      {/* Main */}
       <main
-        style={{
-          flex: 1,
-          padding: '36px 40px',
-          overflowY: 'auto',
-          color: '#dae2fd',
-          minWidth: 0,
-        }}
+        className="flex-1 flex flex-col overflow-y-auto min-w-0"
+        style={{ padding: '36px 40px', color: 'var(--ds-on-surface)' }}
       >
         {children}
       </main>
-
     </div>
   );
 }

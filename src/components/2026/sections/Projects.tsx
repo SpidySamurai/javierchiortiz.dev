@@ -322,6 +322,7 @@ export default function Projects() {
               >
                 <div className="text-center">
                   <span
+                    translate="no"
                     className="material-symbols-outlined text-3xl block mb-2 transition-transform duration-300 group-hover:scale-110"
                     style={{ color: 'var(--ds-primary)' }}
                   >
@@ -362,6 +363,7 @@ export default function Projects() {
               >
                 <div className="flex flex-col items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
                   <span
+                    translate="no"
                     className="material-symbols-outlined text-xl transition-transform duration-300 group-hover:-translate-y-1 block"
                     style={{ color: 'var(--ds-primary)' }}
                   >

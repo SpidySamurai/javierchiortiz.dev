@@ -1,25 +1,33 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import PasswordInput from '@/app/admin/_components/PasswordInput';
 
-export default function LoginPage() {
-  const [email, setEmail] = useState('');
+export default function ResetPasswordPage() {
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [focused, setFocused] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createClient();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (password !== confirm) {
+      setError('Passwords do not match.');
+      return;
+    }
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters.');
+      return;
+    }
     setLoading(true);
     setError('');
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    const { error } = await supabase.auth.updateUser({ password });
     if (error) {
       setError(error.message);
       setLoading(false);
@@ -41,7 +49,6 @@ export default function LoginPage() {
           borderRight: '1px solid var(--ds-surface-high)',
         }}
       >
-        {/* Top: icon mark */}
         <span
           className="material-symbols-outlined"
           style={{ fontSize: 28, color: 'var(--ds-primary)', fontVariationSettings: "'FILL' 1" }}
@@ -49,7 +56,6 @@ export default function LoginPage() {
           manage_accounts
         </span>
 
-        {/* Center: identity */}
         <div>
           <p
             className="text-[11px] font-bold uppercase tracking-[0.25em] mb-3.5"
@@ -86,17 +92,9 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Bottom: portfolio link */}
-        <Link
-          href="/"
-          className="flex items-center gap-1.5 text-xs no-underline transition-colors duration-150"
-          style={{ color: 'var(--ds-outline)' }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ds-on-surface-variant)')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline)')}
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: 14 }}>arrow_back</span>
-          Back to portfolio
-        </Link>
+        <div className="text-xs" style={{ color: 'var(--ds-outline-variant)' }}>
+          Set a new password for your account.
+        </div>
       </div>
 
       {/* Right — form panel */}
@@ -110,86 +108,55 @@ export default function LoginPage() {
               className="text-[10px] font-bold uppercase tracking-[0.25em] block mb-1.5"
               style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
             >
-              Admin Access
+              Account Recovery
             </span>
             <h2
               className="text-[26px] font-black m-0 mb-2 tracking-tighter uppercase"
               style={{ fontFamily: 'var(--ds-font-display)', color: 'var(--ds-on-surface)' }}
             >
-              Sign <em style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>in</em>
+              New <em style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>password</em>
             </h2>
             <p className="text-[13px] m-0" style={{ color: 'var(--ds-outline)' }}>
-              Access restricted to authorized users.
+              Choose a strong password for your account.
             </p>
           </div>
 
-          <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            {/* Email field */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
               <label
                 className="text-[11px] font-semibold uppercase tracking-[0.1em]"
                 style={{ color: 'var(--ds-on-surface-variant)' }}
               >
-                Email
-              </label>
-              <div className="relative">
-                <span
-                  className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
-                  style={{
-                    fontSize: 18,
-                    color: focused === 'email' ? 'var(--ds-primary-container)' : 'var(--ds-outline)',
-                    fontVariationSettings: "'FILL' 0",
-                    transition: 'color 0.15s',
-                  }}
-                >
-                  person
-                </span>
-                <input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  onFocus={() => setFocused('email')}
-                  onBlur={() => setFocused(null)}
-                  required
-                  className="pl-10 pr-4 py-3 rounded-[10px] border-none text-sm w-full box-border transition-[outline-color,background] duration-150"
-                  style={{
-                    outline: focused === 'email' ? '2px solid var(--ds-primary-container)' : '2px solid var(--ds-surface-high)',
-                    background: focused === 'email' ? 'var(--ds-surface)' : 'var(--ds-surface)',
-                    color: 'var(--ds-on-surface)',
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Password field */}
-            <div className="flex flex-col gap-1.5">
-              <label
-                className="text-[11px] font-semibold uppercase tracking-[0.1em]"
-                style={{ color: 'var(--ds-on-surface-variant)' }}
-              >
-                Password
+                New password
               </label>
               <PasswordInput
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onFocus={() => setFocused('password')}
-                onBlur={() => setFocused(null)}
-                focused={focused === 'password'}
-                required
-              />
+              placeholder="Min. 8 characters"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onFocus={() => setFocused('password')}
+              onBlur={() => setFocused(null)}
+              focused={focused === 'password'}
+              required
+            />
             </div>
 
-            <div className="flex justify-end -mt-1">
-              <Link
-                href="/admin/forgot-password"
-                className="text-[12px] no-underline transition-colors duration-150"
-                style={{ color: 'var(--ds-outline)' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ds-primary)')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline)')}
+            <div className="flex flex-col gap-1.5">
+              <label
+                className="text-[11px] font-semibold uppercase tracking-[0.1em]"
+                style={{ color: 'var(--ds-on-surface-variant)' }}
               >
-                Forgot password?
-              </Link>
+                Confirm password
+              </label>
+              <PasswordInput
+              placeholder="Repeat password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              onFocus={() => setFocused('confirm')}
+              onBlur={() => setFocused(null)}
+              focused={focused === 'confirm'}
+              leftIcon="lock_reset"
+              required
+            />
             </div>
 
             {error && (
@@ -216,7 +183,7 @@ export default function LoginPage() {
                 opacity: loading ? 0.7 : 1,
               }}
             >
-              {loading ? 'Signing in…' : 'Sign in'}
+              {loading ? 'Updating…' : 'Update password'}
             </button>
           </form>
         </div>

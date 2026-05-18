@@ -1,3 +1,5 @@
+import SectionHeader from '@/app/admin/_components/SectionHeader';
+
 interface PathCount {
   path: string;
   count: number;
@@ -15,111 +17,103 @@ export default function AnalyticsView({
 
   return (
     <div>
-      {/* Header */}
-      <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--ds-on-surface)', margin: 0, fontFamily: 'var(--ds-font-display)' }}>
-          Analytics
-        </h1>
-        <p style={{ color: 'var(--ds-outline-variant)', fontSize: 13, margin: '4px 0 0' }}>
-          Page views
-        </p>
+      <div className="mb-7">
+        <SectionHeader eyebrow="Metrics" title="Site" accent="Analytics" subtitle="Page views" />
       </div>
 
-      {/* Stat card */}
       <div
+        className="inline-flex flex-col gap-1 px-6 py-4 rounded-[14px] mb-7"
         style={{
-          display: 'inline-flex',
-          flexDirection: 'column',
-          gap: 4,
-          padding: '16px 24px',
           background: 'var(--ds-surface)',
           border: '1px solid var(--ds-surface-high)',
-          borderRadius: 14,
-          marginBottom: 28,
         }}
       >
-        <span style={{ color: 'var(--ds-outline-variant)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <span
+          className="text-[11px] font-semibold uppercase tracking-[0.05em]"
+          style={{ color: 'var(--ds-outline-variant)' }}
+        >
           Total views
         </span>
-        <span style={{ color: 'var(--ds-on-surface)', fontSize: 32, fontWeight: 700, fontFamily: 'var(--ds-font-display)', lineHeight: 1 }}>
+        <span
+          className="text-[32px] font-bold leading-none"
+          style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--ds-font-display)' }}
+        >
           {total.toLocaleString()}
         </span>
       </div>
 
-      {/* PostHog iframe or notice */}
       {postHogUrl ? (
-        <div style={{ marginBottom: 32, borderRadius: 14, overflow: 'hidden', border: '1px solid var(--ds-surface-high)' }}>
-          <iframe src={postHogUrl} style={{ width: '100%', height: 600, border: 'none', display: 'block' }} allowFullScreen />
+        <div className="mb-8 rounded-[14px] overflow-hidden" style={{ border: '1px solid var(--ds-surface-high)' }}>
+          <iframe src={postHogUrl} className="w-full h-[600px] border-none block" allowFullScreen />
         </div>
       ) : (
         <div
+          className="mb-8 px-5 py-4 rounded-xl text-[13px] leading-[1.6]"
           style={{
-            marginBottom: 32,
-            padding: '16px 20px',
-            borderRadius: 12,
             border: '1px dashed var(--ds-surface-high)',
             color: 'var(--ds-outline-variant)',
-            fontSize: 13,
-            lineHeight: 1.6,
           }}
         >
           PostHog dashboard not configured. Set{' '}
-          <code style={{ color: 'var(--ds-outline)', background: 'var(--ds-surface-container)', padding: '1px 6px', borderRadius: 4 }}>
+          <code
+            className="px-1.5 py-px rounded"
+            style={{ color: 'var(--ds-outline)', background: 'var(--ds-surface-container)' }}
+          >
             POSTHOG_DASHBOARD_URL
           </code>{' '}
-          in <code style={{ color: 'var(--ds-outline)', background: 'var(--ds-surface-container)', padding: '1px 6px', borderRadius: 4 }}>.env.local</code>.
+          in{' '}
+          <code
+            className="px-1.5 py-px rounded"
+            style={{ color: 'var(--ds-outline)', background: 'var(--ds-surface-container)' }}
+          >
+            .env.local
+          </code>
+          .
         </div>
       )}
 
-      {/* Bar chart */}
       <div
+        className="flex flex-col gap-2.5 px-6 py-5 rounded-[14px]"
         style={{
           background: 'var(--ds-surface)',
           border: '1px solid var(--ds-surface-high)',
-          borderRadius: 14,
-          padding: '20px 24px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 10,
         }}
       >
-        <span style={{ color: 'var(--ds-outline-variant)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
+        <span
+          className="text-[11px] font-semibold uppercase tracking-[0.05em] mb-1"
+          style={{ color: 'var(--ds-outline-variant)' }}
+        >
           Top pages
         </span>
         {data.map(({ path, count }) => (
-          <div key={path} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div key={path} className="flex items-center gap-3">
             <span
-              style={{
-                width: 220,
-                color: 'var(--ds-outline)',
-                fontSize: 12,
-                fontFamily: 'monospace',
-                flexShrink: 0,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
+              className="w-[220px] text-[12px] font-mono shrink-0 overflow-hidden text-ellipsis whitespace-nowrap"
+              style={{ color: 'var(--ds-outline)' }}
             >
               {path}
             </span>
-            <div style={{ flex: 1, background: 'var(--ds-surface-container)', borderRadius: 4, height: 6 }}>
+            <div className="flex-1 rounded h-1.5" style={{ background: 'var(--ds-surface-container)' }}>
               <div
+                className="h-full rounded transition-[width] duration-300"
                 style={{
                   width: `${(count / max) * 100}%`,
                   background: 'linear-gradient(90deg, var(--ds-primary-container), var(--ds-primary))',
-                  height: '100%',
-                  borderRadius: 4,
-                  transition: 'width 0.3s ease',
                 }}
               />
             </div>
-            <span style={{ color: 'var(--ds-outline-variant)', fontSize: 12, width: 36, textAlign: 'right', flexShrink: 0 }}>
+            <span
+              className="text-[12px] w-9 text-right shrink-0"
+              style={{ color: 'var(--ds-outline-variant)' }}
+            >
               {count}
             </span>
           </div>
         ))}
         {data.length === 0 && (
-          <p style={{ color: 'var(--ds-outline-variant)', textAlign: 'center', padding: 40, margin: 0 }}>No data yet.</p>
+          <p className="text-center py-10 m-0" style={{ color: 'var(--ds-outline-variant)' }}>
+            No data yet.
+          </p>
         )}
       </div>
     </div>

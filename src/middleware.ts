@@ -35,20 +35,25 @@ export async function middleware(request: NextRequest) {
       data: { user },
     } = await supabase.auth.getUser();
 
-    const isLoginPage = pathname === '/admin/login';
+    const publicAdminPages = ['/admin/login', '/admin/forgot-password', '/admin/reset-password'];
+    const isPublicPage = publicAdminPages.includes(pathname);
 
-    if (!isLoginPage && !user) {
+    if (!isPublicPage && !user) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
-    if (isLoginPage && user) {
+    if (pathname === '/admin/login' && user) {
       return NextResponse.redirect(new URL('/admin/posts', request.url));
     }
 
+    supabaseResponse.headers.set('x-pathname', pathname);
     return supabaseResponse;
   }
 
   // i18n locale routing
-  return intlMiddleware(request);
+  const response = intlMiddleware(request);
+  const locale = pathname.startsWith('/es') ? 'es' : 'en';
+  response.headers.set('x-locale', locale);
+  return response;
 }
 
 export const config = {
