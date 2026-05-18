@@ -63,6 +63,8 @@ export type Database = {
           country: string;
           country_code: string;
           created_at: string;
+          latitude: number | null;
+          longitude: number | null;
         };
         Insert: {
           id?: number;
@@ -70,6 +72,8 @@ export type Database = {
           country: string;
           country_code: string;
           created_at?: string;
+          latitude?: number | null;
+          longitude?: number | null;
         };
         Update: {
           id?: number;
@@ -77,6 +81,8 @@ export type Database = {
           country?: string;
           country_code?: string;
           created_at?: string;
+          latitude?: number | null;
+          longitude?: number | null;
         };
         Relationships: [];
       };
