@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -46,6 +47,12 @@ async function geolocateIp(ip: string): Promise<{
   }
 }
 
+function dailyVisitorHash(ip: string): string {
+  const salt = process.env.VISITOR_HASH_SALT ?? 'dev-salt';
+  const date = new Date().toISOString().slice(0, 10);
+  return createHash('sha256').update(`${ip}:${date}:${salt}`).digest('hex');
+}
+
 const LOCAL_HOST_RE = /^(localhost|127\.0\.0\.1)(:\d+)?$/;
 
 export async function POST(req: NextRequest) {
@@ -71,16 +78,32 @@ export async function POST(req: NextRequest) {
   if (newVisitor) {
     const ip = getClientIp(req);
     if (ip && !PRIVATE_IP_RE.test(ip)) {
-      const geo = await geolocateIp(ip);
-      if (geo) {
-        await supabase.from('visitor_locations').insert({
-          city: geo.city,
-          country: geo.country,
-          country_code: geo.countryCode,
-          latitude: parseFloat(geo.lat.toFixed(2)),
-          longitude: parseFloat(geo.lon.toFixed(2)),
-        });
-        visitorGeo = { city: geo.city, countryCode: geo.countryCode };
+      const hash = dailyVisitorHash(ip);
+      const today = new Date().toISOString().slice(0, 10);
+
+      const { data: existing } = await supabase
+        .from('visitor_locations')
+        .select('city, country_code')
+        .eq('visitor_hash', hash)
+        .gte('created_at', `${today}T00:00:00.000Z`)
+        .limit(1)
+        .maybeSingle();
+
+      if (existing) {
+        visitorGeo = { city: existing.city, countryCode: existing.country_code };
+      } else {
+        const geo = await geolocateIp(ip);
+        if (geo) {
+          await supabase.from('visitor_locations').insert({
+            city: geo.city,
+            country: geo.country,
+            country_code: geo.countryCode,
+            latitude: parseFloat(geo.lat.toFixed(2)),
+            longitude: parseFloat(geo.lon.toFixed(2)),
+            visitor_hash: hash,
+          });
+          visitorGeo = { city: geo.city, countryCode: geo.countryCode };
+        }
       }
     }
   }
