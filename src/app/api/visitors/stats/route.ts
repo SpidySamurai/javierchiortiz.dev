@@ -10,8 +10,7 @@ const supabase = createClient<Database>(
 export const revalidate = 60;
 
 export async function GET() {
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);
+  const todayStart = new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00.000Z');
 
   const [totalResult, countriesResult, todayResult] = await Promise.all([
     supabase
