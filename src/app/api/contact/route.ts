@@ -13,10 +13,13 @@ export async function POST(req: NextRequest) {
   if (!name || !email || !message) {
     return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (typeof name !== 'string' || name.length > 200) {
+    return NextResponse.json({ error: 'Invalid name' }, { status: 400 });
+  }
+  if (typeof email !== 'string' || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
   }
-  if (message.length > 2000) {
+  if (typeof message !== 'string' || message.length > 2000) {
     return NextResponse.json({ error: 'Message too long' }, { status: 400 });
   }
 

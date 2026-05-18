@@ -7,8 +7,11 @@ export async function GET(request: NextRequest) {
   // Based on testing, ?season=X is useful. If not provided, we just pass what we get or nothing.
   const season = searchParams.get('season');
 
-  if (!uid) {
-    return NextResponse.json({ error: 'Missing UID' }, { status: 400 });
+  if (!uid || !/^\d+$/.test(uid)) {
+    return NextResponse.json({ error: 'Invalid UID' }, { status: 400 });
+  }
+  if (season && !/^\d{1,3}$/.test(season)) {
+    return NextResponse.json({ error: 'Invalid season' }, { status: 400 });
   }
 
   const apiKey = process.env.MARVEL_RIVALS_API_KEY;

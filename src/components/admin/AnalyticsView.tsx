@@ -1,3 +1,5 @@
+import SectionHeader from '@/app/admin/_components/SectionHeader';
+
 interface PathCount {
   path: string;
   count: number;
@@ -15,73 +17,101 @@ export default function AnalyticsView({
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 24 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0', margin: 0 }}>Analytics</h1>
-        <span style={{ color: '#64748b', fontSize: 14 }}>{total} total views</span>
+      <div className="mb-7">
+        <SectionHeader eyebrow="Metrics" title="Site" accent="Analytics" subtitle="Page views" />
+      </div>
+
+      <div
+        className="inline-flex flex-col gap-1 px-6 py-4 rounded-[14px] mb-7"
+        style={{
+          background: 'var(--ds-surface)',
+          border: '1px solid var(--ds-surface-high)',
+        }}
+      >
+        <span
+          className="text-[11px] font-semibold uppercase tracking-[0.05em]"
+          style={{ color: 'var(--ds-outline-variant)' }}
+        >
+          Total views
+        </span>
+        <span
+          className="text-[32px] font-bold leading-none"
+          style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--ds-font-display)' }}
+        >
+          {total.toLocaleString()}
+        </span>
       </div>
 
       {postHogUrl ? (
-        <div style={{ marginBottom: 40, borderRadius: 12, overflow: 'hidden', border: '1px solid #1e293b' }}>
-          <iframe
-            src={postHogUrl}
-            style={{ width: '100%', height: 600, border: 'none', display: 'block' }}
-            allowFullScreen
-          />
+        <div className="mb-8 rounded-[14px] overflow-hidden" style={{ border: '1px solid var(--ds-surface-high)' }}>
+          <iframe src={postHogUrl} className="w-full h-[600px] border-none block" allowFullScreen />
         </div>
       ) : (
-        <div style={{
-          marginBottom: 40, padding: 24, borderRadius: 12,
-          border: '1px dashed #1e293b', color: '#475569', fontSize: 13, lineHeight: 1.6,
-        }}>
-          <strong style={{ color: '#64748b' }}>PostHog dashboard not configured.</strong>
-          {' '}PostHog → Dashboards → Share → enable public sharing → copy URL → agrega{' '}
-          <code style={{ color: '#94a3b8' }}>POSTHOG_DASHBOARD_URL</code> a{' '}
-          <code style={{ color: '#94a3b8' }}>.env.local</code>.
+        <div
+          className="mb-8 px-5 py-4 rounded-xl text-[13px] leading-[1.6]"
+          style={{
+            border: '1px dashed var(--ds-surface-high)',
+            color: 'var(--ds-outline-variant)',
+          }}
+        >
+          PostHog dashboard not configured. Set{' '}
+          <code
+            className="px-1.5 py-px rounded"
+            style={{ color: 'var(--ds-outline)', background: 'var(--ds-surface-container)' }}
+          >
+            POSTHOG_DASHBOARD_URL
+          </code>{' '}
+          in{' '}
+          <code
+            className="px-1.5 py-px rounded"
+            style={{ color: 'var(--ds-outline)', background: 'var(--ds-surface-container)' }}
+          >
+            .env.local
+          </code>
+          .
         </div>
       )}
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div
+        className="flex flex-col gap-2.5 px-6 py-5 rounded-[14px]"
+        style={{
+          background: 'var(--ds-surface)',
+          border: '1px solid var(--ds-surface-high)',
+        }}
+      >
+        <span
+          className="text-[11px] font-semibold uppercase tracking-[0.05em] mb-1"
+          style={{ color: 'var(--ds-outline-variant)' }}
+        >
+          Top pages
+        </span>
         {data.map(({ path, count }) => (
-          <div key={path} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div key={path} className="flex items-center gap-3">
             <span
-              style={{
-                width: 240,
-                color: '#94a3b8',
-                fontSize: 13,
-                fontFamily: 'monospace',
-                flexShrink: 0,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
+              className="w-[220px] text-[12px] font-mono shrink-0 overflow-hidden text-ellipsis whitespace-nowrap"
+              style={{ color: 'var(--ds-outline)' }}
             >
               {path}
             </span>
-            <div style={{ flex: 1, background: '#12121a', borderRadius: 4, height: 8 }}>
+            <div className="flex-1 rounded h-1.5" style={{ background: 'var(--ds-surface-container)' }}>
               <div
+                className="h-full rounded transition-[width] duration-300"
                 style={{
                   width: `${(count / max) * 100}%`,
-                  background: '#c0c1ff',
-                  height: '100%',
-                  borderRadius: 4,
+                  background: 'linear-gradient(90deg, var(--ds-primary-container), var(--ds-primary))',
                 }}
               />
             </div>
             <span
-              style={{
-                color: '#64748b',
-                fontSize: 13,
-                width: 40,
-                textAlign: 'right',
-                flexShrink: 0,
-              }}
+              className="text-[12px] w-9 text-right shrink-0"
+              style={{ color: 'var(--ds-outline-variant)' }}
             >
               {count}
             </span>
           </div>
         ))}
         {data.length === 0 && (
-          <p style={{ color: '#475569', textAlign: 'center', padding: 60, margin: 0 }}>
+          <p className="text-center py-10 m-0" style={{ color: 'var(--ds-outline-variant)' }}>
             No data yet.
           </p>
         )}

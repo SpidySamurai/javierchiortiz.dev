@@ -1,0 +1,303 @@
+@import 'tailwindcss';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-primary);
+}
+
+/* Smooth scrolling for in-page anchors */
+html {
+  scroll-behavior: smooth;
+  --sidebar-w: 16rem;
+}
+
+/* Sidebar layout — responsive margin driven by CSS var set from JS */
+@media (min-width: 1280px) {
+  .sidebar-main {
+    margin-left: var(--sidebar-w, 16rem);
+  }
+  .header-adaptive {
+    left: var(--sidebar-w, 16rem) !important;
+    width: calc(100% - var(--sidebar-w, 16rem)) !important;
+  }
+}
+
+/* CSS-driven collapsed state — applied by inline script before first paint */
+html[data-sidebar-collapsed] .sidebar-aside {
+  width: 4rem !important;
+}
+html[data-sidebar-collapsed] .sidebar-label {
+  display: none !important;
+}
+html[data-sidebar-collapsed] .sidebar-nav-item {
+  justify-content: center !important;
+  padding: 0.75rem 0 !important;
+  gap: 0 !important;
+}
+html[data-sidebar-collapsed] .sidebar-toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Transitions — only after first paint to avoid initial-load animation */
+[data-sidebar-ready] .sidebar-aside {
+  transition: width 0.25s ease;
+}
+[data-sidebar-ready] .sidebar-main {
+  transition: margin-left 0.25s ease;
+}
+[data-sidebar-ready] .header-adaptive {
+  transition: left 0.25s ease, width 0.25s ease;
+}
+
+/* Avoid anchored sections being hidden under the sticky header */
+section {
+  scroll-margin-top: 4.5rem; /* roughly header height */
+}
+
+:root {
+  --color-primary: #1a1a2e;
+  --color-surface: #23234a;
+  --color-default: #ffffff;
+  --color-muted: #bfc8e6;
+  --color-secondary: #1e90ff;
+  --color-secondary-light: #98ccff;
+  --color-white: #ffffff;
+  --color-gray: #8c93a1;
+}
+
+/* Light theme overrides: mantiene la lógica de contraste y look profesional */
+html[data-theme='light'] {
+  --color-primary: #eef1fa;
+  --color-surface: #e4e9f5;
+  --color-default: #141d35;
+  --color-muted: #3a4260;
+  --color-secondary: #1e90ff;
+  --color-secondary-light: #4fb3ff;
+  --color-white: #f2f5fc;
+  --color-gray: #b0b8d0;
+}
+
+/* Utilidades semánticas para fondo y texto */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+.bg-surface {
+  background-color: var(--color-surface);
+}
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+.bg-secondary-light {
+  background-color: var(--color-secondary-light);
+}
+.text-default {
+  color: var(--color-default);
+}
+.text-muted {
+  color: var(--color-muted);
+}
+.text-secondary {
+  color: var(--color-secondary);
+}
+.text-secondary-light {
+  color: var(--color-secondary-light);
+}
+.text-surface {
+  color: var(--color-surface);
+}
+
+:root {
+  --color-primary: #1a1a2e;
+  --color-surface: #23234a;
+  --color-default: #ffffff;
+  --color-muted: #bfc8e6;
+  --color-secondary: #1e90ff;
+  --color-secondary-light: #98ccff;
+  --color-white: #ffffff;
+  --color-gray: #8c93a1;
+}
+
+/* Utilidades semánticas para fondo y texto */
+.bg-primary {
+  background-color: var(--color-primary) !important;
+}
+.bg-surface {
+  background-color: var(--color-surface) !important;
+}
+.bg-secondary {
+  background-color: var(--color-secondary) !important;
+}
+.bg-secondary-light {
+  background-color: var(--color-secondary-light) !important;
+}
+.text-default {
+  color: var(--color-default) !important;
+}
+.text-muted {
+  color: var(--color-muted) !important;
+}
+.text-secondary {
+  color: var(--color-secondary) !important;
+}
+.text-secondary-light {
+  color: var(--color-secondary-light) !important;
+}
+.text-surface {
+  color: var(--color-surface) !important;
+}
+
+/* ============================================================
+   Design System 2026 — "The Digital Curator"
+   Scoped under .ds-2026 to avoid conflicts with 2025 styles
+   ============================================================ */
+.ds-2026 {
+  --ds-bg: #0b1326;
+  --ds-surface: #131b2e;
+  --ds-surface-container: #171f33;
+  --ds-surface-high: #222a3d;
+  --ds-surface-highest: #2d3449;
+  --ds-surface-bright: #31394d;
+
+  --ds-on-surface: #dae2fd;
+  --ds-on-surface-variant: #c7c4d7;
+
+  --ds-primary: #c0c1ff;
+  --ds-primary-container: #8083ff;
+  --ds-on-primary: #1000a9;
+
+  --ds-secondary-container: #3e3c8f;
+  --ds-on-secondary: #afadff;
+
+  --ds-tertiary: #b8c4ff;
+
+  --ds-outline-variant: #464554;
+  --ds-outline: #908fa0;
+
+  --ds-font-display: var(--font-manrope), sans-serif;
+  --ds-font-body: var(--font-inter), sans-serif;
+
+  background-color: var(--ds-bg);
+  color: var(--ds-on-surface);
+  font-family: var(--ds-font-body);
+}
+
+html[data-theme='light'] .ds-2026 {
+  --ds-bg: #eef1fa;
+  --ds-surface: #e4e9f5;
+  --ds-surface-container: #d9e0ef;
+  --ds-surface-high: #cdd6ea;
+  --ds-surface-highest: #c2cce4;
+  --ds-surface-bright: #f2f5fc;
+
+  --ds-on-surface: #141d35;
+  --ds-on-surface-variant: #3a4260;
+
+  --ds-primary: #4042c8;
+  --ds-primary-container: #6668e8;
+  --ds-on-primary: #ffffff;
+
+  --ds-secondary-container: #d0d2f5;
+  --ds-on-secondary: #2f2ebe;
+
+  --ds-tertiary: #3a4a9e;
+
+  --ds-outline-variant: #b0b8d0;
+  --ds-outline: #626a88;
+}
+
+/* global.css */
+.scroll-x-thin {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #999 transparent;
+}
+
+.scroll-x-thin::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scroll-x-thin::-webkit-scrollbar-thumb {
+  background-color: #999;
+  border-radius: 4px;
+}
+
+.scroll-x-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Project image hover pan */
+@media (hover: hover) and (pointer: fine) {
+  .project-image-wrapper {
+    /* ensure the cropping container hides overflow */
+    overflow: hidden;
+  }
+
+  .project-image-wrapper .project-image {
+    /* ensure images keep natural aspect and occupy width
+       next/image with `fill` renders an absolutely-positioned <img>
+       so handle both native <img> and next/image elements here. */
+    display: block;
+    transition: transform 9s linear 0.2s;
+    transform-origin: top center;
+    will-change: transform;
+    /* allow transforms on the underlying img used by next/image */
+  }
+
+  /* target the img element inside next/image wrappers too */
+  .project-image-wrapper img {
+    display: block;
+    /* next/image with fill produces an absolutely positioned img; ensure
+       it fills the container and uses cover with top alignment so translateY
+       shifts the visible area as expected. Use width:100% and height:100%
+       so the image covers the wrapper consistently and translateY moves
+       the visual crop rather than shifting layout. */
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 9s linear 0.2s;
+    transform-origin: top center;
+    will-change: transform;
+  }
+
+  /* trigger pan when hovering the whole project card */
+  /* when hovering the card, pan either the element with class or the inner img */
+  .project-card:hover .project-image,
+  .project-card:hover .project-image-wrapper img {
+    transform: translateY(var(--pan-amount, -22%));
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .project-image-wrapper .project-image {
+    transition: none !important;
+  }
+}
+
+/* Ambient float for tech icon chips */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*='float-y'] {
+    animation: none !important;
+  }
+}

@@ -9,6 +9,7 @@ import type { Post } from '@/types/database';
 import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
 import ImagePositionPicker from '@/components/admin/ImagePositionPicker';
 import { BLOG_THEMES } from '@/data/blogThemes';
+import SectionHeader from '@/app/admin/_components/SectionHeader';
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
@@ -32,34 +33,23 @@ const ThemeColorPicker = memo(function ThemeColorPicker({
     setDraft(value);
   }, [value]);
   return (
-    <label style={{ display: 'flex', flexDirection: 'column', gap: 6, cursor: 'pointer' }}>
+    <label className="flex flex-col gap-1.5 cursor-pointer">
       <span
-        style={{
-          fontSize: 11,
-          color: '#64748b',
-          textTransform: 'uppercase',
-          letterSpacing: '0.08em',
-        }}
+        className="text-[11px] uppercase tracking-[0.08em]"
+        style={{ color: 'var(--ds-outline-variant)' }}
       >
         {label}
       </span>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div className="flex items-center gap-2">
         <input
           type="color"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onBlur={(e) => onCommit(colorKey, e.target.value)}
-          style={{
-            width: 36,
-            height: 28,
-            borderRadius: 4,
-            border: '1px solid #1e1e2e',
-            cursor: 'pointer',
-            padding: 2,
-            background: 'none',
-          }}
+          className="w-9 h-7 rounded cursor-pointer p-0.5 bg-transparent"
+          style={{ border: '1px solid var(--ds-surface-high)' }}
         />
-        <span style={{ fontSize: 12, color: '#94a3b8', fontFamily: 'monospace' }}>{draft}</span>
+        <span className="text-[12px] font-mono" style={{ color: 'var(--ds-outline)' }}>{draft}</span>
       </div>
     </label>
   );
@@ -234,16 +224,11 @@ export default function PostEditor({ post }: { post?: Post }) {
     }));
   };
 
+  const inputClass = 'w-full px-3 py-2 rounded-lg text-[14px] outline-none box-border';
   const inputStyle: React.CSSProperties = {
-    width: '100%',
-    padding: '8px 12px',
-    background: '#12121a',
-    border: '1px solid #1e1e2e',
-    borderRadius: 8,
-    color: '#e2e8f0',
-    fontSize: 14,
-    outline: 'none',
-    boxSizing: 'border-box',
+    background: 'var(--ds-surface-container)',
+    border: '1px solid var(--ds-surface-high)',
+    color: 'var(--ds-on-surface)',
   };
 
   const currentContent = form[`content_${tab}`];
@@ -251,16 +236,21 @@ export default function PostEditor({ post }: { post?: Post }) {
 
   return (
     <div style={{ maxWidth: mode === 'split' ? 1400 : 900 }}>
-      <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0', marginBottom: 24 }}>
-        {post ? 'Edit post' : 'New post'}
-      </h1>
+      <div className="mb-6">
+        <SectionHeader
+          eyebrow="Content"
+          title={post ? 'Edit' : 'New'}
+          accent="Post"
+        />
+      </div>
 
       {/* Meta fields */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+      <div className="grid grid-cols-2 gap-3 mb-4">
         <input
           placeholder="slug (e.g. my-first-post)"
           value={form.slug}
           onChange={setField('slug')}
+          className={inputClass}
           style={inputStyle}
           disabled={!!post}
         />
@@ -268,43 +258,41 @@ export default function PostEditor({ post }: { post?: Post }) {
           placeholder="Category"
           value={form.category}
           onChange={setField('category')}
+          className={inputClass}
           style={inputStyle}
         />
         <input
           placeholder="Read time (e.g. 5 min read)"
           value={form.read_time}
           onChange={setField('read_time')}
+          className={inputClass}
           style={inputStyle}
         />
         <input
           placeholder="YouTube ID for hero (optional)"
           value={form.youtube_id}
           onChange={setField('youtube_id')}
+          className={inputClass}
           style={inputStyle}
         />
         <input
           placeholder="Cover image URL (optional)"
           value={form.cover_image_url}
           onChange={setField('cover_image_url')}
+          className={inputClass}
           style={inputStyle}
         />
       </div>
 
       {/* Cover theme preset selector */}
-      <div style={{ marginBottom: 16 }}>
+      <div className="mb-4">
         <span
-          style={{
-            fontSize: 11,
-            color: '#64748b',
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em',
-            display: 'block',
-            marginBottom: 8,
-          }}
+          className="text-[11px] uppercase tracking-[0.08em] block mb-2"
+          style={{ color: 'var(--ds-outline-variant)' }}
         >
           Cover theme
         </span>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <div className="flex gap-2 flex-wrap">
           {(['', ...PRESET_KEYS] as string[]).map((key) => {
             const preset = key ? BLOG_THEMES[key as ThemeKey] : null;
             const isActive = form.cover_theme === key;
@@ -312,31 +300,18 @@ export default function PostEditor({ post }: { post?: Post }) {
               <button
                 key={key || 'none'}
                 onClick={() => handlePresetSelect(key || 'default')}
+                className="flex items-center gap-2 px-3.5 py-1.5 rounded-md text-[13px] cursor-pointer transition-[border-color] duration-150"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  padding: '6px 14px',
-                  borderRadius: 6,
-                  border: isActive ? '2px solid #c0c1ff' : '2px solid #1e1e2e',
-                  cursor: 'pointer',
-                  fontSize: 13,
+                  border: isActive ? '2px solid var(--ds-primary)' : '2px solid var(--ds-surface-high)',
                   fontWeight: isActive ? 700 : 400,
-                  background: preset ? preset.bg : '#12121a',
-                  color: preset ? (preset.onSurface ?? '#f0f0f0') : '#94a3b8',
-                  transition: 'border-color 0.15s',
+                  background: preset ? preset.bg : 'var(--ds-surface-container)',
+                  color: preset ? (preset.onSurface ?? 'var(--ds-on-surface)') : 'var(--ds-outline)',
                 }}
               >
                 {preset && (
                   <span
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: '50%',
-                      background: preset.primary,
-                      display: 'inline-block',
-                      flexShrink: 0,
-                    }}
+                    className="w-2.5 h-2.5 rounded-full inline-block shrink-0"
+                    style={{ background: preset.primary }}
                   />
                 )}
                 {key || 'None'}
@@ -348,59 +323,38 @@ export default function PostEditor({ post }: { post?: Post }) {
 
       {/* Theme color config */}
       <div
+        className="mb-4 px-4 py-3 rounded-lg"
         style={{
-          marginBottom: 16,
-          padding: '12px 16px',
-          background: '#12121a',
-          borderRadius: 8,
-          border: '1px solid #1e1e2e',
+          background: 'var(--ds-surface-container)',
+          border: '1px solid var(--ds-surface-high)',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
-            marginBottom: form.theme_config_enabled ? 12 : 0,
-          }}
-        >
+        <div className={`flex items-center gap-2.5 ${form.theme_config_enabled ? 'mb-3' : ''}`}>
           <label
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              cursor: 'pointer',
-              color: '#94a3b8',
-              fontSize: 13,
-            }}
+            className="flex items-center gap-2 cursor-pointer text-[13px]"
+            style={{ color: 'var(--ds-outline)' }}
           >
             <input
               type="checkbox"
               checked={form.theme_config_enabled}
               onChange={(e) => setForm((f) => ({ ...f, theme_config_enabled: e.target.checked }))}
-              style={{ accentColor: '#c0c1ff', width: 14, height: 14 }}
+              className="w-3.5 h-3.5"
+              style={{ accentColor: 'var(--ds-primary)' }}
             />
             Custom theme colors
           </label>
           {form.theme_config_enabled && (
             <button
               onClick={() => setForm((f) => ({ ...f, theme_config: { ...DEFAULT_THEME } }))}
-              style={{
-                marginLeft: 'auto',
-                fontSize: 11,
-                color: '#64748b',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '2px 6px',
-              }}
+              className="ml-auto text-[11px] bg-transparent border-none cursor-pointer px-1.5 py-0.5"
+              style={{ color: 'var(--ds-outline-variant)' }}
             >
               Reset to default
             </button>
           )}
         </div>
         {form.theme_config_enabled && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+          <div className="grid grid-cols-4 gap-3">
             {(
               [
                 ['bg', 'Background'],
@@ -421,9 +375,9 @@ export default function PostEditor({ post }: { post?: Post }) {
         )}
       </div>
 
-      {/* Image position pickers — only when URL is set */}
+      {/* Image position pickers */}
       {form.cover_image_url && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+        <div className="grid grid-cols-2 gap-4 mb-5">
           <ImagePositionPicker
             src={form.cover_image_url}
             value={form.cover_image_position_card}
@@ -442,27 +396,16 @@ export default function PostEditor({ post }: { post?: Post }) {
       )}
 
       {/* Language + mode tabs */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 16,
-        }}
-      >
-        <div style={{ display: 'flex', gap: 4 }}>
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex gap-1">
           {(['en', 'es'] as const).map((l) => (
             <button
               key={l}
               onClick={() => setTab(l)}
+              className="px-4 py-1.5 rounded-md border-none cursor-pointer text-[13px]"
               style={{
-                padding: '6px 16px',
-                borderRadius: 6,
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 13,
-                background: tab === l ? '#c0c1ff' : '#1e1e2e',
-                color: tab === l ? '#0a0a0f' : '#94a3b8',
+                background: tab === l ? 'var(--ds-primary)' : 'var(--ds-surface-high)',
+                color: tab === l ? 'var(--ds-on-primary)' : 'var(--ds-outline)',
                 fontWeight: tab === l ? 700 : 400,
               }}
             >
@@ -470,7 +413,7 @@ export default function PostEditor({ post }: { post?: Post }) {
             </button>
           ))}
         </div>
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div className="flex gap-1">
           {(
             [
               ['edit', 'edit', 'Edit'],
@@ -481,17 +424,10 @@ export default function PostEditor({ post }: { post?: Post }) {
             <button
               key={m}
               onClick={() => setMode(m)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border-none cursor-pointer text-[12px]"
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '6px 12px',
-                borderRadius: 6,
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: 12,
-                background: mode === m ? '#3e3c8f' : '#1e1e2e',
-                color: mode === m ? '#c0c1ff' : '#64748b',
+                background: mode === m ? 'var(--ds-secondary-container)' : 'var(--ds-surface-high)',
+                color: mode === m ? 'var(--ds-on-secondary)' : 'var(--ds-outline-variant)',
                 fontWeight: mode === m ? 700 : 400,
               }}
             >
@@ -508,13 +444,15 @@ export default function PostEditor({ post }: { post?: Post }) {
         placeholder={`Title (${tab.toUpperCase()})`}
         value={form[`title_${tab}`]}
         onChange={(e) => setForm((f) => ({ ...f, [`title_${tab}`]: e.target.value }))}
-        style={{ ...inputStyle, marginBottom: 12 }}
+        className={`${inputClass} mb-3`}
+        style={inputStyle}
       />
       <input
         placeholder={`Excerpt (${tab.toUpperCase()})`}
         value={form[`excerpt_${tab}`]}
         onChange={(e) => setForm((f) => ({ ...f, [`excerpt_${tab}`]: e.target.value }))}
-        style={{ ...inputStyle, marginBottom: 12 }}
+        className={`${inputClass} mb-3`}
+        style={inputStyle}
       />
 
       {mode === 'edit' && (
@@ -529,8 +467,8 @@ export default function PostEditor({ post }: { post?: Post }) {
       )}
 
       {mode === 'split' && (
-        <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-          <div data-color-mode="dark" style={{ flex: 1, minWidth: 0 }}>
+        <div className="flex gap-4 items-start">
+          <div data-color-mode="dark" className="flex-1 min-w-0">
             <MDEditor
               value={currentContent}
               onChange={(v) => setForm((f) => ({ ...f, [`content_${tab}`]: v ?? '' }))}
@@ -539,14 +477,10 @@ export default function PostEditor({ post }: { post?: Post }) {
             />
           </div>
           <div
+            className="flex-1 min-w-0 max-h-[600px] overflow-y-auto rounded-lg"
             style={
               {
-                flex: 1,
-                minWidth: 0,
-                maxHeight: 600,
-                overflowY: 'auto',
                 background: activeTheme.bg,
-                borderRadius: 8,
                 '--ds-bg': activeTheme.bg,
                 '--ds-surface': activeTheme.surface,
                 '--ds-on-surface': activeTheme.onSurface,
@@ -557,32 +491,20 @@ export default function PostEditor({ post }: { post?: Post }) {
             }
           >
             {form.cover_image_url && (
-              <div style={{ width: '100%', height: 200, overflow: 'hidden', flexShrink: 0 }}>
+              <div className="w-full h-[200px] overflow-hidden shrink-0">
                 <img
                   src={form.cover_image_url}
                   alt=""
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: form.cover_image_position_hero,
-                  }}
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: form.cover_image_position_hero }}
                 />
               </div>
             )}
-            <div style={{ padding: '1.5rem' }}>
+            <div className="p-6">
               {currentTitle && (
                 <h1
-                  style={{
-                    fontSize: '1.75rem',
-                    fontWeight: 900,
-                    color: activeTheme.onSurface,
-                    fontFamily: 'var(--font-manrope), sans-serif',
-                    marginTop: 0,
-                    marginBottom: '1rem',
-                    letterSpacing: '-0.02em',
-                    lineHeight: 1.1,
-                  }}
+                  className="text-[1.75rem] font-black mt-0 mb-4 tracking-tight leading-[1.1]"
+                  style={{ color: activeTheme.onSurface, fontFamily: 'var(--font-manrope), sans-serif' }}
                 >
                   {currentTitle}
                 </h1>
@@ -590,7 +512,7 @@ export default function PostEditor({ post }: { post?: Post }) {
               {currentContent ? (
                 <MarkdownRenderer content={currentContent} />
               ) : (
-                <p style={{ color: '#464554', fontStyle: 'italic' }}>No content yet.</p>
+                <p className="italic" style={{ color: 'var(--ds-outline-variant)' }}>No content yet.</p>
               )}
             </div>
           </div>
@@ -599,12 +521,10 @@ export default function PostEditor({ post }: { post?: Post }) {
 
       {mode === 'blog' && (
         <div
+          className="min-h-[400px] rounded-lg overflow-hidden"
           style={
             {
-              minHeight: 400,
               background: activeTheme.bg,
-              borderRadius: 8,
-              overflow: 'hidden',
               '--ds-bg': activeTheme.bg,
               '--ds-surface': activeTheme.surface,
               '--ds-on-surface': activeTheme.onSurface,
@@ -615,32 +535,20 @@ export default function PostEditor({ post }: { post?: Post }) {
           }
         >
           {form.cover_image_url && (
-            <div style={{ width: '100%', height: 280, overflow: 'hidden' }}>
+            <div className="w-full h-[280px] overflow-hidden">
               <img
                 src={form.cover_image_url}
                 alt=""
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: form.cover_image_position_hero,
-                }}
+                className="w-full h-full object-cover"
+                style={{ objectPosition: form.cover_image_position_hero }}
               />
             </div>
           )}
-          <div style={{ padding: '2rem' }}>
+          <div className="p-8">
             {currentTitle && (
               <h1
-                style={{
-                  fontSize: '2.5rem',
-                  fontWeight: 900,
-                  color: activeTheme.onSurface,
-                  fontFamily: 'var(--font-manrope), sans-serif',
-                  marginTop: 0,
-                  marginBottom: '1.5rem',
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.1,
-                }}
+                className="text-[2.5rem] font-black mt-0 mb-6 tracking-tight leading-[1.1]"
+                style={{ color: activeTheme.onSurface, fontFamily: 'var(--font-manrope), sans-serif' }}
               >
                 {currentTitle}
               </h1>
@@ -648,43 +556,28 @@ export default function PostEditor({ post }: { post?: Post }) {
             {currentContent ? (
               <MarkdownRenderer content={currentContent} />
             ) : (
-              <p style={{ color: '#464554', fontStyle: 'italic' }}>No content yet.</p>
+              <p className="italic" style={{ color: 'var(--ds-outline-variant)' }}>No content yet.</p>
             )}
           </div>
         </div>
       )}
 
-      {error && <p style={{ color: '#f87171', fontSize: 13, marginTop: 12 }}>{error}</p>}
+      {error && <p className="text-[13px] mt-3" style={{ color: '#f87171' }}>{error}</p>}
 
-      <div style={{ display: 'flex', gap: 12, marginTop: 20 }}>
+      <div className="flex gap-3 mt-5">
         <button
           onClick={() => handleSave(false)}
           disabled={saving}
-          style={{
-            padding: '10px 20px',
-            background: '#1e1e2e',
-            color: '#94a3b8',
-            border: 'none',
-            borderRadius: 8,
-            cursor: 'pointer',
-            fontSize: 14,
-          }}
+          className="px-5 py-2.5 rounded-lg border-none cursor-pointer text-[14px]"
+          style={{ background: 'var(--ds-surface-high)', color: 'var(--ds-outline)' }}
         >
           Save draft
         </button>
         <button
           onClick={() => handleSave(true)}
           disabled={saving}
-          style={{
-            padding: '10px 20px',
-            background: '#c0c1ff',
-            color: '#0a0a0f',
-            border: 'none',
-            borderRadius: 8,
-            cursor: 'pointer',
-            fontSize: 14,
-            fontWeight: 700,
-          }}
+          className="px-5 py-2.5 rounded-lg border-none cursor-pointer text-[14px] font-bold"
+          style={{ background: 'var(--ds-primary)', color: 'var(--ds-on-primary)' }}
         >
           {saving ? 'Saving…' : 'Publish'}
         </button>
