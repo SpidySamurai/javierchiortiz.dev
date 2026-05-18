@@ -1,6 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import useSWR from 'swr';
+import { useLocale } from 'next-intl';
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
@@ -11,6 +13,7 @@ function formatCount(n: number): string {
 }
 
 export default function VisitorCounter() {
+  const locale = useLocale();
   const { data } = useSWR<{ count: number | null }>('/api/visitor-count', fetcher, {
     dedupingInterval: 60_000,
     revalidateOnFocus: false,
@@ -19,7 +22,8 @@ export default function VisitorCounter() {
   if (!data?.count) return null;
 
   return (
-    <div
+    <Link
+      href={`/${locale}/visitors`}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -29,6 +33,7 @@ export default function VisitorCounter() {
         color: 'var(--ds-outline)',
         letterSpacing: '0.05em',
         textTransform: 'uppercase',
+        textDecoration: 'none',
       }}
     >
       <span
@@ -42,6 +47,6 @@ export default function VisitorCounter() {
         }}
       />
       {formatCount(data.count)} visitors
-    </div>
+    </Link>
   );
 }

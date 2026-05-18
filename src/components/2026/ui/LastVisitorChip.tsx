@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import useSWR from 'swr';
 import { useTranslations, useLocale } from 'next-intl';
 import ReactCountryFlag from 'react-country-flag';
@@ -41,9 +42,11 @@ export default function LastVisitorChip() {
   const location = visitor.region ? `${visitor.region}, ${countryName}` : countryName;
 
   return (
-    <div
+    <Link
+      href={`/${locale}/visitors`}
       className="flex items-center gap-1.5 select-none"
       title={`${t('last_visitor_from')} ${location}`}
+      style={{ textDecoration: 'none' }}
     >
       <ReactCountryFlag
         countryCode={visitor.countryCode}
@@ -60,6 +63,6 @@ export default function LastVisitorChip() {
       >
         {t('last_visitor_from')} {location}
       </span>
-    </div>
+    </Link>
   );
 }
