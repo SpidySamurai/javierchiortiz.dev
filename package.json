@@ -24,6 +24,7 @@
     "@tsparticles/slim": "^3.9.1",
     "@uiw/react-md-editor": "^4.1.0",
     "canvas-confetti": "^1.9.4",
+    "cobe": "^2.0.1",
     "framer-motion": "^12.38.0",
     "next": "^15.5.9",
     "next-intl": "^4.7.0",
