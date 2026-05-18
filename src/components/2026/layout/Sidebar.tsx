@@ -16,7 +16,7 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
   const [collapsed, setCollapsed] = useState<boolean>(defaultCollapsed);
   const { openCard } = useGamerCard();
   const isBlogActive = pathname.startsWith(`/${locale}/blog`);
-  const isHome = !isBlogActive;
+  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
 
   useLayoutEffect(() => {
