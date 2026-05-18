@@ -208,7 +208,7 @@ export default function Header() {
         }}
       >
         {/* Centered chip — absolute so it doesn't shift the right controls */}
-        <div className="hidden xl:block absolute left-1/2 -translate-x-1/2">
+        <div className="absolute left-1/2 -translate-x-1/2">
           <LastVisitorChip />
         </div>
 
