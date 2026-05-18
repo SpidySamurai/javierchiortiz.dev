@@ -13,7 +13,7 @@ export const experiences: DataExperience[] = [
     description:
       'Build and maintain scalable UI interfaces for data-heavy applications, enabling internal teams and external clients to access dynamic dashboards and tools. Lead the development of a responsive multi-page portal and collaborate with backend engineers to integrate secure APIs and optimize user workflows. Currently building a mobile-first e-wallet web app focused on real-time account and transaction views with secure session management.',
     stack: [...FRONTEND, ...WEB, ...DATA, 'Superset', 'SQL', 'Django', 'Python'],
-    url: 'https://enti.mx/',
+    url: 'https://en-ti.com/index.html',
   },
   {
     id: 'softtek',

@@ -70,11 +70,10 @@ export function useMarvelRivals(uid: string) {
     isLoading: currentLoading,
   } = useSWR<MarvelApiResponse>(uid ? `/api/marvel/player?uid=${uid}` : null, fetcher);
 
-  const {
-    data: s1Data,
-    error: s1Error,
-  } = useSWR<MarvelApiResponse>(uid ? `/api/marvel/player?uid=${uid}&season=1` : null, fetcher);
-
+  const { data: s1Data, error: s1Error } = useSWR<MarvelApiResponse>(
+    uid ? `/api/marvel/player?uid=${uid}&season=1` : null,
+    fetcher
+  );
 
   const error = currentError || s1Error;
 
@@ -154,10 +153,15 @@ export function useMarvelRivals(uid: string) {
     };
   }
 
+  const validRank = (r?: string | null) => (r && r !== 'Invalid level' ? r : null);
+  const currentRank = validRank(player?.rank?.rank);
+  const displayRank = currentRank ?? peakRank.rank;
+  const displayColor = currentRank ? (player?.rank?.color ?? null) : peakRank.color;
+
   return {
-    rank: player?.rank?.rank || 'Unranked', // Current Rank
-    rankIcon: getLocalRankIcon(player?.rank?.rank),
-    rankColor: player?.rank?.color || '#ffffff',
+    rank: displayRank || 'Unranked',
+    rankIcon: getLocalRankIcon(displayRank ?? undefined),
+    rankColor: displayColor || '#ffffff',
 
     peakRank: peakRank.rank,
     peakRankIcon: getLocalRankIcon(peakRank.rank),

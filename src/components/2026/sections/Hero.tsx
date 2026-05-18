@@ -113,9 +113,21 @@ function AnimatedHeadline({
   onDone?: () => void;
 }) {
   const words: { text: string; isAccent: boolean }[] = [
-    ...pre.trim().split(/\s+/).filter(Boolean).map((w) => ({ text: w, isAccent: false })),
-    ...accent.trim().split(/\s+/).filter(Boolean).map((w) => ({ text: w, isAccent: true })),
-    ...post.trim().split(/\s+/).filter(Boolean).map((w) => ({ text: w, isAccent: false })),
+    ...pre
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((w) => ({ text: w, isAccent: false })),
+    ...accent
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((w) => ({ text: w, isAccent: true })),
+    ...post
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((w) => ({ text: w, isAccent: false })),
   ];
 
   const lastDelay = (words.length - 1) * 0.1 + 0.55;
@@ -171,7 +183,7 @@ export default function Hero() {
     }).then(() => setParticlesReady(true));
   }, []);
 
-  const fireComet = () => {
+  const fireComet = useCallback(() => {
     if (!cometContainerRef.current) return;
     const container = cometContainerRef.current;
     const { width, height } = container.canvas.size;
@@ -220,7 +232,7 @@ export default function Hero() {
       }
     };
     requestAnimationFrame(animate);
-  };
+  }, [isDark]);
 
   useEffect(() => {
     if (!particlesReady) return;
@@ -244,11 +256,18 @@ export default function Hero() {
 
   return (
     <section
+      data-track-section="hero"
       className="relative px-8 md:px-16 pt-24 pb-24 md:pb-40 overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
     >
       {/* Unified particles — background + comets in one container */}
-      {particlesReady && <ParticleBackground key={resolvedTheme ?? 'dark'} onLoaded={handleParticlesLoaded} options={particlesOptions} />}
+      {particlesReady && (
+        <ParticleBackground
+          key={resolvedTheme ?? 'dark'}
+          onLoaded={handleParticlesLoaded}
+          options={particlesOptions}
+        />
+      )}
 
       {/* Ambient glow */}
       <div
@@ -310,7 +329,10 @@ export default function Hero() {
             animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: 0.38, ease: 'easeOut' }}
             className="text-lg md:text-xl leading-relaxed max-w-lg"
-            style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
+            style={{
+              color: 'var(--ds-on-surface-variant)',
+              fontFamily: 'var(--font-inter), sans-serif',
+            }}
           >
             {t('hero_description_long')}
           </motion.p>
@@ -331,7 +353,10 @@ export default function Hero() {
             </a>
             <span
               className="text-xs italic tracking-widest"
-              style={{ color: 'color-mix(in srgb, var(--ds-primary) 55%, transparent)', fontFamily: 'var(--font-inter), sans-serif' }}
+              style={{
+                color: 'color-mix(in srgb, var(--ds-primary) 55%, transparent)',
+                fontFamily: 'var(--font-inter), sans-serif',
+              }}
             >
               {t('hero_cta_sub')}
             </span>

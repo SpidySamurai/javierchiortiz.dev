@@ -1,7 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type ExperienceKey = 'enti' | 'softtek' | 'scandia' | 'iotam' | 'brightcoders';
 
@@ -80,10 +81,22 @@ const chipVariants = {
 };
 
 const MONTH_IDX: Record<string, number> = {
-  Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
-  Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+  Jan: 0,
+  Feb: 1,
+  Mar: 2,
+  Apr: 3,
+  May: 4,
+  Jun: 5,
+  Jul: 6,
+  Aug: 7,
+  Sep: 8,
+  Oct: 9,
+  Nov: 10,
+  Dec: 11,
   // Spanish
-  Ene: 0, Ago: 7, Dic: 11,
+  Ene: 0,
+  Ago: 7,
+  Dic: 11,
 };
 
 function parseDuration(dateStr: string, yrLabel: string, moLabel: string): string {
@@ -131,7 +144,12 @@ function Description({ text }: { text: string }) {
         <p
           key={i}
           className="text-lg leading-relaxed"
-          style={{ color: i === 0 ? 'var(--ds-on-surface-variant)' : 'color-mix(in srgb, var(--ds-on-surface-variant) 80%, transparent)' }}
+          style={{
+            color:
+              i === 0
+                ? 'var(--ds-on-surface-variant)'
+                : 'color-mix(in srgb, var(--ds-on-surface-variant) 80%, transparent)',
+          }}
         >
           {part}
         </p>
@@ -146,15 +164,18 @@ function TierBadge({ label, isLead }: { label: string; isLead?: boolean }) {
       className="inline-block px-4 py-1 mb-4 rounded-full text-[10px] font-bold uppercase tracking-widest border"
       style={{
         color: isLead ? 'var(--ds-primary)' : 'var(--ds-outline)',
-        backgroundColor: isLead ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'color-mix(in srgb, var(--ds-outline) 8%, transparent)',
-        borderColor: isLead ? 'color-mix(in srgb, var(--ds-primary) 20%, transparent)' : 'color-mix(in srgb, var(--ds-outline) 15%, transparent)',
+        backgroundColor: isLead
+          ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+          : 'color-mix(in srgb, var(--ds-outline) 8%, transparent)',
+        borderColor: isLead
+          ? 'color-mix(in srgb, var(--ds-primary) 20%, transparent)'
+          : 'color-mix(in srgb, var(--ds-outline) 15%, transparent)',
       }}
     >
       {label}
     </div>
   );
 }
-
 
 function YearDisplay({ align = 'left', date }: { align?: 'left' | 'right'; date?: string }) {
   const t = useTranslations('common');
@@ -192,12 +213,17 @@ function YearDisplay({ align = 'left', date }: { align?: 'left' | 'right'; date?
   );
 }
 
+const VISIBLE_DEFAULT = 3;
+
 export default function Timeline() {
   const t = useTranslations('common');
+  const [showAll, setShowAll] = useState(false);
+  const visibleEntries = showAll ? TIMELINE_ENTRIES : TIMELINE_ENTRIES.slice(0, VISIBLE_DEFAULT);
 
   return (
     <section
       id="experience"
+      data-track-section="experience"
       className="px-8 lg:px-20 py-32 overflow-hidden"
       style={{ backgroundColor: 'var(--ds-surface)', scrollMarginTop: '5rem' }}
     >
@@ -219,9 +245,15 @@ export default function Timeline() {
             </span>
             <h3
               className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
-              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+              style={{
+                color: 'var(--ds-on-surface)',
+                fontFamily: 'var(--font-manrope), sans-serif',
+              }}
             >
-              {t('timeline_title')}{' '}<span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>{t('timeline_title_accent')}</span>
+              {t('timeline_title')}{' '}
+              <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
+                {t('timeline_title_accent')}
+              </span>
             </h3>
           </div>
         </motion.div>
@@ -232,14 +264,14 @@ export default function Timeline() {
           <div
             className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px hidden md:block"
             style={{
-              background:
-                `linear-gradient(to bottom, var(--ds-primary), color-mix(in srgb, var(--ds-primary) 15%, transparent), transparent)`,
+              background: `linear-gradient(to bottom, var(--ds-primary), color-mix(in srgb, var(--ds-primary) 15%, transparent), transparent)`,
               transform: 'translateX(-50%)',
             }}
           />
 
           <div className="space-y-32">
-            {TIMELINE_ENTRIES.map((entry, i) => {
+            <AnimatePresence initial={false}>
+            {visibleEntries.map((entry, i) => {
               const item = t.raw(`experience_items.${entry.key}`) as {
                 title: string;
                 date: string;
@@ -294,7 +326,8 @@ export default function Timeline() {
                       className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-10 hidden md:block"
                       style={{
                         backgroundColor: 'var(--ds-primary)',
-                        boxShadow: '0 0 20px color-mix(in srgb, var(--ds-primary) 60%, transparent)',
+                        boxShadow:
+                          '0 0 20px color-mix(in srgb, var(--ds-primary) 60%, transparent)',
                       }}
                     />
 
@@ -329,7 +362,8 @@ export default function Timeline() {
                     className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-10 hidden md:block"
                     style={{
                       backgroundColor: 'var(--ds-primary-container)',
-                      boxShadow: '0 0 16px color-mix(in srgb, var(--ds-primary-container) 40%, transparent)',
+                      boxShadow:
+                        '0 0 16px color-mix(in srgb, var(--ds-primary-container) 40%, transparent)',
                     }}
                   />
 
@@ -366,7 +400,36 @@ export default function Timeline() {
                 </motion.div>
               );
             })}
+            </AnimatePresence>
           </div>
+
+          {/* Show more / less */}
+          {TIMELINE_ENTRIES.length > VISIBLE_DEFAULT && (
+            <motion.div
+              className="flex justify-center mt-16"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+            >
+              <button
+                onClick={() => setShowAll((v) => !v)}
+                className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-colors"
+                style={{
+                  color: 'var(--ds-primary)',
+                  fontFamily: 'var(--font-inter), sans-serif',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '0.5rem 1rem',
+                }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
+                  {showAll ? 'expand_less' : 'expand_more'}
+                </span>
+                {showAll ? t('show_less') : t('show_more')}
+              </button>
+            </motion.div>
+          )}
         </div>
       </div>
     </section>

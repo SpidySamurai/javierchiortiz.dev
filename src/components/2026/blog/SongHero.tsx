@@ -15,18 +15,25 @@ const SYMBOL_HPAD = 24;
 const SYMBOL_VPAD = 4;
 const MOUSE_RADIUS = 80;
 const SHOW_TEXT = false;
-const SPEEDS = [0.45, 0.62, 0.38, 0.55, 0.48, 0.60, 0.40, 0.52, 0.44];
-const BASE_OPACITIES = [0.14, 0.10, 0.18, 0.12, 0.16, 0.10, 0.20, 0.12, 0.15];
+const SPEEDS = [0.45, 0.62, 0.38, 0.55, 0.48, 0.6, 0.4, 0.52, 0.44];
+const BASE_OPACITIES = [0.14, 0.1, 0.18, 0.12, 0.16, 0.1, 0.2, 0.12, 0.15];
 
 const UNIT_TEXT = TOP_SONGS.join('  ·  ') + '  ·  ';
 const TEXT_TRACK = UNIT_TEXT.repeat(6);
 
-interface Interval { left: number; right: number }
+interface Interval {
+  left: number;
+  right: number;
+}
 
 function circleIntervalForBand(
-  cx: number, cy: number, r: number,
-  bandTop: number, bandBottom: number,
-  hPad: number, vPad: number
+  cx: number,
+  cy: number,
+  r: number,
+  bandTop: number,
+  bandBottom: number,
+  hPad: number,
+  vPad: number
 ): Interval | null {
   const top = bandTop - vPad;
   const bottom = bandBottom + vPad;
@@ -93,7 +100,9 @@ export default function SongHero() {
       const rect = container.getBoundingClientRect();
       mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
-    const onMouseLeave = () => { mouseRef.current = { x: -999, y: -999 }; };
+    const onMouseLeave = () => {
+      mouseRef.current = { x: -999, y: -999 };
+    };
     container.addEventListener('mousemove', onMouseMove);
     container.addEventListener('mouseleave', onMouseLeave);
 
@@ -117,13 +126,21 @@ export default function SongHero() {
         const mouseInfluence = Math.max(0, 1 - distToMouse / MOUSE_RADIUS);
         const speed = SPEEDS[i]! * (1 + mouseInfluence * 3);
 
-        offsets[i] = ((offsets[i]! + speed * dir) % textWidth + textWidth) % textWidth;
+        offsets[i] = (((offsets[i]! + speed * dir) % textWidth) + textWidth) % textWidth;
         const offset = offsets[i]!;
 
         const rowTop = rowAreaTop2 + i * LINE_H;
 
         // Collision with central symbol
-        const symbolInterval = circleIntervalForBand(sx, sy, SYMBOL_RADIUS, rowTop, rowTop + LINE_H, SYMBOL_HPAD, SYMBOL_VPAD);
+        const symbolInterval = circleIntervalForBand(
+          sx,
+          sy,
+          SYMBOL_RADIUS,
+          rowTop,
+          rowTop + LINE_H,
+          SYMBOL_HPAD,
+          SYMBOL_VPAD
+        );
         const leftWidth = symbolInterval ? Math.max(0, Math.min(symbolInterval.left, cw)) : cw;
         const rightStart = symbolInterval ? Math.max(0, Math.min(symbolInterval.right, cw)) : cw;
         const rightWidth = cw - rightStart;
@@ -131,7 +148,8 @@ export default function SongHero() {
         // Mouse proximity: highlight nearby rows gold
         const baseOpacity = BASE_OPACITIES[i]!;
         const highlightOpacity = baseOpacity + mouseInfluence * 0.55;
-        const color = mouseInfluence > 0.3 ? `rgba(240,192,64,${mouseInfluence.toFixed(2)})` : '#f0f0f0';
+        const color =
+          mouseInfluence > 0.3 ? `rgba(240,192,64,${mouseInfluence.toFixed(2)})` : '#f0f0f0';
         const opacity = Math.min(highlightOpacity, 0.75).toFixed(2);
 
         const { leftClip, leftText, rightClip, rightText } = rows[i]!;
@@ -193,8 +211,10 @@ export default function SongHero() {
         <div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 rounded-full"
           style={{
-            width: 220, height: 220,
-            background: 'radial-gradient(circle, rgba(240,192,64,0.28) 0%, rgba(240,192,64,0.08) 50%, transparent 70%)',
+            width: 220,
+            height: 220,
+            background:
+              'radial-gradient(circle, rgba(240,192,64,0.28) 0%, rgba(240,192,64,0.08) 50%, transparent 70%)',
             filter: 'blur(20px)',
           }}
         />
@@ -211,7 +231,12 @@ export default function SongHero() {
               '0 0 12px rgba(240,192,64,0.5)',
             ],
           }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', times: [0, 0.2, 0.35, 0.55, 0.7, 0.85, 1] }}
+          transition={{
+            duration: 3.5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            times: [0, 0.2, 0.35, 0.55, 0.7, 0.85, 1],
+          }}
           style={{
             fontFamily: 'var(--font-manrope), sans-serif',
             fontSize: 'clamp(52px, 9vw, 110px)',
@@ -227,7 +252,10 @@ export default function SongHero() {
 
       <div
         className="absolute bottom-0 left-0 w-full pointer-events-none z-10"
-        style={{ height: '35%', background: 'linear-gradient(to top, var(--ds-bg) 0%, transparent 100%)' }}
+        style={{
+          height: '35%',
+          background: 'linear-gradient(to top, var(--ds-bg) 0%, transparent 100%)',
+        }}
       />
     </div>
   );

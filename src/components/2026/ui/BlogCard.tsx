@@ -3,18 +3,30 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import BlogCover from './BlogCover';
-import type { BlogPost } from '@/data/blog';
 import { getTheme } from '@/data/blogThemes';
 
+interface BlogCardPost {
+  slug: string;
+  date: string;
+  category: string;
+  readTime: string;
+  coverTheme: 'pilots' | 'spiderman' | 'karate';
+  theme?: string;
+  title?: string;
+  excerpt?: string;
+  coverImageUrl?: string | null;
+  coverImagePositionCard?: string | null;
+}
+
 interface BlogCardProps {
-  post: BlogPost;
+  post: BlogCardPost;
   locale: string;
 }
 
 export default function BlogCard({ post, locale }: BlogCardProps) {
   const tb = useTranslations('blog');
-  const title = tb(`${post.slug}.title`);
-  const excerpt = tb(`${post.slug}.excerpt`);
+  const title = post.title ?? tb(`${post.slug}.title`);
+  const excerpt = post.excerpt ?? tb(`${post.slug}.excerpt`);
   const theme = getTheme(post.theme);
 
   return (
@@ -27,11 +39,25 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
       }}
     >
       {/* Cover */}
-      <BlogCover theme={post.coverTheme} height="200px" />
+      {post.coverImageUrl ? (
+        <div style={{ width: '100%', height: 200, overflow: 'hidden' }}>
+          <img
+            src={post.coverImageUrl}
+            alt={title}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: post.coverImagePositionCard ?? '50% 50%',
+            }}
+          />
+        </div>
+      ) : (
+        <BlogCover theme={post.coverTheme} height="200px" />
+      )}
 
       {/* Content */}
       <div className="p-6 space-y-3">
-        {/* Category pill */}
         <span
           className="inline-block px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest"
           style={{
@@ -42,7 +68,6 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
           {post.category}
         </span>
 
-        {/* Title */}
         <h3
           className="text-xl font-black leading-tight group-hover:text-[color:var(--ds-primary)] transition-colors duration-200"
           style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
@@ -50,15 +75,16 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
           {title}
         </h3>
 
-        {/* Excerpt */}
         <p
           className="text-sm leading-relaxed line-clamp-3"
-          style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
+          style={{
+            color: 'var(--ds-on-surface-variant)',
+            fontFamily: 'var(--font-inter), sans-serif',
+          }}
         >
           {excerpt}
         </p>
 
-        {/* Footer row */}
         <div className="flex items-center justify-between pt-2">
           <div
             className="flex items-center gap-3 text-xs"

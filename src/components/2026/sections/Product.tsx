@@ -11,6 +11,7 @@ export default function Product() {
 
   return (
     <section
+      data-track-section="product"
       className="px-8 lg:px-20 py-32 overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
     >
@@ -31,7 +32,10 @@ export default function Product() {
             </span>
             <h3
               className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
-              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+              style={{
+                color: 'var(--ds-on-surface)',
+                fontFamily: 'var(--font-manrope), sans-serif',
+              }}
             >
               {t('product_title')}{' '}
               <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
@@ -67,7 +71,10 @@ export default function Product() {
               <div className="flex items-center gap-3 flex-wrap">
                 <span
                   className="text-3xl md:text-4xl font-black tracking-tight"
-                  style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                  style={{
+                    color: 'var(--ds-on-surface)',
+                    fontFamily: 'var(--font-manrope), sans-serif',
+                  }}
                 >
                   Lab2Next
                 </span>
@@ -86,7 +93,10 @@ export default function Product() {
 
               <p
                 className="text-lg leading-relaxed max-w-xl"
-                style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
+                style={{
+                  color: 'var(--ds-on-surface-variant)',
+                  fontFamily: 'var(--font-inter), sans-serif',
+                }}
               >
                 {t('product_description')}
               </p>
@@ -114,7 +124,10 @@ export default function Product() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-base font-semibold transition-colors hover:opacity-80 w-fit"
-                    style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                    style={{
+                      color: 'var(--ds-primary)',
+                      fontFamily: 'var(--font-manrope), sans-serif',
+                    }}
                   >
                     {t('product_cta')}
                   </a>
@@ -133,7 +146,10 @@ export default function Product() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm font-medium transition-colors hover:opacity-80 w-fit"
-                  style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                  style={{
+                    color: 'var(--ds-outline)',
+                    fontFamily: 'var(--font-manrope), sans-serif',
+                  }}
                 >
                   {t('product_info')}
                 </a>

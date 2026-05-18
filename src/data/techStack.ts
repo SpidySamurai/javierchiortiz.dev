@@ -9,7 +9,7 @@ import {
   SiDotnet,
   SiJavascript,
   SiRuby,
-  SiCss3,
+  SiCss,
   SiHtml5,
   SiSass,
   SiPython,
@@ -70,7 +70,7 @@ export const techIcons: Record<string, TechInfo> = {
     color: '#38BDF8',
   },
   CSS: {
-    icon: SiCss3,
+    icon: SiCss,
     label: 'CSS3',
     color: '#1572B6',
   },

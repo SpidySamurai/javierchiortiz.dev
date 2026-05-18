@@ -1,16 +1,14 @@
-'use client';
-
-import { use } from 'react';
-import { motion } from 'framer-motion';
-import { blogPosts } from '@/data/blog';
+import { getPublishedPosts } from '@/lib/blogQueries';
 import BlogCard from '@/components/2026/ui/BlogCard';
 import Header from '@/components/2026/layout/Header';
 import Sidebar from '@/components/2026/layout/Sidebar';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
 import CustomCursor from '@/components/2026/ui/CustomCursor';
+import type { Post } from '@/types/database';
 
-export default function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = use(params);
+export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const posts = await getPublishedPosts();
 
   return (
     <div className="ds-2026" style={{ minHeight: '100vh' }}>
@@ -18,17 +16,10 @@ export default function BlogPage({ params }: { params: Promise<{ locale: string 
       <CustomCursor />
       <Header />
       <Sidebar />
-
-      <main className="xl:ml-64 pt-20">
+      <main className="sidebar-main pt-20">
         <section className="py-28 px-8" style={{ backgroundColor: 'var(--ds-bg)' }}>
           <div className="max-w-7xl mx-auto">
-            {/* Section header */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="space-y-2 mb-16"
-            >
+            <div className="space-y-2 mb-16">
               <span
                 className="text-xs uppercase tracking-[0.3em] font-bold block"
                 style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
@@ -37,27 +28,43 @@ export default function BlogPage({ params }: { params: Promise<{ locale: string 
               </span>
               <h1
                 className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
-                style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                style={{
+                  color: 'var(--ds-on-surface)',
+                  fontFamily: 'var(--font-manrope), sans-serif',
+                }}
               >
                 Thoughts &{' '}
                 <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>Beyond Code</span>
               </h1>
-            </motion.div>
-
-            {/* Posts grid */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, ease: 'easeOut', delay: 0.15 }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
-            >
-              {blogPosts.map((post) => (
-                <BlogCard key={post.slug} post={post} locale={locale} />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {posts.map((post) => (
+                <BlogCard key={post.slug} post={adaptPost(post, locale)} locale={locale} />
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
       </main>
     </div>
   );
+}
+
+function adaptPost(post: Post, locale: string) {
+  return {
+    slug: post.slug,
+    date: post.published_at
+      ? new Date(post.published_at).toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', {
+          month: 'long',
+          year: 'numeric',
+        })
+      : '',
+    category: post.category,
+    readTime: post.read_time,
+    coverTheme: (post.cover_theme ?? 'pilots') as 'pilots' | 'spiderman' | 'karate',
+    theme: post.cover_theme ?? undefined,
+    title: locale === 'es' ? post.title_es : post.title_en,
+    excerpt: (locale === 'es' ? post.excerpt_es : post.excerpt_en) ?? undefined,
+    coverImageUrl: post.cover_image_url,
+    coverImagePositionCard: post.cover_image_position_card,
+  };
 }

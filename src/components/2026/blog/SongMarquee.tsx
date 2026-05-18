@@ -90,7 +90,13 @@ function MarqueeTrack() {
 
 export default function SongMarquee() {
   return (
-    <div className="w-full overflow-hidden py-3" style={{ borderTop: '1px solid rgba(240,192,64,0.1)', borderBottom: '1px solid rgba(240,192,64,0.1)' }}>
+    <div
+      className="w-full overflow-hidden py-3"
+      style={{
+        borderTop: '1px solid rgba(240,192,64,0.1)',
+        borderBottom: '1px solid rgba(240,192,64,0.1)',
+      }}
+    >
       <div
         className="flex"
         style={{
