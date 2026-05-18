@@ -115,7 +115,7 @@ function WhatsAppIcon() {
 
 export default function MantecadoChat() {
   const t = useTranslations('common.mantecado');
-  const waHref = `https://wa.me/529994875155?text=${encodeURIComponent(t('wa_message'))}`;
+  const waHref = `https://wa.me/529904147791?text=${encodeURIComponent(t('wa_message'))}`;
   const [phase, setPhase] = useState<Phase>('idle');
   const [greeting, setGreeting] = useState('');
   const [showTyping, setShowTyping] = useState(false);

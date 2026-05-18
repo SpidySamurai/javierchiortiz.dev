@@ -7,7 +7,7 @@ const SERVICE_KEYS = ['landing', 'webapp', 'mvp', 'cms', 'crm', 'ai'] as const;
 const PROCESS_KEYS = ['idea', 'build', 'launch'] as const;
 const PROCESS_ICONS = { idea: 'lightbulb', build: 'build', launch: 'rocket_launch' } as const;
 
-const WA_PHONE = '529994875155';
+const WA_PHONE = '529904147791';
 
 export default function Services() {
   const t = useTranslations('common');
