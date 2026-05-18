@@ -4,7 +4,9 @@ import type { NextConfig } from 'next';
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    optimizePackageImports: ['react-icons/si', 'react-icons/tb'],
+  },
 };
 
 export default withNextIntl(nextConfig);
