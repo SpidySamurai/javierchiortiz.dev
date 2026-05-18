@@ -197,5 +197,14 @@
     "wa_cta": "Write to Javier",
     "wa_phone": "+52 990 414 7791",
     "wa_message": "Hi Javier, I saw your portfolio and I want to get in touch"
-  }
+  },
+  "visitors_title": "Visitors from around the world",
+  "visitors_total": "Total visitors",
+  "visitors_countries": "Countries",
+  "visitors_today": "Today",
+  "leave_memory_title": "Leave a memory",
+  "leave_memory_subtitle": "Passed through here? Leave me a note.",
+  "leave_memory_placeholder": "Write your message here...",
+  "leave_memory_submit": "Send",
+  "leave_memory_soon": "Coming soon"
 }
