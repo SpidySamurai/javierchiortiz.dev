@@ -1,9 +1,10 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function Footer() {
   const t = useTranslations('common');
+  const locale = useLocale();
   const year = new Date().getFullYear();
 
   return (
@@ -71,7 +72,7 @@ export default function Footer() {
             © {year} Javier Chi Ortíz
           </p>
           <a
-            href="/privacy"
+            href={`/${locale}/privacy`}
             className="text-[10px] uppercase tracking-widest transition-colors"
             style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif', textDecoration: 'none' }}
           >
