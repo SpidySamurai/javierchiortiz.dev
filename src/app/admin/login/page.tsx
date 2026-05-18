@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
@@ -28,13 +29,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'var(--font-inter, system-ui, sans-serif)' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'var(--ds-font-body)' }}>
 
       {/* Left — brand panel */}
       <div
         style={{
           flex: '0 0 42%',
-          background: '#0b1326',
+          background: 'var(--ds-bg)',
           borderRight: '1px solid #1a2340',
           display: 'flex',
           flexDirection: 'column',
@@ -49,16 +50,16 @@ export default function LoginPage() {
             width: 44,
             height: 44,
             borderRadius: 12,
-            background: 'linear-gradient(135deg, #8083ff, #c0c1ff)',
+            background: 'linear-gradient(135deg, var(--ds-primary-container), var(--ds-primary))',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 4px 20px rgba(128,131,255,0.3)',
+            boxShadow: '0 4px 20px color-mix(in srgb, var(--ds-primary-container) 30%, transparent)',
           }}
         >
           <span
             style={{
-              fontFamily: 'var(--font-manrope, system-ui, sans-serif)',
+              fontFamily: 'var(--ds-font-display)',
               fontWeight: 800,
               fontSize: 16,
               color: '#0f0060',
@@ -85,10 +86,10 @@ export default function LoginPage() {
           </p>
           <h1
             style={{
-              fontFamily: 'var(--font-manrope, system-ui, sans-serif)',
+              fontFamily: 'var(--ds-font-display)',
               fontWeight: 800,
               fontSize: 38,
-              color: '#dae2fd',
+              color: 'var(--ds-on-surface)',
               margin: 0,
               lineHeight: 1.1,
               letterSpacing: '-1px',
@@ -123,7 +124,7 @@ export default function LoginPage() {
         </div>
 
         {/* Bottom: portfolio link */}
-        <a
+        <Link
           href="/"
           style={{
             color: '#6b6880',
@@ -134,12 +135,12 @@ export default function LoginPage() {
             gap: 6,
             transition: 'color 0.15s',
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = '#908fa0')}
+          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ds-outline)')}
           onMouseLeave={(e) => (e.currentTarget.style.color = '#6b6880')}
         >
           <span className="material-symbols-outlined" style={{ fontSize: 14 }}>arrow_back</span>
           Back to portfolio
-        </a>
+        </Link>
       </div>
 
       {/* Right — form panel */}
@@ -157,10 +158,10 @@ export default function LoginPage() {
           <div style={{ marginBottom: 36 }}>
             <h2
               style={{
-                fontFamily: 'var(--font-manrope, system-ui, sans-serif)',
+                fontFamily: 'var(--ds-font-display)',
                 fontWeight: 700,
                 fontSize: 22,
-                color: '#dae2fd',
+                color: 'var(--ds-on-surface)',
                 margin: '0 0 6px',
                 letterSpacing: '-0.3px',
               }}
@@ -189,9 +190,9 @@ export default function LoginPage() {
                   padding: '12px 16px',
                   borderRadius: 10,
                   border: 'none',
-                  outline: focused === 'email' ? '2px solid #8083ff' : '2px solid #1a2340',
-                  background: focused === 'email' ? '#0f1e3a' : '#0b1326',
-                  color: '#dae2fd',
+                  outline: focused === 'email' ? '2px solid var(--ds-primary-container)' : '2px solid #1a2340',
+                  background: focused === 'email' ? '#0f1e3a' : 'var(--ds-bg)',
+                  color: 'var(--ds-on-surface)',
                   fontSize: 14,
                   transition: 'outline-color 0.15s, background 0.15s',
                   width: '100%',
@@ -216,9 +217,9 @@ export default function LoginPage() {
                   padding: '12px 16px',
                   borderRadius: 10,
                   border: 'none',
-                  outline: focused === 'password' ? '2px solid #8083ff' : '2px solid #1a2340',
-                  background: focused === 'password' ? '#0f1e3a' : '#0b1326',
-                  color: '#dae2fd',
+                  outline: focused === 'password' ? '2px solid var(--ds-primary-container)' : '2px solid #1a2340',
+                  background: focused === 'password' ? '#0f1e3a' : 'var(--ds-bg)',
+                  color: 'var(--ds-on-surface)',
                   fontSize: 14,
                   transition: 'outline-color 0.15s, background 0.15s',
                   width: '100%',
@@ -249,7 +250,7 @@ export default function LoginPage() {
                 marginTop: 4,
                 padding: '13px 16px',
                 borderRadius: 10,
-                background: loading ? '#1a2340' : 'linear-gradient(135deg, #8083ff, #c0c1ff)',
+                background: loading ? '#1a2340' : 'linear-gradient(135deg, var(--ds-primary-container), var(--ds-primary))',
                 color: loading ? '#6b6880' : '#0f0060',
                 fontWeight: 700,
                 fontSize: 14,

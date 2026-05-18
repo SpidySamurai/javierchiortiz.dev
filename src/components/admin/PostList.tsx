@@ -28,10 +28,10 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
         <div>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#dae2fd', margin: 0, fontFamily: 'var(--font-manrope, system-ui, sans-serif)' }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--ds-on-surface)', margin: 0, fontFamily: 'var(--ds-font-display)' }}>
             Posts
           </h1>
-          <p style={{ color: '#464554', fontSize: 13, margin: '4px 0 0' }}>
+          <p style={{ color: 'var(--ds-outline-variant)', fontSize: 13, margin: '4px 0 0' }}>
             {posts.length} {posts.length === 1 ? 'post' : 'posts'}
           </p>
         </div>
@@ -42,13 +42,13 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
             alignItems: 'center',
             gap: 6,
             padding: '9px 18px',
-            background: 'linear-gradient(135deg, #8083ff 0%, #c0c1ff 100%)',
+            background: 'linear-gradient(135deg, var(--ds-primary-container) 0%, var(--ds-primary) 100%)',
             color: '#0f0060',
             borderRadius: 10,
             fontSize: 13,
             fontWeight: 700,
             textDecoration: 'none',
-            boxShadow: '0 4px 12px rgba(128,131,255,0.25)',
+            boxShadow: '0 4px 12px color-mix(in srgb, var(--ds-primary-container) 25%, transparent)',
           }}
         >
           <span className="material-symbols-outlined" style={{ fontSize: 16 }}>add</span>
@@ -56,22 +56,22 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
         </Link>
       </div>
 
-      <div style={{ borderRadius: 14, border: '1px solid #222a3d', overflow: 'hidden' }}>
+      <div style={{ borderRadius: 14, border: '1px solid var(--ds-surface-high)', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
-            <tr style={{ backgroundColor: '#131b2e' }}>
+            <tr style={{ backgroundColor: 'var(--ds-surface)' }}>
               {['Slug', 'Title', 'Category', 'Status', 'Actions'].map((h) => (
                 <th
                   key={h}
                   style={{
                     padding: '12px 16px',
-                    color: '#464554',
+                    color: 'var(--ds-outline-variant)',
                     fontWeight: 600,
                     textAlign: 'left',
                     letterSpacing: '0.05em',
                     textTransform: 'uppercase',
                     fontSize: 11,
-                    borderBottom: '1px solid #222a3d',
+                    borderBottom: '1px solid var(--ds-surface-high)',
                   }}
                 >
                   {h}
@@ -84,20 +84,20 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
               <tr
                 key={post.id}
                 style={{
-                  backgroundColor: i % 2 === 0 ? '#0d1525' : '#0b1326',
+                  backgroundColor: i % 2 === 0 ? '#0d1525' : 'var(--ds-bg)',
                   borderBottom: i < posts.length - 1 ? '1px solid #1a2340' : 'none',
                 }}
               >
-                <td style={{ padding: '12px 16px', color: '#908fa0', fontFamily: 'monospace', fontSize: 12 }}>
+                <td style={{ padding: '12px 16px', color: 'var(--ds-outline)', fontFamily: 'monospace', fontSize: 12 }}>
                   {post.slug}
                 </td>
-                <td style={{ padding: '12px 16px', color: '#dae2fd', maxWidth: 240 }}>
+                <td style={{ padding: '12px 16px', color: 'var(--ds-on-surface)', maxWidth: 240 }}>
                   <span style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {post.title_en}
                   </span>
                 </td>
                 <td style={{ padding: '12px 16px' }}>
-                  <span style={{ padding: '3px 10px', borderRadius: 9999, fontSize: 11, fontWeight: 600, background: '#171f33', color: '#908fa0' }}>
+                  <span style={{ padding: '3px 10px', borderRadius: 9999, fontSize: 11, fontWeight: 600, background: 'var(--ds-surface-container)', color: 'var(--ds-outline)' }}>
                     {post.category}
                   </span>
                 </td>
@@ -111,8 +111,8 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
                       fontWeight: 700,
                       border: 'none',
                       cursor: 'pointer',
-                      background: post.is_published ? 'rgba(74,222,128,0.1)' : '#171f33',
-                      color: post.is_published ? '#4ade80' : '#464554',
+                      background: post.is_published ? 'rgba(74,222,128,0.1)' : 'var(--ds-surface-container)',
+                      color: post.is_published ? '#4ade80' : 'var(--ds-outline-variant)',
                     }}
                   >
                     {post.is_published ? 'Published' : 'Draft'}
@@ -120,14 +120,14 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
                 </td>
                 <td style={{ padding: '12px 16px' }}>
                   <div style={{ display: 'flex', gap: 16 }}>
-                    <Link href={`/admin/posts/${post.id}`} style={{ color: '#c0c1ff', textDecoration: 'none', fontSize: 13, fontWeight: 500 }}>
+                    <Link href={`/admin/posts/${post.id}`} style={{ color: 'var(--ds-primary)', textDecoration: 'none', fontSize: 13, fontWeight: 500 }}>
                       Edit
                     </Link>
                     <button
                       onClick={() => deletePost(post.id)}
-                      style={{ color: '#464554', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, padding: 0 }}
+                      style={{ color: 'var(--ds-outline-variant)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, padding: 0 }}
                       onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = '#464554')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline-variant)')}
                     >
                       Delete
                     </button>
@@ -137,7 +137,7 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
             ))}
             {posts.length === 0 && (
               <tr>
-                <td colSpan={5} style={{ padding: 60, color: '#464554', textAlign: 'center' }}>
+                <td colSpan={5} style={{ padding: 60, color: 'var(--ds-outline-variant)', textAlign: 'center' }}>
                   No posts yet.
                 </td>
               </tr>
