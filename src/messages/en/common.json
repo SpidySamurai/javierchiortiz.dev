@@ -164,6 +164,9 @@
   "contact_success": "Message sent! I'll get back to you soon.",
   "contact_error": "Something went wrong. Try again.",
   "last_visitor_from": "Last visitor from",
+  "not_found_title": "404 — Unexecuted idea.",
+  "not_found_message": "The best ideas start without a URL. Tell me yours.",
+  "not_found_cta": "Let's talk →",
   "mantecado": {
     "greeting_0": "Meow! How can I help you?",
     "greeting_1": "Purrr... hi there!",
