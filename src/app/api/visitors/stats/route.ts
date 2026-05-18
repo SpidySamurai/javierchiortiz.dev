@@ -16,22 +16,16 @@ export async function GET() {
     supabase
       .from('visitor_locations')
       .select('*', { count: 'exact', head: true }),
-    supabase
-      .from('visitor_locations')
-      .select('country_code'),
+    supabase.rpc('count_distinct_countries'),
     supabase
       .from('visitor_locations')
       .select('*', { count: 'exact', head: true })
       .gte('created_at', todayStart.toISOString()),
   ]);
 
-  const uniqueCountries = new Set(
-    (countriesResult.data ?? []).map((r) => r.country_code)
-  ).size;
-
   return NextResponse.json({
     total: totalResult.count ?? 0,
-    countries: uniqueCountries,
+    countries: (countriesResult.data as number | null) ?? 0,
     today: todayResult.count ?? 0,
   });
 }

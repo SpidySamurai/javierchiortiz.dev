@@ -14,8 +14,8 @@ export async function generateMetadata({
 
 export default function VisitorsPage() {
   return (
-    <main>
+    <>
       <VisitorsGlobe />
-    </main>
+    </>
   );
 }
