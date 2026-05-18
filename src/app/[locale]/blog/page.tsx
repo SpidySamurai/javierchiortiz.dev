@@ -4,18 +4,19 @@ import Header from '@/components/2026/layout/Header';
 import Sidebar from '@/components/2026/layout/Sidebar';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
 import CustomCursor from '@/components/2026/ui/CustomCursor';
+import { getSidebarCollapsed } from '@/lib/sidebarState';
 import type { Post } from '@/types/database';
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const posts = await getPublishedPosts();
+  const [posts, sidebarCollapsed] = await Promise.all([getPublishedPosts(), getSidebarCollapsed()]);
 
   return (
     <div className="ds-2026" style={{ minHeight: '100vh' }}>
       <ScrollProgress />
       <CustomCursor />
       <Header />
-      <Sidebar />
+      <Sidebar defaultCollapsed={sidebarCollapsed} />
       <main className="sidebar-main pt-20">
         <section className="py-28 px-8" style={{ backgroundColor: 'var(--ds-bg)' }}>
           <div className="max-w-7xl mx-auto">

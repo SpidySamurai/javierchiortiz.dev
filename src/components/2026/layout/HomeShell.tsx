@@ -15,7 +15,7 @@ import BackToTop from '@/components/2026/ui/BackToTop';
 import CustomCursor from '@/components/2026/ui/CustomCursor';
 import type { Post } from '@/types/database';
 
-export default function HomeShell({ posts }: { posts: Post[] }) {
+export default function HomeShell({ posts, sidebarCollapsed }: { posts: Post[]; sidebarCollapsed?: boolean }) {
 
   return (
     <div className="ds-2026" style={{ minHeight: '100vh' }}>
@@ -23,7 +23,7 @@ export default function HomeShell({ posts }: { posts: Post[] }) {
       <ScrollProgress />
       <CustomCursor />
       <Header />
-      <Sidebar />
+      <Sidebar defaultCollapsed={sidebarCollapsed} />
       <MantecadoChat />
       <BackToTop />
       <main className="sidebar-main pt-20">
