@@ -17,17 +17,30 @@ function getClientIp(req: NextRequest): string | null {
   return req.headers.get('x-real-ip');
 }
 
-async function geolocateIp(
-  ip: string
-): Promise<{ city: string; country: string; countryCode: string; region: string } | null> {
+async function geolocateIp(ip: string): Promise<{
+  city: string;
+  country: string;
+  countryCode: string;
+  region: string;
+  lat: number;
+  lon: number;
+} | null> {
   try {
-    const res = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,countryCode,city,regionName&lang=en`, {
-      signal: AbortSignal.timeout(3000),
-    });
+    const res = await fetch(
+      `http://ip-api.com/json/${ip}?fields=status,country,countryCode,city,regionName,lat,lon&lang=en`,
+      { signal: AbortSignal.timeout(3000) }
+    );
     if (!res.ok) return null;
     const data = await res.json();
     if (data.status !== 'success' || !data.city) return null;
-    return { city: data.city, country: data.country, countryCode: data.countryCode, region: data.regionName ?? '' };
+    return {
+      city: data.city,
+      country: data.country,
+      countryCode: data.countryCode,
+      region: data.regionName ?? '',
+      lat: data.lat,
+      lon: data.lon,
+    };
   } catch {
     return null;
   }
@@ -64,7 +77,8 @@ export async function POST(req: NextRequest) {
           city: geo.city,
           country: geo.country,
           country_code: geo.countryCode,
-          region: geo.region,
+          latitude: parseFloat(geo.lat.toFixed(2)),
+          longitude: parseFloat(geo.lon.toFixed(2)),
         });
         visitorGeo = { city: geo.city, countryCode: geo.countryCode };
       }
