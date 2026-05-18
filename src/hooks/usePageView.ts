@@ -9,6 +9,8 @@ export function usePageView() {
   const locale = useLocale();
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') return;
+
     const newVisitor = !sessionStorage.getItem('visitor_tracked');
     if (newVisitor) sessionStorage.setItem('visitor_tracked', '1');
 

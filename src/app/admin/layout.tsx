@@ -2,12 +2,15 @@ import { createClient } from '@/lib/supabase/server';
 import AdminNav from './_components/AdminNav';
 import SignOutButton from './_components/SignOutButton';
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 import '../globals.css';
 
 const PUBLIC_ADMIN_PAGES = ['/admin/login', '/admin/forgot-password', '/admin/reset-password'];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const headersList = await headers();
+  // x-pathname is set by our middleware — not exposed to external clients
+  // (middleware runs before this, so this is safe for routing logic)
   const pathname = headersList.get('x-pathname') ?? '';
 
   if (PUBLIC_ADMIN_PAGES.includes(pathname)) return <>{children}</>;
@@ -17,7 +20,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return <>{children}</>;
+  if (!user) redirect('/admin/login');
 
   return (
     <div className="ds-2026 flex min-h-screen" translate="no">
