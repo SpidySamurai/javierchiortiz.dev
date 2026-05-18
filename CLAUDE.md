@@ -180,3 +180,11 @@ const referrer = raw && raw.length <= 2048 ? raw : null;
 - [ ] Hero section images (two overlapping rotated cards)
 - [ ] Project thumbnails for bento grid
 - [ ] Visual QA pass (compare with Stitch screenshot)
+
+## Known Debt (fix when next touching the file)
+
+- `PostEditor.tsx` (~590 ln) — extract toolbar, ThemeColorPicker, preview pane
+- `Hero.tsx` (~409 ln) / `Timeline.tsx` (~437 ln) — move hardcoded data to `src/data/`
+- `GamerCardContext.tsx` — lazy-load modal at usage site, not provider mount
+- `PostHogProvider.tsx` — guard init against double-call on hydration
+- Remaining `'use client'` layouts — audit each against the leaf rule
