@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations, useLocale } from 'next-intl';
+import VisitorCounter from '@/components/2026/ui/VisitorCounter';
 
 export default function Footer() {
   const t = useTranslations('common');
@@ -63,8 +64,8 @@ export default function Footer() {
           </a>
         </div>
 
-        {/* Copyright + Privacy */}
-        <div className="flex flex-col items-center md:items-end gap-1">
+        {/* Copyright + Privacy + Visitor count */}
+        <div className="flex flex-col items-center md:items-end gap-1.5">
           <p
             className="text-[10px] uppercase tracking-widest"
             style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif', margin: 0 }}
@@ -78,6 +79,7 @@ export default function Footer() {
           >
             {t('privacy')}
           </a>
+          <VisitorCounter />
         </div>
       </div>
     </footer>
