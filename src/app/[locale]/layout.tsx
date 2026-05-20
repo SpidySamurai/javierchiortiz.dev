@@ -72,7 +72,7 @@ export default async function LocaleLayout({
     <PostHogProvider>
       <NextIntlClientProvider messages={messages}>
         <GamerCardProvider>
-          <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="data-theme" defaultTheme="dark" enableColorScheme={false}>
             {children}
           </ThemeProvider>
         </GamerCardProvider>

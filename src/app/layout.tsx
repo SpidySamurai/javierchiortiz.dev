@@ -1,5 +1,5 @@
 import { Manrope, Inter } from 'next/font/google';
-import { headers } from 'next/headers';
+import { headers, cookies } from 'next/headers';
 import ConsoleBanner from '@/components/ConsoleBanner';
 
 const manrope = Manrope({
@@ -15,21 +15,22 @@ const inter = Inter({
 });
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const headersList = await headers();
+  const [headersList, cookieStore] = await Promise.all([headers(), cookies()]);
   const locale = headersList.get('x-locale') ?? 'en';
+  const theme = cookieStore.get('theme')?.value ?? 'dark';
+  const collapsed = cookieStore.get('sidebar-collapsed')?.value === 'true';
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html
+      lang={locale}
+      data-theme={theme}
+      data-scroll-behavior="smooth"
+      {...(collapsed ? { 'data-sidebar-collapsed': '' } : {})}
+    >
       <head>
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-        />
-        {/* Sets sidebar CSS var before first paint — eliminates hydration flash */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var c=localStorage.getItem('sidebar-collapsed')==='true';document.documentElement.style.setProperty('--sidebar-w',c?'4rem':'16rem');if(c)document.documentElement.setAttribute('data-sidebar-collapsed','')}catch(e){}})()`,
-          }}
         />
       </head>
       <body
