@@ -35,37 +35,45 @@ export default function VisitorList({ data }: { data: Visitor[] }) {
         Recent visitors
       </span>
 
-      {data.map((v, i) => (
-        <div
-          key={i}
-          className="flex items-center gap-3 py-2"
-          style={{ borderTop: i > 0 ? '1px solid var(--ds-surface-container)' : undefined }}
-        >
-          <span className="text-[18px] leading-none w-6 text-center shrink-0">
-            {flagEmoji(v.country_code)}
-          </span>
-          <div className="flex-1 min-w-0">
-            <span
-              className="text-[13px] font-medium block truncate"
-              style={{ color: 'var(--ds-on-surface)' }}
-            >
-              {v.city}
+      <div
+        className="max-h-[360px] overflow-y-auto -mx-6 px-6 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full"
+        style={{
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'var(--ds-surface-highest) transparent',
+        }}
+      >
+        {data.map((v, i) => (
+          <div
+            key={i}
+            className="flex items-center gap-3 py-2"
+            style={{ borderTop: i > 0 ? '1px solid var(--ds-surface-container)' : undefined }}
+          >
+            <span className="text-[18px] leading-none w-6 text-center shrink-0">
+              {flagEmoji(v.country_code)}
             </span>
+            <div className="flex-1 min-w-0">
+              <span
+                className="text-[13px] font-medium block truncate"
+                style={{ color: 'var(--ds-on-surface)' }}
+              >
+                {v.city}
+              </span>
+              <span
+                className="text-[11px]"
+                style={{ color: 'var(--ds-outline)' }}
+              >
+                {v.country}
+              </span>
+            </div>
             <span
-              className="text-[11px]"
-              style={{ color: 'var(--ds-outline)' }}
+              className="text-[11px] shrink-0"
+              style={{ color: 'var(--ds-outline-variant)' }}
             >
-              {v.country}
+              {relativeTime(v.visited_at)}
             </span>
           </div>
-          <span
-            className="text-[11px] shrink-0"
-            style={{ color: 'var(--ds-outline-variant)' }}
-          >
-            {relativeTime(v.visited_at)}
-          </span>
-        </div>
-      ))}
+        ))}
+      </div>
 
       {data.length === 0 && (
         <p className="text-center py-10 m-0" style={{ color: 'var(--ds-outline-variant)' }}>

@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
 import AnalyticsView from '@/app/admin/_components/AnalyticsView';
-import type { TrendPoint } from '@/app/admin/_components/TrendChart';
 import type { TopPage } from '@/app/admin/_components/TopPagesTable';
 import type { Visitor } from '@/app/admin/_components/VisitorList';
 
@@ -28,10 +27,9 @@ export default async function AnalyticsPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const db = supabase as any;
 
-  const [{ data: overviewRows }, { data: trendRows }, { data: topPagesRows }, { data: visitorsRows }] =
+  const [{ data: overviewRows }, { data: topPagesRows }, { data: visitorsRows }] =
     await Promise.all([
       db.rpc('get_analytics_overview'),
-      db.rpc('get_daily_trend', { days_back: 30 }),
       db.rpc('get_top_pages', { limit_n: 20 }),
       db.rpc('get_visitor_list', { limit_n: 50 }),
     ]);
@@ -42,7 +40,6 @@ export default async function AnalyticsPage() {
   return (
     <AnalyticsView
       overview={overview}
-      trend={(trendRows as unknown as TrendPoint[]) ?? []}
       topPages={(topPagesRows as unknown as TopPage[]) ?? []}
       visitors={(visitorsRows as unknown as Visitor[]) ?? []}
       postHogUrl={process.env.POSTHOG_DASHBOARD_URL ?? null}

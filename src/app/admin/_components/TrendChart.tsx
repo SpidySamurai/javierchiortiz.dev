@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 import {
   LineChart,
   Line,
@@ -16,6 +17,13 @@ export interface TrendPoint {
   views: number;
   unique_visitors: number;
 }
+
+type Range = 30 | 90 | 365;
+const RANGES: { value: Range; label: string }[] = [
+  { value: 30, label: '30d' },
+  { value: 90, label: '90d' },
+  { value: 365, label: '1y' },
+];
 
 interface Colors {
   views: string;
@@ -54,8 +62,17 @@ function readColors(): Colors {
   };
 }
 
-export default function TrendChart({ data }: { data: TrendPoint[] }) {
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
+export default function TrendChart() {
+  const [range, setRange] = useState<Range>(30);
   const [colors, setColors] = useState<Colors>(FALLBACK_COLORS);
+
+  const { data = [] } = useSWR<TrendPoint[]>(
+    `/api/analytics/trend?days=${range}`,
+    fetcher,
+    { revalidateOnFocus: false, dedupingInterval: 60_000 }
+  );
 
   useEffect(() => {
     setColors(readColors());
@@ -74,13 +91,36 @@ export default function TrendChart({ data }: { data: TrendPoint[] }) {
       className="px-4 pt-5 pb-4 rounded-[14px]"
       style={{ background: 'var(--ds-surface)', border: '1px solid var(--ds-surface-high)' }}
     >
-      <div className="flex items-center gap-4 mb-4">
+      <div className="flex items-center gap-4 mb-4 flex-wrap">
         <span
           className="text-[11px] font-semibold uppercase tracking-[0.05em]"
           style={{ color: 'var(--ds-on-surface-variant)' }}
         >
-          30-day trend
+          Trend
         </span>
+
+        <div
+          className="flex gap-0.5 p-0.5 rounded-[8px]"
+          style={{ background: 'var(--ds-surface-container)' }}
+        >
+          {RANGES.map(({ value, label }) => {
+            const active = range === value;
+            return (
+              <button
+                key={value}
+                onClick={() => setRange(value)}
+                className="px-3 py-1 rounded-[6px] text-[11px] font-medium transition-colors duration-150 cursor-pointer border-none"
+                style={{
+                  background: active ? 'var(--ds-surface-highest)' : 'transparent',
+                  color: active ? 'var(--ds-on-surface)' : 'var(--ds-outline)',
+                }}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+
         <div className="flex items-center gap-3 ml-auto">
           <span className="flex items-center gap-1.5 text-[11px]" style={{ color: 'var(--ds-outline)' }}>
             <span className="w-2.5 h-0.5 inline-block" style={{ background: colors.views }} />

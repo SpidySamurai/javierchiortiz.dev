@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import SectionHeader from '@/app/admin/_components/SectionHeader';
 import StatCard from '@/app/admin/_components/StatCard';
-import TrendChart, { type TrendPoint } from '@/app/admin/_components/TrendChart';
+import TrendChart from '@/app/admin/_components/TrendChart';
 import TopPagesTable, { type TopPage } from '@/app/admin/_components/TopPagesTable';
 import VisitorList, { type Visitor } from '@/app/admin/_components/VisitorList';
+import GeoHeatmap from '@/app/admin/_components/GeoHeatmap';
 
 interface Overview {
   total_views: number;
@@ -20,13 +21,11 @@ type Tab = 'site' | 'posthog';
 
 export default function AnalyticsView({
   overview,
-  trend,
   topPages,
   visitors,
   postHogUrl,
 }: {
   overview: Overview;
-  trend: TrendPoint[];
   topPages: TopPage[];
   visitors: Visitor[];
   postHogUrl?: string | null;
@@ -82,11 +81,10 @@ export default function AnalyticsView({
               secondary={`${overview.today_views.toLocaleString()} views`}
             />
           </div>
-          <TrendChart data={trend} />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            <TopPagesTable data={topPages} />
-            <VisitorList data={visitors} />
-          </div>
+          <TrendChart />
+          <GeoHeatmap />
+          <TopPagesTable data={topPages} />
+          <VisitorList data={visitors} />
         </div>
       )}
 
