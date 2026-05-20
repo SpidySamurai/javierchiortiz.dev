@@ -451,7 +451,7 @@ export default function Hero() {
         |-/
       </motion.span>
 
-      <div className="relative z-10 max-w-3xl mx-auto space-y-6 text-center">
+      <div className="relative z-10 max-w-3xl mx-auto space-y-10 md:text-center">
           {/* Headline */}
           <AnimatedHeadline
             pre={t('hero_headline_pre')}
@@ -479,7 +479,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 8 }}
             animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             transition={{ duration: 0.38, delay: 0.1, ease: 'easeOut' }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8"
+            className="flex flex-col sm:flex-row items-start md:items-center md:justify-center gap-10 sm:gap-8"
           >
             {/* Scrambler */}
             <ScrambleServiceCycler services={services} active={typingDone} />
@@ -491,7 +491,7 @@ export default function Hero() {
             />
 
             {/* CTA */}
-            <div className="flex flex-col gap-1 flex-shrink-0 items-center">
+            <div className="flex flex-col gap-1 flex-shrink-0 items-start md:items-center">
               <a
                 href={`https://wa.me/529904147791?text=${encodeURIComponent("Hi! I saw your portfolio and I'd like to start a project together.")}`}
                 target="_blank"
