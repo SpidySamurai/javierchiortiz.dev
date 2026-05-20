@@ -5,6 +5,7 @@ import SectionHeader from '@/app/admin/_components/SectionHeader';
 import StatCard from '@/app/admin/_components/StatCard';
 import TrendChart, { type TrendPoint } from '@/app/admin/_components/TrendChart';
 import TopPagesTable, { type TopPage } from '@/app/admin/_components/TopPagesTable';
+import VisitorList, { type Visitor } from '@/app/admin/_components/VisitorList';
 
 interface Overview {
   total_views: number;
@@ -21,11 +22,13 @@ export default function AnalyticsView({
   overview,
   trend,
   topPages,
+  visitors,
   postHogUrl,
 }: {
   overview: Overview;
   trend: TrendPoint[];
   topPages: TopPage[];
+  visitors: Visitor[];
   postHogUrl?: string | null;
 }) {
   const [activeTab, setActiveTab] = useState<Tab>('site');
@@ -80,7 +83,10 @@ export default function AnalyticsView({
             />
           </div>
           <TrendChart data={trend} />
-          <TopPagesTable data={topPages} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <TopPagesTable data={topPages} />
+            <VisitorList data={visitors} />
+          </div>
         </div>
       )}
 
