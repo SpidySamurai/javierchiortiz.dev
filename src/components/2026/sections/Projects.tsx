@@ -8,30 +8,17 @@ import { useTheme } from 'next-themes';
 import { useCallback } from 'react';
 import { projects } from '@/data/projects';
 import type { DataProject } from '@/types';
-import Chip from '@/components/2026/ui/Chip';
-
-function getCategoryLabel(project: DataProject): string {
-  if (project.category === 'entry') return 'Practice';
-  if (project.isWork && project.company) return project.company;
-  if (project.isWork) return 'Work';
-  if (project.id === 'lab2next') return 'SaaS';
-  return 'Personal';
-}
 
 function ProjectImage({
   imageUrl,
   title,
   imagePosition,
-  isLarge,
   isTall,
-  isShort,
 }: {
   imageUrl: string;
   title: string;
   imagePosition?: string;
-  isLarge: boolean;
   isTall: boolean;
-  isShort: boolean;
 }) {
   // Shape-aware default: always anchor to top so header/hero of screenshot shows.
   // Tall cards get slight vertical offset so they show more than just nav bar.
@@ -135,9 +122,7 @@ function ProjectCard({
         imageUrl={project.imageUrl}
         title={project.title}
         imagePosition={project.imagePosition}
-        isLarge={isLarge}
         isTall={isTall}
-        isShort={isShort}
       />
 
       {/* Gradients — dark: blend into bg; light: dark overlay for clean image contrast */}
