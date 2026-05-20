@@ -277,7 +277,7 @@ export default function Timeline() {
                         href={entry.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-4xl md:text-5xl font-black leading-none mb-2 tracking-tighter block hover:text-[#c0c1ff] transition-colors"
+                        className="text-4xl md:text-5xl font-black leading-none mb-2 tracking-tighter block hover:text-[var(--ds-primary)] transition-colors"
                         style={{
                           color: 'var(--ds-on-surface)',
                           fontFamily: 'var(--font-manrope), sans-serif',
@@ -353,7 +353,7 @@ export default function Timeline() {
                         href={entry.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter block hover:text-[#c0c1ff] transition-colors"
+                        className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter block hover:text-[var(--ds-primary)] transition-colors"
                         style={{
                           color: 'var(--ds-on-surface)',
                           fontFamily: 'var(--font-manrope), sans-serif',
