@@ -217,6 +217,54 @@ export default function About() {
               </motion.p>
             ))}
           </div>
+
+          {/* Stats + companies */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6, duration: 0.4 }}
+            className="flex flex-wrap gap-6 pt-4 mt-2 border-t"
+            style={{ borderColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)' }}
+          >
+            {[
+              { value: '5+', label: 'years' },
+              { value: '2', label: 'SaaS live' },
+              { value: '3+', label: 'e-commerce' },
+            ].map((stat) => (
+              <div key={stat.label} className="flex flex-col">
+                <span
+                  className="text-xl font-black leading-none"
+                  style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                >
+                  {stat.value}
+                </span>
+                <span
+                  className="text-[10px] uppercase tracking-widest mt-0.5"
+                  style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
+                >
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+            <div
+              className="w-px self-stretch"
+              style={{ backgroundColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)' }}
+            />
+            {['Softtek', 'ENTI'].map((name) => (
+              <span
+                key={name}
+                className="px-3 py-1 self-center rounded-lg text-xs font-bold"
+                style={{
+                  color: 'var(--ds-on-surface-variant)',
+                  backgroundColor: 'color-mix(in srgb, var(--ds-outline-variant) 15%, transparent)',
+                  fontFamily: 'var(--font-manrope), sans-serif',
+                }}
+              >
+                {name}
+              </span>
+            ))}
+          </motion.div>
         </div>
 
         {/* Right — tech groups */}
