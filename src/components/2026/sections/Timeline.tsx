@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import Chip from '@/components/2026/ui/Chip';
@@ -76,6 +75,10 @@ const yearVariants = {
   },
 };
 
+const chipVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' as const } },
+};
 
 const MONTH_IDX: Record<string, number> = {
   Jan: 0,
@@ -117,56 +120,11 @@ function parseDuration(dateStr: string, yrLabel: string, moLabel: string): strin
   return `${mo} ${moLabel}`;
 }
 
-function ChipCarousel({ items }: { items: string[] }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
-
-  const onMouseDown = (e: React.MouseEvent) => {
-    dragging.current = true;
-    startX.current = e.pageX - (scrollRef.current?.offsetLeft ?? 0);
-    scrollLeft.current = scrollRef.current?.scrollLeft ?? 0;
-  };
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!dragging.current || !scrollRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    scrollRef.current.scrollLeft = scrollLeft.current - (x - startX.current);
-  };
-  const stopDrag = () => { dragging.current = false; };
-
+function TechChip({ label }: { label: string }) {
   return (
-    <div
-      className="relative overflow-hidden mb-6"
-      style={{
-        maskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
-        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
-      }}
-    >
-      <div
-        ref={scrollRef}
-        className="flex gap-2 overflow-x-auto pb-1 cursor-grab active:cursor-grabbing select-none"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={stopDrag}
-        onMouseLeave={stopDrag}
-      >
-        {items.map((tech, i) => (
-          <motion.span
-            key={tech}
-            initial={{ opacity: 0, x: 8 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.06, duration: 0.3, ease: 'easeOut' }}
-            className="shrink-0"
-          >
-            <Chip variant="tech">{tech}</Chip>
-          </motion.span>
-        ))}
-      </div>
-    </div>
+    <motion.span variants={chipVariants}>
+      <Chip variant="tech">{label}</Chip>
+    </motion.span>
   );
 }
 
@@ -232,12 +190,9 @@ function YearDisplay({ align = 'left', date }: { align?: 'left' | 'right'; date?
   );
 }
 
-const VISIBLE_DEFAULT = 3;
-
 export default function Timeline() {
   const t = useTranslations('common');
-  const [showAll, setShowAll] = useState(false);
-  const visibleEntries = showAll ? TIMELINE_ENTRIES : TIMELINE_ENTRIES.slice(0, VISIBLE_DEFAULT);
+  const visibleEntries = TIMELINE_ENTRIES;
 
   return (
     <section
@@ -326,7 +281,17 @@ export default function Timeline() {
                       >
                         {item.title}
                       </a>
-                      <ChipCarousel items={entry.tech} />
+                      <motion.div
+                        className="flex flex-wrap md:justify-end gap-2 mb-6"
+                        variants={{
+                          hidden: {},
+                          visible: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } },
+                        }}
+                      >
+                        {entry.tech.map((tech) => (
+                          <TechChip key={tech} label={tech} />
+                        ))}
+                      </motion.div>
                       <Description text={item.description} />
                     </div>
 
@@ -392,7 +357,17 @@ export default function Timeline() {
                       >
                         {item.title}
                       </a>
-                      <ChipCarousel items={entry.tech} />
+                      <motion.div
+                        className="flex flex-wrap gap-2 mb-6"
+                        variants={{
+                          hidden: {},
+                          visible: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } },
+                        }}
+                      >
+                        {entry.tech.map((tech) => (
+                          <TechChip key={tech} label={tech} />
+                        ))}
+                      </motion.div>
                       <Description text={item.description} />
                     </div>
                   </div>
@@ -402,33 +377,6 @@ export default function Timeline() {
             </AnimatePresence>
           </div>
 
-          {/* Show more / less */}
-          {TIMELINE_ENTRIES.length > VISIBLE_DEFAULT && (
-            <motion.div
-              className="flex justify-center mt-16"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-            >
-              <button
-                onClick={() => setShowAll((v) => !v)}
-                className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-colors"
-                style={{
-                  color: 'var(--ds-primary)',
-                  fontFamily: 'var(--font-inter), sans-serif',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '0.5rem 1rem',
-                }}
-              >
-                <span translate="no" className="material-symbols-outlined" style={{ fontSize: 16 }}>
-                  {showAll ? 'expand_less' : 'expand_more'}
-                </span>
-                {showAll ? t('show_less') : t('show_more')}
-              </button>
-            </motion.div>
-          )}
         </div>
       </div>
     </section>
