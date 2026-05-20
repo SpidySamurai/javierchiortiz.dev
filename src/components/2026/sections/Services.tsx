@@ -238,6 +238,94 @@ function BeltItem({ initialDelay, s1, s2, s3, exitX }: BeltItemProps) {
   );
 }
 
+function MobileProcess({ t }: { t: ReturnType<typeof useTranslations> }) {
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => setStep((s) => (s + 1) % STATION_KEYS.length), 2800);
+    return () => clearInterval(id);
+  }, []);
+
+  const key = STATION_KEYS[step];
+  const stepData = t.raw(`services_process.${key}`) as { name: string; desc: string };
+
+  return (
+    <div className="flex flex-col items-center gap-6">
+      {/* Step indicators */}
+      <div className="flex gap-2">
+        {STATION_KEYS.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setStep(i)}
+            style={{
+              width: i === step ? 24 : 6,
+              height: 6,
+              borderRadius: 3,
+              backgroundColor:
+                i === step
+                  ? 'var(--ds-primary)'
+                  : 'color-mix(in srgb, var(--ds-primary) 25%, transparent)',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              transition: 'width 0.3s ease, background-color 0.3s ease',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Animated card */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="flex flex-col items-center gap-4 text-center"
+          style={{ minHeight: 140 }}
+        >
+          <div
+            className="w-14 h-14 rounded-full flex items-center justify-center"
+            style={{
+              backgroundColor: 'color-mix(in srgb, var(--ds-primary) 10%, transparent)',
+              boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--ds-primary) 20%, transparent)',
+            }}
+          >
+            <span
+              translate="no"
+              className="material-symbols-outlined"
+              style={{ fontSize: 26, color: 'var(--ds-primary)' }}
+            >
+              {STATION_ICONS[step]}
+            </span>
+          </div>
+          <div>
+            <span
+              className="text-[9px] font-bold uppercase tracking-[0.2em] block mb-1"
+              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              {String(step + 1).padStart(2, '0')}
+            </span>
+            <p
+              className="text-xl font-black uppercase tracking-wide mb-2"
+              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+            >
+              {stepData.name}
+            </p>
+            <p
+              className="text-sm leading-relaxed max-w-xs mx-auto"
+              style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              {stepData.desc}
+            </p>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
 interface BeltPos { s1: number; s2: number; s3: number; exitX: number }
 const DEFAULT_POS: BeltPos = { s1: 170, s2: 375, s3: 572, exitX: 1080 };
 
@@ -354,9 +442,20 @@ export default function Services() {
           }}
         />
 
-        {/* Conveyor Belt */}
+        {/* Mobile: step cycler */}
         <motion.div
-          className="mb-16"
+          className="md:hidden mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.35, ease: 'easeOut', delay: 0.1 }}
+        >
+          <MobileProcess t={t} />
+        </motion.div>
+
+        {/* Desktop: Conveyor Belt */}
+        <motion.div
+          className="hidden md:block mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}

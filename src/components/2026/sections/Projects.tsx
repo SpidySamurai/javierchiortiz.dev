@@ -12,11 +12,13 @@ import type { DataProject } from '@/types';
 function ProjectImage({
   imageUrl,
   title,
+  description,
   imagePosition,
   isTall,
 }: {
   imageUrl: string;
   title: string;
+  description: string;
   imagePosition?: string;
   isTall: boolean;
 }) {
@@ -43,7 +45,7 @@ function ProjectImage({
   return (
     <Image
       src={imageUrl}
-      alt={title}
+      alt={`${title} — ${description}`}
       fill
       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
       className="absolute inset-0 w-full object-cover"
@@ -121,6 +123,7 @@ function ProjectCard({
       <ProjectImage
         imageUrl={project.imageUrl}
         title={project.title}
+        description={project.description}
         imagePosition={project.imagePosition}
         isTall={isTall}
       />
@@ -193,17 +196,15 @@ function ProjectCard({
           {project.title}
         </h4>
 
-        {!isShort && (
-          <p
-            className={`text-sm leading-relaxed line-clamp-2 ${isLarge ? 'max-w-md' : ''}`}
-            style={{
-              color: isDark ? 'var(--ds-on-surface-variant)' : 'rgba(255,255,255,0.75)',
-              fontFamily: 'var(--font-inter), sans-serif',
-            }}
-          >
-            {project.description}
-          </p>
-        )}
+        <p
+          className={`leading-relaxed ${isShort ? 'text-xs line-clamp-1' : `text-sm line-clamp-2 ${isLarge ? 'max-w-md' : ''}`}`}
+          style={{
+            color: isDark ? 'var(--ds-on-surface-variant)' : 'rgba(255,255,255,0.75)',
+            fontFamily: 'var(--font-inter), sans-serif',
+          }}
+        >
+          {project.description}
+        </p>
 
         <div className="flex items-center gap-4 pt-1">
           {project.repoUrl && (

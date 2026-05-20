@@ -8,7 +8,7 @@ export const projects: DataProject[] = [
     title: 'Lab2Next',
     imageUrl: '/utils/img/lab2next-screenshot.png',
     description:
-      'Landing page for Lab2Next — clinical lab SaaS. Showcases features, pricing, and product capabilities.',
+      'Clinical lab SaaS built solo — patient registration, quality control workflows, digital result delivery, and role-based staff management. Live in production.',
     stack: ['Next.js', 'React', 'Tailwind CSS'],
     liveUrl: 'https://lab2next.com/',
     repoUrl: null,
