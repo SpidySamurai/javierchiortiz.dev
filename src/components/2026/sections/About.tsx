@@ -249,7 +249,7 @@ export default function About() {
             ))}
           </div>
 
-          {/* Stats + companies */}
+          {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -278,24 +278,62 @@ export default function About() {
                 </span>
               </div>
             ))}
-            <div
-              className="w-px self-stretch"
-              style={{ backgroundColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)' }}
-            />
-            {['Softtek', 'ENTI'].map((name) => (
-              <Link
-                key={name}
-                href={`/${locale}/experience`}
-                className="px-3 py-1 self-center rounded-lg text-xs font-bold transition-colors hover:opacity-80"
-                style={{
-                  color: 'var(--ds-on-surface-variant)',
-                  backgroundColor: 'color-mix(in srgb, var(--ds-outline-variant) 15%, transparent)',
-                  fontFamily: 'var(--font-manrope), sans-serif',
-                }}
-              >
-                {name}
-              </Link>
-            ))}
+          </motion.div>
+
+          {/* Company marquee */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+            className="overflow-hidden mt-2"
+            style={{ maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}
+          >
+            <motion.div
+              animate={{ x: ['0%', '-50%'] }}
+              transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+              className="flex gap-3"
+              style={{ width: 'max-content' }}
+            >
+              {[
+                { name: 'ENTI', label: 'Consulting' },
+                { name: 'Softtek', label: 'Enterprise' },
+                { name: 'Scandia', label: 'E-commerce' },
+                { name: 'IOTAM', label: 'Startup' },
+                { name: 'BrightCoders', label: 'Internship' },
+                { name: 'ENTI', label: 'Consulting' },
+                { name: 'Softtek', label: 'Enterprise' },
+                { name: 'Scandia', label: 'E-commerce' },
+                { name: 'IOTAM', label: 'Startup' },
+                { name: 'BrightCoders', label: 'Internship' },
+              ].map((company, i) => (
+                <Link
+                  key={i}
+                  href={`/${locale}/experience`}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg shrink-0 transition-opacity hover:opacity-70"
+                  style={{
+                    backgroundColor: 'color-mix(in srgb, var(--ds-outline-variant) 15%, transparent)',
+                    fontFamily: 'var(--font-manrope), sans-serif',
+                  }}
+                >
+                  <span
+                    className="text-xs font-bold"
+                    style={{ color: 'var(--ds-on-surface-variant)' }}
+                  >
+                    {company.name}
+                  </span>
+                  <span
+                    className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded"
+                    style={{
+                      color: 'var(--ds-outline)',
+                      backgroundColor: 'color-mix(in srgb, var(--ds-outline-variant) 20%, transparent)',
+                    }}
+                  >
+                    {company.label}
+                  </span>
+                </Link>
+              ))}
+            </motion.div>
           </motion.div>
         </div>
 
