@@ -9,6 +9,10 @@ const supabase = createClient(
 
 const VISITOR_HASH_SALT = process.env.VISITOR_HASH_SALT ?? 'dev-salt';
 
+if (!process.env.VISITOR_HASH_SALT) {
+  console.warn('[analytics] VISITOR_HASH_SALT is not set — using dev-salt fallback. Set this in production.');
+}
+
 const PRIVATE_IP_RE =
   /^(127\.|10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|::1$|fd[0-9a-f]{2}:)/i;
 
