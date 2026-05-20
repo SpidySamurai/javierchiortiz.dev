@@ -62,15 +62,18 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
           <nav key={collapsed ? 'nav-c' : 'nav-e'} className="space-y-1">
             {[
               ...NAV_ITEMS,
+              { id: 'experience', icon: 'work', key: 'experience' } as const,
               { id: 'blog', icon: 'edit_note', key: 'blog' } as const,
               { id: 'visitors', icon: 'public', key: 'visitors' } as const,
             ].map(
               ({ id, icon, key }, index) => {
                 const isActive =
+                  id === 'experience' ? pathname.startsWith(`/${locale}/experience`) :
                   id === 'blog' ? isBlogActive :
                   id === 'visitors' ? pathname.startsWith(`/${locale}/visitors`) :
                   active === id;
                 const href =
+                  id === 'experience' ? `/${locale}/experience` :
                   id === 'blog' ? `/${locale}/blog` :
                   id === 'visitors' ? `/${locale}/visitors` :
                   sectionHref(id);

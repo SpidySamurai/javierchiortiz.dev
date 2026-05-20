@@ -20,6 +20,7 @@ function MobileDrawer({
   locale,
   isBlogActive,
   isVisitorsActive,
+  isExperienceActive,
   sectionHref,
   isUnlocked,
   openCard,
@@ -32,6 +33,7 @@ function MobileDrawer({
   locale: string;
   isBlogActive: boolean;
   isVisitorsActive: boolean;
+  isExperienceActive: boolean;
   sectionHref: (id: string) => string;
   isUnlocked: boolean;
   openCard: (anchorY?: number) => void;
@@ -120,6 +122,20 @@ function MobileDrawer({
             </a>
           ))}
           <Link
+            href={`/${locale}/experience`}
+            onClick={onClose}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
+            style={{
+              fontFamily: 'var(--font-manrope), sans-serif',
+              fontWeight: 700,
+              color: isExperienceActive ? 'var(--ds-primary)' : 'var(--ds-outline)',
+              backgroundColor: isExperienceActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
+            }}
+          >
+            <span translate="no" className="material-symbols-outlined text-[20px]">work</span>
+            {t('experience')}
+          </Link>
+          <Link
             href={`/${locale}/blog`}
             onClick={onClose}
             className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
@@ -207,6 +223,7 @@ export default function Header() {
   const closeRef = useRef<HTMLButtonElement>(null);
   const isBlogActive = pathname.startsWith(`/${locale}/blog`);
   const isVisitorsActive = pathname.startsWith(`/${locale}/visitors`);
+  const isExperienceActive = pathname.startsWith(`/${locale}/experience`);
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
 
@@ -299,6 +316,7 @@ export default function Header() {
           locale={locale}
           isBlogActive={isBlogActive}
           isVisitorsActive={isVisitorsActive}
+          isExperienceActive={isExperienceActive}
           sectionHref={sectionHref}
           isUnlocked={isUnlocked}
           openCard={openCard}
