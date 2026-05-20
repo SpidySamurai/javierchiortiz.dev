@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { useTheme } from 'next-themes';
 import BlogCover from './BlogCover';
 import { getTheme } from '@/data/blogThemes';
 
@@ -25,9 +26,14 @@ interface BlogCardProps {
 
 export default function BlogCard({ post, locale }: BlogCardProps) {
   const tb = useTranslations('blog');
+  const { resolvedTheme } = useTheme();
   const title = post.title ?? tb(`${post.slug}.title`);
   const excerpt = post.excerpt ?? tb(`${post.slug}.excerpt`);
-  const theme = getTheme(post.theme);
+  const blogTheme = getTheme(post.theme);
+  const accentColor =
+    resolvedTheme === 'light' && blogTheme.primaryLight
+      ? blogTheme.primaryLight
+      : blogTheme.primary;
 
   return (
     <Link
@@ -35,7 +41,7 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
       className="group block rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
       style={{
         backgroundColor: 'var(--ds-surface-container)',
-        boxShadow: `0 0 0 1px color-mix(in srgb, ${theme.primary} 15%, transparent)`,
+        boxShadow: `0 0 0 1px color-mix(in srgb, ${accentColor} 15%, transparent)`,
       }}
     >
       {/* Cover */}
@@ -61,8 +67,8 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
         <span
           className="inline-block px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest"
           style={{
-            backgroundColor: `color-mix(in srgb, ${theme.primary} 12%, transparent)`,
-            color: theme.primary,
+            backgroundColor: `color-mix(in srgb, ${accentColor} 12%, transparent)`,
+            color: accentColor,
           }}
         >
           {post.category}
@@ -96,7 +102,7 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
           </div>
           <span
             className="text-xs font-bold transition-colors duration-200 group-hover:translate-x-1 inline-block transition-transform"
-            style={{ color: theme.primary, fontFamily: 'var(--font-inter), sans-serif' }}
+            style={{ color: accentColor, fontFamily: 'var(--font-inter), sans-serif' }}
           >
             Read →
           </span>
