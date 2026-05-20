@@ -7,6 +7,8 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+const VISITOR_HASH_SALT = process.env.VISITOR_HASH_SALT ?? 'dev-salt';
+
 const PRIVATE_IP_RE =
   /^(127\.|10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|::1$|fd[0-9a-f]{2}:)/i;
 
@@ -72,9 +74,14 @@ async function geolocateIp(ip: string): Promise<{
 }
 
 function dailyVisitorHash(ip: string): string {
-  const salt = process.env.VISITOR_HASH_SALT ?? 'dev-salt';
+  const salt = VISITOR_HASH_SALT;
   const date = new Date().toISOString().slice(0, 10);
   return createHash('sha256').update(`${ip}:${date}:${salt}`).digest('hex');
+}
+
+function persistentVisitorHash(ip: string): string {
+  const salt = VISITOR_HASH_SALT;
+  return createHash('sha256').update(`${ip}:${salt}`).digest('hex');
 }
 
 const LOCAL_HOST_RE = /^(localhost|127\.0\.0\.1)(:\d+)?$/;
@@ -99,14 +106,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid locale' }, { status: 400 });
   }
 
+  const ip = getClientIp(req);
+  const visitorHash = ip && !PRIVATE_IP_RE.test(ip) ? persistentVisitorHash(ip) : null;
+
   const rawReferrer = req.headers.get('referer');
   const referrer = rawReferrer && rawReferrer.length <= 2048 ? rawReferrer : null;
-  await supabase.from('page_views').insert({ path, locale: locale ?? null, referrer });
+  await supabase.from('page_views').insert({ path, locale: locale ?? null, referrer, visitor_hash: visitorHash });
 
   let visitorGeo: { city: string; countryCode: string } | null = null;
 
   if (newVisitor) {
-    const ip = getClientIp(req);
     if (ip && !PRIVATE_IP_RE.test(ip)) {
       const hash = dailyVisitorHash(ip);
       const today = new Date().toISOString().slice(0, 10);
