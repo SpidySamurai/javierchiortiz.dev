@@ -44,6 +44,14 @@ export async function generateMetadata({
     authors: [{ name: 'Javier Fernando Chi Ortiz', url: 'https://javierchiortiz.dev' }],
     creator: 'Javier Fernando Chi Ortiz',
     robots: { index: true, follow: true },
+    alternates: {
+      canonical: `https://javierchiortiz.dev/${locale}`,
+      languages: {
+        en: 'https://javierchiortiz.dev/en',
+        es: 'https://javierchiortiz.dev/es',
+        'x-default': 'https://javierchiortiz.dev/en',
+      },
+    },
     openGraph: {
       title,
       description,
