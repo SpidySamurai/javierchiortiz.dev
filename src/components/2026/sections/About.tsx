@@ -194,12 +194,12 @@ export default function About() {
     <section
       id="about"
       data-track-section="about"
-      className="py-16 lg:py-28 px-6 lg:px-20 overflow-x-hidden"
+      className="py-28 px-8 lg:px-20"
       style={{ backgroundColor: 'var(--ds-bg)', scrollMarginTop: '5rem' }}
     >
-      <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
+      <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
         {/* Left — text */}
-        <div>
+        <div className="min-w-0">
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -286,7 +286,7 @@ export default function About() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.8, duration: 0.5 }}
-            className="overflow-hidden mt-6"
+            className="overflow-hidden mt-6 w-full"
             style={{
               maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
               WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
@@ -341,7 +341,7 @@ export default function About() {
         </div>
 
         {/* Right — tech groups */}
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 min-w-0">
           <TechGroup labelKey="stack" items={STACK} startIndex={0} />
           <TechGroup labelKey="about_ai" items={AI} startIndex={STACK.length} />
           <TechGroup labelKey="about_tools" items={TOOLS} startIndex={STACK.length + AI.length} />
