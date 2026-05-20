@@ -1,7 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import {
   SiReact,
   SiNextdotjs,
@@ -167,6 +168,7 @@ function TechGroup({
 
 export default function About() {
   const t = useTranslations('common');
+  const locale = useLocale();
 
   return (
     <section
@@ -261,9 +263,10 @@ export default function About() {
               style={{ backgroundColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)' }}
             />
             {['Softtek', 'ENTI'].map((name) => (
-              <span
+              <Link
                 key={name}
-                className="px-3 py-1 self-center rounded-lg text-xs font-bold"
+                href={`/${locale}/experience`}
+                className="px-3 py-1 self-center rounded-lg text-xs font-bold transition-colors hover:opacity-80"
                 style={{
                   color: 'var(--ds-on-surface-variant)',
                   backgroundColor: 'color-mix(in srgb, var(--ds-outline-variant) 15%, transparent)',
@@ -271,7 +274,7 @@ export default function About() {
                 }}
               >
                 {name}
-              </span>
+              </Link>
             ))}
           </motion.div>
         </div>
