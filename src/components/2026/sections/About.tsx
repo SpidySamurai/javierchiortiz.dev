@@ -286,7 +286,7 @@ export default function About() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.8, duration: 0.5 }}
-            className="overflow-hidden mt-2"
+            className="overflow-hidden mt-6"
             style={{ maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}
           >
             <motion.div
