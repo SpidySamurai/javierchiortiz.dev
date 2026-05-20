@@ -562,7 +562,7 @@ export default function PostEditor({ post }: { post?: Post }) {
         </div>
       )}
 
-      {error && <p className="text-[13px] mt-3" style={{ color: '#f87171' }}>{error}</p>}
+      {error && <p className="text-[13px] mt-3" style={{ color: 'var(--ds-error)' }}>{error}</p>}
 
       <div className="flex gap-3 mt-5">
         <button

@@ -205,7 +205,7 @@ export default function ForgotPasswordPage() {
                     style={{
                       background: 'rgba(248,113,113,0.08)',
                       border: '1px solid rgba(248,113,113,0.2)',
-                      color: '#f87171',
+                      color: 'var(--ds-error)',
                     }}
                   >
                     {error}
