@@ -22,15 +22,15 @@ function TechItem({ name }: { name: string }) {
   return (
     <div
       className="flex items-center gap-3 py-2.5 border-b"
-      style={{ borderColor: 'rgba(70,69,84,0.2)' }}
+      style={{ borderColor: 'var(--ds-outline-variant)' }}
     >
       <div
         className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-        style={{ backgroundColor: '#c0c1ff' }}
+        style={{ backgroundColor: 'var(--ds-primary)' }}
       />
       <span
         className="text-sm"
-        style={{ color: '#c7c4d7', fontFamily: 'var(--font-inter), sans-serif' }}
+        style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
       >
         {name}
       </span>
@@ -43,7 +43,7 @@ function CategoryGroup({ label, items }: TechCategory) {
     <div>
       <p
         className="text-[10px] uppercase tracking-[0.25em] font-bold mb-4"
-        style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+        style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
       >
         {label}
       </p>
@@ -61,27 +61,27 @@ export default function Stack() {
     <section
       id="stack"
       className="py-28 px-8 lg:px-20"
-      style={{ backgroundColor: '#131b2e', scrollMarginTop: '5rem' }}
+      style={{ backgroundColor: 'var(--ds-surface)', scrollMarginTop: '5rem' }}
     >
       {/* Header */}
       <div className="flex items-end justify-between mb-16">
         <div>
           <p
             className="text-xs uppercase tracking-[0.3em] font-bold mb-4"
-            style={{ color: '#c0c1ff', fontFamily: 'var(--font-inter), sans-serif' }}
+            style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
           >
             Arsenal
           </p>
           <h2
             className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
-            style={{ color: '#dae2fd', fontFamily: 'var(--font-manrope), sans-serif' }}
+            style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
             Tech <em>Stack</em>
           </h2>
         </div>
         <p
           className="text-sm uppercase tracking-widest hidden md:block"
-          style={{ color: '#908fa0', fontFamily: 'var(--font-inter), sans-serif' }}
+          style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
         >
           Current · Growing
         </p>

@@ -28,9 +28,7 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
   const toggle = () => setCollapsed((prev) => !prev);
 
   useEffect(() => {
-    localStorage.setItem('sidebar-collapsed', String(collapsed));
-    document.cookie = `sidebar-collapsed=${collapsed};path=/;max-age=31536000;samesite=lax`;
-    document.documentElement.style.setProperty('--sidebar-w', collapsed ? '4rem' : '16rem');
+    document.cookie = `sidebar-collapsed=${collapsed}; path=/; max-age=31536000; SameSite=Lax`;
     if (collapsed) document.documentElement.setAttribute('data-sidebar-collapsed', '');
     else document.documentElement.removeAttribute('data-sidebar-collapsed');
   }, [collapsed]);

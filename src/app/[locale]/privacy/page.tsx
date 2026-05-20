@@ -4,7 +4,7 @@ const content = {
   en: {
     title: 'Privacy Notice',
     updated: 'Last updated: May 2026',
-    intro: 'This portfolio collects minimal, anonymous data to understand how visitors interact with the site. No cookies are used.',
+    intro: 'This portfolio collects minimal, anonymous data to understand how visitors interact with the site.',
     sections: [
       {
         heading: 'What data is collected',
@@ -29,7 +29,7 @@ const content = {
       },
       {
         heading: 'Cookies',
-        body: 'This site does not set any cookies. PostHog uses localStorage for anonymous session identification.',
+        body: 'This site sets two functional cookies: "theme" (stores your light/dark preference) and "sidebar-collapsed" (stores your sidebar layout preference). Both are first-party, contain no personal data, and expire after one year. PostHog uses localStorage for anonymous session identification.',
       },
       {
         heading: 'Contact',
@@ -40,7 +40,7 @@ const content = {
   es: {
     title: 'Aviso de Privacidad',
     updated: 'Última actualización: mayo 2026',
-    intro: 'Este portafolio recopila datos mínimos y anónimos para entender cómo los visitantes interactúan con el sitio. No se utilizan cookies.',
+    intro: 'Este portafolio recopila datos mínimos y anónimos para entender cómo los visitantes interactúan con el sitio.',
     sections: [
       {
         heading: 'Datos que se recopilan',
@@ -65,7 +65,7 @@ const content = {
       },
       {
         heading: 'Cookies',
-        body: 'Este sitio no establece ninguna cookie. PostHog utiliza localStorage para identificación de sesión anónima.',
+        body: 'Este sitio establece dos cookies funcionales: "theme" (guarda tu preferencia claro/oscuro) y "sidebar-collapsed" (guarda tu preferencia de barra lateral). Ambas son de origen propio, no contienen datos personales y expiran después de un año. PostHog utiliza localStorage para identificación de sesión anónima.',
       },
       {
         heading: 'Contacto',

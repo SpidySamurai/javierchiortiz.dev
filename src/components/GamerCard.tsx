@@ -47,7 +47,7 @@ type GamerCardProps = { isOpen: boolean; onClose: () => void; anchorY?: number |
 export default function GamerCard({ isOpen, onClose, anchorY }: GamerCardProps) {
   const { data } = useLanyard({ userId: DISCORD_ID });
   const marvel = useMarvelRivals(MARVEL_UID);
-  const [currentTime, setCurrentTime] = useState(Date.now());
+  const [currentTime, setCurrentTime] = useState(0);
   const [isMd, setIsMd] = useState(false);
   const [isXl, setIsXl] = useState(false);
 
@@ -129,7 +129,7 @@ export default function GamerCard({ isOpen, onClose, anchorY }: GamerCardProps) 
 
   // Tablet: right of drawer (w-64=256px + 16px gap), Y aligned to button that opened it (clamped)
   const tabletTop = anchorY != null
-    ? Math.min(anchorY + 64, (typeof window !== 'undefined' ? window.innerHeight : 800) - 340)
+    ? Math.min(anchorY + 64, (isMd ? window.innerHeight : 800) - 340)
     : 80;
 
   const cardPos: React.CSSProperties = isXl
