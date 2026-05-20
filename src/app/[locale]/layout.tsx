@@ -41,8 +41,8 @@ export async function generateMetadata({
       'US Market',
       'Remote Developer',
     ],
-    authors: [{ name: 'Javier Chi Ortíz', url: 'https://javierchiortiz.dev' }],
-    creator: 'Javier Chi Ortíz',
+    authors: [{ name: 'Javier Fernando Chi Ortiz', url: 'https://javierchiortiz.dev' }],
+    creator: 'Javier Fernando Chi Ortiz',
     robots: { index: true, follow: true },
     openGraph: {
       title,
@@ -79,11 +79,11 @@ export default async function LocaleLayout({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: 'Javier Chi Ortíz',
+    name: 'Javier Fernando Chi Ortiz',
     url: 'https://javierchiortiz.dev',
     jobTitle: 'Full Stack Engineer',
     sameAs: [
-      'https://linkedin.com/in/javier-fernando-chi-ortiz',
+      'https://www.linkedin.com/in/javier-fernando-chi-ortiz/',
       'https://github.com/SpidySamurai',
     ],
   };
