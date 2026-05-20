@@ -46,7 +46,7 @@ yarn-error.log*
 skills-lock.json
 
 # Internal dev docs (plans, specs)
-docs/superpowers/
+docs/
 
 # Lanyard API debug dumps
 lanyard_*.json
