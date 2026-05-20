@@ -39,6 +39,7 @@ export type Database = {
           locale: string | null;
           path: string;
           referrer: string | null;
+          visitor_hash: string | null;
         };
         Insert: {
           created_at?: string;
@@ -46,6 +47,7 @@ export type Database = {
           locale?: string | null;
           path: string;
           referrer?: string | null;
+          visitor_hash?: string | null;
         };
         Update: {
           created_at?: string;
@@ -53,6 +55,7 @@ export type Database = {
           locale?: string | null;
           path?: string;
           referrer?: string | null;
+          visitor_hash?: string | null;
         };
         Relationships: [];
       };
