@@ -16,9 +16,18 @@ body {
 html {
   scroll-behavior: smooth;
   --sidebar-w: 16rem;
+  color-scheme: dark;
 }
 
-/* Sidebar layout — responsive margin driven by CSS var set from JS */
+html[data-theme='light'] {
+  color-scheme: light;
+}
+
+html[data-sidebar-collapsed] {
+  --sidebar-w: 4rem;
+}
+
+/* Sidebar layout — responsive margin driven by CSS var */
 @media (min-width: 1280px) {
   .sidebar-main {
     margin-left: var(--sidebar-w, 16rem);
@@ -29,7 +38,7 @@ html {
   }
 }
 
-/* CSS-driven collapsed state — applied by inline script before first paint */
+/* CSS-driven collapsed state */
 html[data-sidebar-collapsed] .sidebar-aside {
   width: 4rem !important;
 }
@@ -170,7 +179,7 @@ html[data-theme='light'] {
 
   --ds-primary: #c0c1ff;
   --ds-primary-container: #8083ff;
-  --ds-on-primary: #1000a9;
+  --ds-on-primary: #04006a;
 
   --ds-secondary-container: #3e3c8f;
   --ds-on-secondary: #afadff;
@@ -179,6 +188,10 @@ html[data-theme='light'] {
 
   --ds-outline-variant: #464554;
   --ds-outline: #908fa0;
+
+  --ds-error: #f87171;
+  --ds-success: #4ade80;
+  --ds-icon-muted: #94a3b8;
 
   --ds-font-display: var(--font-manrope), sans-serif;
   --ds-font-body: var(--font-inter), sans-serif;
@@ -209,7 +222,11 @@ html[data-theme='light'] .ds-2026 {
   --ds-tertiary: #3a4a9e;
 
   --ds-outline-variant: #b0b8d0;
-  --ds-outline: #626a88;
+  --ds-outline: #4e5971;
+
+  --ds-error: #b91c1c;
+  --ds-success: #166534;
+  --ds-icon-muted: #6b7fa0;
 }
 
 /* global.css */
@@ -217,7 +234,7 @@ html[data-theme='light'] .ds-2026 {
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
-  scrollbar-color: #999 transparent;
+  scrollbar-color: var(--ds-outline-variant, #999) transparent;
 }
 
 .scroll-x-thin::-webkit-scrollbar {
@@ -225,7 +242,7 @@ html[data-theme='light'] .ds-2026 {
 }
 
 .scroll-x-thin::-webkit-scrollbar-thumb {
-  background-color: #999;
+  background-color: var(--ds-outline-variant, #999);
   border-radius: 4px;
 }
 
