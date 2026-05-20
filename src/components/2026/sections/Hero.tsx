@@ -1,6 +1,8 @@
 'use client';
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%&!?';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { TwentyOnePilotsEgg } from './TwentyOnePilotsEgg';
@@ -161,6 +163,131 @@ function AnimatedHeadline({
   );
 }
 
+function useScramble(target: string) {
+  const [display, setDisplay] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+    let frame = 0;
+    const PRE = 4;
+    const maxFrames = PRE + target.length;
+
+    function tick() {
+      if (cancelled) return;
+      frame++;
+      const resolved = Math.max(0, frame - PRE);
+      setDisplay(
+        target
+          .split('')
+          .map((ch, i) => {
+            if (ch === ' ') return ' ';
+            if (i < resolved) return ch;
+            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+          })
+          .join(''),
+      );
+      if (frame < maxFrames) setTimeout(tick, 35);
+      else if (!cancelled) setDisplay(target);
+    }
+
+    tick();
+    return () => {
+      cancelled = true;
+    };
+  }, [target]);
+
+  return display;
+}
+
+interface ServiceItem {
+  label: string;
+  sub: string;
+}
+
+const ScrambleServiceCycler = memo(function ScrambleServiceCycler({
+  services,
+  active,
+}: {
+  services: ServiceItem[];
+  active: boolean;
+}) {
+  const [idx, setIdx] = useState(0);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    if (!active) return;
+    const t = setTimeout(() => setStarted(true), 350);
+    return () => clearTimeout(t);
+  }, [active]);
+
+  useEffect(() => {
+    if (!started) return;
+    const timer = setInterval(() => setIdx((i) => (i + 1) % services.length), 3200);
+    return () => clearInterval(timer);
+  }, [started, services.length]);
+
+  const current = services[idx];
+  const label = useScramble(started ? current.label : '');
+
+  return (
+    <div className="space-y-1.5 flex-shrink-0 min-w-[14rem]">
+      {/* Progress pills */}
+      <div className="flex gap-1 items-center mb-2">
+        {services.map((_, i) => (
+          <div
+            key={i}
+            className="h-[2px] rounded-full transition-all duration-500"
+            style={{
+              width: i === idx ? '14px' : '4px',
+              backgroundColor:
+                i === idx
+                  ? 'var(--ds-primary)'
+                  : 'color-mix(in srgb, var(--ds-primary) 22%, transparent)',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Scrambling label */}
+      <p
+        className="text-2xl font-bold tracking-tight"
+        style={{
+          color: 'var(--ds-on-surface)',
+          fontFamily: 'var(--font-manrope), sans-serif',
+          minHeight: '2rem',
+          letterSpacing: '-0.01em',
+        }}
+      >
+        {label}
+        {started && label !== current.label && (
+          <span
+            style={{ borderRight: '2px solid currentColor', marginLeft: '2px', opacity: 0.6 }}
+          />
+        )}
+      </p>
+
+      {/* Sub description */}
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={idx}
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -5 }}
+          transition={{ duration: 0.22 }}
+          className="text-sm italic"
+          style={{
+            color: 'var(--ds-on-surface-variant)',
+            fontFamily: 'var(--font-inter), sans-serif',
+            minHeight: '1.25rem',
+          }}
+        >
+          {started ? current.sub : ''}
+        </motion.p>
+      </AnimatePresence>
+    </div>
+  );
+});
+
 export default function Hero() {
   const t = useTranslations('common');
   const { resolvedTheme } = useTheme();
@@ -170,6 +297,18 @@ export default function Hero() {
   const [eggOpen, setEggOpen] = useState(false);
   const cometContainerRef = useRef<Container | null>(null);
   const particlesOptions = useMemo(() => getParticlesOptions(isDark), [isDark]);
+
+  const services = useMemo<ServiceItem[]>(
+    () => [
+      { label: t('hero_svc_landing'), sub: t('hero_svc_landing_sub') },
+      { label: t('hero_svc_webapp'), sub: t('hero_svc_webapp_sub') },
+      { label: t('hero_svc_mvp'), sub: t('hero_svc_mvp_sub') },
+      { label: t('hero_svc_cms'), sub: t('hero_svc_cms_sub') },
+      { label: t('hero_svc_crm'), sub: t('hero_svc_crm_sub') },
+      { label: t('hero_svc_ai'), sub: t('hero_svc_ai_sub') },
+    ],
+    [t],
+  );
 
   const handleParticlesLoaded = useCallback((c: Container | undefined) => {
     cometContainerRef.current = c ?? null;
@@ -337,29 +476,43 @@ export default function Hero() {
             {t('hero_description_long')}
           </motion.p>
 
-          {/* CTA */}
+          {/* CTA + Scrambler */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             transition={{ duration: 0.38, delay: 0.1, ease: 'easeOut' }}
-            className="flex flex-col gap-1"
+            className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8"
           >
-            <a
-              href="mailto:javierchiortiz@gmail.com"
-              className="text-base font-semibold transition-colors hover:opacity-80"
-              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
-            >
-              {t('hero_cta')}
-            </a>
-            <span
-              className="text-xs italic tracking-widest"
-              style={{
-                color: 'color-mix(in srgb, var(--ds-primary) 55%, transparent)',
-                fontFamily: 'var(--font-inter), sans-serif',
-              }}
-            >
-              {t('hero_cta_sub')}
-            </span>
+            {/* Scrambler */}
+            <ScrambleServiceCycler services={services} active={typingDone} />
+
+            {/* Vertical divider */}
+            <div
+              className="hidden sm:block w-px self-stretch"
+              style={{ backgroundColor: 'var(--ds-outline-variant)' }}
+            />
+
+            {/* CTA */}
+            <div className="flex flex-col gap-1 sm:pt-1 flex-shrink-0">
+              <a
+                href={`https://wa.me/529904147791?text=${encodeURIComponent("Hi! I saw your portfolio and I'd like to start a project together.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base font-semibold transition-colors hover:opacity-80"
+                style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
+              >
+                {t('hero_cta')}
+              </a>
+              <span
+                className="text-xs italic tracking-widest"
+                style={{
+                  color: 'color-mix(in srgb, var(--ds-primary) 55%, transparent)',
+                  fontFamily: 'var(--font-inter), sans-serif',
+                }}
+              >
+                {t('hero_cta_sub')}
+              </span>
+            </div>
           </motion.div>
         </div>
 
