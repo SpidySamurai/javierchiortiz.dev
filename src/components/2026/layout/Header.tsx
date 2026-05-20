@@ -104,6 +104,20 @@ function MobileDrawer({
 
         {/* Nav links */}
         <nav className="space-y-2 flex-1">
+          <Link
+            href={`/${locale}`}
+            onClick={onClose}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
+            style={{
+              fontFamily: 'var(--font-manrope), sans-serif',
+              fontWeight: 700,
+              color: !isBlogActive && !isVisitorsActive && !isExperienceActive ? 'var(--ds-primary)' : 'var(--ds-outline)',
+              backgroundColor: !isBlogActive && !isVisitorsActive && !isExperienceActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
+            }}
+          >
+            <span translate="no" className="material-symbols-outlined text-[20px]">home</span>
+            {t('home')}
+          </Link>
           {NAV_ITEMS.map(({ id, icon, key }) => (
             <a
               key={id}
