@@ -131,22 +131,22 @@ function ProjectCard({
           className="absolute inset-0"
           style={{
             background: isDark
-              ? `linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 10%, transparent) 38%, transparent 100%)`
-              : `linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 38%, transparent 100%)`,
+              ? `linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 40%, transparent) 50%, transparent 100%)`
+              : `linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.35) 50%, transparent 100%)`,
           }}
         />
       )}
       {isTall && (
         <>
           {isDark && (
-            <div className="absolute inset-0" style={{ backgroundColor: 'color-mix(in srgb, var(--ds-bg) 18%, transparent)' }} />
+            <div className="absolute inset-0" style={{ backgroundColor: 'color-mix(in srgb, var(--ds-bg) 25%, transparent)' }} />
           )}
           <div
             className="absolute inset-0"
             style={{
               background: isDark
-                ? 'linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 10%, transparent) 40%, transparent 100%)'
-                : 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.18) 40%, transparent 100%)',
+                ? 'linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 40%, transparent) 52%, transparent 100%)'
+                : 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 52%, transparent 100%)',
             }}
           />
         </>
@@ -157,8 +157,8 @@ function ProjectCard({
           style={{
             background: project.imageUrl
               ? isDark
-                ? `linear-gradient(to top, var(--ds-surface-container) 0%, color-mix(in srgb, var(--ds-surface-container) 60%, transparent) 48%, transparent 100%)`
-                : `linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 48%, transparent 100%)`
+                ? `linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 70%, transparent) 55%, transparent 100%)`
+                : `linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.4) 55%, transparent 100%)`
               : undefined,
           }}
         />
@@ -168,8 +168,8 @@ function ProjectCard({
         className="absolute inset-0 md:hidden"
         style={{
           background: isDark
-            ? 'linear-gradient(to top, var(--ds-surface-container) 0%, color-mix(in srgb, var(--ds-surface-container) 40%, transparent) 45%, transparent 100%)'
-            : 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 45%, transparent 100%)',
+            ? 'linear-gradient(to top, var(--ds-bg) 0%, color-mix(in srgb, var(--ds-bg) 60%, transparent) 55%, transparent 100%)'
+            : 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.25) 55%, transparent 100%)',
         }}
       />
 
