@@ -42,7 +42,7 @@ export default function Footer() {
         <div className="flex gap-8">
           <a
             href="mailto:javier@javierchiortiz.dev"
-            className="text-xs font-bold uppercase tracking-widest transition-colors text-[#c7c4d7] hover:text-[#c0c1ff]"
+            className="text-xs font-bold uppercase tracking-widest transition-colors text-[var(--ds-on-surface-variant)] hover:text-[var(--ds-primary)]"
           >
             Email
           </a>
@@ -50,7 +50,7 @@ export default function Footer() {
             href="https://www.linkedin.com/in/javier-fernando-chi-ortiz/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-bold uppercase tracking-widest transition-colors text-[#c7c4d7] hover:text-[#c0c1ff]"
+            className="text-xs font-bold uppercase tracking-widest transition-colors text-[var(--ds-on-surface-variant)] hover:text-[var(--ds-primary)]"
           >
             LinkedIn
           </a>
@@ -58,7 +58,7 @@ export default function Footer() {
             href="https://github.com/SpidySamurai"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-bold uppercase tracking-widest transition-colors text-[#c7c4d7] hover:text-[#c0c1ff]"
+            className="text-xs font-bold uppercase tracking-widest transition-colors text-[var(--ds-on-surface-variant)] hover:text-[var(--ds-primary)]"
           >
             GitHub
           </a>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 import confetti from 'canvas-confetti';
 
 const STARS = [
@@ -64,6 +65,8 @@ function remap(t: number, a: number, b: number) {
 
 export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme !== 'light';
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -152,6 +155,10 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
     };
     setup();
 
+    // Theme-aware star/line color base
+    const starRgb = isDark ? '192,193,255' : '64,66,200';
+    const starCorRgb = isDark ? '225,226,255' : '40,42,180';
+
     const startTime = performance.now();
     const TOTAL = 3600;
     let raf: number;
@@ -169,7 +176,7 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
         const twinkle = 0.45 + 0.55 * Math.sin(now * 0.0012 + s.ph);
         ctx.beginPath();
         ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(192,193,255,${ambientIn * 0.55 * twinkle})`;
+        ctx.fillStyle = `rgba(${starRgb},${ambientIn * 0.55 * twinkle})`;
         ctx.fill();
       });
 
@@ -184,8 +191,8 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
           const sy = STARS[si].y * H;
 
           const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, 28 * p);
-          grd.addColorStop(0, `rgba(192,193,255,${0.55 * p})`);
-          grd.addColorStop(1, 'rgba(192,193,255,0)');
+          grd.addColorStop(0, `rgba(${starRgb},${0.55 * p})`);
+          grd.addColorStop(1, `rgba(${starRgb},0)`);
           ctx.beginPath();
           ctx.arc(sx, sy, 28 * p, 0, Math.PI * 2);
           ctx.fillStyle = grd;
@@ -194,7 +201,7 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
           const scale = p < 0.6 ? p * (1 / 0.6) * 1.35 : 1.35 - (p - 0.6) * (1 / 0.4) * 0.35;
           ctx.beginPath();
           ctx.arc(sx, sy, 3.8 * scale, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(225,226,255,${p})`;
+          ctx.fillStyle = `rgba(${starCorRgb},${p})`;
           ctx.fill();
         });
 
@@ -213,7 +220,7 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
           ctx.beginPath();
           ctx.moveTo(sx, sy);
           ctx.lineTo(sx + (ex - sx) * p, sy + (ey - sy) * p);
-          ctx.strokeStyle = `rgba(192,193,255,${0.65 * Math.min(p * 2.5, 1)})`;
+          ctx.strokeStyle = `rgba(${starRgb},${0.65 * Math.min(p * 2.5, 1)})`;
           ctx.lineWidth = 1.5;
           ctx.stroke();
         });
@@ -224,7 +231,7 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
 
     raf = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [isDark]);
 
   return (
     <motion.div
@@ -233,7 +240,7 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.65 }}
       className="fixed inset-0 z-50 cursor-pointer select-none"
-      style={{ backgroundColor: 'rgba(11,19,38,0.92)', backdropFilter: 'blur(3px)' }}
+      style={{ backgroundColor: 'color-mix(in srgb, var(--ds-bg) 95%, transparent)', backdropFilter: 'blur(3px)' }}
       onClick={onClose}
     >
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
@@ -243,7 +250,7 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
         animate={{ opacity: 1, letterSpacing: '0.48em' }}
         transition={{ delay: 3.0, duration: 1.4, ease: 'easeOut' }}
         className="absolute bottom-14 left-1/2 -translate-x-1/2 text-xs uppercase whitespace-nowrap pointer-events-none"
-        style={{ color: 'rgba(192,193,255,0.55)', fontFamily: 'var(--font-inter), sans-serif' }}
+        style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
       >
         twenty one pilots
       </motion.p>
@@ -253,7 +260,7 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
         animate={{ opacity: 0.38, letterSpacing: '0.22em' }}
         transition={{ delay: 4.6, duration: 1.6, ease: 'easeOut' }}
         className="absolute bottom-24 left-1/2 -translate-x-1/2 text-[11px] italic whitespace-nowrap pointer-events-none"
-        style={{ color: 'rgba(192,193,255,1)', fontFamily: 'var(--font-inter), sans-serif' }}
+        style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-inter), sans-serif' }}
       >
         sometimes quiet is violent
       </motion.p>
@@ -263,7 +270,7 @@ export function TwentyOnePilotsEgg({ onClose }: { onClose: () => void }) {
         animate={{ opacity: 0.28 }}
         transition={{ delay: 0.8, duration: 0.7 }}
         className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.3em] whitespace-nowrap pointer-events-none"
-        style={{ color: 'rgba(192,193,255,1)', fontFamily: 'var(--font-inter), sans-serif' }}
+        style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-inter), sans-serif' }}
       >
         click anywhere · esc
       </motion.p>

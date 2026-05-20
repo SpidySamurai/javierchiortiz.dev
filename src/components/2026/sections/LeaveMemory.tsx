@@ -57,14 +57,14 @@ export default function LeaveMemory() {
           className="absolute inset-0 flex items-center justify-center rounded-lg"
           style={{
             backdropFilter: 'blur(4px)',
-            backgroundColor: 'rgba(11, 19, 38, 0.6)',
+            backgroundColor: 'color-mix(in srgb, var(--ds-bg) 85%, transparent)',
           }}
         >
           <span
             className="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest"
             style={{
-              backgroundColor: 'rgba(128, 131, 255, 0.13)',
-              border: '1px solid rgba(128, 131, 255, 0.27)',
+              backgroundColor: 'color-mix(in srgb, var(--ds-primary) 13%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--ds-primary) 27%, transparent)',
               color: 'var(--ds-primary)',
               fontFamily: 'var(--font-inter), sans-serif',
             }}
