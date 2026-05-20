@@ -4,13 +4,13 @@ import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
-const STACK = ['Next.js', 'React', 'TypeScript', 'NestJS', 'Node.js', 'PostgreSQL', 'Prisma'];
 
 export default function Product() {
   const t = useTranslations('common');
 
   return (
     <section
+      id="product"
       data-track-section="product"
       className="px-8 lg:px-20 py-32 overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
@@ -65,9 +65,10 @@ export default function Product() {
             }}
           />
 
-          <div className="relative z-10 flex flex-col md:flex-row gap-10 md:gap-12 items-center">
+          <div className="relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
             {/* Left: content */}
-            <div className="flex-1 space-y-6 md:w-1/2">
+            <div className="flex-1 space-y-6 w-full lg:w-1/2">
+              {/* Title + badge */}
               <div className="flex items-center gap-3 flex-wrap">
                 <span
                   className="text-3xl md:text-4xl font-black tracking-tight"
@@ -91,8 +92,23 @@ export default function Product() {
                 </span>
               </div>
 
+              {/* Image — mobile/tablet only */}
+              <div className="lg:hidden w-full rounded-xl overflow-hidden border" style={{
+                borderColor: 'color-mix(in srgb, var(--ds-primary) 20%, transparent)',
+                boxShadow: '0 24px 60px color-mix(in srgb, var(--ds-primary) 12%, transparent)',
+              }}>
+                <Image
+                  src="/utils/img/lab2next-app-screenshot.png"
+                  alt="Lab2Next — patient registration dashboard for clinical labs"
+                  width={1280}
+                  height={800}
+                  className="w-full h-auto block"
+                  style={{ maxHeight: '260px', objectFit: 'cover', objectPosition: 'top' }}
+                />
+              </div>
+
               <p
-                className="text-lg leading-relaxed max-w-xl"
+                className="text-lg leading-relaxed"
                 style={{
                   color: 'var(--ds-on-surface-variant)',
                   fontFamily: 'var(--font-inter), sans-serif',
@@ -101,21 +117,15 @@ export default function Product() {
                 {t('product_description')}
               </p>
 
-              <div className="flex flex-wrap gap-2">
-                {STACK.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-3 py-0.5 rounded text-[9px] font-medium uppercase border"
-                    style={{
-                      color: 'color-mix(in srgb, var(--ds-on-surface-variant) 70%, transparent)',
-                      borderColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)',
-                      fontFamily: 'var(--font-inter), sans-serif',
-                    }}
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
+              <p
+                className="text-sm font-semibold tracking-wide"
+                style={{
+                  color: 'var(--ds-primary)',
+                  fontFamily: 'var(--font-inter), sans-serif',
+                }}
+              >
+                {t('product_impact')}
+              </p>
 
               <div className="flex flex-col gap-3 pt-2">
                 <div className="flex flex-col gap-1">
@@ -156,8 +166,8 @@ export default function Product() {
               </div>
             </div>
 
-            {/* Right: screenshot */}
-            <div className="md:w-1/2 w-full flex-shrink-0">
+            {/* Right: screenshot — desktop only */}
+            <div className="hidden lg:block lg:w-1/2 flex-shrink-0">
               <div
                 className="relative rounded-xl overflow-hidden border"
                 style={{
@@ -168,7 +178,7 @@ export default function Product() {
               >
                 <Image
                   src="/utils/img/lab2next-app-screenshot.png"
-                  alt="Lab2Next SaaS screenshot"
+                  alt="Lab2Next — patient registration dashboard for clinical labs"
                   width={1280}
                   height={800}
                   className="w-full h-auto block"
