@@ -2,7 +2,6 @@ import Header from '@/components/2026/layout/Header';
 import Sidebar from '@/components/2026/layout/Sidebar';
 import AnalyticsTracker from '@/components/2026/layout/AnalyticsTracker';
 import Hero from '@/components/2026/sections/Hero';
-import Timeline from '@/components/2026/sections/Timeline';
 import Projects from '@/components/2026/sections/Projects';
 import Product from '@/components/2026/sections/Product';
 import About from '@/components/2026/sections/About';
@@ -31,7 +30,6 @@ export default function HomeShell({ posts, sidebarCollapsed }: { posts: Post[]; 
         <Product />
         <Projects />
         <About />
-        <Timeline />
         <Services />
         <BlogPreview posts={posts} />
         <Footer />
