@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { useRef, useEffect } from 'react';
+import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import {
   SiReact,
@@ -74,6 +75,25 @@ const ALSO: Tech[] = [
   { name: 'Django', icon: SiDjango, color: '#44B78B' },
   { name: '.NET', icon: SiDotnet, color: '#512BD4' },
 ];
+
+function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const motionVal = useMotionValue(0);
+  const rounded = useTransform(motionVal, (v) => Math.round(v));
+  const isInView = useInView(ref, { once: true, margin: '-40px' });
+
+  useEffect(() => {
+    if (!isInView) return;
+    const controls = animate(motionVal, to, { duration: 1.4, ease: 'easeOut' });
+    return controls.stop;
+  }, [isInView, motionVal, to]);
+
+  return (
+    <span ref={ref}>
+      <motion.span>{rounded}</motion.span>{suffix}
+    </span>
+  );
+}
 
 const floatDuration = (i: number) => 3.2 + (i % 5) * 0.42;
 const floatDelay = (i: number) => (i * 0.38) % 2.2;
@@ -239,16 +259,16 @@ export default function About() {
             style={{ borderColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)' }}
           >
             {[
-              { value: '5+', label: 'years' },
-              { value: '2', label: 'SaaS live' },
-              { value: '3+', label: 'e-commerce' },
+              { to: 5, suffix: '+', label: 'years' },
+              { to: 10, suffix: '+', label: 'projects' },
+              { to: 2, suffix: '', label: 'SaaS live' },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col">
                 <span
                   className="text-xl font-black leading-none"
                   style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
                 >
-                  {stat.value}
+                  <CountUp to={stat.to} suffix={stat.suffix} />
                 </span>
                 <span
                   className="text-[10px] uppercase tracking-widest mt-0.5"
