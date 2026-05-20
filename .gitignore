@@ -45,8 +45,9 @@ yarn-error.log*
 .claude/
 skills-lock.json
 
-# Internal dev docs (plans, specs)
+# Internal dev docs (plans, specs, audits, strategy)
 docs/
+PRODUCT.md
 
 # Lanyard API debug dumps
 lanyard_*.json
