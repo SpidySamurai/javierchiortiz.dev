@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import {
-  ComposedChart,
-  Bar,
+  LineChart,
   Line,
   XAxis,
   YAxis,
@@ -19,8 +18,8 @@ export interface TrendPoint {
 }
 
 interface Colors {
-  bar: string;
-  line: string;
+  views: string;
+  unique: string;
   grid: string;
   text: string;
   tooltipBg: string;
@@ -30,8 +29,8 @@ interface Colors {
 }
 
 const FALLBACK_COLORS: Colors = {
-  bar: '#8083ff',
-  line: '#c0c1ff',
+  views: '#8083ff',
+  unique: '#c0c1ff',
   grid: '#464554',
   text: '#908fa0',
   tooltipBg: '#171f33',
@@ -44,8 +43,8 @@ function readColors(): Colors {
   const s = getComputedStyle(document.documentElement);
   const v = (name: string) => s.getPropertyValue(name).trim();
   return {
-    bar: v('--ds-primary-container') || FALLBACK_COLORS.bar,
-    line: v('--ds-primary') || FALLBACK_COLORS.line,
+    views: v('--ds-primary-container') || FALLBACK_COLORS.views,
+    unique: v('--ds-primary') || FALLBACK_COLORS.unique,
     grid: v('--ds-outline-variant') || FALLBACK_COLORS.grid,
     text: v('--ds-outline') || FALLBACK_COLORS.text,
     tooltipBg: v('--ds-surface-container') || FALLBACK_COLORS.tooltipBg,
@@ -84,17 +83,17 @@ export default function TrendChart({ data }: { data: TrendPoint[] }) {
         </span>
         <div className="flex items-center gap-3 ml-auto">
           <span className="flex items-center gap-1.5 text-[11px]" style={{ color: 'var(--ds-outline)' }}>
-            <span className="w-2.5 h-2.5 rounded-sm inline-block" style={{ background: colors.bar }} />
+            <span className="w-2.5 h-0.5 inline-block" style={{ background: colors.views }} />
             Page views
           </span>
           <span className="flex items-center gap-1.5 text-[11px]" style={{ color: 'var(--ds-outline)' }}>
-            <span className="w-2.5 h-0.5 inline-block" style={{ background: colors.line }} />
+            <span className="w-2.5 h-0.5 inline-block" style={{ background: colors.unique }} />
             Unique visitors
           </span>
         </div>
       </div>
       <ResponsiveContainer width="100%" height={220}>
-        <ComposedChart data={formatted} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
+        <LineChart data={formatted} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
           <CartesianGrid vertical={false} stroke={colors.grid} strokeOpacity={0.25} />
           <XAxis
             dataKey="label"
@@ -117,24 +116,25 @@ export default function TrendChart({ data }: { data: TrendPoint[] }) {
             }}
             labelStyle={{ color: colors.tooltipLabel }}
             itemStyle={{ color: colors.tooltipItem }}
-            cursor={{ fill: colors.grid, fillOpacity: 0.15 }}
-          />
-          <Bar
-            dataKey="views"
-            name="Page views"
-            fill={colors.bar}
-            radius={[3, 3, 0, 0]}
-            maxBarSize={20}
+            cursor={{ stroke: colors.grid, strokeOpacity: 0.4 }}
           />
           <Line
-            dataKey="unique_visitors"
-            name="Unique visitors"
-            stroke={colors.line}
+            dataKey="views"
+            name="Page views"
+            stroke={colors.views}
             dot={false}
             strokeWidth={2}
             type="monotone"
           />
-        </ComposedChart>
+          <Line
+            dataKey="unique_visitors"
+            name="Unique visitors"
+            stroke={colors.unique}
+            dot={false}
+            strokeWidth={2}
+            type="monotone"
+          />
+        </LineChart>
       </ResponsiveContainer>
     </div>
   );
