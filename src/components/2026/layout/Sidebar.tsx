@@ -61,6 +61,7 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
           {/* Nav — key changes on expand to re-trigger stagger animation */}
           <nav key={collapsed ? 'nav-c' : 'nav-e'} className="space-y-1">
             {[
+              { id: 'home', icon: 'home', key: 'home' } as const,
               ...NAV_ITEMS,
               { id: 'experience', icon: 'work', key: 'experience' } as const,
               { id: 'blog', icon: 'edit_note', key: 'blog' } as const,
@@ -68,11 +69,13 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
             ].map(
               ({ id, icon, key }, index) => {
                 const isActive =
+                  id === 'home' ? isHome :
                   id === 'experience' ? pathname.startsWith(`/${locale}/experience`) :
                   id === 'blog' ? isBlogActive :
                   id === 'visitors' ? pathname.startsWith(`/${locale}/visitors`) :
                   active === id;
                 const href =
+                  id === 'home' ? `/${locale}` :
                   id === 'experience' ? `/${locale}/experience` :
                   id === 'blog' ? `/${locale}/blog` :
                   id === 'visitors' ? `/${locale}/visitors` :

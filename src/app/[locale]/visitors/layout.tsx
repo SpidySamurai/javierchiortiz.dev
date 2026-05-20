@@ -2,6 +2,7 @@ import Header from '@/components/2026/layout/Header';
 import Sidebar from '@/components/2026/layout/Sidebar';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
 import BackToTop from '@/components/2026/ui/BackToTop';
+import BackBreadcrumb from '@/components/2026/ui/BackBreadcrumb';
 import { getSidebarCollapsed } from '@/lib/sidebarState';
 
 export default async function VisitorsLayout({ children }: { children: React.ReactNode }) {
@@ -13,6 +14,7 @@ export default async function VisitorsLayout({ children }: { children: React.Rea
       <Header />
       <Sidebar defaultCollapsed={sidebarCollapsed} />
       <main className="sidebar-main pt-20">
+        <BackBreadcrumb />
         {children}
       </main>
       <BackToTop />
