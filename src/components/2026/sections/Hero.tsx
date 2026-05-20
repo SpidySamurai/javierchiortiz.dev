@@ -451,9 +451,7 @@ export default function Hero() {
         |-/
       </motion.span>
 
-      <div className="relative z-10 flex flex-col md:flex-row items-center gap-12 md:gap-0">
-        {/* Left: text block */}
-        <div className="w-full md:w-1/2 space-y-6">
+      <div className="relative z-10 max-w-3xl mx-auto space-y-6 text-center">
           {/* Headline */}
           <AnimatedHeadline
             pre={t('hero_headline_pre')}
@@ -467,7 +465,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: 0.38, ease: 'easeOut' }}
-            className="text-lg md:text-xl leading-relaxed max-w-lg"
+            className="text-lg md:text-xl leading-relaxed"
             style={{
               color: 'var(--ds-on-surface-variant)',
               fontFamily: 'var(--font-inter), sans-serif',
@@ -481,7 +479,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 8 }}
             animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             transition={{ duration: 0.38, delay: 0.1, ease: 'easeOut' }}
-            className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8"
+            className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8"
           >
             {/* Scrambler */}
             <ScrambleServiceCycler services={services} active={typingDone} />
@@ -493,7 +491,7 @@ export default function Hero() {
             />
 
             {/* CTA */}
-            <div className="flex flex-col gap-1 sm:pt-1 flex-shrink-0">
+            <div className="flex flex-col gap-1 flex-shrink-0 items-center">
               <a
                 href={`https://wa.me/529904147791?text=${encodeURIComponent("Hi! I saw your portfolio and I'd like to start a project together.")}`}
                 target="_blank"
@@ -514,10 +512,6 @@ export default function Hero() {
               </span>
             </div>
           </motion.div>
-        </div>
-
-        {/* Right — empty until real images are ready */}
-        <div className="hidden md:block w-full md:w-1/2" />
       </div>
 
       {/* Comet caption */}
