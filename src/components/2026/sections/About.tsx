@@ -194,10 +194,10 @@ export default function About() {
     <section
       id="about"
       data-track-section="about"
-      className="py-28 px-8 lg:px-20 overflow-x-hidden"
+      className="py-16 lg:py-28 px-6 lg:px-20 overflow-x-hidden"
       style={{ backgroundColor: 'var(--ds-bg)', scrollMarginTop: '5rem' }}
     >
-      <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+      <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
         {/* Left — text */}
         <div>
           <motion.p
@@ -287,7 +287,10 @@ export default function About() {
             viewport={{ once: true }}
             transition={{ delay: 0.8, duration: 0.5 }}
             className="overflow-hidden mt-6"
-            style={{ maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}
+            style={{
+              maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
+            }}
           >
             <motion.div
               animate={{ x: ['0%', '-50%'] }}
