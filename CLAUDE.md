@@ -281,3 +281,7 @@ const referrer = raw && raw.length <= 2048 ? raw : null;
 - `GamerCardContext.tsx` — lazy-load modal at usage site, not provider mount
 - `PostHogProvider.tsx` — guard init against double-call on hydration
 - Remaining `'use client'` layouts — audit each against the leaf rule
+- `GamerCard.tsx` — `useState(Date.now())` causes React #418 hydration mismatch on Vercel (server vs client timestamp differ). Fix: `useState(0)` + let `useEffect` set real time on mount. Non-fatal but noisy in console.
+- `Header.tsx:224` — `useEffect` missing `closeDrawer` in deps array (`react-hooks/exhaustive-deps` warning). Intentional to avoid infinite loop but should be refactored with `useCallback`.
+- `src/components/gamer-card/` — dead code (ActivityWidget, SpotifyWidget, UserProfile, BadgeList, MarvelRivalsWidget, SocialLinks) never imported. Remove or integrate.
+- `analytics/page.tsx` + `AnalyticsView.tsx` — `Overview` interface duplicated in both files. Extract to shared type when next touching either file.
