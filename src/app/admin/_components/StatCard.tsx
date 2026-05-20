@@ -12,7 +12,7 @@ export default function StatCard({ label, primary, secondary }: StatCardProps) {
     >
       <span
         className="text-[11px] font-semibold uppercase tracking-[0.05em]"
-        style={{ color: 'var(--ds-outline-variant)' }}
+        style={{ color: 'var(--ds-on-surface-variant)' }}
       >
         {label}
       </span>

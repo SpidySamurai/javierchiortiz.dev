@@ -15,19 +15,19 @@ export default function TopPagesTable({ data }: { data: TopPage[] }) {
       <div className="grid grid-cols-[1fr_56px_56px] gap-x-3 mb-3">
         <span
           className="text-[11px] font-semibold uppercase tracking-[0.05em]"
-          style={{ color: 'var(--ds-outline-variant)' }}
+          style={{ color: 'var(--ds-on-surface-variant)' }}
         >
           Page
         </span>
         <span
           className="text-[11px] font-semibold uppercase tracking-[0.05em] text-right"
-          style={{ color: 'var(--ds-outline-variant)' }}
+          style={{ color: 'var(--ds-on-surface-variant)' }}
         >
           Views
         </span>
         <span
           className="text-[11px] font-semibold uppercase tracking-[0.05em] text-right"
-          style={{ color: 'var(--ds-outline-variant)' }}
+          style={{ color: 'var(--ds-on-surface-variant)' }}
         >
           Uniq
         </span>
@@ -54,7 +54,7 @@ export default function TopPagesTable({ data }: { data: TopPage[] }) {
           </div>
           <span
             className="text-[12px] text-right"
-            style={{ color: 'var(--ds-outline-variant)' }}
+            style={{ color: 'var(--ds-outline)' }}
           >
             {views.toLocaleString()}
           </span>

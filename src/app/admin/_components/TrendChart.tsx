@@ -77,7 +77,7 @@ export default function TrendChart({ data }: { data: TrendPoint[] }) {
       <div className="flex items-center gap-4 mb-4">
         <span
           className="text-[11px] font-semibold uppercase tracking-[0.05em]"
-          style={{ color: 'var(--ds-outline-variant)' }}
+          style={{ color: 'var(--ds-on-surface-variant)' }}
         >
           30-day trend
         </span>

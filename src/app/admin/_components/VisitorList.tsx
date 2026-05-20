@@ -30,7 +30,7 @@ export default function VisitorList({ data }: { data: Visitor[] }) {
     >
       <span
         className="text-[11px] font-semibold uppercase tracking-[0.05em] mb-3"
-        style={{ color: 'var(--ds-outline-variant)' }}
+        style={{ color: 'var(--ds-on-surface-variant)' }}
       >
         Recent visitors
       </span>
