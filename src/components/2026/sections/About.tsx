@@ -24,45 +24,54 @@ import {
   SiFigma,
   SiApachespark,
   SiScala,
+  SiOpenai,
+  SiReplit,
 } from 'react-icons/si';
 import { TbSql } from 'react-icons/tb';
 import type { IconType } from 'react-icons';
 
 interface Tech {
   name: string;
-  icon: IconType;
+  icon?: IconType;
   color: string;
 }
 
 const STACK: Tech[] = [
   { name: 'Next.js', icon: SiNextdotjs, color: '#e2e8f0' },
   { name: 'React', icon: SiReact, color: '#61DAFB' },
+  { name: 'TypeScript', icon: SiTypescript, color: '#3178C6' },
   { name: 'NestJS', icon: SiNestjs, color: '#E0234E' },
   { name: 'Node.js', icon: SiNodedotjs, color: '#6cc24a' },
-  { name: 'TypeScript', icon: SiTypescript, color: '#3178C6' },
-  { name: 'JavaScript', icon: SiJavascript, color: '#F7DF1E' },
   { name: 'Tailwind', icon: SiTailwindcss, color: '#06B6D4' },
+  { name: 'Prisma', icon: SiPrisma, color: '#5a67d8' },
+  { name: 'JavaScript', icon: SiJavascript, color: '#F7DF1E' },
   { name: 'HTML', icon: SiHtml5, color: '#E34F26' },
   { name: 'CSS', icon: SiCss, color: '#1572B6' },
   { name: 'Sass', icon: SiSass, color: '#CC6699' },
-  { name: 'Prisma', icon: SiPrisma, color: '#5a67d8' },
+];
+
+const AI: Tech[] = [
+  { name: 'Claude', icon: SiClaude, color: '#D4A27F' },
+  { name: 'OpenAI', icon: SiOpenai, color: '#74AA9C' },
+  { name: 'n8n', color: '#EA4B71' },
+  { name: 'Lovable', color: '#a855f7' },
+  { name: 'Replit', icon: SiReplit, color: '#F26207' },
 ];
 
 const TOOLS: Tech[] = [
+  { name: 'Figma', icon: SiFigma, color: '#F24E1E' },
   { name: 'Git', icon: SiGit, color: '#F05032' },
   { name: 'Shopify', icon: SiShopify, color: '#96BF48' },
   { name: 'Webpack', icon: SiWebpack, color: '#8DD6F9' },
-  { name: 'Claude', icon: SiClaude, color: '#D4A27F' },
-  { name: 'Figma', icon: SiFigma, color: '#F24E1E' },
 ];
 
 const ALSO: Tech[] = [
+  { name: 'Apache Spark', icon: SiApachespark, color: '#E25A1C' },
+  { name: 'Scala', icon: SiScala, color: '#DC322F' },
+  { name: 'SQL Server', icon: TbSql, color: '#c0c1ff' },
   { name: 'Python', icon: SiPython, color: '#4B8BBE' },
   { name: 'Django', icon: SiDjango, color: '#44B78B' },
   { name: '.NET', icon: SiDotnet, color: '#512BD4' },
-  { name: 'SQL Server', icon: TbSql, color: '#c0c1ff' },
-  { name: 'Apache Spark', icon: SiApachespark, color: '#E25A1C' },
-  { name: 'Scala', icon: SiScala, color: '#DC322F' },
 ];
 
 const floatDuration = (i: number) => 3.2 + (i % 5) * 0.42;
@@ -106,7 +115,7 @@ function TechChip({
           'color-mix(in srgb, var(--ds-primary) 10%, transparent)';
       }}
     >
-      <Icon size={14} style={{ color: tech.color, opacity: muted ? 0.6 : 0.85, flexShrink: 0 }} />
+      {Icon && <Icon size={14} style={{ color: tech.color, opacity: muted ? 0.6 : 0.85, flexShrink: 0 }} />}
       <span
         className="text-xs font-medium whitespace-nowrap"
         style={{
@@ -270,11 +279,12 @@ export default function About() {
         {/* Right — tech groups */}
         <div className="flex flex-col gap-8">
           <TechGroup labelKey="stack" items={STACK} startIndex={0} />
-          <TechGroup labelKey="about_tools" items={TOOLS} startIndex={STACK.length} />
+          <TechGroup labelKey="about_ai" items={AI} startIndex={STACK.length} />
+          <TechGroup labelKey="about_tools" items={TOOLS} startIndex={STACK.length + AI.length} />
           <TechGroup
             labelKey="about_also"
             items={ALSO}
-            startIndex={STACK.length + TOOLS.length}
+            startIndex={STACK.length + AI.length + TOOLS.length}
             muted
           />
 
