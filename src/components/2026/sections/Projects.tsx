@@ -123,7 +123,7 @@ function ProjectCard({
       <ProjectImage
         imageUrl={project.imageUrl}
         title={project.title}
-        description={project.description}
+        description={project.description ?? ''}
         imagePosition={project.imagePosition}
         isTall={isTall}
       />
