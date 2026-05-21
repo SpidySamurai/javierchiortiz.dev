@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import 'highlight.js/styles/github-dark-dimmed.css';
 
 *,
 *::before,
@@ -318,4 +317,152 @@ html[data-theme='light'] .ds-2026 {
   [style*='float-y'] {
     animation: none !important;
   }
+}
+
+/* ============================================================
+   Markdown prose — .markdown-content
+   Used by MarkdownRenderer (unified async pipeline + rehype-pretty-code)
+   ============================================================ */
+.markdown-content {
+  color: var(--ds-on-surface-variant);
+  font-family: var(--font-inter), sans-serif;
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.markdown-content h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--ds-on-surface);
+  font-family: var(--font-manrope), sans-serif;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.markdown-content h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ds-on-surface);
+  font-family: var(--font-manrope), sans-serif;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+
+.markdown-content h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ds-on-surface);
+  font-family: var(--font-manrope), sans-serif;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content p {
+  margin-bottom: 1.25rem;
+}
+
+.markdown-content a {
+  color: var(--ds-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.markdown-content strong {
+  color: var(--ds-on-surface);
+  font-weight: 700;
+}
+
+.markdown-content em {
+  color: var(--ds-on-surface);
+  font-style: italic;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid var(--ds-primary);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  color: var(--ds-on-surface-variant);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.markdown-content ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+  list-style-type: disc;
+}
+
+.markdown-content ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+  list-style-type: decimal;
+}
+
+.markdown-content li {
+  margin-bottom: 0.25rem;
+}
+
+.markdown-content hr {
+  border: none;
+  height: 1px;
+  background: var(--ds-outline-variant);
+  margin: 2rem 0;
+  opacity: 0.4;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+/* Inline code */
+.markdown-content :not(pre) > code {
+  background: var(--ds-surface);
+  color: var(--ds-primary);
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  font-size: 0.85em;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+/* Code blocks — rehype-pretty-code output */
+.markdown-content [data-rehype-pretty-code-figure] {
+  margin: 1.25rem 0;
+}
+
+.markdown-content [data-rehype-pretty-code-figure] pre {
+  background: var(--ds-surface) !important;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.markdown-content [data-rehype-pretty-code-figure] code {
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  background: transparent !important;
+  font-size: inherit;
+}
+
+/* YouTube embed */
+.markdown-content .yt-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  margin: 2rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.markdown-content .yt-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
