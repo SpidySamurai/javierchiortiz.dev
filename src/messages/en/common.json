@@ -156,6 +156,10 @@
     "kittys-api-consuming": {
       "title": "Kittys API Consuming",
       "description": "Mini app with The Cat API: generates random cats, saves favorites, and allows you to upload your photos."
+    },
+    "checker": {
+      "title": "Checker",
+      "description": "Fleet management SaaS for gig drivers on Uber, Didi, Cabify and InDrive — shifts, earnings, and vehicle tracking in one place."
     }
   },
   "projects_entry_label": "Entry",
