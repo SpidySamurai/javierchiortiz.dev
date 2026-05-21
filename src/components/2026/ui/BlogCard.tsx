@@ -17,6 +17,7 @@ interface BlogCardPost {
   excerpt?: string;
   coverImageUrl?: string | null;
   coverImagePositionCard?: string | null;
+  coverAspectCard?: string | null;
 }
 
 interface BlogCardProps {
@@ -46,7 +47,7 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
     >
       {/* Cover */}
       {post.coverImageUrl ? (
-        <div style={{ width: '100%', height: 200, overflow: 'hidden' }}>
+        <div style={{ width: '100%', aspectRatio: post.coverAspectCard ?? '16/9', overflow: 'hidden' }}>
           <img
             src={post.coverImageUrl}
             alt={title}

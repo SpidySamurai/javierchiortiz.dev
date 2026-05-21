@@ -7,10 +7,10 @@ interface Props {
   value: string;
   onChange: (pos: string) => void;
   label: string;
-  previewHeight: number;
+  aspectRatio?: string;
 }
 
-export default function ImagePositionPicker({ src, value, onChange, label, previewHeight }: Props) {
+export default function ImagePositionPicker({ src, value, onChange, label, aspectRatio = '16/9' }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const listenersRef = useRef<{ move: (e: MouseEvent) => void; up: (e: MouseEvent) => void } | null>(null);
   const [draft, setDraft] = useState(value);
@@ -80,7 +80,7 @@ export default function ImagePositionPicker({ src, value, onChange, label, previ
         style={{
           position: 'relative',
           width: '100%',
-          height: previewHeight,
+          aspectRatio,
           borderRadius: 8,
           overflow: 'hidden',
           cursor: 'crosshair',

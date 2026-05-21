@@ -82,6 +82,7 @@ type PostForm = {
   cover_theme: string;
   youtube_id: string;
   cover_image_url: string;
+  cover_image_aspect_card: string;
   cover_image_position_card: string;
   cover_image_position_hero: string;
   repo_url: string;
@@ -102,6 +103,7 @@ const EMPTY: PostForm = {
   cover_theme: '',
   youtube_id: '',
   cover_image_url: '',
+  cover_image_aspect_card: '16/9',
   cover_image_position_card: '50% 50%',
   cover_image_position_hero: '50% 50%',
   repo_url: '',
@@ -128,6 +130,7 @@ export default function PostEditor({ post }: { post?: Post }) {
           cover_theme: post.cover_theme ?? '',
           youtube_id: post.youtube_id ?? '',
           cover_image_url: post.cover_image_url ?? '',
+          cover_image_aspect_card: post.cover_image_aspect_card ?? '16/9',
           cover_image_position_card: post.cover_image_position_card ?? '50% 50%',
           cover_image_position_hero: post.cover_image_position_hero ?? '50% 50%',
           repo_url: post.repo_url ?? '',
@@ -207,6 +210,7 @@ export default function PostEditor({ post }: { post?: Post }) {
       cover_theme: form.cover_theme || null,
       youtube_id: form.youtube_id || null,
       cover_image_url: form.cover_image_url || null,
+      cover_image_aspect_card: form.cover_image_aspect_card || null,
       cover_image_position_card: form.cover_image_position_card || null,
       cover_image_position_hero: form.cover_image_position_hero || null,
       repo_url: form.repo_url || null,
@@ -430,6 +434,47 @@ export default function PostEditor({ post }: { post?: Post }) {
         )}
       </div>
 
+      {/* Cover image aspect ratio */}
+      {form.cover_image_url && (
+        <div className="mb-4">
+          <span
+            className="text-[11px] uppercase tracking-[0.08em] block mb-2"
+            style={{ color: 'var(--ds-outline-variant)' }}
+          >
+            Card aspect ratio
+          </span>
+          <div className="flex gap-2">
+            {([['16/9', 'Wide'], ['2/1', 'Cinema'], ['4/3', 'Standard'], ['1/1', 'Square']] as const).map(
+              ([ratio, label]) => (
+                <button
+                  key={ratio}
+                  onClick={() => setForm((f) => ({ ...f, cover_image_aspect_card: ratio }))}
+                  className="px-3.5 py-1.5 rounded-md text-[13px] cursor-pointer border-none"
+                  style={{
+                    background:
+                      form.cover_image_aspect_card === ratio
+                        ? 'var(--ds-primary)'
+                        : 'var(--ds-surface-high)',
+                    color:
+                      form.cover_image_aspect_card === ratio
+                        ? 'var(--ds-on-primary)'
+                        : 'var(--ds-outline)',
+                    fontWeight: form.cover_image_aspect_card === ratio ? 700 : 400,
+                  }}
+                >
+                  {label}
+                  <span
+                    className="ml-1.5 text-[10px] font-mono opacity-60"
+                  >
+                    {ratio}
+                  </span>
+                </button>
+              )
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Image position pickers */}
       {form.cover_image_url && (
         <div className="grid grid-cols-2 gap-4 mb-5">
@@ -438,14 +483,14 @@ export default function PostEditor({ post }: { post?: Post }) {
             value={form.cover_image_position_card}
             onChange={(pos) => setForm((f) => ({ ...f, cover_image_position_card: pos }))}
             label="Card position (listing view)"
-            previewHeight={200}
+            aspectRatio={form.cover_image_aspect_card}
           />
           <ImagePositionPicker
             src={form.cover_image_url}
             value={form.cover_image_position_hero}
             onChange={(pos) => setForm((f) => ({ ...f, cover_image_position_hero: pos }))}
             label="Hero position (post view)"
-            previewHeight={200}
+            aspectRatio="16/9"
           />
         </div>
       )}

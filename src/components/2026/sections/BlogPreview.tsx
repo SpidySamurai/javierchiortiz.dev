@@ -17,6 +17,7 @@ interface BlogCardShape {
   excerpt?: string;
   coverImageUrl?: string | null;
   coverImagePositionCard?: string | null;
+  coverAspectCard?: string | null;
 }
 
 function adaptPost(post: Post, locale: string): BlogCardShape {
@@ -36,6 +37,7 @@ function adaptPost(post: Post, locale: string): BlogCardShape {
     excerpt: (locale === 'es' ? post.excerpt_es : post.excerpt_en) ?? undefined,
     coverImageUrl: post.cover_image_url,
     coverImagePositionCard: post.cover_image_position_card,
+    coverAspectCard: post.cover_image_aspect_card,
   };
 }
 
