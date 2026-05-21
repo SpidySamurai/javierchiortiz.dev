@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
@@ -142,7 +142,30 @@ export default function PostEditor({ post }: { post?: Post }) {
   const [tab, setTab] = useState<'en' | 'es'>('en');
   const [mode, setMode] = useState<'edit' | 'split' | 'blog'>('edit');
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError('');
+    const ext = file.name.split('.').pop() ?? 'png';
+    const filename = `${form.slug || 'cover'}-${Date.now()}.${ext}`;
+    const { data, error: upErr } = await supabase.storage
+      .from('blog-covers')
+      .upload(filename, file, { upsert: true });
+    if (upErr) {
+      setError(`Upload failed: ${upErr.message}`);
+      setUploading(false);
+      return;
+    }
+    const { data: urlData } = supabase.storage.from('blog-covers').getPublicUrl(data.path);
+    setForm((f) => ({ ...f, cover_image_url: urlData.publicUrl }));
+    setUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   const youtubeCommand: ICommand = {
     name: 'youtube',
@@ -279,13 +302,34 @@ export default function PostEditor({ post }: { post?: Post }) {
           className={inputClass}
           style={inputStyle}
         />
-        <input
-          placeholder="Cover image URL (optional)"
-          value={form.cover_image_url}
-          onChange={setField('cover_image_url')}
-          className={inputClass}
-          style={inputStyle}
-        />
+        <div className="flex items-center gap-2">
+          <input
+            placeholder="Cover image URL (optional)"
+            value={form.cover_image_url}
+            onChange={setField('cover_image_url')}
+            className={inputClass}
+            style={{ ...inputStyle, flex: 1 }}
+          />
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-lg border-none cursor-pointer text-[13px]"
+            style={{ background: 'var(--ds-surface-high)', color: 'var(--ds-outline)', opacity: uploading ? 0.6 : 1 }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
+              {uploading ? 'hourglass_empty' : 'upload'}
+            </span>
+            {uploading ? 'Uploading…' : 'Upload'}
+          </button>
+        </div>
         <input
           placeholder="GitHub repo URL (optional, shows card at top of post)"
           value={form.repo_url}
