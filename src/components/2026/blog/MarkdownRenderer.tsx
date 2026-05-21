@@ -1,8 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeHighlight from 'rehype-highlight';
 import type { Components } from 'react-markdown';
-import type { Options } from 'rehype-pretty-code';
 
 function YouTubeEmbed({ id }: { id: string }) {
   return (
@@ -34,10 +33,6 @@ function YouTubeEmbed({ id }: { id: string }) {
   );
 }
 
-const prettyCodeOptions: Options = {
-  theme: 'github-dark-dimmed',
-  keepBackground: false,
-};
 
 const components: Components = {
   h1: ({ children }) => (
@@ -127,10 +122,8 @@ const components: Components = {
   em: ({ children }) => (
     <em style={{ color: 'var(--ds-on-surface)', fontStyle: 'italic' }}>{children}</em>
   ),
-  // Block code: rehype-pretty-code handles token styling — we just provide the container
-  pre: ({ children, ...props }) => (
+  pre: ({ children }) => (
     <pre
-      {...props}
       style={{
         margin: '1.25rem 0',
         background: 'var(--ds-surface)',
@@ -145,12 +138,12 @@ const components: Components = {
     </pre>
   ),
   code: ({ children, className, ...props }) => {
-    // Block code after rehype-pretty-code — className has language-*, pass through
+    // Block code — rehype-highlight adds language-* class and hljs-* token classes
     if (className) {
       return (
         <code
           className={className}
-          style={{ fontFamily: 'ui-monospace, "Cascadia Code", monospace' }}
+          style={{ fontFamily: 'ui-monospace, "Cascadia Code", monospace', background: 'transparent' }}
           {...props}
         >
           {children}
@@ -173,12 +166,6 @@ const components: Components = {
       </code>
     );
   },
-  // rehype-pretty-code wraps pre in a figure — reset default browser margin
-  figure: ({ children, ...props }) => (
-    <figure style={{ margin: 0 }} {...props}>
-      {children}
-    </figure>
-  ),
   blockquote: ({ children }) => (
     <blockquote
       style={{
@@ -248,7 +235,7 @@ export default function MarkdownRenderer({ content }: { content: string }) {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
-      rehypePlugins={[[rehypePrettyCode, prettyCodeOptions]]}
+      rehypePlugins={[rehypeHighlight]}
       components={components}
     >
       {content}
