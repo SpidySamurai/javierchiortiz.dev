@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import type { ICommand, ExecuteState, TextAreaTextApi } from '@uiw/react-md-editor';
 import type { Post } from '@/types/database';
-import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
+import AdminMarkdownPreview from '@/app/admin/_components/AdminMarkdownPreview';
 import ImagePositionPicker from '@/app/admin/_components/ImagePositionPicker';
 import { BLOG_THEMES } from '@/data/blogThemes';
 import SectionHeader from '@/app/admin/_components/SectionHeader';
@@ -565,7 +565,7 @@ export default function PostEditor({ post }: { post?: Post }) {
                 </h1>
               )}
               {currentContent ? (
-                <MarkdownRenderer content={currentContent} />
+                <AdminMarkdownPreview content={currentContent} />
               ) : (
                 <p className="italic" style={{ color: 'var(--ds-outline-variant)' }}>No content yet.</p>
               )}
@@ -609,7 +609,7 @@ export default function PostEditor({ post }: { post?: Post }) {
               </h1>
             )}
             {currentContent ? (
-              <MarkdownRenderer content={currentContent} />
+              <AdminMarkdownPreview content={currentContent} />
             ) : (
               <p className="italic" style={{ color: 'var(--ds-outline-variant)' }}>No content yet.</p>
             )}
