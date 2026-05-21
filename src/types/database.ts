@@ -100,6 +100,7 @@ export type Database = {
           cover_image_position_card: string | null;
           cover_image_position_hero: string | null;
           cover_image_url: string | null;
+          cover_image_aspect_card: string | null;
           cover_theme: string | null;
           theme_config: {
             bg?: string;
@@ -128,6 +129,7 @@ export type Database = {
           cover_image_position_card?: string | null;
           cover_image_position_hero?: string | null;
           cover_image_url?: string | null;
+          cover_image_aspect_card?: string | null;
           cover_theme?: string | null;
           theme_config?: {
             bg?: string;
@@ -156,6 +158,7 @@ export type Database = {
           cover_image_position_card?: string | null;
           cover_image_position_hero?: string | null;
           cover_image_url?: string | null;
+          cover_image_aspect_card?: string | null;
           cover_theme?: string | null;
           theme_config?: {
             bg?: string;
