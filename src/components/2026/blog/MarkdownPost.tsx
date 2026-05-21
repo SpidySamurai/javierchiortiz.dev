@@ -2,6 +2,7 @@ import type { Post } from '@/types/database';
 import Header from '@/components/2026/layout/Header';
 import Sidebar from '@/components/2026/layout/Sidebar';
 import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
+import RepoCard from '@/components/2026/blog/RepoCard';
 import BlogCover from '@/components/2026/ui/BlogCover';
 import { getTheme } from '@/data/blogThemes';
 import { getSidebarCollapsed } from '@/lib/sidebarState';
@@ -102,6 +103,7 @@ export default async function MarkdownPost({ post, locale }: { post: Post; local
             </p>
           </header>
 
+          {post.repo_url && <RepoCard url={post.repo_url} />}
           <MarkdownRenderer content={content ?? ''} />
         </article>
       </main>

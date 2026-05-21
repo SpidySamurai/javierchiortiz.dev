@@ -38,8 +38,10 @@
     "react-masonry-css": "^1.0.16",
     "react-type-animation": "^3.2.0",
     "recharts": "^3.8.1",
+    "rehype-pretty-code": "^0.14.3",
     "rehype-sanitize": "^6.0.0",
     "remark-gfm": "^4.0.1",
+    "shiki": "^4.1.0",
     "swr": "^2.3.8"
   },
   "devDependencies": {

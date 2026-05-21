@@ -1,7 +1,8 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import rehypeSanitize from 'rehype-sanitize';
+import rehypePrettyCode from 'rehype-pretty-code';
 import type { Components } from 'react-markdown';
+import type { Options } from 'rehype-pretty-code';
 
 function YouTubeEmbed({ id }: { id: string }) {
   return (
@@ -32,6 +33,11 @@ function YouTubeEmbed({ id }: { id: string }) {
     </div>
   );
 }
+
+const prettyCodeOptions: Options = {
+  theme: 'github-dark-dimmed',
+  keepBackground: false,
+};
 
 const components: Components = {
   h1: ({ children }) => (
@@ -83,8 +89,8 @@ const components: Components = {
     const text = Array.isArray(children)
       ? children.map((c) => (typeof c === 'string' ? c : ' ')).join('')
       : typeof children === 'string'
-      ? children
-      : '';
+        ? children
+        : '';
     const youtubePattern = /^::youtube(?:\[([^\]]+)\]|\{#?([^}]+)\})$/;
     const match = text
       .split(/\r?\n/)
@@ -121,34 +127,43 @@ const components: Components = {
   em: ({ children }) => (
     <em style={{ color: 'var(--ds-on-surface)', fontStyle: 'italic' }}>{children}</em>
   ),
-  code: ({ children, className }) => {
-    const isBlock = className?.startsWith('language-');
-    if (isBlock) {
+  // Block code: rehype-pretty-code handles token styling — we just provide the container
+  pre: ({ children, ...props }) => (
+    <pre
+      {...props}
+      style={{
+        margin: '1.25rem 0',
+        background: 'var(--ds-surface)',
+        borderRadius: 8,
+        padding: '1rem 1.25rem',
+        overflowX: 'auto',
+        fontSize: '0.875rem',
+        lineHeight: 1.7,
+      }}
+    >
+      {children}
+    </pre>
+  ),
+  code: ({ children, className, ...props }) => {
+    // Block code after rehype-pretty-code — className has language-*, pass through
+    if (className) {
       return (
         <code
-          style={{
-            display: 'block',
-            background: 'var(--ds-surface)',
-            color: 'var(--ds-primary)',
-            fontFamily: 'monospace',
-            fontSize: '0.875rem',
-            padding: '1rem 1.25rem',
-            borderRadius: 8,
-            overflowX: 'auto',
-            marginBottom: '1.25rem',
-            lineHeight: 1.6,
-          }}
+          className={className}
+          style={{ fontFamily: 'ui-monospace, "Cascadia Code", monospace' }}
+          {...props}
         >
           {children}
         </code>
       );
     }
+    // Inline code
     return (
       <code
         style={{
           background: 'var(--ds-surface)',
           color: 'var(--ds-primary)',
-          fontFamily: 'monospace',
+          fontFamily: 'ui-monospace, "Cascadia Code", monospace',
           fontSize: '0.85em',
           padding: '0.15em 0.4em',
           borderRadius: 4,
@@ -158,8 +173,11 @@ const components: Components = {
       </code>
     );
   },
-  pre: ({ children }) => (
-    <pre style={{ margin: '1.25rem 0', background: 'transparent' }}>{children}</pre>
+  // rehype-pretty-code wraps pre in a figure — reset default browser margin
+  figure: ({ children, ...props }) => (
+    <figure style={{ margin: 0 }} {...props}>
+      {children}
+    </figure>
   ),
   blockquote: ({ children }) => (
     <blockquote
@@ -230,7 +248,7 @@ export default function MarkdownRenderer({ content }: { content: string }) {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
-      rehypePlugins={[rehypeSanitize]}
+      rehypePlugins={[[rehypePrettyCode, prettyCodeOptions]]}
       components={components}
     >
       {content}

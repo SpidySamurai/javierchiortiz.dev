@@ -119,6 +119,7 @@ export type Database = {
           title_es: string;
           updated_at: string;
           youtube_id: string | null;
+          repo_url: string | null;
         };
         Insert: {
           category?: string;
@@ -146,6 +147,7 @@ export type Database = {
           title_es: string;
           updated_at?: string;
           youtube_id?: string | null;
+          repo_url?: string | null;
         };
         Update: {
           category?: string;
@@ -173,6 +175,7 @@ export type Database = {
           title_es?: string;
           updated_at?: string;
           youtube_id?: string | null;
+          repo_url?: string | null;
         };
         Relationships: [];
       };

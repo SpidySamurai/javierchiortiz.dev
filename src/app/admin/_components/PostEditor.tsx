@@ -84,6 +84,7 @@ type PostForm = {
   cover_image_url: string;
   cover_image_position_card: string;
   cover_image_position_hero: string;
+  repo_url: string;
   theme_config_enabled: boolean;
   theme_config: ThemeConfig;
 };
@@ -103,6 +104,7 @@ const EMPTY: PostForm = {
   cover_image_url: '',
   cover_image_position_card: '50% 50%',
   cover_image_position_hero: '50% 50%',
+  repo_url: '',
   theme_config_enabled: false,
   theme_config: { ...DEFAULT_THEME },
 };
@@ -128,6 +130,7 @@ export default function PostEditor({ post }: { post?: Post }) {
           cover_image_url: post.cover_image_url ?? '',
           cover_image_position_card: post.cover_image_position_card ?? '50% 50%',
           cover_image_position_hero: post.cover_image_position_hero ?? '50% 50%',
+          repo_url: post.repo_url ?? '',
           theme_config_enabled: !!post.theme_config,
           theme_config: post.theme_config
             ? { ...DEFAULT_THEME, ...post.theme_config }
@@ -183,6 +186,7 @@ export default function PostEditor({ post }: { post?: Post }) {
       cover_image_url: form.cover_image_url || null,
       cover_image_position_card: form.cover_image_position_card || null,
       cover_image_position_hero: form.cover_image_position_hero || null,
+      repo_url: form.repo_url || null,
       theme_config: form.theme_config_enabled ? form.theme_config : null,
       is_published: publish,
       published_at: publish ? post?.published_at ?? new Date().toISOString() : null,
@@ -279,6 +283,13 @@ export default function PostEditor({ post }: { post?: Post }) {
           placeholder="Cover image URL (optional)"
           value={form.cover_image_url}
           onChange={setField('cover_image_url')}
+          className={inputClass}
+          style={inputStyle}
+        />
+        <input
+          placeholder="GitHub repo URL (optional, shows card at top of post)"
+          value={form.repo_url}
+          onChange={setField('repo_url')}
           className={inputClass}
           style={inputStyle}
         />
