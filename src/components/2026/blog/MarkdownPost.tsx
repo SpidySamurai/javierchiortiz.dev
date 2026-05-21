@@ -10,8 +10,8 @@ import Link from 'next/link';
 
 export default async function MarkdownPost({ post, locale }: { post: Post; locale: string }) {
   const sidebarCollapsed = await getSidebarCollapsed();
-  const title = locale === 'es' ? post.title_es : post.title_en;
-  const content = locale === 'es' ? post.content_es : post.content_en;
+  const title = locale === 'es' ? (post.title_es || post.title_en) : post.title_en;
+  const content = locale === 'es' ? (post.content_es || post.content_en) : post.content_en;
   const hasImageHero = !!post.cover_image_url;
   const hasThemeHero = !!post.cover_theme && !hasImageHero;
 
