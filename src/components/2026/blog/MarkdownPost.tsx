@@ -18,19 +18,22 @@ export default async function MarkdownPost({ post, locale }: { post: Post; local
   // theme_config (DB override) → cover_theme key lookup → default
   const baseTheme = getTheme(post.cover_theme ?? undefined);
   const theme = post.theme_config ? { ...baseTheme, ...post.theme_config } : baseTheme;
+  const hasCustomTheme = !!(post.cover_theme || post.theme_config);
 
   return (
     <div
       className="ds-2026"
       style={
-        {
-          minHeight: '100vh',
-          backgroundColor: theme.bg,
-          '--ds-bg': theme.bg,
-          '--ds-surface': theme.surface,
-          '--ds-primary': theme.primary,
-          '--ds-on-surface': theme.onSurface ?? 'var(--ds-on-surface)',
-        } as React.CSSProperties
+        hasCustomTheme
+          ? ({
+              minHeight: '100vh',
+              backgroundColor: theme.bg,
+              '--ds-bg': theme.bg,
+              '--ds-surface': theme.surface,
+              '--ds-primary': theme.primary,
+              '--ds-on-surface': theme.onSurface ?? 'var(--ds-on-surface)',
+            } as React.CSSProperties)
+          : { minHeight: '100vh' }
       }
     >
       <Header />
