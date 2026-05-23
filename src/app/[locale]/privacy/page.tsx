@@ -1,4 +1,4 @@
-import { getLocale } from 'next-intl/server';
+import type { Metadata } from 'next';
 
 const content = {
   en: {
@@ -75,8 +75,35 @@ const content = {
   },
 };
 
-export default async function PrivacyPage() {
-  const locale = await getLocale();
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: locale === 'es' ? 'Aviso de Privacidad' : 'Privacy Notice',
+    description:
+      locale === 'es'
+        ? 'Cómo se recopilan y usan los datos de este portafolio.'
+        : 'How data is collected and used on this portfolio.',
+    alternates: {
+      canonical: `https://javierchiortiz.dev/${locale}/privacy`,
+      languages: {
+        en: 'https://javierchiortiz.dev/en/privacy',
+        es: 'https://javierchiortiz.dev/es/privacy',
+        'x-default': 'https://javierchiortiz.dev/en/privacy',
+      },
+    },
+  };
+}
+
+export default async function PrivacyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const c = locale === 'es' ? content.es : content.en;
 
   return (

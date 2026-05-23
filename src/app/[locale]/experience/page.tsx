@@ -10,7 +10,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'common' });
-  return { title: `${t('experience')} — Javier Chi` };
+  return {
+    title: t('experience'),
+    alternates: {
+      canonical: `https://javierchiortiz.dev/${locale}/experience`,
+      languages: {
+        en: 'https://javierchiortiz.dev/en/experience',
+        es: 'https://javierchiortiz.dev/es/experience',
+        'x-default': 'https://javierchiortiz.dev/en/experience',
+      },
+    },
+  };
 }
 
 export default function ExperiencePage() {

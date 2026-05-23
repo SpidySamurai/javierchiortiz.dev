@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { getPublishedPosts } from '@/lib/blogQueries';
 import BlogCard from '@/components/2026/ui/BlogCard';
 import Header from '@/components/2026/layout/Header';
@@ -7,6 +8,31 @@ import CustomCursor from '@/components/2026/ui/CustomCursor';
 import BackBreadcrumb from '@/components/2026/ui/BackBreadcrumb';
 import { getSidebarCollapsed } from '@/lib/sidebarState';
 import type { Post } from '@/types/database';
+
+const BASE_URL = 'https://javierchiortiz.dev';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const isEn = locale === 'en';
+  return {
+    title: isEn ? 'Blog — Thoughts & Beyond Code' : 'Blog — Pensamientos y más allá del código',
+    description: isEn
+      ? 'Engineering insights, life lessons, and culture by Javier Chi — full stack engineer.'
+      : 'Perspectivas de ingeniería, lecciones de vida y cultura por Javier Chi — ingeniero full stack.',
+    alternates: {
+      canonical: `${BASE_URL}/${locale}/blog`,
+      languages: {
+        en: `${BASE_URL}/en/blog`,
+        es: `${BASE_URL}/es/blog`,
+        'x-default': `${BASE_URL}/en/blog`,
+      },
+    },
+  };
+}
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
