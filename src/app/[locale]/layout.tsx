@@ -16,7 +16,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'common' });
 
-  const title = 'Javier Chi — Freelance Full Stack Engineer · Next.js · SaaS · AI Automation';
+  const title = t('meta_title');
   const description = t('meta_description');
 
   return {
@@ -44,18 +44,9 @@ export async function generateMetadata({
     authors: [{ name: 'Javier Fernando Chi Ortiz', url: 'https://javierchiortiz.dev' }],
     creator: 'Javier Fernando Chi Ortiz',
     robots: { index: true, follow: true },
-    alternates: {
-      canonical: `https://javierchiortiz.dev/${locale}`,
-      languages: {
-        en: 'https://javierchiortiz.dev/en',
-        es: 'https://javierchiortiz.dev/es',
-        'x-default': 'https://javierchiortiz.dev/en',
-      },
-    },
     openGraph: {
       title,
       description,
-      url: 'https://javierchiortiz.dev',
       siteName: 'Javier Chi',
       locale: locale === 'es' ? 'es_MX' : 'en_US',
       type: 'website',
