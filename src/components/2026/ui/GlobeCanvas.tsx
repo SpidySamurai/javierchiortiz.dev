@@ -1,7 +1,7 @@
 'use client';
 
 import createGlobe from 'cobe';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export interface GlobePoint {
   lat: number;
@@ -18,6 +18,14 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
   const phi = useRef(0);
   const isDragging = useRef(false);
   const lastX = useRef(0);
+  const pointsRef = useRef<GlobePoint[]>(points);
+  const markerProgress = useRef(0);
+  const [visible, setVisible] = useState(false);
+
+  // Keep ref in sync without recreating the globe
+  useEffect(() => {
+    pointsRef.current = points;
+  }, [points]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,20 +44,20 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
       baseColor: [0.3, 0.35, 0.6],
       markerColor: [1, 0.65, 0.2],
       glowColor: [0.38, 0.40, 1],
-      markers: points.map((p) => ({
-        location: [p.lat, p.lng] as [number, number],
-        size: 0.03,
-      })),
+      markers: [],
     });
 
     let rafId: number;
 
     const animate = () => {
       if (!isDragging.current) phi.current += 0.005;
-      const pulse = 0.018 + Math.abs(Math.sin(Date.now() / 1200)) * 0.007;
+      if (pointsRef.current.length > 0) {
+        markerProgress.current = Math.min(1, markerProgress.current + 0.012);
+      }
+      const pulse = (0.018 + Math.abs(Math.sin(Date.now() / 1200)) * 0.007) * markerProgress.current;
       globe.update({
         phi: phi.current,
-        markers: points.map((p) => ({
+        markers: pointsRef.current.map((p) => ({
           location: [p.lat, p.lng] as [number, number],
           size: pulse,
         })),
@@ -58,6 +66,7 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
     };
 
     rafId = requestAnimationFrame(animate);
+    setTimeout(() => setVisible(true), 200);
 
     const onPointerDown = (e: PointerEvent) => {
       isDragging.current = true;
@@ -81,7 +90,7 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
     };
-  }, [points, size]);
+  }, [size]); // globe created once — points flow in via ref
 
   return (
     <canvas
@@ -94,6 +103,8 @@ export default function GlobeCanvas({ points, size = 480 }: GlobeCanvasProps) {
         aspectRatio: '1',
         margin: '0 auto',
         cursor: 'grab',
+        opacity: visible ? 1 : 0,
+        transition: 'opacity 0.8s ease',
       }}
     />
   );
