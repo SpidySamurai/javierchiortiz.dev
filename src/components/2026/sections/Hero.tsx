@@ -6,7 +6,6 @@ const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { TwentyOnePilotsEgg } from './TwentyOnePilotsEgg';
-import { useTheme } from 'next-themes';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import type { Container } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
@@ -153,7 +152,7 @@ function AnimatedHeadline({
           className="inline-block"
           style={{
             marginRight: '0.22em',
-            ...(word.isAccent ? { color: 'var(--ds-primary)', fontStyle: 'italic' } : {}),
+            ...(word.isAccent ? { color: 'var(--ds-primary-vivid)', fontStyle: 'italic' } : {}),
           }}
         >
           {word.text}
@@ -290,12 +289,12 @@ const ScrambleServiceCycler = memo(function ScrambleServiceCycler({
 
 export default function Hero() {
   const t = useTranslations('common');
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme !== 'light';
+  const isDark = true; // dark-only site — no theme branching (avoids hydration mismatch)
   const [particlesReady, setParticlesReady] = useState(false);
   const [typingDone, setTypingDone] = useState(false);
   const [eggOpen, setEggOpen] = useState(false);
   const cometContainerRef = useRef<Container | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const particlesOptions = useMemo(() => getParticlesOptions(isDark), [isDark]);
 
   const services = useMemo<ServiceItem[]>(
@@ -313,6 +312,24 @@ export default function Hero() {
   const handleParticlesLoaded = useCallback((c: Container | undefined) => {
     cometContainerRef.current = c ?? null;
   }, []);
+
+  // Pause the particle render loop while the hero is scrolled out of view —
+  // frees CPU/GPU for the rest of the page, zero visual change in-view.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!particlesReady || !el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const c = cometContainerRef.current;
+        if (!c) return;
+        if (entry.isIntersecting) c.play();
+        else c.pause();
+      },
+      { threshold: 0 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [particlesReady]);
 
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -395,6 +412,7 @@ export default function Hero() {
 
   return (
     <section
+      ref={sectionRef}
       data-track-section="hero"
       className="relative px-8 md:px-16 pt-24 pb-24 md:pb-40 overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
@@ -402,7 +420,7 @@ export default function Hero() {
       {/* Unified particles — background + comets in one container */}
       {particlesReady && (
         <ParticleBackground
-          key={resolvedTheme ?? 'dark'}
+          key="dark"
           onLoaded={handleParticlesLoaded}
           options={particlesOptions}
         />
@@ -490,21 +508,32 @@ export default function Hero() {
               style={{ backgroundColor: 'var(--ds-outline-variant)' }}
             />
 
-            {/* CTA */}
-            <div className="flex flex-col gap-1 flex-shrink-0 items-start md:items-center">
+            {/* CTA — committed periwinkle button */}
+            <div className="flex flex-col gap-2 flex-shrink-0 items-start md:items-center">
               <a
                 href={`https://wa.me/529904147791?text=${encodeURIComponent("Hi! I saw your portfolio and I'd like to start a project together.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-base font-semibold transition-colors hover:opacity-80"
-                style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                className="group/cta inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-bold text-sm uppercase tracking-widest transition-transform duration-200 motion-safe:hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--ds-primary-vivid)]"
+                style={{
+                  backgroundColor: 'var(--ds-primary-vivid)',
+                  color: 'var(--ds-on-vivid)',
+                  fontFamily: 'var(--font-manrope), sans-serif',
+                }}
               >
                 {t('hero_cta')}
+                <span
+                  translate="no"
+                  aria-hidden
+                  className="material-symbols-outlined text-base inline-block transition-transform duration-200 motion-safe:group-hover/cta:translate-x-1"
+                >
+                  arrow_forward
+                </span>
               </a>
               <span
                 className="text-xs italic tracking-widest"
                 style={{
-                  color: 'color-mix(in srgb, var(--ds-primary) 55%, transparent)',
+                  color: 'color-mix(in srgb, var(--ds-primary) 60%, transparent)',
                   fontFamily: 'var(--font-inter), sans-serif',
                 }}
               >

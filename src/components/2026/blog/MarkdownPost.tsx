@@ -4,12 +4,16 @@ import Sidebar from '@/components/2026/layout/Sidebar';
 import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
 import RepoCard from '@/components/2026/blog/RepoCard';
 import BlogCover from '@/components/2026/ui/BlogCover';
+import BlogCard from '@/components/2026/ui/BlogCard';
 import { getTheme } from '@/data/blogThemes';
 import { getSidebarCollapsed } from '@/lib/sidebarState';
+import { getPublishedPosts } from '@/lib/blogQueries';
 import Link from 'next/link';
 
 export default async function MarkdownPost({ post, locale }: { post: Post; locale: string }) {
   const sidebarCollapsed = await getSidebarCollapsed();
+  const allPosts = await getPublishedPosts();
+  const suggestions = allPosts.filter((p) => p.slug !== post.slug).slice(0, 3);
   const title = locale === 'es' ? (post.title_es || post.title_en) : post.title_en;
   const content = locale === 'es' ? (post.content_es || post.content_en) : post.content_en;
   const hasImageHero = !!post.cover_image_url;
@@ -58,7 +62,7 @@ export default async function MarkdownPost({ post, locale }: { post: Post; local
           <BlogCover theme={post.cover_theme as 'pilots' | 'spiderman' | 'karate'} height="420px" />
         )}
 
-        <article className="max-w-3xl mx-auto px-8 py-16">
+        <article className="max-w-4xl mx-auto px-8 py-16">
           {/* Back */}
           <Link
             href={`/${locale}/blog`}
@@ -109,6 +113,44 @@ export default async function MarkdownPost({ post, locale }: { post: Post; local
           {post.repo_url && <RepoCard url={post.repo_url} />}
           <MarkdownRenderer content={content ?? ''} />
         </article>
+
+        {/* Keep reading — suggested posts */}
+        {suggestions.length > 0 && (
+          <section className="max-w-5xl mx-auto px-8 pb-24">
+            <h2
+              className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-8"
+              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+            >
+              {locale === 'es' ? 'Sigue leyendo' : 'Keep reading'}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {suggestions.map((p) => (
+                <BlogCard
+                  key={p.slug}
+                  locale={locale}
+                  post={{
+                    slug: p.slug,
+                    date: p.published_at
+                      ? new Date(p.published_at).toLocaleDateString(
+                          locale === 'es' ? 'es-MX' : 'en-US',
+                          { month: 'long', year: 'numeric' }
+                        )
+                      : '',
+                    category: p.category,
+                    readTime: p.read_time,
+                    coverTheme: (p.cover_theme as 'pilots' | 'spiderman' | 'karate') ?? 'pilots',
+                    theme: p.cover_theme ?? undefined,
+                    title: locale === 'es' ? p.title_es : p.title_en,
+                    excerpt: (locale === 'es' ? p.excerpt_es : p.excerpt_en) ?? undefined,
+                    coverImageUrl: p.cover_image_url,
+                    coverImagePositionCard: p.cover_image_position_card,
+                    coverAspectCard: p.cover_image_aspect_card,
+                  }}
+                />
+              ))}
+            </div>
+          </section>
+        )}
       </main>
     </div>
   );

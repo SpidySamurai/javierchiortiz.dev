@@ -11,7 +11,7 @@ import BlogPreview from '@/components/2026/sections/BlogPreview';
 import MantecadoChat from '@/components/MantecadoChat';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
 import BackToTop from '@/components/2026/ui/BackToTop';
-import CustomCursor from '@/components/2026/ui/CustomCursor';
+import AtmosphereOverlay from '@/components/2026/ui/AtmosphereOverlay';
 import type { Post } from '@/types/database';
 
 export default function HomeShell({ posts, sidebarCollapsed }: { posts: Post[]; sidebarCollapsed?: boolean }) {
@@ -20,7 +20,7 @@ export default function HomeShell({ posts, sidebarCollapsed }: { posts: Post[]; 
     <div className="ds-2026" style={{ minHeight: '100vh' }}>
       <AnalyticsTracker />
       <ScrollProgress />
-      <CustomCursor />
+      <AtmosphereOverlay />
       <Header />
       <Sidebar defaultCollapsed={sidebarCollapsed} />
       <MantecadoChat />
