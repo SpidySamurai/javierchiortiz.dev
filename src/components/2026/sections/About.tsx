@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useRef, useEffect } from 'react';
-import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
+import { TextReveal } from '@/components/2026/ui/TextReveal';
 import {
   SiReact,
   SiNextdotjs,
@@ -75,25 +76,6 @@ const ALSO: Tech[] = [
   { name: 'Django', icon: SiDjango, color: '#44B78B' },
   { name: '.NET', icon: SiDotnet, color: '#512BD4' },
 ];
-
-function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const motionVal = useMotionValue(0);
-  const rounded = useTransform(motionVal, (v) => Math.round(v));
-  const isInView = useInView(ref, { once: true, margin: '-40px' });
-
-  useEffect(() => {
-    if (!isInView) return;
-    const controls = animate(motionVal, to, { duration: 1.4, ease: 'easeOut' });
-    return controls.stop;
-  }, [isInView, motionVal, to]);
-
-  return (
-    <span ref={ref}>
-      <motion.span>{rounded}</motion.span>{suffix}
-    </span>
-  );
-}
 
 const floatDuration = (i: number) => 3.2 + (i % 5) * 0.42;
 const floatDelay = (i: number) => (i * 0.38) % 2.2;
@@ -189,17 +171,44 @@ function TechGroup({
 export default function About() {
   const t = useTranslations('common');
   const locale = useLocale();
+  const sectionRef = useRef<HTMLElement>(null);
+  // Pause the ~26 infinite float-y chip animations while About is off-screen.
+  const inView = useInView(sectionRef, { margin: '120px' });
 
   return (
     <section
+      ref={sectionRef}
       id="about"
       data-track-section="about"
+      data-floats-paused={inView ? undefined : ''}
       className="py-28 px-8 lg:px-20"
-      style={{ backgroundColor: 'var(--ds-bg)', scrollMarginTop: '5rem' }}
+      style={{ backgroundColor: 'var(--ds-about-bg)', scrollMarginTop: '5rem' }}
     >
       <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
         {/* Left — text */}
         <div className="min-w-0">
+          {/* Person header — name + role, no photo */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-8"
+          >
+            <p
+              className="text-lg font-bold leading-tight"
+              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+            >
+              Javier Chi Ortíz
+            </p>
+            <p
+              className="text-xs uppercase tracking-[0.2em] font-bold mt-0.5"
+              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              {t('hero_subtitle')}
+            </p>
+          </motion.div>
+
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -211,17 +220,15 @@ export default function About() {
             {t('about_label')}
           </motion.p>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1, duration: 0.5 }}
+          <h2
             className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-10"
             style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
-            {t('about_title')}{' '}
-            <em style={{ color: 'var(--ds-primary)' }}>{t('about_title_accent')}</em>
-          </motion.h2>
+            <TextReveal delay={0.1}>
+              {t('about_title')}{' '}
+              <em style={{ color: 'var(--ds-primary)' }}>{t('about_title_accent')}</em>
+            </TextReveal>
+          </h2>
 
           <div className="flex flex-col gap-5">
             {(
@@ -248,37 +255,6 @@ export default function About() {
               </motion.p>
             ))}
           </div>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.6, duration: 0.4 }}
-            className="flex flex-wrap gap-6 pt-4 mt-2 border-t"
-            style={{ borderColor: 'color-mix(in srgb, var(--ds-outline-variant) 30%, transparent)' }}
-          >
-            {[
-              { to: 5, suffix: '+', label: 'years' },
-              { to: 10, suffix: '+', label: 'projects' },
-              { to: 2, suffix: '', label: 'SaaS live' },
-            ].map((stat) => (
-              <div key={stat.label} className="flex flex-col">
-                <span
-                  className="text-xl font-black leading-none"
-                  style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
-                >
-                  <CountUp to={stat.to} suffix={stat.suffix} />
-                </span>
-                <span
-                  className="text-[10px] uppercase tracking-widest mt-0.5"
-                  style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
-                >
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </motion.div>
 
           {/* Company marquee */}
           <motion.div

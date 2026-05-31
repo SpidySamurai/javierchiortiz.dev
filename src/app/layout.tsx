@@ -17,13 +17,14 @@ const inter = Inter({
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [headersList, cookieStore] = await Promise.all([headers(), cookies()]);
   const locale = headersList.get('x-locale') ?? 'en';
-  const theme = cookieStore.get('theme')?.value ?? 'dark';
+  // Dark-only site — theme is forced dark (next-themes forcedTheme), so the
+  // server html must always render dark too, regardless of any stale cookie.
   const collapsed = cookieStore.get('sidebar-collapsed')?.value === 'true';
 
   return (
     <html
       lang={locale}
-      data-theme={theme}
+      data-theme="dark"
       data-scroll-behavior="smooth"
       {...(collapsed ? { 'data-sidebar-collapsed': '' } : {})}
     >

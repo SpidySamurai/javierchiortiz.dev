@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useAnimate } from 'framer-motion';
+import { motion, AnimatePresence, useAnimate, useInView } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
+import { TextReveal } from '@/components/2026/ui/TextReveal';
 
 const SERVICE_KEYS = ['landing', 'webapp', 'mvp', 'cms', 'crm', 'ai'] as const;
 const STATION_KEYS = ['idea', 'build', 'launch'] as const;
@@ -41,6 +42,68 @@ const BELT_TRACK_CSS = `
   background-image: repeating-linear-gradient(to right, color-mix(in srgb, var(--ds-primary) 18%, transparent) 0px, color-mix(in srgb, var(--ds-primary) 18%, transparent) 5px, transparent 5px, transparent 16px);
   background-size: 16px 1px;
   animation: conv-track-flow 1s linear infinite;
+}
+
+/* Soft energy sweep travelling along the belt */
+@keyframes conv-sweep {
+  0%   { transform: translateX(-60%); opacity: 0; }
+  18%  { opacity: 1; }
+  82%  { opacity: 1; }
+  100% { transform: translateX(170%); opacity: 0; }
+}
+.conv-sweep {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 42%; pointer-events: none;
+  background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--ds-primary) 11%, transparent) 50%, transparent);
+  mix-blend-mode: screen;
+  animation: conv-sweep 5s ease-in-out infinite;
+}
+
+/* Light comet flowing along the centre line between stations */
+@keyframes conv-comet {
+  0%   { left: -5%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { left: 105%; opacity: 0; }
+}
+.conv-comet {
+  position: absolute; top: 50%; width: 26px; height: 2px; transform: translateY(-50%);
+  pointer-events: none; border-radius: 2px;
+  background: linear-gradient(to right, transparent, color-mix(in srgb, var(--ds-primary) 90%, transparent));
+  box-shadow: 0 0 9px color-mix(in srgb, var(--ds-primary) 65%, transparent);
+  animation: conv-comet 2.3s linear infinite;
+}
+.conv-comet-2 { animation-delay: 1.15s; opacity: 0.6; }
+
+/* Station hand-off pulse ring (emitted on belt cadence) */
+@keyframes conv-pulse {
+  0%   { transform: translate(-50%, -50%) scale(0.55); opacity: 0; }
+  22%  { opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(2.7); opacity: 0; }
+}
+.conv-pulse {
+  position: absolute; top: 50%; left: 50%; width: 38px; height: 38px; border-radius: 50%;
+  pointer-events: none;
+  border: 1.5px solid color-mix(in srgb, var(--ds-primary) 55%, transparent);
+  transform: translate(-50%, -50%) scale(0.55);
+  animation: conv-pulse 2.3s ease-out infinite;
+}
+
+/* Faint reflection beneath the track */
+.conv-reflection {
+  position: absolute; left: 6px; right: 6px; top: 100%; height: 30px; pointer-events: none;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ds-primary) 8%, transparent), transparent);
+  filter: blur(6px); opacity: 0.55;
+}
+
+/* Pause every belt animation when scrolled out of view */
+[data-belt-paused] .conv-dashes,
+[data-belt-paused] .conv-sweep,
+[data-belt-paused] .conv-comet,
+[data-belt-paused] .conv-pulse { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .conv-dashes, .conv-sweep, .conv-comet, .conv-pulse { animation: none !important; }
+  .conv-sweep, .conv-comet, .conv-pulse { opacity: 0; }
 }
 `;
 
@@ -151,7 +214,7 @@ function BeltItem({ initialDelay, s1, s2, s3, exitX }: BeltItemProps) {
         height: 58,
         borderRadius: 8,
         overflow: 'hidden',
-        filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))',
+        filter: 'drop-shadow(0 3px 10px rgba(0,0,0,0.45))',
         willChange: 'transform',
         backgroundColor: PHASE_BG[phase],
         outline: PHASE_OUTLINE[phase],
@@ -159,6 +222,13 @@ function BeltItem({ initialDelay, s1, s2, s3, exitX }: BeltItemProps) {
         transition: 'background-color 0.35s ease, box-shadow 0.35s ease, outline-color 0.35s ease',
       }}
     >
+      {/* Top sheen — gives the chip depth/material feel */}
+      <div
+        style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: '46%', pointerEvents: 'none',
+          background: 'linear-gradient(180deg, rgba(255,255,255,0.16), transparent)',
+        }}
+      />
       <AnimatePresence mode="wait">
         {phase === 'raw' && (
           <motion.div
@@ -329,11 +399,80 @@ function MobileProcess({ t }: { t: ReturnType<typeof useTranslations> }) {
 interface BeltPos { s1: number; s2: number; s3: number; exitX: number }
 const DEFAULT_POS: BeltPos = { s1: 170, s2: 375, s3: 572, exitX: 1080 };
 
+function ServiceRow({ index, name, desc }: { index: number; name: string; desc: string }) {
+  return (
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 16 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+      }}
+      className="group relative"
+    >
+      {/* Index + name */}
+      <div className="flex items-baseline gap-4">
+        <span
+          className="text-sm font-bold tabular-nums tracking-[0.2em] opacity-50 transition-opacity duration-300 group-hover:opacity-100"
+          style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
+        >
+          {String(index).padStart(2, '0')}
+        </span>
+        <p
+          className="flex items-center gap-2 text-2xl md:text-3xl font-black tracking-tight leading-tight transition-transform duration-300 group-hover:translate-x-1"
+          style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+        >
+          {name}
+          <span
+            translate="no"
+            aria-hidden
+            className="material-symbols-outlined text-xl -translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+            style={{ color: 'var(--ds-primary)' }}
+          >
+            arrow_forward
+          </span>
+        </p>
+      </div>
+
+      {/* Description — aligned under the name */}
+      <p
+        className="text-sm italic pl-9 mt-1"
+        style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
+      >
+        {desc}
+      </p>
+
+      {/* Animated hairline divider — draws in on reveal, glows on hover */}
+      <div className="relative mt-4 h-px overflow-hidden">
+        <motion.div
+          className="absolute inset-0"
+          variants={{
+            hidden: { scaleX: 0 },
+            visible: { scaleX: 1, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1], delay: 0.08 } },
+          }}
+          style={{
+            transformOrigin: 'left',
+            background:
+              'linear-gradient(to right, color-mix(in srgb, var(--ds-outline-variant) 45%, transparent), transparent)',
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            transformOrigin: 'left',
+            background: 'linear-gradient(to right, var(--ds-primary), transparent 65%)',
+          }}
+        />
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Services() {
   const t = useTranslations('common');
   const locale = useLocale();
   const beltRef = useRef<HTMLDivElement>(null);
   const [beltPos, setBeltPos] = useState<BeltPos>(DEFAULT_POS);
+  // Gate the belt's JS loops + CSS animations on visibility (perf).
+  const beltInView = useInView(beltRef, { margin: '120px' });
 
   useEffect(() => {
     const el = beltRef.current;
@@ -388,48 +527,29 @@ export default function Services() {
             className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
             style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
-            {t('services_title')}{' '}
-            <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
-              {t('services_title_accent')}
-            </span>
+            <TextReveal>
+              {t('services_title')}{' '}
+              <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
+                {t('services_title_accent')}
+              </span>
+            </TextReveal>
           </h3>
         </motion.div>
 
-        {/* Services grid */}
+        {/* Services grid — numbered editorial rows */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10 mb-24"
+          className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 mb-24"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
           variants={{
             hidden: {},
-            visible: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
+            visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
           }}
         >
-          {SERVICE_KEYS.map((key) => {
+          {SERVICE_KEYS.map((key, i) => {
             const item = t.raw(`services_items.${key}`) as { name: string; desc: string };
-            return (
-              <motion.div
-                key={key}
-                variants={{
-                  hidden: { opacity: 0, y: 16 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
-                }}
-              >
-                <p
-                  className="text-2xl md:text-3xl font-black tracking-tight leading-tight mb-1"
-                  style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
-                >
-                  {item.name}
-                </p>
-                <p
-                  className="text-sm italic"
-                  style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
-                >
-                  {item.desc}
-                </p>
-              </motion.div>
-            );
+            return <ServiceRow key={key} index={i + 1} name={item.name} desc={item.desc} />;
           })}
         </motion.div>
 
@@ -461,7 +581,7 @@ export default function Services() {
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.35, ease: 'easeOut', delay: 0.1 }}
         >
-          <div className="relative" ref={beltRef}>
+          <div className="relative" ref={beltRef} data-belt-paused={beltInView ? undefined : ''}>
             {/* Station labels pinned at 25 / 50 / 75% */}
             <div className="relative h-[148px]">
               {STATION_KEYS.map((key, i) => {
@@ -474,12 +594,13 @@ export default function Services() {
                     style={{ left: pct, transform: 'translateX(-50%)' }}
                   >
                     <div
-                      className="w-[38px] h-[38px] rounded-full flex items-center justify-center"
+                      className="relative w-[38px] h-[38px] rounded-full flex items-center justify-center"
                       style={{
                         backgroundColor: 'color-mix(in srgb, var(--ds-primary) 7%, transparent)',
                         boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--ds-primary) 12%, transparent)',
                       }}
                     >
+                      <span className="conv-pulse" style={{ animationDelay: `${i * 0.77}s` }} />
                       <span
                         translate="no"
                         className="material-symbols-outlined"
@@ -528,17 +649,23 @@ export default function Services() {
                 <div className="conv-tick conv-tick-2" />
                 <div className="conv-tick conv-tick-3" />
                 <div className="conv-dashes" />
-                {Array.from({ length: ITEM_COUNT }, (_, i) => (
-                  <BeltItem
-                    key={i}
-                    initialDelay={i * STAGGER}
-                    s1={beltPos.s1}
-                    s2={beltPos.s2}
-                    s3={beltPos.s3}
-                    exitX={beltPos.exitX}
-                  />
-                ))}
+                <div className="conv-comet" />
+                <div className="conv-comet conv-comet-2" />
+                <div className="conv-sweep" />
+                {/* Items mount only while the belt is in view — frees the JS loops otherwise */}
+                {beltInView &&
+                  Array.from({ length: ITEM_COUNT }, (_, i) => (
+                    <BeltItem
+                      key={i}
+                      initialDelay={i * STAGGER}
+                      s1={beltPos.s1}
+                      s2={beltPos.s2}
+                      s3={beltPos.s3}
+                      exitX={beltPos.exitX}
+                    />
+                  ))}
               </div>
+              <div className="conv-reflection" />
             </div>
           </div>
         </motion.div>

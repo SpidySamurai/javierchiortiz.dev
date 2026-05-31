@@ -91,7 +91,7 @@ export default async function LocaleLayout({
     <PostHogProvider>
       <NextIntlClientProvider messages={messages}>
         <GamerCardProvider>
-          <ThemeProvider attribute="data-theme" defaultTheme="dark" enableColorScheme={false}>
+          <ThemeProvider attribute="data-theme" defaultTheme="dark" forcedTheme="dark" enableColorScheme={false}>
             <script
               type="application/ld+json"
               dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

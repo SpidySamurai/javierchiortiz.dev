@@ -5,7 +5,6 @@ import { createPortal } from 'react-dom';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import ThemeToggle from '@/components/2026/ui/ThemeToggle';
 import LanguageSwitcher from '@/components/2026/ui/LanguageSwitcher';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useGamerCard } from '@/components/providers/GamerCardContext';
@@ -295,13 +294,11 @@ export default function Header() {
 
         {/* Desktop controls */}
         <div className="hidden xl:flex items-center gap-3 ml-auto">
-          <ThemeToggle />
           <LanguageSwitcher />
         </div>
 
         {/* Mobile controls */}
         <div className="xl:hidden flex items-center gap-2 ml-auto">
-          <ThemeToggle />
           <LanguageSwitcher />
           <button
             className="p-2 rounded"
