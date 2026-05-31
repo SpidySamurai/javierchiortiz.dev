@@ -23,7 +23,7 @@ const BELT_TRACK_CSS = `
   background: linear-gradient(to right, transparent, color-mix(in srgb, var(--ds-primary) 6%, transparent) 15%, color-mix(in srgb, var(--ds-primary) 9%, transparent) 50%, color-mix(in srgb, var(--ds-primary) 6%, transparent) 85%, transparent);
 }
 .conv-track-wrap {
-  position: relative; height: 92px; overflow: hidden; border-radius: 8px;
+  position: relative; height: 100px; overflow: hidden; border-radius: 8px;
   background: linear-gradient(180deg, var(--ds-surface-container) 0%, var(--ds-bg) 100%);
 }
 .conv-zone {
@@ -110,22 +110,22 @@ const BELT_TRACK_CSS = `
 type Phase = 'raw' | 'idea' | 'build' | 'approved';
 
 const PHASE_BG: Record<Phase, string> = {
-  raw:      'color-mix(in srgb, var(--ds-surface-container) 80%, transparent)',
-  idea:     'color-mix(in srgb, var(--ds-secondary-container) 70%, transparent)',
-  build:    'color-mix(in srgb, var(--ds-primary-container) 60%, transparent)',
-  approved: 'color-mix(in srgb, var(--ds-primary) 15%, transparent)',
+  raw:      'color-mix(in srgb, var(--ds-surface-container) 86%, transparent)',
+  idea:     'color-mix(in srgb, var(--ds-secondary-container) 55%, var(--ds-surface-container))',
+  build:    'var(--ds-surface-container)',
+  approved: 'var(--ds-surface-high)',
 };
 const PHASE_OUTLINE: Record<Phase, string> = {
-  raw:      '1px dashed color-mix(in srgb, var(--ds-primary) 20%, transparent)',
-  idea:     '1px solid color-mix(in srgb, var(--ds-on-secondary) 60%, transparent)',
-  build:    '1px solid color-mix(in srgb, var(--ds-primary-container) 70%, transparent)',
-  approved: '1.5px solid color-mix(in srgb, var(--ds-primary) 90%, transparent)',
+  raw:      '1px dashed color-mix(in srgb, var(--ds-primary) 22%, transparent)',
+  idea:     '1px dashed color-mix(in srgb, var(--ds-on-secondary) 55%, transparent)',
+  build:    '1px solid color-mix(in srgb, var(--ds-primary-vivid) 45%, transparent)',
+  approved: '1.5px solid color-mix(in srgb, var(--ds-primary-vivid) 85%, transparent)',
 };
 const PHASE_GLOW: Record<Phase, string> = {
   raw:      'none',
   idea:     'none',
-  build:    'none',
-  approved: '0 0 14px color-mix(in srgb, var(--ds-primary) 50%, transparent)',
+  build:    '0 0 10px color-mix(in srgb, var(--ds-primary-vivid) 22%, transparent)',
+  approved: '0 0 18px color-mix(in srgb, var(--ds-primary-vivid) 55%, transparent)',
 };
 
 interface BeltItemProps {
@@ -208,13 +208,13 @@ function BeltItem({ initialDelay, s1, s2, s3, exitX }: BeltItemProps) {
       ref={scope}
       style={{
         position: 'absolute',
-        top: 'calc(50% - 29px)',
+        top: 'calc(50% - 33px)',
         left: 0,
-        width: 68,
-        height: 58,
-        borderRadius: 8,
+        width: 92,
+        height: 66,
+        borderRadius: 10,
         overflow: 'hidden',
-        filter: 'drop-shadow(0 3px 10px rgba(0,0,0,0.45))',
+        filter: 'drop-shadow(0 5px 14px rgba(0,0,0,0.5))',
         willChange: 'transform',
         backgroundColor: PHASE_BG[phase],
         outline: PHASE_OUTLINE[phase],
@@ -230,77 +230,106 @@ function BeltItem({ initialDelay, s1, s2, s3, exitX }: BeltItemProps) {
         }}
       />
       <AnimatePresence mode="wait">
+        {/* 1 · RAW — a faint sketch forming */}
         {phase === 'raw' && (
           <motion.div
             key="raw"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.18 }}
-            style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, padding: '7px 8px' }}
+            style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 5, padding: '9px 11px' }}
           >
-            {[50, 85, 35, 65].map((w, i) => (
-              <div key={i} style={{ height: 2, borderRadius: 1, background: 'color-mix(in srgb, var(--ds-primary) 40%, transparent)', width: `${w}%` }} />
+            {[55, 92, 42].map((w, i) => (
+              <div key={i} style={{ height: 2, borderRadius: 2, background: 'color-mix(in srgb, var(--ds-primary) 28%, transparent)', width: `${w}%`, transform: `rotate(${i === 1 ? -0.7 : 0.6}deg)` }} />
             ))}
           </motion.div>
         )}
 
+        {/* 2 · IDEA — napkin sketch: lightbulb + hand-drawn strokes */}
         {phase === 'idea' && (
           <motion.div
             key="idea"
             initial={{ opacity: 0, x: 6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -6 }}
             transition={{ duration: 0.2 }}
-            style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6, padding: 8 }}
+            style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', gap: 8, padding: '9px 11px' }}
           >
-            <span translate="no" className="material-symbols-outlined" style={{ fontSize: 22, color: 'var(--ds-on-secondary)', flexShrink: 0 }}>
+            <motion.span
+              translate="no"
+              className="material-symbols-outlined"
+              animate={{ scale: [1, 1.12, 1] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+              style={{
+                fontSize: 24, color: 'var(--ds-on-secondary)', flexShrink: 0,
+                fontVariationSettings: "'FILL' 1",
+                filter: 'drop-shadow(0 0 5px color-mix(in srgb, var(--ds-on-secondary) 55%, transparent))',
+              }}
+            >
               lightbulb
-            </span>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
-              {[80, 100, 55].map((w, i) => (
-                <div key={i} style={{ height: 2, borderRadius: 1, background: 'color-mix(in srgb, var(--ds-on-secondary) 50%, transparent)', width: `${w}%` }} />
+            </motion.span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 5, flex: 1 }}>
+              {[100, 70, 86].map((w, i) => (
+                <div key={i} style={{ height: 2, borderRadius: 2, background: 'color-mix(in srgb, var(--ds-on-secondary) 55%, transparent)', width: `${w}%`, transform: `rotate(${i % 2 ? -0.9 : 0.9}deg)` }} />
               ))}
             </div>
           </motion.div>
         )}
 
+        {/* 3 · BUILD — wireframe window under construction (shimmer sweep) */}
         {phase === 'build' && (
           <motion.div
             key="build"
             initial={{ opacity: 0, x: 6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -6 }}
             transition={{ duration: 0.2 }}
-            style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '7px 8px' }}
+            style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '5px 8px', borderBottom: '1px solid color-mix(in srgb, var(--ds-primary-vivid) 22%, transparent)' }}>
               <motion.div
-                animate={{ opacity: [1, 0.35, 1] }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--ds-on-secondary)' }}
+                animate={{ opacity: [1, 0.3, 1] }}
+                transition={{ duration: 0.9, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--ds-primary-vivid)' }}
               />
-              <span style={{ fontSize: 7, fontWeight: 700, letterSpacing: '0.08em', color: 'var(--ds-on-secondary)', textTransform: 'uppercase' }}>
-                building
-              </span>
+              <span style={{ fontSize: 7, fontWeight: 800, letterSpacing: '0.1em', color: 'var(--ds-primary-vivid)', textTransform: 'uppercase' }}>build</span>
+              <span translate="no" className="material-symbols-outlined" style={{ marginLeft: 'auto', fontSize: 11, color: 'color-mix(in srgb, var(--ds-primary-vivid) 70%, transparent)' }}>code</span>
             </div>
-            {[90, 60, 75].map((w, i) => (
-              <div key={i} style={{ height: 2, borderRadius: 1, background: 'color-mix(in srgb, var(--ds-on-secondary) 55%, transparent)', width: `${w}%`, marginBottom: 3 }} />
-            ))}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, padding: '0 8px' }}>
+              {[86, 60, 72].map((w, i) => (
+                <div key={i} style={{ height: 3, borderRadius: 2, background: 'color-mix(in srgb, var(--ds-primary-vivid) 30%, transparent)', width: `${w}%` }} />
+              ))}
+            </div>
+            <motion.div
+              aria-hidden
+              animate={{ x: ['-130%', '130%'] }}
+              transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ position: 'absolute', top: 0, bottom: 0, width: '45%', pointerEvents: 'none', background: 'linear-gradient(100deg, transparent, color-mix(in srgb, var(--ds-primary-vivid) 24%, transparent), transparent)' }}
+            />
           </motion.div>
         )}
 
+        {/* 4 · LAUNCH — a real shipped app window (traffic dots + LIVE) */}
         {phase === 'approved' && (
           <motion.div
             key="approved"
-            initial={{ opacity: 0, scale: 0.82 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-            style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3 }}
+            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
+            style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column' }}
           >
-            <span
-              translate="no"
-              className="material-symbols-outlined"
-              style={{ fontSize: 26, color: 'var(--ds-primary)', fontVariationSettings: "'FILL' 1, 'wght' 400", filter: 'drop-shadow(0 0 6px color-mix(in srgb, var(--ds-primary) 80%, transparent))' }}
-            >
-              check_circle
-            </span>
-            <span style={{ fontSize: 6.5, fontWeight: 700, letterSpacing: '0.12em', color: 'var(--ds-primary)', textTransform: 'uppercase' }}>
-              approved
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 3, padding: '4px 7px', background: 'color-mix(in srgb, var(--ds-bg) 45%, transparent)', borderBottom: '1px solid color-mix(in srgb, var(--ds-primary-vivid) 28%, transparent)' }}>
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#f87171' }} />
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#fbbf24' }} />
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#4ade80' }} />
+              <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 3 }}>
+                <motion.span
+                  animate={{ opacity: [1, 0.4, 1] }}
+                  transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ width: 4, height: 4, borderRadius: '50%', background: '#4ade80', boxShadow: '0 0 4px #4ade80' }}
+                />
+                <span style={{ fontSize: 6, fontWeight: 800, letterSpacing: '0.12em', color: '#4ade80', textTransform: 'uppercase' }}>live</span>
+              </div>
+            </div>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, padding: '5px 8px' }}>
+              <div style={{ height: 8, width: '52%', borderRadius: 3, background: 'var(--ds-primary-vivid)', boxShadow: '0 0 6px color-mix(in srgb, var(--ds-primary-vivid) 60%, transparent)' }} />
+              <div style={{ height: 2.5, borderRadius: 2, background: 'color-mix(in srgb, var(--ds-on-surface) 35%, transparent)', width: '90%' }} />
+              <div style={{ height: 2.5, borderRadius: 2, background: 'color-mix(in srgb, var(--ds-on-surface) 22%, transparent)', width: '68%' }} />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -408,11 +437,18 @@ function ServiceRow({ index, name, desc }: { index: number; name: string; desc: 
       }}
       className="group relative"
     >
+      {/* Hover glow — vivid periwinkle wash behind the row */}
+      <div
+        aria-hidden
+        className="absolute -inset-x-4 -inset-y-3 -z-10 rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{ background: 'color-mix(in srgb, var(--ds-primary-vivid) 8%, transparent)' }}
+      />
+
       {/* Index + name */}
       <div className="flex items-baseline gap-4">
         <span
-          className="text-sm font-bold tabular-nums tracking-[0.2em] opacity-50 transition-opacity duration-300 group-hover:opacity-100"
-          style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
+          className="text-xl md:text-2xl font-black tabular-nums leading-none"
+          style={{ color: 'var(--ds-primary-vivid)', fontFamily: 'var(--font-manrope), sans-serif' }}
         >
           {String(index).padStart(2, '0')}
         </span>
@@ -425,7 +461,7 @@ function ServiceRow({ index, name, desc }: { index: number; name: string; desc: 
             translate="no"
             aria-hidden
             className="material-symbols-outlined text-xl -translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
-            style={{ color: 'var(--ds-primary)' }}
+            style={{ color: 'var(--ds-primary-vivid)' }}
           >
             arrow_forward
           </span>
@@ -434,7 +470,7 @@ function ServiceRow({ index, name, desc }: { index: number; name: string; desc: 
 
       {/* Description — aligned under the name */}
       <p
-        className="text-sm italic pl-9 mt-1"
+        className="text-sm italic pl-10 mt-1"
         style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
       >
         {desc}
@@ -458,7 +494,7 @@ function ServiceRow({ index, name, desc }: { index: number; name: string; desc: 
           className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style={{
             transformOrigin: 'left',
-            background: 'linear-gradient(to right, var(--ds-primary), transparent 65%)',
+            background: 'linear-gradient(to right, var(--ds-primary-vivid), transparent 65%)',
           }}
         />
       </div>
@@ -477,7 +513,7 @@ export default function Services() {
   useEffect(() => {
     const el = beltRef.current;
     if (!el) return;
-    const ITEM_W = 68;
+    const ITEM_W = 92;
     const update = () => {
       const w = el.offsetWidth;
       setBeltPos({
@@ -529,7 +565,7 @@ export default function Services() {
           >
             <TextReveal>
               {t('services_title')}{' '}
-              <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
+              <span style={{ color: 'var(--ds-primary-vivid)', fontStyle: 'italic' }}>
                 {t('services_title_accent')}
               </span>
             </TextReveal>
