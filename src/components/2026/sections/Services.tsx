@@ -83,7 +83,7 @@ const BELT_TRACK_CSS = `
 .conv-pulse {
   position: absolute; top: 50%; left: 50%; width: 38px; height: 38px; border-radius: 50%;
   pointer-events: none;
-  border: 1.5px solid color-mix(in srgb, var(--ds-primary) 55%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--ds-primary-vivid) 60%, transparent);
   transform: translate(-50%, -50%) scale(0.55);
   animation: conv-pulse 2.3s ease-out infinite;
 }
@@ -362,8 +362,8 @@ function MobileProcess({ t }: { t: ReturnType<typeof useTranslations> }) {
               borderRadius: 3,
               backgroundColor:
                 i === step
-                  ? 'var(--ds-primary)'
-                  : 'color-mix(in srgb, var(--ds-primary) 25%, transparent)',
+                  ? 'var(--ds-primary-vivid)'
+                  : 'color-mix(in srgb, var(--ds-primary-vivid) 25%, transparent)',
               border: 'none',
               padding: 0,
               cursor: 'pointer',
@@ -387,14 +387,14 @@ function MobileProcess({ t }: { t: ReturnType<typeof useTranslations> }) {
           <div
             className="w-14 h-14 rounded-full flex items-center justify-center"
             style={{
-              backgroundColor: 'color-mix(in srgb, var(--ds-primary) 10%, transparent)',
-              boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--ds-primary) 20%, transparent)',
+              backgroundColor: 'color-mix(in srgb, var(--ds-primary-vivid) 14%, transparent)',
+              boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--ds-primary-vivid) 35%, transparent)',
             }}
           >
             <span
               translate="no"
               className="material-symbols-outlined"
-              style={{ fontSize: 26, color: 'var(--ds-primary)' }}
+              style={{ fontSize: 26, color: 'var(--ds-primary-vivid)' }}
             >
               {STATION_ICONS[step]}
             </span>
@@ -402,7 +402,7 @@ function MobileProcess({ t }: { t: ReturnType<typeof useTranslations> }) {
           <div>
             <span
               className="text-[9px] font-bold uppercase tracking-[0.2em] block mb-1"
-              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
+              style={{ color: 'var(--ds-primary-vivid)', fontFamily: 'var(--font-inter), sans-serif' }}
             >
               {String(step + 1).padStart(2, '0')}
             </span>
@@ -632,22 +632,22 @@ export default function Services() {
                     <div
                       className="relative w-[38px] h-[38px] rounded-full flex items-center justify-center"
                       style={{
-                        backgroundColor: 'color-mix(in srgb, var(--ds-primary) 7%, transparent)',
-                        boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--ds-primary) 12%, transparent)',
+                        backgroundColor: 'color-mix(in srgb, var(--ds-primary-vivid) 12%, transparent)',
+                        boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--ds-primary-vivid) 35%, transparent)',
                       }}
                     >
                       <span className="conv-pulse" style={{ animationDelay: `${i * 0.77}s` }} />
                       <span
                         translate="no"
                         className="material-symbols-outlined"
-                        style={{ fontSize: 18, color: 'var(--ds-primary)' }}
+                        style={{ fontSize: 18, color: 'var(--ds-primary-vivid)' }}
                       >
                         {STATION_ICONS[i]}
                       </span>
                     </div>
                     <span
                       className="text-[9px] font-bold uppercase tracking-[0.14em]"
-                      style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
+                      style={{ color: 'var(--ds-primary-vivid)', fontFamily: 'var(--font-inter), sans-serif' }}
                     >
                       {String(i + 1).padStart(2, '0')}
                     </span>
@@ -667,7 +667,7 @@ export default function Services() {
                       style={{
                         width: 1,
                         height: 18,
-                        background: 'linear-gradient(to bottom, color-mix(in srgb, var(--ds-primary) 18%, transparent), transparent)',
+                        background: 'linear-gradient(to bottom, color-mix(in srgb, var(--ds-primary-vivid) 38%, transparent), transparent)',
                       }}
                     />
                   </div>
