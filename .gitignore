@@ -47,6 +47,14 @@ skills-lock.json
 
 # Internal dev docs (plans, specs)
 docs/superpowers/
+docs/content/
+docs/design/
+docs/dev/
+docs/marketing/
+docs/supabase/
+CHANGELOG.md
+PRODUCT.md
+README_portfolio.md
 
 # Lanyard API debug dumps
 lanyard_*.json
