@@ -66,4 +66,4 @@ pnpm format     # Prettier
 
 ## License
 
-MIT
+All Rights Reserved. Source available for viewing and reference only — see [LICENSE](LICENSE).
