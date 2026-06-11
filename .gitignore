@@ -49,6 +49,8 @@ skills-lock.json
 # Internal dev docs (plans, specs, audits, strategy)
 docs/
 PRODUCT.md
+CLAUDE.md
+CHANGELOG.md
 
 # Lanyard API debug dumps
 lanyard_*.json
