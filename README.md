@@ -1,54 +1,63 @@
-# Javier Chi Ortíz — Portfolio 2025/2026
+# javierchiortiz.dev
 
-Personal portfolio built with Next.js 15. Features a 2026 redesign at `/` and a legacy 2025 version at `/2025`.
+My personal site, designed and built from scratch. Live at [**javierchiortiz.dev**](https://javierchiortiz.dev/en).
 
-## Tech Stack
+![Portfolio cover](.github/readme/cover.png)
 
-- **Framework**: Next.js 15 (App Router) + React 19 + TypeScript
-- **Styling**: Tailwind CSS v4 + PostCSS (no config file, uses CSS `@theme`)
-- **i18n**: next-intl — EN/ES locale routing at `src/app/[locale]/`
-- **Theming**: next-themes (dark/light mode via `data-theme`)
-- **Database**: Supabase (blog posts, analytics, visitor tracking)
-- **Fonts**: Manrope (headlines) + Inter (body) via next/font
-- **Icons**: Material Symbols Outlined (Google Fonts)
-- **Data fetching**: SWR
-- **Package manager**: pnpm
+## The idea
+
+I translate Figma designs into production interfaces for a living, so my own site had to be exactly that: my design, my code, pixel by pixel. No template, no theme.
+
+It is also a time machine. Every year I redesign it, but instead of deleting the old version I keep it running: the 2026 redesign lives at `/`, the 2025 one at `/2025`. You can literally browse how my design and my code have evolved. Most portfolios show your best moment; mine also shows the path.
+
+And honestly, it is my playground. Half the features below exist because I wanted to learn something or because building them was fun, not because a portfolio needs a Marvel Rivals stats widget. (It doesn't. I have one anyway.)
+
+## What's inside
+
+- **EN/ES internationalization** with locale routing (next-intl), because my audience is both US recruiters and people here in México
+- **Blog with its own CMS**: Supabase backed, with an authenticated admin panel at `/admin` where I write and publish
+- **Visitor tracking done for fun**: a live globe of real visitors, a "last visitor" chip in the header, and a session counter in the footer
+- **Dark/light mode** (next-themes), Manrope + Inter via next/font
+- **Live toys**: Marvel Rivals stats widget and Discord presence via Lanyard
+- **Automated project screenshots** with Puppeteer, so project cards never go stale
+
+## A quick tour
+
+| Desktop | Mobile |
+| ------- | ------ |
+| ![Home on desktop](.github/readme/home-desktop.png) | ![Mobile views](.github/readme/mobile.png) |
+
+| Selected work, live links | Own products in production |
+| ------------------------- | -------------------------- |
+| ![Projects section](.github/readme/projects-desktop.png) | ![Lab2Next](.github/readme/lab2next-desktop.png) |
+
+Every dot on this globe is a real person who stopped by:
+
+![Visitors globe](.github/readme/visitors-globe.png)
+
+## Stack
+
+Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS v4 (CSS `@theme`, no config file) · Supabase · SWR · pnpm · Turbopack
 
 ## Routes
 
-| Route     | Content                  |
-| --------- | ------------------------ |
-| `/`       | 2026 redesign (Timeline) |
-| `/2025`   | Legacy 2025 design       |
-| `/v2025/` | Original version         |
-| `/blog`   | Blog                     |
-| `/admin`  | CMS (authenticated)      |
+| Route    | Content                         |
+| -------- | ------------------------------- |
+| `/`      | 2026 redesign                   |
+| `/2025`  | Legacy 2025 design, still alive |
+| `/blog`  | Blog                            |
+| `/admin` | CMS (authenticated)             |
 
-## Features
-
-- EN/ES internationalization
-- Dark/light mode
-- Blog with Supabase-backed CMS and admin panel
-- Visitor tracking: last visitor chip (header) + session visitor counter (footer)
-- Page view analytics
-- Marvel Rivals live stats widget
-- Lanyard Discord presence integration
-- Automated project screenshots via Puppeteer
-
-## Getting Started
+## Run it locally
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Create a `.env.local` with:
 
-## Environment Variables
-
-Create a `.env.local` file:
-
-```env
+```
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
@@ -58,12 +67,22 @@ MARVEL_RIVALS_API_KEY=
 ## Commands
 
 ```bash
-pnpm dev        # Start dev server (Turbopack)
-pnpm build      # Production build
-pnpm lint       # ESLint
-pnpm format     # Prettier
+pnpm dev      # dev server (Turbopack)
+pnpm build    # production build
+pnpm lint     # ESLint
+pnpm format   # Prettier
 ```
 
 ## License
 
 MIT
+
+---
+
+Designed and built by [Javier Chi Ortiz](https://javierchiortiz.dev/en) in Mérida, México. The same care I put into client UIs, applied to my own corner of the internet.
+
+<!-- Repo "About" field:
+Description: "My portfolio, designed and built from scratch. Next.js 15, React 19, Supabase. Past versions still live."
+Website: https://javierchiortiz.dev
+Topics: nextjs, react, typescript, tailwind, supabase, portfolio, i18n
+-->
