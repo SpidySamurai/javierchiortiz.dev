@@ -2,8 +2,7 @@
 
 My personal site, designed and built from scratch. Live at [**javierchiortiz.dev**](https://javierchiortiz.dev/en).
 
-<!-- Sube una captura a .github/ y descomenta -->
-<!-- ![Portfolio home](.github/screenshot-home.png) -->
+![Portfolio cover](.github/readme/cover.png)
 
 ## The idea
 
@@ -17,10 +16,24 @@ And honestly, it is my playground. Half the features below exist because I wante
 
 - **EN/ES internationalization** with locale routing (next-intl), because my audience is both US recruiters and people here in México
 - **Blog with its own CMS**: Supabase backed, with an authenticated admin panel at `/admin` where I write and publish
-- **Visitor tracking done for fun**: a "last visitor" chip in the header and a session counter in the footer, plus page view analytics
+- **Visitor tracking done for fun**: a live globe of real visitors, a "last visitor" chip in the header, and a session counter in the footer
 - **Dark/light mode** (next-themes), Manrope + Inter via next/font
 - **Live toys**: Marvel Rivals stats widget and Discord presence via Lanyard
 - **Automated project screenshots** with Puppeteer, so project cards never go stale
+
+## A quick tour
+
+| Desktop | Mobile |
+| ------- | ------ |
+| ![Home on desktop](.github/readme/home-desktop.png) | ![Mobile views](.github/readme/mobile.png) |
+
+| Selected work, live links | Own products in production |
+| ------------------------- | -------------------------- |
+| ![Projects section](.github/readme/projects-desktop.png) | ![Lab2Next](.github/readme/lab2next-desktop.png) |
+
+Every dot on this globe is a real person who stopped by:
+
+![Visitors globe](.github/readme/visitors-globe.png)
 
 ## Stack
 
@@ -28,12 +41,12 @@ Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS v4 (CSS `@them
 
 ## Routes
 
-| Route    | Content                          |
-| -------- | -------------------------------- |
-| `/`      | 2026 redesign                    |
-| `/2025`  | Legacy 2025 design, still alive  |
-| `/blog`  | Blog                             |
-| `/admin` | CMS (authenticated)              |
+| Route    | Content                         |
+| -------- | ------------------------------- |
+| `/`      | 2026 redesign                   |
+| `/2025`  | Legacy 2025 design, still alive |
+| `/blog`  | Blog                            |
+| `/admin` | CMS (authenticated)             |
 
 ## Run it locally
 
@@ -66,10 +79,10 @@ All Rights Reserved. Source available for viewing and reference only — see [LI
 
 ---
 
-Designed and built by [Javier Chi Ortiz](https://javierchiortiz.dev/en) in Mérida, México 🇲🇽. The same care I put into client UIs, applied to my own corner of the internet.
+Designed and built by [Javier Chi Ortiz](https://javierchiortiz.dev/en) in Mérida, México. The same care I put into client UIs, applied to my own corner of the internet.
 
-<!-- Campo "About" del repo:
-Descripción: "My portfolio, designed and built from scratch. Next.js 15, React 19, Supabase. Past versions still live."
+<!-- Repo "About" field:
+Description: "My portfolio, designed and built from scratch. Next.js 15, React 19, Supabase. Past versions still live."
 Website: https://javierchiortiz.dev
 Topics: nextjs, react, typescript, tailwind, supabase, portfolio, i18n
 -->
