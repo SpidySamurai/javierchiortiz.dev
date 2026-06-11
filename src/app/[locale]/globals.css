@@ -165,12 +165,29 @@ html[data-theme='light'] {
   --ds-surface-highest: #2d3449;
   --ds-surface-bright: #31394d;
 
+  /* A deeper indigo "dimension" for sectional rhythm (About) — same blue family */
+  --ds-about-bg: #151b3d;
+
   --ds-on-surface: #dae2fd;
   --ds-on-surface-variant: #c7c4d7;
 
   --ds-primary: #c0c1ff;
   --ds-primary-container: #8083ff;
   --ds-on-primary: #1000a9;
+
+  /* Committed periwinkle — saturated signature for statements / CTA / bands */
+  --ds-primary-vivid: #6d6dff;
+  --ds-on-vivid: #f4f4ff;
+
+  /* Sectional "flip" panel (About) — inverts to light against the dark page */
+  --ds-flip-bg: #b6bcd0;
+  --ds-flip-surface: #aab0c6;
+  --ds-flip-on: #1b2138;
+  --ds-flip-on-variant: #424a68;
+  --ds-flip-chip-bg: #dde0f5;
+  --ds-flip-chip-on: #3a3f66;
+  --ds-flip-accent: #4a4ad0;
+  --ds-flip-outline: #c2c8de;
 
   --ds-secondary-container: #3e3c8f;
   --ds-on-secondary: #afadff;
@@ -202,6 +219,19 @@ html[data-theme='light'] .ds-2026 {
   --ds-primary: #4042c8;
   --ds-primary-container: #6668e8;
   --ds-on-primary: #ffffff;
+
+  --ds-primary-vivid: #5152e0;
+  --ds-on-vivid: #ffffff;
+
+  /* Flip inverts the other way in light theme: About goes dark */
+  --ds-flip-bg: #161c33;
+  --ds-flip-surface: #1f2745;
+  --ds-flip-on: #e7ebfb;
+  --ds-flip-on-variant: #b3bbd8;
+  --ds-flip-chip-bg: #283157;
+  --ds-flip-chip-on: #cfd6f0;
+  --ds-flip-accent: #9a9aff;
+  --ds-flip-outline: #3a4163;
 
   --ds-secondary-container: #d0d2f5;
   --ds-on-secondary: #2f2ebe;
@@ -294,6 +324,11 @@ html[data-theme='light'] .ds-2026 {
   50% {
     transform: translateY(-7px);
   }
+}
+
+/* Pause float drift while its section is scrolled out of view (perf). */
+[data-floats-paused] [style*='float-y'] {
+  animation-play-state: paused !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

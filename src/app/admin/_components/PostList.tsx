@@ -71,8 +71,8 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
               <tr
                 key={post.id}
                 style={{
-                  backgroundColor: i % 2 === 0 ? '#0d1525' : 'var(--ds-bg)',
-                  borderBottom: i < posts.length - 1 ? '1px solid #1a2340' : 'none',
+                  backgroundColor: i % 2 === 0 ? 'var(--ds-surface-container)' : 'var(--ds-bg)',
+                  borderBottom: i < posts.length - 1 ? '1px solid var(--ds-outline-variant)' : 'none',
                 }}
               >
                 <td className="px-4 py-3 font-mono text-[12px]" style={{ color: 'var(--ds-outline)' }}>
@@ -97,7 +97,7 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
                     className="px-3 py-1 rounded-full text-[11px] font-bold border-none cursor-pointer"
                     style={{
                       background: post.is_published ? 'rgba(74,222,128,0.1)' : 'var(--ds-surface-container)',
-                      color: post.is_published ? '#4ade80' : 'var(--ds-outline-variant)',
+                      color: post.is_published ? 'var(--ds-success)' : 'var(--ds-outline-variant)',
                     }}
                   >
                     {post.is_published ? 'Published' : 'Draft'}
@@ -116,7 +116,7 @@ export default function PostList({ initialPosts }: { initialPosts: Post[] }) {
                       onClick={() => deletePost(post.id)}
                       className="border-none bg-transparent cursor-pointer text-[13px] p-0 transition-colors duration-100"
                       style={{ color: 'var(--ds-outline-variant)' }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ds-error)')}
                       onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline-variant)')}
                     >
                       Delete

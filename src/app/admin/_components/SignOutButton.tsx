@@ -18,7 +18,7 @@ export default function SignOutButton() {
       onClick={handleSignOut}
       className="w-full flex items-center gap-2.5 px-3 py-[9px] bg-transparent border-none cursor-pointer rounded-[9px] text-left text-[13px] font-medium transition-colors duration-100"
       style={{ color: 'var(--ds-outline)', fontFamily: 'var(--ds-font-body)' }}
-      onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
+      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ds-error)')}
       onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline)')}
     >
       <span className="material-symbols-outlined" style={{ fontSize: 18 }}>logout</span>

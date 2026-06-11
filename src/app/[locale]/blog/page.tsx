@@ -1,11 +1,38 @@
+import type { Metadata } from 'next';
 import { getPublishedPosts } from '@/lib/blogQueries';
 import BlogCard from '@/components/2026/ui/BlogCard';
 import Header from '@/components/2026/layout/Header';
 import Sidebar from '@/components/2026/layout/Sidebar';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
 import CustomCursor from '@/components/2026/ui/CustomCursor';
+import BackBreadcrumb from '@/components/2026/ui/BackBreadcrumb';
 import { getSidebarCollapsed } from '@/lib/sidebarState';
 import type { Post } from '@/types/database';
+
+const BASE_URL = 'https://javierchiortiz.dev';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const isEn = locale === 'en';
+  return {
+    title: isEn ? 'Blog — Thoughts & Beyond Code' : 'Blog — Pensamientos y más allá del código',
+    description: isEn
+      ? 'Engineering insights, life lessons, and culture by Javier Chi — full stack engineer.'
+      : 'Perspectivas de ingeniería, lecciones de vida y cultura por Javier Chi — ingeniero full stack.',
+    alternates: {
+      canonical: `${BASE_URL}/${locale}/blog`,
+      languages: {
+        en: `${BASE_URL}/en/blog`,
+        es: `${BASE_URL}/es/blog`,
+        'x-default': `${BASE_URL}/en/blog`,
+      },
+    },
+  };
+}
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -18,6 +45,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
       <Header />
       <Sidebar defaultCollapsed={sidebarCollapsed} />
       <main className="sidebar-main pt-20">
+        <BackBreadcrumb />
         <section className="py-28 px-8" style={{ backgroundColor: 'var(--ds-bg)' }}>
           <div className="max-w-7xl mx-auto">
             <div className="space-y-2 mb-16">
@@ -67,5 +95,6 @@ function adaptPost(post: Post, locale: string) {
     excerpt: (locale === 'es' ? post.excerpt_es : post.excerpt_en) ?? undefined,
     coverImageUrl: post.cover_image_url,
     coverImagePositionCard: post.cover_image_position_card,
+    coverAspectCard: post.cover_image_aspect_card,
   };
 }

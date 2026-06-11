@@ -83,7 +83,7 @@ export default function Navbar() {
       <div className="hidden lg:flex items-center gap-3">
         {isUnlocked && (
           <button
-            onClick={openCard}
+            onClick={() => openCard()}
             aria-label="Open Gamer Card"
             className="p-1.5 rounded transition-transform hover:scale-110"
           >
@@ -178,7 +178,7 @@ export default function Navbar() {
             </span>
             <div className="flex items-center gap-2">
               {isUnlocked && (
-                <button onClick={openCard} aria-label="Open Gamer Card" className="p-1 rounded">
+                <button onClick={() => openCard()} aria-label="Open Gamer Card" className="p-1 rounded">
                   🕷️
                 </button>
               )}

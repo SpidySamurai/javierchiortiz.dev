@@ -20,7 +20,7 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
     return (
       <div
         className="relative w-full overflow-hidden flex flex-col"
-        style={{ height, background: '#0a0808' }}
+        style={{ height, background: 'var(--ds-bg)' }}
       >
         {/* Belt stripes — fills the full height */}
         <div className="absolute inset-0 flex flex-col">
@@ -46,7 +46,7 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(to bottom, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.1) 40%, rgba(8,8,8,0.1) 60%, rgba(8,8,8,0.75) 100%)',
+              'linear-gradient(to bottom, color-mix(in srgb, var(--ds-bg) 55%, transparent) 0%, color-mix(in srgb, var(--ds-bg) 10%, transparent) 40%, color-mix(in srgb, var(--ds-bg) 10%, transparent) 60%, color-mix(in srgb, var(--ds-bg) 75%, transparent) 100%)',
           }}
         />
         {/* Center line — the knot */}
@@ -73,13 +73,13 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(to top, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.2) 60%, transparent 100%)',
+              'linear-gradient(to top, color-mix(in srgb, var(--ds-bg) 70%, transparent) 0%, color-mix(in srgb, var(--ds-bg) 20%, transparent) 60%, transparent 100%)',
           }}
         />
         {/* Photo credit */}
         <span
           className="absolute bottom-2 right-3 text-[9px] select-none pointer-events-none"
-          style={{ color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-inter), sans-serif' }}
+          style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif', opacity: 0.5 }}
         >
           © Chris Bethell
         </span>
@@ -102,7 +102,7 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
         className="absolute inset-0"
         style={{
           background:
-            'linear-gradient(to top, rgba(13,12,20,0.75) 0%, rgba(13,12,20,0.2) 60%, transparent 100%)',
+            'linear-gradient(to top, color-mix(in srgb, var(--ds-bg) 75%, transparent) 0%, color-mix(in srgb, var(--ds-bg) 20%, transparent) 60%, transparent 100%)',
         }}
       />
     </div>

@@ -16,7 +16,7 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
   const [collapsed, setCollapsed] = useState<boolean>(defaultCollapsed);
   const { openCard } = useGamerCard();
   const isBlogActive = pathname.startsWith(`/${locale}/blog`);
-  const isHome = !isBlogActive;
+  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
 
   useLayoutEffect(() => {
@@ -28,9 +28,7 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
   const toggle = () => setCollapsed((prev) => !prev);
 
   useEffect(() => {
-    localStorage.setItem('sidebar-collapsed', String(collapsed));
-    document.cookie = `sidebar-collapsed=${collapsed};path=/;max-age=31536000;samesite=lax`;
-    document.documentElement.style.setProperty('--sidebar-w', collapsed ? '4rem' : '16rem');
+    document.cookie = `sidebar-collapsed=${collapsed}; path=/; max-age=31536000; SameSite=Lax`;
     if (collapsed) document.documentElement.setAttribute('data-sidebar-collapsed', '');
     else document.documentElement.removeAttribute('data-sidebar-collapsed');
   }, [collapsed]);
@@ -58,38 +56,34 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
         style={{ width: 'var(--sidebar-w, 16rem)', backgroundColor: 'var(--ds-surface)' }}
         suppressHydrationWarning
       >
-        {/* Profile + Nav */}
+        {/* Nav */}
         <div className="flex-1 flex flex-col justify-center gap-8 min-w-0">
-          {/* Profile */}
-          <div className="px-4">
-            <button
-              type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="text-lg font-bold block hover:text-[#c0c1ff] transition-colors cursor-pointer text-left whitespace-nowrap"
-              style={{
-                color: 'var(--ds-on-surface)',
-                fontFamily: 'var(--font-manrope), sans-serif',
-              }}
-              suppressHydrationWarning
-            >
-              <span className="sidebar-label">Javier Chi Ortíz</span>
-            </button>
-            <p
-              className="sidebar-label uppercase tracking-widest mt-1 text-xs whitespace-nowrap"
-              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
-              suppressHydrationWarning
-            >
-              {t('hero_subtitle')}
-            </p>
-          </div>
-
           {/* Nav — key changes on expand to re-trigger stagger animation */}
           <nav key={collapsed ? 'nav-c' : 'nav-e'} className="space-y-1">
-            {[...NAV_ITEMS, { id: 'blog', icon: 'edit_note', key: 'blog' } as const].map(
+            {[
+              { id: 'home', icon: 'home', key: 'home' } as const,
+              ...NAV_ITEMS,
+              { id: 'experience', icon: 'work', key: 'experience' } as const,
+              { id: 'blog', icon: 'edit_note', key: 'blog' } as const,
+              { id: 'visitors', icon: 'public', key: 'visitors' } as const,
+            ].map(
               ({ id, icon, key }, index) => {
-                const isActive = id === 'blog' ? isBlogActive : active === id;
-                const href = id === 'blog' ? `/${locale}/blog` : sectionHref(id);
-                const label = id === 'blog' ? 'Blog' : t(key as Parameters<typeof t>[0]);
+                const isActive =
+                  id === 'home' ? isHome :
+                  id === 'experience' ? pathname.startsWith(`/${locale}/experience`) :
+                  id === 'blog' ? isBlogActive :
+                  id === 'visitors' ? pathname.startsWith(`/${locale}/visitors`) :
+                  active === id;
+                const href =
+                  id === 'home' ? `/${locale}` :
+                  id === 'experience' ? `/${locale}/experience` :
+                  id === 'blog' ? `/${locale}/blog` :
+                  id === 'visitors' ? `/${locale}/visitors` :
+                  sectionHref(id);
+                const label =
+                  id === 'blog' ? 'Blog' :
+                  id === 'visitors' ? t('visitors_nav' as Parameters<typeof t>[0]) :
+                  t(key as Parameters<typeof t>[0]);
                 return (
                   <motion.a
                     key={id}
@@ -142,7 +136,7 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: 'spring', stiffness: 420, damping: 18 }}
-            onClick={openCard}
+            onClick={() => openCard()}
             aria-label="Open Gamer Card"
             title={collapsed ? t('gamer_card') : undefined}
             className="flex items-center rounded-lg text-sm font-medium"
@@ -201,12 +195,12 @@ export default function Sidebar({ defaultCollapsed = false }: { defaultCollapsed
       <button
         onClick={toggle}
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        className="hidden xl:flex fixed top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 items-center justify-center cursor-pointer rounded-full border"
+        className="hidden xl:flex fixed top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 items-center justify-center cursor-pointer rounded-full"
         style={{
           left: 'var(--sidebar-w, 16rem)',
           zIndex: 50,
-          backgroundColor: 'var(--ds-surface)',
-          borderColor: 'var(--ds-outline-variant)',
+          backgroundColor: 'var(--ds-surface-high)',
+          boxShadow: '0 0 0 1.5px var(--ds-outline-variant)',
           color: 'var(--ds-outline)',
           transition: 'left 0.25s ease',
         }}

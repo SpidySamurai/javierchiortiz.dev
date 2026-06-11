@@ -112,7 +112,7 @@ export default function Contact() {
               style={{ ...inputStyle, resize: 'vertical' }}
             />
             {status === 'error' && (
-              <p className="text-sm" style={{ color: '#f87171' }}>
+              <p className="text-sm" style={{ color: 'var(--ds-error)' }}>
                 {t('contact_error')}
               </p>
             )}
