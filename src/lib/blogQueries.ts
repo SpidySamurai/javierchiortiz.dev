@@ -1,8 +1,9 @@
-import { createClient } from '@/lib/supabase/server';
+import { cache } from 'react';
+import { publicClient } from '@/lib/supabase/public';
 import type { Post } from '@/types/database';
 
 export async function getPublishedPosts(): Promise<Post[]> {
-  const supabase = await createClient();
+  const supabase = publicClient;
   const { data, error } = await supabase
     .from('posts')
     .select('*')
@@ -12,8 +13,8 @@ export async function getPublishedPosts(): Promise<Post[]> {
   return data ?? [];
 }
 
-export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const supabase = await createClient();
+export const getPostBySlug = cache(async (slug: string): Promise<Post | null> => {
+  const supabase = publicClient;
   const { data, error } = await supabase
     .from('posts')
     .select('*')
@@ -22,4 +23,4 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     .single();
   if (error) return null;
   return data;
-}
+});

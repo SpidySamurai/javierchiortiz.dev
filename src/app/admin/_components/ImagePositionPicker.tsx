@@ -1,18 +1,23 @@
 'use client';
 
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback, useEffect, useState } from 'react';
 
 interface Props {
   src: string;
   value: string;
   onChange: (pos: string) => void;
   label: string;
-  previewHeight: number;
+  aspectRatio?: string;
 }
 
-export default function ImagePositionPicker({ src, value, onChange, label, previewHeight }: Props) {
+export default function ImagePositionPicker({ src, value, onChange, label, aspectRatio = '16/9' }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const listenersRef = useRef<{ move: (e: MouseEvent) => void; up: () => void } | null>(null);
+  const listenersRef = useRef<{ move: (e: MouseEvent) => void; up: (e: MouseEvent) => void } | null>(null);
+  const [draft, setDraft] = useState(value);
+
+  useEffect(() => {
+    setDraft(value);
+  }, [value]);
 
   useEffect(() => {
     return () => {
@@ -23,40 +28,46 @@ export default function ImagePositionPicker({ src, value, onChange, label, previ
     };
   }, []);
 
-  const calcPos = useCallback(
-    (clientX: number, clientY: number) => {
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      const x = Math.round(Math.min(100, Math.max(0, ((clientX - rect.left) / rect.width) * 100)));
-      const y = Math.round(Math.min(100, Math.max(0, ((clientY - rect.top) / rect.height) * 100)));
-      onChange(`${x}% ${y}%`);
-    },
-    [onChange]
-  );
+  const calcPos = useCallback((clientX: number, clientY: number): string | null => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return null;
+    const x = Math.round(Math.min(100, Math.max(0, ((clientX - rect.left) / rect.width) * 100)));
+    const y = Math.round(Math.min(100, Math.max(0, ((clientY - rect.top) / rect.height) * 100)));
+    return `${x}% ${y}%`;
+  }, []);
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
-      calcPos(e.clientX, e.clientY);
+      const initial = calcPos(e.clientX, e.clientY);
+      if (initial) setDraft(initial);
 
-      const onMove = (ev: MouseEvent) => calcPos(ev.clientX, ev.clientY);
-      const onUp = () => {
+      const onMove = (ev: MouseEvent) => {
+        const pos = calcPos(ev.clientX, ev.clientY);
+        if (pos) setDraft(pos);
+      };
+
+      const onUp = (ev: MouseEvent) => {
+        const pos = calcPos(ev.clientX, ev.clientY);
+        if (pos) {
+          setDraft(pos);
+          onChange(pos);
+        }
         document.removeEventListener('mousemove', onMove);
         document.removeEventListener('mouseup', onUp);
         listenersRef.current = null;
       };
+
       listenersRef.current = { move: onMove, up: onUp };
       document.addEventListener('mousemove', onMove);
       document.addEventListener('mouseup', onUp);
     },
-    [calcPos]
+    [calcPos, onChange]
   );
 
-  const [xStr, yStr] = value.split(' ');
-  const dotXRaw = parseFloat(xStr ?? '50');
-  const dotYRaw = parseFloat(yStr ?? '50');
-  const dotX = Number.isFinite(dotXRaw) ? dotXRaw : 50;
-  const dotY = Number.isFinite(dotYRaw) ? dotYRaw : 50;
+  const [xStr, yStr] = draft.split(' ');
+  const dotX = Number.isFinite(parseFloat(xStr)) ? parseFloat(xStr) : 50;
+  const dotY = Number.isFinite(parseFloat(yStr)) ? parseFloat(yStr) : 50;
 
   return (
     <div style={{ marginBottom: 16 }}>
@@ -69,7 +80,7 @@ export default function ImagePositionPicker({ src, value, onChange, label, previ
         style={{
           position: 'relative',
           width: '100%',
-          height: previewHeight,
+          aspectRatio,
           borderRadius: 8,
           overflow: 'hidden',
           cursor: 'crosshair',
@@ -84,7 +95,7 @@ export default function ImagePositionPicker({ src, value, onChange, label, previ
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            objectPosition: value,
+            objectPosition: draft,
             pointerEvents: 'none',
           }}
         />
@@ -114,7 +125,7 @@ export default function ImagePositionPicker({ src, value, onChange, label, previ
         />
       </div>
       <span style={{ fontSize: 11, color: '#464554', marginTop: 4, display: 'block' }}>
-        {value}
+        {draft}
       </span>
     </div>
   );

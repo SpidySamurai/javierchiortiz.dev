@@ -60,7 +60,7 @@ export default function MessageList({ initialMessages }: { initialMessages: Cont
                   onClick={() => deleteMessage(msg.id)}
                   className="border-none bg-transparent cursor-pointer text-[13px] p-0 transition-colors duration-100"
                   style={{ color: 'var(--ds-outline-variant)' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ds-error)')}
                   onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ds-outline-variant)')}
                 >
                   Delete

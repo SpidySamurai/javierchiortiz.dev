@@ -121,7 +121,7 @@ function Navbar() {
       <div className="hidden lg:flex items-center gap-2 ml-6">
         {isUnlocked && (
           <button
-            onClick={openCard}
+            onClick={() => openCard()}
             className="p-2 rounded-md hover:bg-surface/10 transition-transform hover:scale-110"
             title="Open Gamer Card"
             aria-label="Open Gamer Card"
@@ -243,7 +243,7 @@ function Navbar() {
             <div className="flex items-center gap-3">
               {isUnlocked && (
                 <button
-                  onClick={openCard}
+                  onClick={() => openCard()}
                   className="p-1.5 rounded-md hover:bg-surface/10 transition-colors border border-transparent hover:border-surface/20"
                   title="Open Gamer Card"
                 >

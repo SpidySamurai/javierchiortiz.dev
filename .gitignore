@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+package-lock.json
 /.pnp
 .pnp.*
 .yarn/*
@@ -45,15 +46,11 @@ yarn-error.log*
 .claude/
 skills-lock.json
 
-# Internal dev docs (plans, specs)
-docs/superpowers/
-docs/content/
-docs/design/
-docs/dev/
-docs/marketing/
-docs/supabase/
-CHANGELOG.md
+# Internal dev docs (plans, specs, audits, strategy)
+docs/
 PRODUCT.md
+CLAUDE.md
+CHANGELOG.md
 README_portfolio.md
 
 # Lanyard API debug dumps

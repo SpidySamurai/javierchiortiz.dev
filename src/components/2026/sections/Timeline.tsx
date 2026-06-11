@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import Chip from '@/components/2026/ui/Chip';
@@ -191,12 +190,9 @@ function YearDisplay({ align = 'left', date }: { align?: 'left' | 'right'; date?
   );
 }
 
-const VISIBLE_DEFAULT = 3;
-
 export default function Timeline() {
   const t = useTranslations('common');
-  const [showAll, setShowAll] = useState(false);
-  const visibleEntries = showAll ? TIMELINE_ENTRIES : TIMELINE_ENTRIES.slice(0, VISIBLE_DEFAULT);
+  const visibleEntries = TIMELINE_ENTRIES;
 
   return (
     <section
@@ -277,7 +273,7 @@ export default function Timeline() {
                         href={entry.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-4xl md:text-5xl font-black leading-none mb-2 tracking-tighter block hover:text-[#c0c1ff] transition-colors"
+                        className="text-4xl md:text-5xl font-black leading-none mb-2 tracking-tighter block hover:text-[var(--ds-primary)] transition-colors"
                         style={{
                           color: 'var(--ds-on-surface)',
                           fontFamily: 'var(--font-manrope), sans-serif',
@@ -353,7 +349,7 @@ export default function Timeline() {
                         href={entry.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter block hover:text-[#c0c1ff] transition-colors"
+                        className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter block hover:text-[var(--ds-primary)] transition-colors"
                         style={{
                           color: 'var(--ds-on-surface)',
                           fontFamily: 'var(--font-manrope), sans-serif',
@@ -381,33 +377,6 @@ export default function Timeline() {
             </AnimatePresence>
           </div>
 
-          {/* Show more / less */}
-          {TIMELINE_ENTRIES.length > VISIBLE_DEFAULT && (
-            <motion.div
-              className="flex justify-center mt-16"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-            >
-              <button
-                onClick={() => setShowAll((v) => !v)}
-                className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest transition-colors"
-                style={{
-                  color: 'var(--ds-primary)',
-                  fontFamily: 'var(--font-inter), sans-serif',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '0.5rem 1rem',
-                }}
-              >
-                <span translate="no" className="material-symbols-outlined" style={{ fontSize: 16 }}>
-                  {showAll ? 'expand_less' : 'expand_more'}
-                </span>
-                {showAll ? t('show_less') : t('show_more')}
-              </button>
-            </motion.div>
-          )}
         </div>
       </div>
     </section>

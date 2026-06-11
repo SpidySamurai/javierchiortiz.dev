@@ -16,9 +16,18 @@ body {
 html {
   scroll-behavior: smooth;
   --sidebar-w: 16rem;
+  color-scheme: dark;
 }
 
-/* Sidebar layout — responsive margin driven by CSS var set from JS */
+html[data-theme='light'] {
+  color-scheme: light;
+}
+
+html[data-sidebar-collapsed] {
+  --sidebar-w: 4rem;
+}
+
+/* Sidebar layout — responsive margin driven by CSS var */
 @media (min-width: 1280px) {
   .sidebar-main {
     margin-left: var(--sidebar-w, 16rem);
@@ -29,7 +38,7 @@ html {
   }
 }
 
-/* CSS-driven collapsed state — applied by inline script before first paint */
+/* CSS-driven collapsed state */
 html[data-sidebar-collapsed] .sidebar-aside {
   width: 4rem !important;
 }
@@ -165,12 +174,29 @@ html[data-theme='light'] {
   --ds-surface-highest: #2d3449;
   --ds-surface-bright: #31394d;
 
+  /* A deeper indigo "dimension" for sectional rhythm (About) — same blue family */
+  --ds-about-bg: #151b3d;
+
   --ds-on-surface: #dae2fd;
   --ds-on-surface-variant: #c7c4d7;
 
   --ds-primary: #c0c1ff;
   --ds-primary-container: #8083ff;
-  --ds-on-primary: #1000a9;
+  --ds-on-primary: #04006a;
+
+  /* Committed periwinkle — saturated signature for statements / CTA / bands */
+  --ds-primary-vivid: #6d6dff;
+  --ds-on-vivid: #f4f4ff;
+
+  /* Sectional "flip" panel (About) — inverts to light against the dark page */
+  --ds-flip-bg: #b6bcd0;
+  --ds-flip-surface: #aab0c6;
+  --ds-flip-on: #1b2138;
+  --ds-flip-on-variant: #424a68;
+  --ds-flip-chip-bg: #dde0f5;
+  --ds-flip-chip-on: #3a3f66;
+  --ds-flip-accent: #4a4ad0;
+  --ds-flip-outline: #c2c8de;
 
   --ds-secondary-container: #3e3c8f;
   --ds-on-secondary: #afadff;
@@ -179,6 +205,10 @@ html[data-theme='light'] {
 
   --ds-outline-variant: #464554;
   --ds-outline: #908fa0;
+
+  --ds-error: #f87171;
+  --ds-success: #4ade80;
+  --ds-icon-muted: #94a3b8;
 
   --ds-font-display: var(--font-manrope), sans-serif;
   --ds-font-body: var(--font-inter), sans-serif;
@@ -203,13 +233,30 @@ html[data-theme='light'] .ds-2026 {
   --ds-primary-container: #6668e8;
   --ds-on-primary: #ffffff;
 
+  --ds-primary-vivid: #5152e0;
+  --ds-on-vivid: #ffffff;
+
+  /* Flip inverts the other way in light theme: About goes dark */
+  --ds-flip-bg: #161c33;
+  --ds-flip-surface: #1f2745;
+  --ds-flip-on: #e7ebfb;
+  --ds-flip-on-variant: #b3bbd8;
+  --ds-flip-chip-bg: #283157;
+  --ds-flip-chip-on: #cfd6f0;
+  --ds-flip-accent: #9a9aff;
+  --ds-flip-outline: #3a4163;
+
   --ds-secondary-container: #d0d2f5;
   --ds-on-secondary: #2f2ebe;
 
   --ds-tertiary: #3a4a9e;
 
   --ds-outline-variant: #b0b8d0;
-  --ds-outline: #626a88;
+  --ds-outline: #4e5971;
+
+  --ds-error: #b91c1c;
+  --ds-success: #166534;
+  --ds-icon-muted: #6b7fa0;
 }
 
 /* global.css */
@@ -217,7 +264,7 @@ html[data-theme='light'] .ds-2026 {
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
-  scrollbar-color: #999 transparent;
+  scrollbar-color: var(--ds-outline-variant, #999) transparent;
 }
 
 .scroll-x-thin::-webkit-scrollbar {
@@ -225,7 +272,7 @@ html[data-theme='light'] .ds-2026 {
 }
 
 .scroll-x-thin::-webkit-scrollbar-thumb {
-  background-color: #999;
+  background-color: var(--ds-outline-variant, #999);
   border-radius: 4px;
 }
 
@@ -300,4 +347,152 @@ html[data-theme='light'] .ds-2026 {
   [style*='float-y'] {
     animation: none !important;
   }
+}
+
+/* ============================================================
+   Markdown prose — .markdown-content
+   Used by MarkdownRenderer (unified async pipeline + rehype-pretty-code)
+   ============================================================ */
+.markdown-content {
+  color: var(--ds-on-surface-variant);
+  font-family: var(--font-inter), sans-serif;
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.markdown-content h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--ds-on-surface);
+  font-family: var(--font-manrope), sans-serif;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.markdown-content h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ds-on-surface);
+  font-family: var(--font-manrope), sans-serif;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+
+.markdown-content h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ds-on-surface);
+  font-family: var(--font-manrope), sans-serif;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content p {
+  margin-bottom: 1.25rem;
+}
+
+.markdown-content a {
+  color: var(--ds-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.markdown-content strong {
+  color: var(--ds-on-surface);
+  font-weight: 700;
+}
+
+.markdown-content em {
+  color: var(--ds-on-surface);
+  font-style: italic;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid var(--ds-primary);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  color: var(--ds-on-surface-variant);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.markdown-content ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+  list-style-type: disc;
+}
+
+.markdown-content ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+  list-style-type: decimal;
+}
+
+.markdown-content li {
+  margin-bottom: 0.25rem;
+}
+
+.markdown-content hr {
+  border: none;
+  height: 1px;
+  background: var(--ds-outline-variant);
+  margin: 2rem 0;
+  opacity: 0.4;
+}
+
+.markdown-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+/* Inline code */
+.markdown-content :not(pre) > code {
+  background: var(--ds-surface);
+  color: var(--ds-primary);
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  font-size: 0.85em;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+/* Code blocks — rehype-pretty-code output */
+.markdown-content [data-rehype-pretty-code-figure] {
+  margin: 1.25rem 0;
+}
+
+.markdown-content [data-rehype-pretty-code-figure] pre {
+  background: var(--ds-surface) !important;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.markdown-content [data-rehype-pretty-code-figure] code {
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  background: transparent !important;
+  font-size: inherit;
+}
+
+/* YouTube embed */
+.markdown-content .yt-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  margin: 2rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.markdown-content .yt-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
 }

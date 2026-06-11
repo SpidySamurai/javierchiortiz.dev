@@ -16,38 +16,45 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'common' });
 
+  const title = t('meta_title');
+  const description = t('meta_description');
+
   return {
     metadataBase: new URL('https://javierchiortiz.dev'),
     title: {
-      default: 'Javier Chi — Full Stack Developer',
+      default: title,
       template: '%s | Javier Chi',
     },
-    description: t('hero_description'),
+    description,
     keywords: [
       'Full Stack Developer',
+      'Full Stack Engineer',
+      'Freelance Developer',
+      'Next.js Developer',
+      'SaaS Developer',
+      'AI Automation Developer',
       'React',
-      'Next.js',
       'TypeScript',
       'NestJS',
-      'Portfolio',
-      'Frontend',
-      'Backend',
+      'Freelance',
+      'For Hire',
+      'US Market',
+      'Remote Developer',
     ],
-    authors: [{ name: 'Javier Chi Ortíz', url: 'https://javierchiortiz.dev' }],
-    creator: 'Javier Chi Ortíz',
+    authors: [{ name: 'Javier Fernando Chi Ortiz', url: 'https://javierchiortiz.dev' }],
+    creator: 'Javier Fernando Chi Ortiz',
     robots: { index: true, follow: true },
     openGraph: {
-      title: 'Javier Chi — Full Stack Developer',
-      description: t('hero_description'),
-      url: 'https://javierchiortiz.dev',
+      title,
+      description,
       siteName: 'Javier Chi',
       locale: locale === 'es' ? 'es_MX' : 'en_US',
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Javier Chi — Full Stack Developer',
-      description: t('hero_description'),
+      title,
+      description,
       creator: '@javierchi',
     },
   };
@@ -68,11 +75,27 @@ export default async function LocaleLayout({
 
   const messages = await getMessages();
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Javier Fernando Chi Ortiz',
+    url: 'https://javierchiortiz.dev',
+    jobTitle: 'Full Stack Engineer',
+    sameAs: [
+      'https://www.linkedin.com/in/javier-fernando-chi-ortiz/',
+      'https://github.com/SpidySamurai',
+    ],
+  };
+
   return (
     <PostHogProvider>
       <NextIntlClientProvider messages={messages}>
         <GamerCardProvider>
-          <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="data-theme" defaultTheme="dark" forcedTheme="dark" enableColorScheme={false}>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {children}
           </ThemeProvider>
         </GamerCardProvider>

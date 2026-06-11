@@ -41,7 +41,7 @@ export default function VisitorCounter() {
           width: 6,
           height: 6,
           borderRadius: '50%',
-          background: '#8083ff',
+          background: 'var(--ds-primary)',
           opacity: 0.7,
           flexShrink: 0,
         }}

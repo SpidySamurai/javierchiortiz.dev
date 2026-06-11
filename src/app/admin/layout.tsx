@@ -23,9 +23,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!user) redirect('/admin/login');
 
   return (
-    <div className="ds-2026 flex min-h-screen" translate="no">
+    <div className="ds-2026 flex h-screen overflow-hidden" translate="no">
       <aside
-        className="shrink-0 flex flex-col px-4 py-7 gap-1"
+        className="shrink-0 flex flex-col px-4 py-7 gap-1 overflow-y-auto"
         style={{
           width: 220,
           backgroundColor: 'var(--ds-surface)',

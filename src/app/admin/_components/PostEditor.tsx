@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import type { ICommand, ExecuteState, TextAreaTextApi } from '@uiw/react-md-editor';
 import type { Post } from '@/types/database';
-import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
+import AdminMarkdownPreview from '@/app/admin/_components/AdminMarkdownPreview';
 import ImagePositionPicker from '@/app/admin/_components/ImagePositionPicker';
 import { BLOG_THEMES } from '@/data/blogThemes';
 import SectionHeader from '@/app/admin/_components/SectionHeader';
@@ -82,8 +82,10 @@ type PostForm = {
   cover_theme: string;
   youtube_id: string;
   cover_image_url: string;
+  cover_image_aspect_card: string;
   cover_image_position_card: string;
   cover_image_position_hero: string;
+  repo_url: string;
   theme_config_enabled: boolean;
   theme_config: ThemeConfig;
 };
@@ -101,8 +103,10 @@ const EMPTY: PostForm = {
   cover_theme: '',
   youtube_id: '',
   cover_image_url: '',
+  cover_image_aspect_card: '16/9',
   cover_image_position_card: '50% 50%',
   cover_image_position_hero: '50% 50%',
+  repo_url: '',
   theme_config_enabled: false,
   theme_config: { ...DEFAULT_THEME },
 };
@@ -126,8 +130,10 @@ export default function PostEditor({ post }: { post?: Post }) {
           cover_theme: post.cover_theme ?? '',
           youtube_id: post.youtube_id ?? '',
           cover_image_url: post.cover_image_url ?? '',
+          cover_image_aspect_card: post.cover_image_aspect_card ?? '16/9',
           cover_image_position_card: post.cover_image_position_card ?? '50% 50%',
           cover_image_position_hero: post.cover_image_position_hero ?? '50% 50%',
+          repo_url: post.repo_url ?? '',
           theme_config_enabled: !!post.theme_config,
           theme_config: post.theme_config
             ? { ...DEFAULT_THEME, ...post.theme_config }
@@ -139,7 +145,30 @@ export default function PostEditor({ post }: { post?: Post }) {
   const [tab, setTab] = useState<'en' | 'es'>('en');
   const [mode, setMode] = useState<'edit' | 'split' | 'blog'>('edit');
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError('');
+    const ext = file.name.split('.').pop() ?? 'png';
+    const filename = `${form.slug || 'cover'}-${Date.now()}.${ext}`;
+    const { data, error: upErr } = await supabase.storage
+      .from('blog-covers')
+      .upload(filename, file, { upsert: true });
+    if (upErr) {
+      setError(`Upload failed: ${upErr.message}`);
+      setUploading(false);
+      return;
+    }
+    const { data: urlData } = supabase.storage.from('blog-covers').getPublicUrl(data.path);
+    setForm((f) => ({ ...f, cover_image_url: urlData.publicUrl }));
+    setUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   const youtubeCommand: ICommand = {
     name: 'youtube',
@@ -181,8 +210,10 @@ export default function PostEditor({ post }: { post?: Post }) {
       cover_theme: form.cover_theme || null,
       youtube_id: form.youtube_id || null,
       cover_image_url: form.cover_image_url || null,
+      cover_image_aspect_card: form.cover_image_aspect_card || null,
       cover_image_position_card: form.cover_image_position_card || null,
       cover_image_position_hero: form.cover_image_position_hero || null,
+      repo_url: form.repo_url || null,
       theme_config: form.theme_config_enabled ? form.theme_config : null,
       is_published: publish,
       published_at: publish ? post?.published_at ?? new Date().toISOString() : null,
@@ -275,10 +306,38 @@ export default function PostEditor({ post }: { post?: Post }) {
           className={inputClass}
           style={inputStyle}
         />
+        <div className="flex items-center gap-2">
+          <input
+            placeholder="Cover image URL (optional)"
+            value={form.cover_image_url}
+            onChange={setField('cover_image_url')}
+            className={inputClass}
+            style={{ ...inputStyle, flex: 1 }}
+          />
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-lg border-none cursor-pointer text-[13px]"
+            style={{ background: 'var(--ds-surface-high)', color: 'var(--ds-outline)', opacity: uploading ? 0.6 : 1 }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
+              {uploading ? 'hourglass_empty' : 'upload'}
+            </span>
+            {uploading ? 'Uploading…' : 'Upload'}
+          </button>
+        </div>
         <input
-          placeholder="Cover image URL (optional)"
-          value={form.cover_image_url}
-          onChange={setField('cover_image_url')}
+          placeholder="GitHub repo URL (optional, shows card at top of post)"
+          value={form.repo_url}
+          onChange={setField('repo_url')}
           className={inputClass}
           style={inputStyle}
         />
@@ -375,6 +434,47 @@ export default function PostEditor({ post }: { post?: Post }) {
         )}
       </div>
 
+      {/* Cover image aspect ratio */}
+      {form.cover_image_url && (
+        <div className="mb-4">
+          <span
+            className="text-[11px] uppercase tracking-[0.08em] block mb-2"
+            style={{ color: 'var(--ds-outline-variant)' }}
+          >
+            Card aspect ratio
+          </span>
+          <div className="flex gap-2">
+            {([['16/9', 'Wide'], ['2/1', 'Cinema'], ['4/3', 'Standard'], ['1/1', 'Square']] as const).map(
+              ([ratio, label]) => (
+                <button
+                  key={ratio}
+                  onClick={() => setForm((f) => ({ ...f, cover_image_aspect_card: ratio }))}
+                  className="px-3.5 py-1.5 rounded-md text-[13px] cursor-pointer border-none"
+                  style={{
+                    background:
+                      form.cover_image_aspect_card === ratio
+                        ? 'var(--ds-primary)'
+                        : 'var(--ds-surface-high)',
+                    color:
+                      form.cover_image_aspect_card === ratio
+                        ? 'var(--ds-on-primary)'
+                        : 'var(--ds-outline)',
+                    fontWeight: form.cover_image_aspect_card === ratio ? 700 : 400,
+                  }}
+                >
+                  {label}
+                  <span
+                    className="ml-1.5 text-[10px] font-mono opacity-60"
+                  >
+                    {ratio}
+                  </span>
+                </button>
+              )
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Image position pickers */}
       {form.cover_image_url && (
         <div className="grid grid-cols-2 gap-4 mb-5">
@@ -383,14 +483,14 @@ export default function PostEditor({ post }: { post?: Post }) {
             value={form.cover_image_position_card}
             onChange={(pos) => setForm((f) => ({ ...f, cover_image_position_card: pos }))}
             label="Card position (listing view)"
-            previewHeight={200}
+            aspectRatio={form.cover_image_aspect_card}
           />
           <ImagePositionPicker
             src={form.cover_image_url}
             value={form.cover_image_position_hero}
             onChange={(pos) => setForm((f) => ({ ...f, cover_image_position_hero: pos }))}
             label="Hero position (post view)"
-            previewHeight={200}
+            aspectRatio="16/9"
           />
         </div>
       )}
@@ -510,7 +610,7 @@ export default function PostEditor({ post }: { post?: Post }) {
                 </h1>
               )}
               {currentContent ? (
-                <MarkdownRenderer content={currentContent} />
+                <AdminMarkdownPreview content={currentContent} />
               ) : (
                 <p className="italic" style={{ color: 'var(--ds-outline-variant)' }}>No content yet.</p>
               )}
@@ -554,7 +654,7 @@ export default function PostEditor({ post }: { post?: Post }) {
               </h1>
             )}
             {currentContent ? (
-              <MarkdownRenderer content={currentContent} />
+              <AdminMarkdownPreview content={currentContent} />
             ) : (
               <p className="italic" style={{ color: 'var(--ds-outline-variant)' }}>No content yet.</p>
             )}
@@ -562,7 +662,7 @@ export default function PostEditor({ post }: { post?: Post }) {
         </div>
       )}
 
-      {error && <p className="text-[13px] mt-3" style={{ color: '#f87171' }}>{error}</p>}
+      {error && <p className="text-[13px] mt-3" style={{ color: 'var(--ds-error)' }}>{error}</p>}
 
       <div className="flex gap-3 mt-5">
         <button

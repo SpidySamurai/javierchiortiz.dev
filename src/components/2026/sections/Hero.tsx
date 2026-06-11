@@ -1,10 +1,11 @@
 'use client';
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%&!?';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { TwentyOnePilotsEgg } from './TwentyOnePilotsEgg';
-import { useTheme } from 'next-themes';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import type { Container } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
@@ -151,7 +152,7 @@ function AnimatedHeadline({
           className="inline-block"
           style={{
             marginRight: '0.22em',
-            ...(word.isAccent ? { color: 'var(--ds-primary)', fontStyle: 'italic' } : {}),
+            ...(word.isAccent ? { color: 'var(--ds-primary-vivid)', fontStyle: 'italic' } : {}),
           }}
         >
           {word.text}
@@ -161,19 +162,174 @@ function AnimatedHeadline({
   );
 }
 
+function useScramble(target: string) {
+  const [display, setDisplay] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+    let frame = 0;
+    const PRE = 4;
+    const maxFrames = PRE + target.length;
+
+    function tick() {
+      if (cancelled) return;
+      frame++;
+      const resolved = Math.max(0, frame - PRE);
+      setDisplay(
+        target
+          .split('')
+          .map((ch, i) => {
+            if (ch === ' ') return ' ';
+            if (i < resolved) return ch;
+            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+          })
+          .join(''),
+      );
+      if (frame < maxFrames) setTimeout(tick, 35);
+      else if (!cancelled) setDisplay(target);
+    }
+
+    tick();
+    return () => {
+      cancelled = true;
+    };
+  }, [target]);
+
+  return display;
+}
+
+interface ServiceItem {
+  label: string;
+  sub: string;
+}
+
+const ScrambleServiceCycler = memo(function ScrambleServiceCycler({
+  services,
+  active,
+}: {
+  services: ServiceItem[];
+  active: boolean;
+}) {
+  const [idx, setIdx] = useState(0);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    if (!active) return;
+    const t = setTimeout(() => setStarted(true), 350);
+    return () => clearTimeout(t);
+  }, [active]);
+
+  useEffect(() => {
+    if (!started) return;
+    const timer = setInterval(() => setIdx((i) => (i + 1) % services.length), 3200);
+    return () => clearInterval(timer);
+  }, [started, services.length]);
+
+  const current = services[idx];
+  const label = useScramble(started ? current.label : '');
+
+  return (
+    <div className="space-y-1.5 flex-shrink-0 min-w-[14rem]">
+      {/* Progress pills */}
+      <div className="flex gap-1 items-center mb-2">
+        {services.map((_, i) => (
+          <div
+            key={i}
+            className="h-[2px] rounded-full transition-all duration-500"
+            style={{
+              width: i === idx ? '14px' : '4px',
+              backgroundColor:
+                i === idx
+                  ? 'var(--ds-primary)'
+                  : 'color-mix(in srgb, var(--ds-primary) 22%, transparent)',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Scrambling label */}
+      <p
+        className="text-2xl font-bold tracking-tight"
+        style={{
+          color: 'var(--ds-on-surface)',
+          fontFamily: 'var(--font-manrope), sans-serif',
+          minHeight: '2rem',
+          letterSpacing: '-0.01em',
+        }}
+      >
+        {label}
+        {started && label !== current.label && (
+          <span
+            style={{ borderRight: '2px solid currentColor', marginLeft: '2px', opacity: 0.6 }}
+          />
+        )}
+      </p>
+
+      {/* Sub description */}
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={idx}
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -5 }}
+          transition={{ duration: 0.22 }}
+          className="text-sm italic"
+          style={{
+            color: 'var(--ds-on-surface-variant)',
+            fontFamily: 'var(--font-inter), sans-serif',
+            minHeight: '1.25rem',
+          }}
+        >
+          {started ? current.sub : ''}
+        </motion.p>
+      </AnimatePresence>
+    </div>
+  );
+});
+
 export default function Hero() {
   const t = useTranslations('common');
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme !== 'light';
+  const isDark = true; // dark-only site — no theme branching (avoids hydration mismatch)
   const [particlesReady, setParticlesReady] = useState(false);
   const [typingDone, setTypingDone] = useState(false);
   const [eggOpen, setEggOpen] = useState(false);
   const cometContainerRef = useRef<Container | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const particlesOptions = useMemo(() => getParticlesOptions(isDark), [isDark]);
+
+  const services = useMemo<ServiceItem[]>(
+    () => [
+      { label: t('hero_svc_landing'), sub: t('hero_svc_landing_sub') },
+      { label: t('hero_svc_webapp'), sub: t('hero_svc_webapp_sub') },
+      { label: t('hero_svc_mvp'), sub: t('hero_svc_mvp_sub') },
+      { label: t('hero_svc_cms'), sub: t('hero_svc_cms_sub') },
+      { label: t('hero_svc_crm'), sub: t('hero_svc_crm_sub') },
+      { label: t('hero_svc_ai'), sub: t('hero_svc_ai_sub') },
+    ],
+    [t],
+  );
 
   const handleParticlesLoaded = useCallback((c: Container | undefined) => {
     cometContainerRef.current = c ?? null;
   }, []);
+
+  // Pause the particle render loop while the hero is scrolled out of view —
+  // frees CPU/GPU for the rest of the page, zero visual change in-view.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!particlesReady || !el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        const c = cometContainerRef.current;
+        if (!c) return;
+        if (entry.isIntersecting) c.play();
+        else c.pause();
+      },
+      { threshold: 0 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [particlesReady]);
 
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -256,6 +412,7 @@ export default function Hero() {
 
   return (
     <section
+      ref={sectionRef}
       data-track-section="hero"
       className="relative px-8 md:px-16 pt-24 pb-24 md:pb-40 overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
@@ -263,7 +420,7 @@ export default function Hero() {
       {/* Unified particles — background + comets in one container */}
       {particlesReady && (
         <ParticleBackground
-          key={resolvedTheme ?? 'dark'}
+          key="dark"
           onLoaded={handleParticlesLoaded}
           options={particlesOptions}
         />
@@ -312,9 +469,7 @@ export default function Hero() {
         |-/
       </motion.span>
 
-      <div className="relative z-10 flex flex-col md:flex-row items-center gap-12 md:gap-0">
-        {/* Left: text block */}
-        <div className="w-full md:w-1/2 space-y-6">
+      <div className="relative z-10 max-w-3xl mx-auto space-y-10 md:text-center">
           {/* Headline */}
           <AnimatedHeadline
             pre={t('hero_headline_pre')}
@@ -328,7 +483,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: 0.38, ease: 'easeOut' }}
-            className="text-lg md:text-xl leading-relaxed max-w-lg"
+            className="text-lg md:text-xl leading-relaxed"
             style={{
               color: 'var(--ds-on-surface-variant)',
               fontFamily: 'var(--font-inter), sans-serif',
@@ -337,34 +492,55 @@ export default function Hero() {
             {t('hero_description_long')}
           </motion.p>
 
-          {/* CTA */}
+          {/* CTA + Scrambler */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={typingDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             transition={{ duration: 0.38, delay: 0.1, ease: 'easeOut' }}
-            className="flex flex-col gap-1"
+            className="flex flex-col sm:flex-row items-start md:items-center md:justify-center gap-10 sm:gap-8"
           >
-            <a
-              href="mailto:javierchiortiz@gmail.com"
-              className="text-base font-semibold transition-colors hover:opacity-80"
-              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
-            >
-              {t('hero_cta')}
-            </a>
-            <span
-              className="text-xs italic tracking-widest"
-              style={{
-                color: 'color-mix(in srgb, var(--ds-primary) 55%, transparent)',
-                fontFamily: 'var(--font-inter), sans-serif',
-              }}
-            >
-              {t('hero_cta_sub')}
-            </span>
-          </motion.div>
-        </div>
+            {/* Scrambler */}
+            <ScrambleServiceCycler services={services} active={typingDone} />
 
-        {/* Right — empty until real images are ready */}
-        <div className="hidden md:block w-full md:w-1/2" />
+            {/* Vertical divider */}
+            <div
+              className="hidden sm:block w-px self-stretch"
+              style={{ backgroundColor: 'var(--ds-outline-variant)' }}
+            />
+
+            {/* CTA — committed periwinkle button */}
+            <div className="flex flex-col gap-2 flex-shrink-0 items-start md:items-center">
+              <a
+                href={`https://wa.me/529904147791?text=${encodeURIComponent("Hi! I saw your portfolio and I'd like to start a project together.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/cta inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-bold text-sm uppercase tracking-widest transition-transform duration-200 motion-safe:hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--ds-primary-vivid)]"
+                style={{
+                  backgroundColor: 'var(--ds-primary-vivid)',
+                  color: 'var(--ds-on-vivid)',
+                  fontFamily: 'var(--font-manrope), sans-serif',
+                }}
+              >
+                {t('hero_cta')}
+                <span
+                  translate="no"
+                  aria-hidden
+                  className="material-symbols-outlined text-base inline-block transition-transform duration-200 motion-safe:group-hover/cta:translate-x-1"
+                >
+                  arrow_forward
+                </span>
+              </a>
+              <span
+                className="text-xs italic tracking-widest"
+                style={{
+                  color: 'color-mix(in srgb, var(--ds-primary) 60%, transparent)',
+                  fontFamily: 'var(--font-inter), sans-serif',
+                }}
+              >
+                {t('hero_cta_sub')}
+              </span>
+            </div>
+          </motion.div>
       </div>
 
       {/* Comet caption */}

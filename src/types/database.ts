@@ -39,6 +39,7 @@ export type Database = {
           locale: string | null;
           path: string;
           referrer: string | null;
+          visitor_hash: string | null;
         };
         Insert: {
           created_at?: string;
@@ -46,6 +47,7 @@ export type Database = {
           locale?: string | null;
           path: string;
           referrer?: string | null;
+          visitor_hash?: string | null;
         };
         Update: {
           created_at?: string;
@@ -53,6 +55,7 @@ export type Database = {
           locale?: string | null;
           path?: string;
           referrer?: string | null;
+          visitor_hash?: string | null;
         };
         Relationships: [];
       };
@@ -65,6 +68,7 @@ export type Database = {
           created_at: string;
           latitude: number | null;
           longitude: number | null;
+          visitor_hash: string | null;
         };
         Insert: {
           id?: number;
@@ -74,6 +78,7 @@ export type Database = {
           created_at?: string;
           latitude?: number | null;
           longitude?: number | null;
+          visitor_hash?: string | null;
         };
         Update: {
           id?: number;
@@ -83,6 +88,7 @@ export type Database = {
           created_at?: string;
           latitude?: number | null;
           longitude?: number | null;
+          visitor_hash?: string | null;
         };
         Relationships: [];
       };
@@ -94,6 +100,7 @@ export type Database = {
           cover_image_position_card: string | null;
           cover_image_position_hero: string | null;
           cover_image_url: string | null;
+          cover_image_aspect_card: string | null;
           cover_theme: string | null;
           theme_config: {
             bg?: string;
@@ -113,6 +120,7 @@ export type Database = {
           title_es: string;
           updated_at: string;
           youtube_id: string | null;
+          repo_url: string | null;
         };
         Insert: {
           category?: string;
@@ -121,6 +129,7 @@ export type Database = {
           cover_image_position_card?: string | null;
           cover_image_position_hero?: string | null;
           cover_image_url?: string | null;
+          cover_image_aspect_card?: string | null;
           cover_theme?: string | null;
           theme_config?: {
             bg?: string;
@@ -140,6 +149,7 @@ export type Database = {
           title_es: string;
           updated_at?: string;
           youtube_id?: string | null;
+          repo_url?: string | null;
         };
         Update: {
           category?: string;
@@ -148,6 +158,7 @@ export type Database = {
           cover_image_position_card?: string | null;
           cover_image_position_hero?: string | null;
           cover_image_url?: string | null;
+          cover_image_aspect_card?: string | null;
           cover_theme?: string | null;
           theme_config?: {
             bg?: string;
@@ -167,6 +178,7 @@ export type Database = {
           title_es?: string;
           updated_at?: string;
           youtube_id?: string | null;
+          repo_url?: string | null;
         };
         Relationships: [];
       };
