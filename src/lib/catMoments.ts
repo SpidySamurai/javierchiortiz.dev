@@ -7,15 +7,24 @@
  * at the neutral pose, so it can begin and finish without a visible jump.
  */
 
-export type MomentKind = 'wave';
+export type MomentKind = 'wave' | 'stretch';
 
 export interface MomentPose {
   /** Degrees added to each ear, and a multiplier on ear height. */
   earL: number;
   earR: number;
   earS: number;
-  /** Degrees added to the head tilt. */
+  /** Degrees added to the head tilt, and units the head sinks. */
   headRot: number;
+  headY: number;
+  /** Multiplier on the chest height (1 = relaxed). */
+  chest: number;
+  /** 0..1 eyelid closure, combined with blinking by taking the larger. */
+  lid: number;
+  /** 0..1 yawn: how wide the mouth is open. */
+  mouth: number;
+  /** 0..1 front paws pushed out. */
+  paws: number;
   /** Degrees added to the tail swing. */
   tail: number;
   /** Raised limb rotation in degrees, 0 = hanging at rest. */
@@ -31,6 +40,11 @@ export const NEUTRAL_POSE: MomentPose = {
   earR: 0,
   earS: 1,
   headRot: 0,
+  headY: 0,
+  chest: 1,
+  lid: 0,
+  mouth: 0,
+  paws: 0,
   tail: 0,
   pawRot: 0,
   happy: 0,
@@ -59,6 +73,23 @@ export function momentPose(kind: MomentKind, u: number): MomentPose {
     p.pawRot = 150 * up + 18 * wave * up;
     p.happy = prog(u, 0.6, 0.75) * (1 - prog(u, 1.55, 1.7));
     p.waveLines = u >= 0.6 && u < 1.6 ? 0.5 + 0.5 * Math.abs(Math.sin(u * 12)) : 0;
+  }
+  if (kind === 'stretch') {
+    const squint = prog(u, 0, 0.2) * (1 - prog(u, 2.3, 2.6));
+    const closed = prog(u, 0.2, 0.4) * (1 - prog(u, 2.3, 2.6));
+    p.lid = Math.max(0.55 * squint, closed);
+    const st = expo(prog(u, 0.2, 0.9)) * (1 - expo(prog(u, 2.3, 2.8)));
+    p.headY = 8 * st;
+    p.chest = 1 - 0.08 * st;
+    p.paws = st;
+    p.tail = -30 * st;
+    const yawn = Math.sin(Math.PI * prog(u, 1.0, 1.9));
+    p.mouth = yawn;
+    p.headRot = -9 * yawn;
+    p.earL = -10 * yawn;
+    p.earR = 10 * yawn;
+    p.earS = 1 - 0.12 * yawn;
+    if (u >= 1.9 && u < 2.3) p.headRot += 5 * Math.sin(((u - 1.9) / 0.4) * 4 * Math.PI) * (1 - prog(u, 1.9, 2.3));
   }
   return p;
 }
