@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useAnimate, useInView } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import { TextReveal } from '@/components/2026/ui/TextReveal';
 
-const SERVICE_KEYS = ['landing', 'webapp', 'mvp', 'cms', 'crm', 'ai'] as const;
+const SERVICE_KEYS = ['agents', 'rag', 'evals', 'automations', 'saas', 'webapps'] as const;
 const STATION_KEYS = ['idea', 'build', 'launch'] as const;
 const STATION_ICONS = ['lightbulb', 'terminal', 'rocket_launch'] as const;
 const WA_PHONE = '529904147791';

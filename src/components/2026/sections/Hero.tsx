@@ -300,12 +300,12 @@ export default function Hero() {
 
   const services = useMemo<ServiceItem[]>(
     () => [
-      { label: t('hero_svc_landing'), sub: t('hero_svc_landing_sub') },
-      { label: t('hero_svc_webapp'), sub: t('hero_svc_webapp_sub') },
-      { label: t('hero_svc_mvp'), sub: t('hero_svc_mvp_sub') },
-      { label: t('hero_svc_cms'), sub: t('hero_svc_cms_sub') },
-      { label: t('hero_svc_crm'), sub: t('hero_svc_crm_sub') },
-      { label: t('hero_svc_ai'), sub: t('hero_svc_ai_sub') },
+      { label: t('hero_svc_agents'), sub: t('hero_svc_agents_sub') },
+      { label: t('hero_svc_rag'), sub: t('hero_svc_rag_sub') },
+      { label: t('hero_svc_evals'), sub: t('hero_svc_evals_sub') },
+      { label: t('hero_svc_automations'), sub: t('hero_svc_automations_sub') },
+      { label: t('hero_svc_saas'), sub: t('hero_svc_saas_sub') },
+      { label: t('hero_svc_webapps'), sub: t('hero_svc_webapps_sub') },
     ],
     [t],
   );
