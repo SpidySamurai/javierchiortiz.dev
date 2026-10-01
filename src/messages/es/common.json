@@ -87,9 +87,14 @@
   "language_spanish": "Español",
   "language_english": "Inglés",
   "experience_items": {
+    "brania": {
+      "title": "Senior Full Stack Engineer en Brania",
+      "date": "Jul 2026 - Presente",
+      "description": "Construyo funcionalidades de producto de extremo a extremo, del frontend al backend, en una plataforma impulsada por IA."
+    },
     "enti": {
       "title": "Full Stack en ENTI",
-      "date": "Ago 2023 - Presente",
+      "date": "Ago 2023 - Jul 2026",
       "description": "Diseño y entrego productos web de extremo a extremo para clientes del mercado US y LATAM.\n\nActualmente en producción: e-wallet mobile-first en Next.js con sesiones seguras — cookies HTTPOnly, refresh tokens y endpoints REST protegidos. Migré el data layer de DynamoDB a microservicios Django y de dashboards Power BI a jobs SparkSQL en Scala sobre Superset."
     },
     "softtek": {

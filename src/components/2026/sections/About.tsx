@@ -275,11 +275,13 @@ export default function About() {
               style={{ width: 'max-content' }}
             >
               {[
+                { name: 'Brania', label: 'Startup' },
                 { name: 'ENTI', label: 'Consulting' },
                 { name: 'Softtek', label: 'Enterprise' },
                 { name: 'Scandia', label: 'E-commerce' },
                 { name: 'IOTAM', label: 'Startup' },
                 { name: 'BrightCoders', label: 'Internship' },
+                { name: 'Brania', label: 'Startup' },
                 { name: 'ENTI', label: 'Consulting' },
                 { name: 'Softtek', label: 'Enterprise' },
                 { name: 'Scandia', label: 'E-commerce' },
