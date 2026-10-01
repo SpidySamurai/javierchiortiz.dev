@@ -206,7 +206,7 @@
   },
   "services_process": {
     "plan":   { "name": "Plan",   "desc": "Understand the problem, draw the blueprint" },
-    "build":  { "name": "Build",  "desc": "Build fast, iterate with feedback" },
+    "build":  { "name": "Build",  "desc": "Build, test, iterate and improve with feedback" },
     "launch": { "name": "Launch", "desc": "Delivery, support, evolution" }
   },
   "not_found_title": "404. Unexecuted idea.",
