@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { TextReveal } from '@/components/2026/ui/TextReveal';
 import { whatsappUrl } from '@/lib/contact';
-import Factory from './services/Factory';
+import ProductionLine from './services/line/ProductionLine';
 import MobileProcess from './services/MobileProcess';
 
 const SERVICE_KEYS = ['agents', 'rag', 'evals', 'automations', 'saas', 'webapps'] as const;
@@ -168,7 +168,7 @@ export default function Services() {
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.35, ease: 'easeOut', delay: 0.1 }}
         >
-          <Factory />
+          <ProductionLine />
         </motion.div>
 
         {/* CTA */}

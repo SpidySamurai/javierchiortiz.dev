@@ -210,7 +210,7 @@
   },
   "services_process": {
     "plan":   { "name": "Planear",   "desc": "Entender el problema y trazar el plano" },
-    "build":  { "name": "Construir", "desc": "Construir rápido, iterar con feedback" },
+    "build":  { "name": "Construir", "desc": "Construir, probar, iterar y mejorar con feedback" },
     "launch": { "name": "Lanzar",    "desc": "Entrega, soporte, evolución" }
   },
   "not_found_title": "404. Idea sin ejecutar.",

@@ -205,6 +205,9 @@ html[data-theme='light'] {
 
   /* Warm light: only the spark, ignition and shooting star of the services motion graphic */
   --ds-spark: oklch(0.84 0.14 72);
+  /* Semantic colors of the production line: a failed check and a passing one */
+  --ds-issue: oklch(0.74 0.15 40);
+  --ds-pass: oklch(0.85 0.14 165);
 
   --ds-outline-variant: #464554;
   --ds-outline: #908fa0;
@@ -255,6 +258,8 @@ html[data-theme='light'] .ds-2026 {
   --ds-tertiary: #3a4a9e;
 
   --ds-spark: oklch(0.7 0.17 58);
+  --ds-issue: oklch(0.6 0.18 38);
+  --ds-pass: oklch(0.58 0.13 162);
 
   --ds-outline-variant: #b0b8d0;
   --ds-outline: #4e5971;
