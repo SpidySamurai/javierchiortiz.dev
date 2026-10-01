@@ -181,11 +181,16 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
   const mEarL = useTransform(pose, (p) => p.earL);
   const mEarR = useTransform(pose, (p) => p.earR);
   const mEarS = useTransform(pose, (p) => p.earS);
+  const mHeadY = useTransform(pose, (p) => p.headY);
+  const mChest = useTransform(pose, (p) => p.chest);
+  const mLid = useTransform(pose, (p) => p.lid);
+  const mMouth = useTransform(pose, (p) => p.mouth);
+  const mPaws = useTransform(pose, (p) => p.paws);
 
   const sink = useTransform(rise, (v) => PEEK_Y * (1 - v));
-  const headY = useTransform([breath, sleep], ([b, s]: number[]) => -1.3 * b + 9 * s);
+  const headY = useTransform([breath, sleep, mHeadY], ([b, s, m]: number[]) => -1.3 * b + 9 * s + m);
   const headTilt = useTransform([sleep, mHeadRot], ([s, r]: number[]) => 4 * s + r);
-  const chest = useTransform(breath, (b) => 1 + 0.018 * b);
+  const chest = useTransform([breath, mChest], ([b, m]: number[]) => (1 + 0.018 * b) * m);
   const tailRotate = useTransform(
     [tailPhase, rise, sleep, flick, mTail],
     ([ph, r, s, f, m]: number[]) => ph * (2.5 + 7.5 * r) * (1 - s) - 22 * f + m,
@@ -196,7 +201,18 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
   const happy = useTransform(pose, (p) => p.happy);
   const pawRot = useTransform(pose, (p) => p.pawRot);
   const waveLines = useTransform(pose, (p) => p.waveLines);
-  const lid = useTransform([blink, sleep], ([b, s]: number[]) => Math.max(b, clamp01(s / 0.7)));
+  const lid = useTransform([blink, sleep, mLid], ([b, s, m]: number[]) => Math.max(b, clamp01(s / 0.7), m));
+  // Yawn: the small mouth gives way to an open one
+  const smallMouth = useTransform(mMouth, (m) => (m > 0.03 ? 0 : 1));
+  const yawnOp = useTransform(mMouth, (m) => (m > 0.03 ? 1 : 0));
+  const yawnScale = useTransform(mMouth, (m) => Math.max(0.01, m));
+  const yawnY = useTransform(mMouth, (m) => 76 + 2 * m);
+  const tongueY = useTransform(mMouth, (m) => 80 + 4 * m);
+  // Stretching paws slide outward along the floor
+  const pawsOp = useTransform(mPaws, (p) => clamp01(p * 3));
+  const pawsScale = useTransform(mPaws, (p) => 0.8 + 0.4 * p);
+  const pawLX = useTransform(mPaws, (p) => -8 * p);
+  const pawRX = useTransform(mPaws, (p) => 8 * p);
 
   return (
     <button
@@ -252,6 +268,24 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
             <circle cx={30} cy={100} r={41.2} fill={MC.orange} clipPath={`url(#${uid}-body)`} />
             <path d="M75 150 V148 A8 8 0 0 1 83 140 A8 8 0 0 1 91 148 V150 Z" fill="#000" opacity={0.1} />
           </motion.g>
+          {/* Front paws pushed out while stretching */}
+          <motion.g style={{ opacity: pawsOp }}>
+            {[{ cx: 53, x: pawLX }, { cx: 83, x: pawRX }].map((paw) => (
+              <motion.ellipse
+                key={paw.cx}
+                cx={paw.cx}
+                cy={146}
+                rx={10}
+                ry={6}
+                fill={MC.white}
+                stroke={MC.dark}
+                strokeOpacity={0.18}
+                strokeWidth={1}
+                style={{ x: paw.x, scale: pawsScale }}
+              />
+            ))}
+          </motion.g>
+
           {/* Head */}
           <motion.g style={{ y: headY, rotate: headTilt, ...pivot(50, 90) }}>
             <path d={headShape} fill={MC.white} />
@@ -269,8 +303,14 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
 
             {/* Nose and mouth */}
             <path d="M45 60 H55 L50 68 Z" fill={MC.nose} />
-            <rect x={47} y={66} width={2} height={6} fill={MC.nose} transform="rotate(30 48 69)" />
-            <rect x={51} y={66} width={2} height={6} fill={MC.nose} transform="rotate(-30 52 69)" />
+            <motion.g style={{ opacity: smallMouth }}>
+              <rect x={47} y={66} width={2} height={6} fill={MC.nose} transform="rotate(30 48 69)" />
+              <rect x={51} y={66} width={2} height={6} fill={MC.nose} transform="rotate(-30 52 69)" />
+            </motion.g>
+            <motion.g style={{ opacity: yawnOp }}>
+              <motion.ellipse cx={50} cy={0} rx={7} ry={10} fill={MC.mouth} style={{ y: yawnY, scale: yawnScale }} />
+              <motion.ellipse cx={50} cy={0} rx={4} ry={4} fill={MC.nose} style={{ y: tongueY, scale: yawnScale }} />
+            </motion.g>
 
             {/* Whiskers */}
             <rect x={-15} y={57} width={35} height={1.5} rx={0.75} fill={WHISKER} transform="rotate(-8 2.5 57.75)" />

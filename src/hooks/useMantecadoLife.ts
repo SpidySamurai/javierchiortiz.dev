@@ -240,12 +240,12 @@ export function useMantecadoLife(): MantecadoLife {
     let momentAnim: AnimationPlaybackControls | undefined;
 
     /* Moments: one at a time. The pose is driven by one clock in seconds, never by React state. */
-    const playMoment = (kind: MomentKind) => {
+    const playMoment = (kind: MomentKind, opts: { speed?: number; onEnd?: () => void } = {}) => {
       if (momentAnim || document.hidden) return false;
       momentOn.current = true;
       syncRise();
       momentAnim = animate(0, MOMENT_SECONDS, {
-        duration: MOMENT_SECONDS,
+        duration: MOMENT_SECONDS / (opts.speed ?? 1),
         ease: 'linear',
         onUpdate: (u) => pose.set(momentPose(kind, u)),
         onComplete: () => {
@@ -253,6 +253,7 @@ export function useMantecadoLife(): MantecadoLife {
           momentOn.current = false;
           pose.set(NEUTRAL_POSE);
           syncRise();
+          opts.onEnd?.();
         },
       });
       return true;
@@ -337,9 +338,11 @@ export function useMantecadoLife(): MantecadoLife {
       if (document.hidden) loops.z.pause();
     };
 
-    const wake = () => {
+    const wake = (stretch = false) => {
       if (!asleep) return;
       asleep = false;
+      // A shorter stretch greets the new day. It is skipped if another moment is already playing.
+      if (stretch) playMoment('stretch', { speed: 1.4 });
       animate(sleep, 0, { duration: 0.45, ease: EXPO_OUT });
       perkEars(1.1);
       startBreath(BREATH_PERIOD_S);
@@ -354,11 +357,16 @@ export function useMantecadoLife(): MantecadoLife {
         sleepTimer = later(checkSleep, Math.max(1000, SLEEP_AFTER_MS - idle));
         return;
       }
-      if (pointerNear()) {
-        sleepTimer = later(checkSleep, 5000);
+      if (pointerNear() || momentAnim) {
+        sleepTimer = later(checkSleep, momentAnim ? 1500 : 5000);
         return;
       }
-      fallAsleep();
+      // Stretch and yawn first, then drop off unless someone showed up meanwhile.
+      const settle = () => {
+        if (!asleep && performance.now() - lastInput >= SLEEP_AFTER_MS) fallAsleep();
+        else armSleep();
+      };
+      if (!playMoment('stretch', { onEnd: settle })) fallAsleep();
     };
     const armSleep = () => {
       if (!sleepTimer) sleepTimer = later(checkSleep, SLEEP_AFTER_MS);
@@ -370,7 +378,7 @@ export function useMantecadoLife(): MantecadoLife {
       lastInput = now;
       if (resleepTimer) cancel(resleepTimer);
       resleepTimer = 0;
-      if (asleep) wake();
+      if (asleep) wake(true);
       armSleep();
     };
 
@@ -398,7 +406,7 @@ export function useMantecadoLife(): MantecadoLife {
         if (resleepTimer) cancel(resleepTimer);
         resleepTimer = later(() => {
           resleepTimer = 0;
-          if (!asleep && performance.now() - lastInput >= SLEEP_AFTER_MS) fallAsleep();
+          if (!asleep && !momentAnim && performance.now() - lastInput >= SLEEP_AFTER_MS) fallAsleep();
         }, star.durationMs + 3000);
       }
 
