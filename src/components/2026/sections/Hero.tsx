@@ -12,6 +12,10 @@ import { loadSlim } from '@tsparticles/slim';
 import { loadEmittersPlugin } from '@tsparticles/plugin-emitters';
 import { loadTrailEffect } from '@tsparticles/effect-trail';
 import { whatsappUrl } from '@/lib/contact';
+import { emitShootingStar } from '@/lib/skyEvents';
+
+/** Measured comet speed along each axis (px/s) for the 45 degree trail. */
+const COMET_SPEED = 340;
 
 function getParticlesOptions(isDark: boolean) {
   return {
@@ -372,6 +376,20 @@ export default function Hero() {
         },
       }
     );
+
+    // Tell the rest of the page (the cat) a star is crossing the sky. The comet
+    // flies at 45 degrees down-left until it leaves the canvas.
+    const rect = container.canvas.element?.getBoundingClientRect();
+    if (rect) {
+      const run = Math.min(startX, height);
+      const kx = rect.width / width;
+      const ky = rect.height / height;
+      emitShootingStar({
+        from: { x: rect.left + startX * kx, y: rect.top },
+        to: { x: rect.left + (startX - run) * kx, y: rect.top + run * ky },
+        durationMs: (run / COMET_SPEED) * 1000,
+      });
+    }
 
     // Animate virtual cursor along the comet trajectory to trigger hover repulse
     const duration = 2200;
