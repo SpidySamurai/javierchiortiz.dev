@@ -87,9 +87,14 @@
   "language_spanish": "Spanish",
   "language_english": "English",
   "experience_items": {
+    "brania": {
+      "title": "Senior Full Stack Engineer at Brania",
+      "date": "Jul 2026 - Present",
+      "description": "Building product features end to end, from frontend to backend, on an AI-powered platform."
+    },
     "enti": {
       "title": "Full Stack at ENTI",
-      "date": "Aug 2023 - Present",
+      "date": "Aug 2023 - Jul 2026",
       "description": "End-to-end web product delivery for US and LATAM clients.\n\nCurrently in production: mobile-first e-wallet in Next.js with secure sessions — HTTPOnly cookies, token refresh, and protected REST endpoints. Migrated the data layer from DynamoDB to Django microservices and legacy Power BI dashboards to SparkSQL jobs in Scala on Superset."
     },
     "softtek": {

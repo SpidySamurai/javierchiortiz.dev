@@ -4,21 +4,27 @@ import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import Chip from '@/components/2026/ui/Chip';
 
-type ExperienceKey = 'enti' | 'softtek' | 'scandia' | 'iotam' | 'brightcoders';
+type ExperienceKey = 'brania' | 'enti' | 'softtek' | 'scandia' | 'iotam' | 'brightcoders';
 
 interface TimelineEntry {
   key: ExperienceKey;
   tier: string;
   yearDisplay: string[];
   tech: string[];
-  url: string;
+  url?: string;
 }
 
 const TIMELINE_ENTRIES: TimelineEntry[] = [
   {
+    key: 'brania',
+    tier: 'tier_startup',
+    yearDisplay: ['2026', 'PRESENT'],
+    tech: ['TypeScript', 'React', 'Next.js', 'Node.js'],
+  },
+  {
     key: 'enti',
     tier: 'tier_consulting',
-    yearDisplay: ['2023', 'PRESENT'],
+    yearDisplay: ['2023', '2026'],
     tech: ['Next.js', 'React', 'TypeScript', 'Node.js', 'NestJS', 'SQL'],
     url: 'https://enti.mx/',
   },
@@ -150,6 +156,39 @@ function Description({ text }: { text: string }) {
   );
 }
 
+function EntryTitle({
+  url,
+  className,
+  children,
+}: {
+  url?: string;
+  className: string;
+  children: React.ReactNode;
+}) {
+  const style = {
+    color: 'var(--ds-on-surface)',
+    fontFamily: 'var(--font-manrope), sans-serif',
+  };
+  if (!url) {
+    return (
+      <span className={className} style={style}>
+        {children}
+      </span>
+    );
+  }
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${className} hover:text-[var(--ds-primary)] transition-colors`}
+      style={style}
+    >
+      {children}
+    </a>
+  );
+}
+
 function TierBadge({ label, isLead }: { label: string; isLead?: boolean }) {
   return <Chip variant="tier" active={isLead}>{label}</Chip>;
 }
@@ -252,7 +291,7 @@ export default function Timeline() {
                 description: string;
               };
               const isOdd = i % 2 === 0;
-              const isLead = entry.key === 'enti';
+              const isLead = entry.key === 'brania';
 
               if (isOdd) {
                 // ODD: text left, year right
@@ -269,18 +308,9 @@ export default function Timeline() {
                     {/* Text on LEFT */}
                     <div className="md:text-right md:pr-16 order-2 md:order-1">
                       <TierBadge label={t(entry.tier as Parameters<typeof t>[0])} isLead={isLead} />
-                      <a
-                        href={entry.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-4xl md:text-5xl font-black leading-none mb-2 tracking-tighter block hover:text-[var(--ds-primary)] transition-colors"
-                        style={{
-                          color: 'var(--ds-on-surface)',
-                          fontFamily: 'var(--font-manrope), sans-serif',
-                        }}
-                      >
+                      <EntryTitle url={entry.url} className="text-4xl md:text-5xl font-black leading-none mb-2 tracking-tighter block">
                         {item.title}
-                      </a>
+                      </EntryTitle>
                       <motion.div
                         className="flex flex-wrap md:justify-end gap-2 mb-6"
                         variants={{
@@ -345,18 +375,9 @@ export default function Timeline() {
                   <div className="order-2 relative">
                     <div className="pl-0 md:pl-16">
                       <TierBadge label={t(entry.tier as Parameters<typeof t>[0])} />
-                      <a
-                        href={entry.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter block hover:text-[var(--ds-primary)] transition-colors"
-                        style={{
-                          color: 'var(--ds-on-surface)',
-                          fontFamily: 'var(--font-manrope), sans-serif',
-                        }}
-                      >
+                      <EntryTitle url={entry.url} className="text-4xl md:text-5xl font-black leading-none mb-4 tracking-tighter block">
                         {item.title}
-                      </a>
+                      </EntryTitle>
                       <motion.div
                         className="flex flex-wrap gap-2 mb-6"
                         variants={{
