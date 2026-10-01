@@ -4,10 +4,10 @@
  * for opacities) keyed by the name the markup binds to. No React, no DOM.
  */
 import {
-  AXES, AXES_LEN, B, BEAM, CIRCLE, CIRCLE_LEN, DIMS, DIMS_LEN, FRONT, GRIP_Y, HULL_LEN, HULL_LINES, L, P, PIV, PY, REST,
+  AXES, AXES_LEN, B, BEAM, CIRCLE, HB, HB_LEN, LIFTOFF_T, ORBIT, CIRCLE_LEN, DIMS, DIMS_LEN, FRONT, GRIP_Y, HULL_LEN, HULL_LINES, L, P, PIV, PY, REST,
   ST, START, TOP, TOPC, Y0, carAt, ik,
 } from './geometry';
-import { dPath, expo, lerp, n, pointOnLines, prog } from './math';
+import { bez, dPath, ease3, expo, lerp, n, pointOnLines, prog, ptsStr } from './math';
 
 const ISSUE = 'var(--ds-issue)';
 const PASS = 'var(--ds-pass)';
@@ -20,6 +20,9 @@ const DOT_OFF = 'var(--ds-outline-variant)';
 export const CYCLE = 14.7;
 /** The launch is shifted by SH so the build has room to iterate. */
 export const SH = 1.3;
+
+/** Clock time (s) at which the product leaves the pad. */
+export const LIFTOFF_S = SH + LIFTOFF_T;
 
 export type Frame = Record<string, string | number>;
 
@@ -35,7 +38,7 @@ const NAME_OFF = 'var(--ds-outline)';
 
 export function lineFrame(s: number): Frame {
   const T = s - SH;
-  const f: Frame = {};
+  const f: Frame = { ready: 1 };
 
   let pieceX: number;
   if (s < 1.2) pieceX = lerp(START, P, expo(prog(s, 0, 1.2)));
@@ -90,8 +93,9 @@ export function lineFrame(s: number): Frame {
 
   // The product piece.
   const tail = s < 1.2 ? 70 * Math.pow(2, -10 * prog(s, 0, 1.2)) : 0;
-  f['piece.tf'] = `translate(${n(pieceX)} ${PY}) scale(1)`;
-  f['piece.shadowOp'] = n(0.4 * (s >= 4.6 ? 1 : 0.3));
+  const lift = launchFrame(f, s, T, pieceX);
+  f['piece.tf'] = `translate(${n(lift.ax)} ${n(lift.ay)}) scale(${n(lift.sc)})`;
+  f['piece.shadowOp'] = n(0.4 * (s >= 4.6 ? 1 : 0.3) * (1 - prog(T, LIFTOFF_T, 11.0)));
   f['piece.outlineOff'] = n(HULL_LEN * (1 - prog(s, 3.0, 3.4)));
   f['piece.outlineOp'] = n(1 - prog(s, 8.7, 9.1));
   f['piece.tailX'] = n(-tail);
@@ -203,4 +207,93 @@ function buildFrame(f: Frame, s: number, T: number): void {
   else if (s >= 9.45) [ver, verColor] = ['ready', PASS];
   f['ver.text'] = ver;
   f['ver.color'] = verColor;
+}
+
+/**
+ * Launch: countdown on the tower, plume and shockwave rings, the product lifts
+ * off and gravity-turns into orbit with a curved trail, "deployed" on the pad;
+ * in orbit a heartbeat shows support and an update module docks (evolution).
+ * Returns the product's position so the piece transform can follow it.
+ */
+function launchFrame(f: Frame, s: number, T: number, pieceX: number): { ax: number; ay: number; sc: number } {
+  const launchOff = 1 - prog(T, 12.6, 13.2);
+  const le = ease3(prog(T, LIFTOFF_T, 11.7));
+  let ax = pieceX;
+  let ay = PY;
+  let sc = 1;
+  if (T >= LIFTOFF_T) {
+    const bp = bez([L, PY], [L, 130], ORBIT, le);
+    ax = bp[0];
+    ay = bp[1] + (T > 11.7 ? 2 * Math.sin((T - 11.7) * 2.4) : 0);
+    sc = lerp(1, 0.55, le);
+  }
+
+  // Countdown lights and the clamp that lets go.
+  f['launch.n0'] = n(prog(T, 9.7, 9.8) * launchOff);
+  f['launch.n1'] = n(prog(T, 9.85, 9.95) * launchOff);
+  f['launch.n2'] = n(prog(T, 10.0, 10.1) * launchOff);
+  f['launch.clampX2'] = n(874 + 24 * prog(T, 9.6, 9.8) * (1 - expo(prog(T, 10.1, 10.25))));
+  f['launch.clampOp'] = n(prog(T, 9.6, 9.7) * (1 - prog(T, 10.2, 10.3)));
+
+  // Plume and exhaust.
+  const yb = ay + 34 * sc;
+  const plumeLen = (22 + 64 * prog(T, 10.2, 10.6)) * sc * (1 + 0.1 * Math.sin(s * 47));
+  f['lift.plume'] = ptsStr([[ax - 22 * sc, yb], [ax + 22 * sc, yb], [ax, yb + plumeLen]]);
+  f['lift.core'] = ptsStr([[ax - 9 * sc, yb], [ax + 9 * sc, yb], [ax, yb + plumeLen * 0.6]]);
+  f['lift.plumeOp'] = n(prog(T, 10.2, 10.35) * (1 - prog(T, 11.45, 11.7)));
+
+  // Curved smoke trail along the ascent.
+  const trail: [number, number][] = [];
+  if (T >= LIFTOFF_T) {
+    for (let q = 0; q <= 16; q++) {
+      const u = (le * q) / 16;
+      const bq = bez([L, PY], [L, 130], ORBIT, u);
+      trail.push([bq[0], bq[1] + 34 * lerp(1, 0.55, u)]);
+    }
+  }
+  f['lift.trailD'] = trail.length > 1 ? dPath([trail]) : '';
+  f['lift.trailOp'] = n(0.8 * prog(T, 10.7, 10.9) * (1 - prog(T, 12.2, 13.0)));
+
+  // Shockwave rings and smoke puffs at the pad.
+  for (let k = 0; k < 3; k++) {
+    const r = prog(T, 10.3 + k * 0.15, 10.9 + k * 0.15);
+    f[`lift.r${k}x`] = n(24 + 120 * r);
+    f[`lift.r${k}y`] = n(6 + 26 * r);
+    f[`lift.r${k}o`] = n(r > 0 ? (1 - r) * 0.9 : 0);
+  }
+  for (let k = 0; k < 5; k++) {
+    const u = prog(T, 10.6 + k * 0.1, 12.6);
+    f[`lift.p${k}r`] = n(10 + 40 * u);
+    f[`lift.p${k}o`] = n(u > 0 ? (1 - u) * 0.35 : 0);
+  }
+  f['lift.deployOp'] = n(prog(T, 11.5, 11.7) * (1 - prog(T, 12.3, 12.6)));
+
+  // Update module: launches from the pad, docks on top of the product.
+  const u5 = ease3(prog(T, 12.3, 12.9));
+  const ls: [number, number] = [(L - ax) / sc, (PY - ay) / sc];
+  const lp5 = bez(ls, [ls[0], -60], [0, 0], u5);
+  f['c5.tf'] = `translate(${n(lp5[0])} ${n(lp5[1])})`;
+  f['c5.op'] = n(prog(T, 12.25, 12.35) * (1 - prog(T, 13.2, 13.4)));
+  f['c5.win'] = n(prog(T, 12.95, 13.1));
+  f['evo.gx'] = n(lp5[0]);
+  f['evo.gy'] = n(lp5[1] - 58);
+  f['evo.gop'] = n(T >= 12.3 && T < 12.9 ? 0.9 : 0);
+  const ds = prog(T, 12.9, 13.15);
+  f['evo.sr'] = n(4 + 14 * ds);
+  f['evo.sop'] = n(ds > 0 && ds < 1 ? 1 - ds : 0);
+
+  // Orbit ellipse, support heartbeat and the LIVE badge.
+  const hbU = T > 11.85 ? ((T - 11.85) / 1.1) % 1 : 0;
+  f['orbit.cx'] = n(ax);
+  f['orbit.cy'] = n(ay - 26 * sc);
+  f['orbit.op'] = n(0.7 * prog(T, 11.65, 11.9) * (1 - prog(T, 13.15, 13.4)));
+  f['orbit.hbD'] = dPath([HB.map((q): [number, number] => [ax + q[0], ay - 30 + q[1]])]);
+  f['orbit.hbOff'] = n(HB_LEN * 0.35 - hbU * (HB_LEN * 1.35));
+  f['orbit.hbOp'] = n(prog(T, 11.85, 12.0) * (1 - prog(T, 13.15, 13.4)));
+  f['badge.tf'] = `translate(${n(ax)} ${n(ay - 84)})`;
+  f['badge.op'] = n(prog(T, 11.8, 11.95) * (1 - prog(T, 13.15, 13.4)));
+  f['badge.ver'] = T < 12.95 ? 'v1.0' : 'v1.1';
+  f['badge.dot'] = n(0.35 + 0.65 * Math.abs(Math.sin(s * 4)));
+
+  return { ax, ay, sc };
 }

@@ -1,7 +1,7 @@
 import { useId, type CSSProperties, type ReactNode } from 'react';
 import {
   AXES_D, AXES_LEN, B, BUILD_MARKS_D, CIRCLE_D, CIRCLE_LEN, DIMS_D, DIMS_LEN, FRONT, HULL_D, HULL_LEN, L, P, PIV,
-  BEAM, CUBE_STR, HULL4_STR, HULL5_STR, HULL_C2_STR, PLAN_GRID_D, PY, TOP, TOPC, VIEW_H, VIEW_W,
+  BEAM, CUBE_STR, HULL4_STR, HULL5_STR, HULL_C2_STR, HB_LEN, PLAN_GRID_D, PY, TOP, TOPC, VIEW_H, VIEW_W,
 } from './geometry';
 import type { Labels } from './bind';
 
@@ -55,6 +55,8 @@ function Backdrop({ id }: { id: string }) {
       {/* Drafting table post */}
       <line x1={PIV[0]} y1={140} x2={PIV[0]} y2={PIV[1]} stroke={C.outlineVariant} strokeWidth={4} strokeLinecap="round" />
       <rect x={96} y={132} width={28} height={12} rx={3} fill={C.steel} />
+      {/* Launch tower */}
+      <rect x={866} y={BEAM} width={8} height={200} rx={3} fill={C.steel} />
       {/* Gantry posts */}
       <line x1={548} y1={376} x2={548} y2={BEAM} stroke={C.outlineVariant} strokeWidth={5} strokeLinecap="round" />
       <line x1={732} y1={376} x2={732} y2={BEAM} stroke={C.outlineVariant} strokeWidth={5} strokeLinecap="round" />
@@ -91,8 +93,102 @@ function Band() {
         />
       </g>
 
+      <LiftFx />
+
       <line x1={0} y1={330} x2={0} y2={330} data-bind="x2:trailX2,opacity:trailOp" stroke={C.vivid} strokeWidth={6} style={{ filter: 'blur(4px)' }} />
       <line x1={0} y1={330} x2={0} y2={330} data-bind="x2:trailX2,opacity:trailOp" stroke={C.primary} strokeWidth={1.5} />
+    </>
+  );
+}
+
+const RINGS = [
+  { k: 0, w: 2 },
+  { k: 1, w: 1.5 },
+  { k: 2, w: 1.2 },
+] as const;
+const PUFFS = [
+  { k: 0, x: 928, y: 336, b: 8 },
+  { k: 1, x: 992, y: 338, b: 8 },
+  { k: 2, x: 900, y: 330, b: 9 },
+  { k: 3, x: 1022, y: 332, b: 9 },
+  { k: 4, x: 960, y: 326, b: 10 },
+] as const;
+
+/** Shockwave rings, smoke puffs and the curved smoke trail left by the ascent. */
+function LiftFx() {
+  return (
+    <g>
+      {RINGS.map((r) => (
+        <ellipse
+          key={r.k} cx={L} cy={340} fill="none" stroke={C.spark} strokeWidth={r.w}
+          data-bind={`rx:lift.r${r.k}x,ry:lift.r${r.k}y,opacity:lift.r${r.k}o`}
+        />
+      ))}
+      {PUFFS.map((p) => (
+        <circle
+          key={p.k} cx={p.x} cy={p.y} fill={C.outline} style={{ filter: `blur(${p.b}px)` }}
+          data-bind={`r:lift.p${p.k}r,opacity:lift.p${p.k}o`}
+        />
+      ))}
+      <path data-bind="d:lift.trailD,opacity:lift.trailOp" fill="none" stroke={C.outline} strokeWidth={18} strokeLinecap="round" style={{ filter: 'blur(8px)' }} />
+      <path data-bind="d:lift.trailD,opacity:lift.trailOp" fill="none" stroke={C.spark} strokeWidth={2} strokeLinecap="round" />
+    </g>
+  );
+}
+
+/** Countdown lights and the clamp on the tower. */
+function LaunchTower() {
+  return (
+    <>
+      {[212, 254, 296].map((y, i) => (
+        <g key={y}>
+          <circle cx={870} cy={y} r={5} fill={C.belt} stroke={C.outlineVariant} strokeWidth={1.5} />
+          <circle cx={870} cy={y} r={5} fill={C.spark} data-bind={`opacity:launch.n${i}`} />
+        </g>
+      ))}
+      <line x1={874} y1={274} x2={874} y2={274} data-bind="x2:launch.clampX2,opacity:launch.clampOp" stroke={C.outline} strokeWidth={3} strokeLinecap="round" />
+    </>
+  );
+}
+
+/** Orbit ellipse, support heartbeat and rocket plume. They follow the product. */
+function Orbit() {
+  return (
+    <>
+      <ellipse data-bind="cx:orbit.cx,cy:orbit.cy,opacity:orbit.op" rx={112} ry={26} fill="none" stroke={C.vivid} strokeWidth={1.2} strokeDasharray="4 7" />
+      <path data-bind="d:orbit.hbD,opacity:orbit.hbOp" fill="none" stroke={C.outlineVariant} strokeWidth={1.6} strokeLinejoin="round" />
+      <path
+        data-bind="d:orbit.hbD,opacity:orbit.hbOp,stroke-dashoffset:orbit.hbOff" fill="none" stroke="var(--ds-pass)" strokeWidth={1.8}
+        strokeLinejoin="round" strokeLinecap="round" strokeDasharray={`${HB_LEN * 0.35} ${HB_LEN}`}
+      />
+      <polygon data-bind="points:lift.plume,opacity:lift.plumeOp" fill={C.spark} style={{ filter: 'blur(3px)' }} />
+      <polygon data-bind="points:lift.core,opacity:lift.plumeOp" fill="color-mix(in srgb, var(--ds-spark) 25%, white)" />
+    </>
+  );
+}
+
+/** LIVE badge that rides above the product in orbit, and the DEPLOYED mark on the pad. */
+function LaunchMarks({ copy }: { copy: Labels }) {
+  return (
+    <>
+      <g data-bind="transform:badge.tf,opacity:badge.op">
+        <rect x={-50} y={0} width={100} height={25} rx={12.5} fill={C.plate} stroke={C.spark} strokeOpacity={0.5} strokeWidth={1} />
+        <circle cx={-36} cy={12.5} r={3.5} fill={C.spark} data-bind="opacity:badge.dot" />
+        <text x={-27} y={12.5} dominantBaseline="central" fontSize={11} fontWeight={800} letterSpacing="0.12em" fill={C.on} style={{ fontFamily: 'var(--font-manrope), sans-serif' }}>
+          LIVE
+        </text>
+        <text x={11} y={12.5} dominantBaseline="central" fontSize={11} fontWeight={600} fill={C.onVariant} data-bind="text:badge.ver" style={{ fontFamily: 'var(--font-inter), sans-serif' }} />
+      </g>
+      <g data-bind="opacity:lift.deployOp">
+        <circle cx={L} cy={296} r={13} fill="var(--ds-pass)" />
+        <path d="M953.5 296 L958.5 301 L967 291" fill="none" stroke={C.bg} strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round" />
+        <text
+          x={L} y={258} textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={600} letterSpacing="0.12em"
+          fill="var(--ds-pass)" style={{ fontFamily: 'var(--font-inter), sans-serif' }}
+        >
+          {copy.deployed}
+        </text>
+      </g>
     </>
   );
 }
@@ -118,14 +214,14 @@ function Blueprint() {
 }
 
 /** One iso cube: three shaded faces plus the lit windows that switch on at launch. */
-function Cube({ k, children }: { k: number; children?: ReactNode }) {
+function Cube({ k, tone = 'ln-cube', children }: { k: number; tone?: string; children?: ReactNode }) {
   const c = CUBE_STR[k];
   const edge = { stroke: C.bg, strokeWidth: 1, strokeOpacity: 0.5 };
   return (
     <g data-bind={`transform:c${k}.tf,opacity:c${k}.op`}>
-      <polygon points={c.top} fill="var(--ln-cube-top)" {...edge} />
-      <polygon points={c.right} fill="var(--ln-cube-right)" {...edge} />
-      <polygon points={c.left} fill="var(--ln-cube-left)" {...edge} />
+      <polygon points={c.top} fill={`var(--${tone}-top)`} {...edge} />
+      <polygon points={c.right} fill={`var(--${tone}-right)`} {...edge} />
+      <polygon points={c.left} fill={`var(--${tone}-left)`} {...edge} />
       <polygon points={c.wr} fill={C.spark} data-bind={`opacity:c${k}.win`} />
       <polygon points={c.wl} fill={C.spark} data-bind={`opacity:c${k}.win`} />
       {children}
@@ -158,6 +254,10 @@ function Product() {
       </Cube>
       <Cube k={3} />
       <Cube k={4} />
+      {/* Update module: lands on top in orbit */}
+      <Cube k={5} tone="ln-evo" />
+      <circle data-bind="cx:evo.gx,cy:evo.gy,opacity:evo.gop" r={7} fill={C.spark} style={{ filter: 'blur(3px)' }} />
+      <circle data-bind="r:evo.sr,opacity:evo.sop" cx={0} cy={-68} fill="none" stroke={C.spark} strokeWidth={2} />
       <polygon points={HULL4_STR} data-bind="opacity:pass.op4" fill="none" stroke="var(--ds-pass)" strokeWidth={2.5} strokeLinejoin="round" />
       <polygon points={HULL5_STR} data-bind="opacity:pass.op5" fill="none" stroke="var(--ds-pass)" strokeWidth={2.5} strokeLinejoin="round" />
     </g>
@@ -253,20 +353,26 @@ export default function LineScene({ copy, viewBox = `0 0 ${VIEW_W} ${VIEW_H}`, c
   const id = useId();
   const [, , w, h] = viewBox.split(' ').map(Number);
   const style = {
-    display: 'block', width: '100%', height: 'auto', aspectRatio: `${w} / ${h}`,
+    display: 'block', width: '100%', height: 'auto', aspectRatio: `${w} / ${h}`, opacity: 0,
     '--ln-cube-top': 'color-mix(in srgb, var(--ds-primary-container) 55%, white)',
     '--ln-cube-right': 'var(--ds-primary-container)',
     '--ln-cube-left': 'color-mix(in srgb, var(--ds-primary-container) 73%, black)',
+    '--ln-evo-top': 'color-mix(in srgb, var(--ds-primary-container) 30%, white)',
+    '--ln-evo-right': 'color-mix(in srgb, var(--ds-primary-container) 70%, white)',
+    '--ln-evo-left': 'color-mix(in srgb, var(--ds-primary-container) 96%, black)',
   } as CSSProperties;
   return (
-    <svg aria-hidden viewBox={viewBox} className={className} style={style} overflow={viewBox.startsWith('0 0') ? 'visible' : 'hidden'}>
+    <svg aria-hidden viewBox={viewBox} className={className} style={style} data-bind="s.opacity:ready" overflow={viewBox.startsWith('0 0') ? 'visible' : 'hidden'}>
       <Backdrop id={id} />
       <Band />
+      <LaunchTower />
       <Blueprint />
+      <Orbit />
       <Product />
       <Gantry />
       <StepIndicator copy={copy} />
       <DraftingArm />
+      <LaunchMarks copy={copy} />
     </svg>
   );
 }
