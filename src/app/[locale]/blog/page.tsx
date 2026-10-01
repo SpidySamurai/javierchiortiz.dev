@@ -21,8 +21,8 @@ export async function generateMetadata({
   return {
     title: isEn ? 'Blog — Thoughts & Beyond Code' : 'Blog — Pensamientos y más allá del código',
     description: isEn
-      ? 'Engineering insights, life lessons, and culture by Javier Chi — full stack engineer.'
-      : 'Perspectivas de ingeniería, lecciones de vida y cultura por Javier Chi — ingeniero full stack.',
+      ? 'Engineering insights, life lessons, and culture by Javier Chi, AI software engineer.'
+      : 'Perspectivas de ingeniería, lecciones de vida y cultura por Javier Chi, ingeniero de software en IA.',
     alternates: {
       canonical: `${BASE_URL}/${locale}/blog`,
       languages: {

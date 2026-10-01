@@ -27,7 +27,7 @@ export async function generateMetadata({
     },
     description,
     keywords: [
-      'Full Stack Developer',
+      'AI Software Engineer',
       'Full Stack Engineer',
       'Freelance Developer',
       'Next.js Developer',
@@ -80,7 +80,7 @@ export default async function LocaleLayout({
     '@type': 'Person',
     name: 'Javier Fernando Chi Ortiz',
     url: 'https://javierchiortiz.dev',
-    jobTitle: 'Full Stack Engineer',
+    jobTitle: 'AI Software Engineer',
     sameAs: [
       'https://www.linkedin.com/in/javier-fernando-chi-ortiz/',
       'https://github.com/SpidySamurai',
