@@ -11,7 +11,7 @@ const ASCII = `
  ╚════╝  ╚═════╝  ╚═════╝
 
   Javier Chi Ortiz
-  Full-Stack Developer
+  AI Software Engineer
   https://javierchiortiz.dev
 `;
 
