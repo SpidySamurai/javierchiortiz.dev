@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useAnimate, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useAnimate, useInView, useReducedMotion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { TextReveal } from '@/components/2026/ui/TextReveal';
 import { whatsappUrl } from '@/lib/contact';
@@ -339,23 +339,31 @@ function BeltItem({ initialDelay, s1, s2, s3, exitX }: BeltItemProps) {
 
 function MobileProcess({ t }: { t: ReturnType<typeof useTranslations> }) {
   const [step, setStep] = useState(0);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rootRef);
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
+    if (!inView || reduceMotion) return;
     const id = setInterval(() => setStep((s) => (s + 1) % STATION_KEYS.length), 2800);
     return () => clearInterval(id);
-  }, []);
+  }, [inView, reduceMotion]);
 
   const key = STATION_KEYS[step];
   const stepData = t.raw(`services_process.${key}`) as { name: string; desc: string };
 
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div ref={rootRef} className="flex flex-col items-center gap-6">
       {/* Step indicators */}
       <div className="flex gap-2">
-        {STATION_KEYS.map((_, i) => (
+        {STATION_KEYS.map((k, i) => (
           <button
             key={i}
+            type="button"
+            aria-label={(t.raw(`services_process.${k}`) as { name: string }).name}
+            aria-current={i === step ? 'step' : undefined}
             onClick={() => setStep(i)}
+            className="rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--ds-primary-vivid)]"
             style={{
               width: i === step ? 24 : 6,
               height: 6,
@@ -508,6 +516,7 @@ export default function Services() {
   const [beltPos, setBeltPos] = useState<BeltPos>(DEFAULT_POS);
   // Gate the belt's JS loops + CSS animations on visibility (perf).
   const beltInView = useInView(beltRef, { margin: '120px' });
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     const el = beltRef.current;
@@ -612,7 +621,7 @@ export default function Services() {
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.35, ease: 'easeOut', delay: 0.1 }}
         >
-          <div className="relative" ref={beltRef} data-belt-paused={beltInView ? undefined : ''}>
+          <div className="relative" ref={beltRef} data-belt-paused={beltInView && !reduceMotion ? undefined : ''}>
             {/* Station labels pinned at 25 / 50 / 75% */}
             <div className="relative h-[148px]">
               {STATION_KEYS.map((key, i) => {
@@ -685,6 +694,7 @@ export default function Services() {
                 <div className="conv-sweep" />
                 {/* Items mount only while the belt is in view — frees the JS loops otherwise */}
                 {beltInView &&
+                  !reduceMotion &&
                   Array.from({ length: ITEM_COUNT }, (_, i) => (
                     <BeltItem
                       key={i}
