@@ -203,6 +203,9 @@ html[data-theme='light'] {
 
   --ds-tertiary: #b8c4ff;
 
+  /* Warm light: only the spark, ignition and shooting star of the services motion graphic */
+  --ds-spark: oklch(0.84 0.14 72);
+
   --ds-outline-variant: #464554;
   --ds-outline: #908fa0;
 
@@ -250,6 +253,8 @@ html[data-theme='light'] .ds-2026 {
   --ds-on-secondary: #2f2ebe;
 
   --ds-tertiary: #3a4a9e;
+
+  --ds-spark: oklch(0.7 0.17 58);
 
   --ds-outline-variant: #b0b8d0;
   --ds-outline: #4e5971;

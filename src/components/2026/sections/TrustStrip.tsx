@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 
 const STATS = [
-  { value: '5+', label: 'years experience' },
+  { value: '6+', label: 'years experience' },
   { value: '2', label: 'SaaS live' },
   { value: '3+', label: 'e-commerce brands' },
 ];

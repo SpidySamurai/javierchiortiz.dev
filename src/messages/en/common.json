@@ -1,13 +1,13 @@
 {
-  "hero_subtitle": "Full Stack Engineer",
+  "hero_subtitle": "AI Software Engineer",
   "hero_description": "I build scalable, mobile-first digital experiences for the web.",
-  "meta_title": "Javier Chi — Freelance Full Stack Engineer · Next.js · SaaS · AI Automation",
-  "meta_description": "I build SaaS platforms, AI-powered automations, and modern web products for startups and US-market businesses. 5 years shipping real products.",
+  "meta_title": "Javier Chi · Senior AI Software Engineer · Next.js · SaaS · AI Automation",
+  "meta_description": "Senior software engineer with 6+ years building SaaS platforms, AI-powered automations, and production web products. Currently Senior Full Stack Engineer at Brania.",
   "about": "About me",
   "about_label": "The person behind the code",
   "about_title": "Who",
   "about_title_accent": "I Am",
-  "about_paragraph_1": "I'm a full-stack engineer with 5+ years delivering production web products — fintech with secure authentication, complex SaaS platforms, and performance-focused e-commerce.",
+  "about_paragraph_1": "I'm a senior AI software engineer with 6+ years delivering production web products: fintech with secure authentication, complex SaaS platforms, and performance-focused e-commerce.",
   "about_paragraph_2": "My main stack is React, Next.js, TypeScript, and Tailwind. I've built secure-session e-wallets, data-intensive portals, multi-tenant platforms, and legacy BI migrations to Spark + Superset.",
   "about_paragraph_3": "I take end-to-end ownership: from spec to post-launch maintenance. Self-taught, proactive, and meticulous about DX, product quality, and accessibility.",
   "about_paragraph_4": "Outside of work, I practice Shotokan Karate (2nd Dan), learn about technology, and play exploration and fantasy titles. I believe that good code and martial arts share clarity, discipline, and constant improvement.",
@@ -34,29 +34,29 @@
   "tier_internship": "Internship",
   "hero_headline_pre": "Software that ",
   "hero_headline_accent": "scales",
-  "hero_headline_post": " your business.",
-  "hero_description_long": "5 years shipping SaaS platforms, AI automations, and web products for startups and growing businesses.",
-  "hero_cta": "Let's talk about your project",
-  "hero_cta_sub": "available · remote · async-friendly",
-  "hero_comet_caption": "comets like ideas — brief, unique, unrepeatable",
+  "hero_headline_post": ".",
+  "hero_description_long": "6+ years shipping SaaS platforms, AI automations, and production web products. Currently Senior Full Stack Engineer at Brania.",
+  "hero_cta": "Let's talk",
+  "hero_cta_sub": "remote · async-friendly",
+  "hero_comet_caption": "comets like ideas: brief, unique, unrepeatable",
   "hero_ticker": "Curator • Developer • Designer",
-  "hero_svc_landing": "Landing Pages",
-  "hero_svc_landing_sub": "conversion from the first scroll",
-  "hero_svc_webapp": "Web Apps",
-  "hero_svc_webapp_sub": "full product, from spec to production",
-  "hero_svc_mvp": "MVPs",
-  "hero_svc_mvp_sub": "from idea to fast validation",
-  "hero_svc_cms": "CMS",
-  "hero_svc_cms_sub": "content you control",
-  "hero_svc_crm": "CRM",
-  "hero_svc_crm_sub": "client flows tailored to you",
-  "hero_svc_ai": "AI Automations",
-  "hero_svc_ai_sub": "manual processes that disappear",
+  "hero_svc_agents": "AI Agents",
+  "hero_svc_agents_sub": "LLM agents with tools, memory, and guardrails",
+  "hero_svc_rag": "RAG Pipelines",
+  "hero_svc_rag_sub": "answers grounded in real data",
+  "hero_svc_evals": "LLM Evals",
+  "hero_svc_evals_sub": "quality you can measure before shipping",
+  "hero_svc_automations": "AI Automations",
+  "hero_svc_automations_sub": "manual processes that disappear",
+  "hero_svc_saas": "SaaS Platforms",
+  "hero_svc_saas_sub": "multi-tenant products, from spec to production",
+  "hero_svc_webapps": "Web Apps",
+  "hero_svc_webapps_sub": "fast, accessible frontends in production",
   "product_label": "Own Product",
   "product_title": "SaaS",
   "product_title_accent": "in Production",
   "product_badge": "Live · Own SaaS",
-  "product_description": "Lab2Next is a SaaS for clinical laboratories — patient registration, quality control, digital-signature result delivery, full audit trails, and role-based staff management. Guided workflows that reduce errors and accelerate report turnaround.",
+  "product_description": "Lab2Next is a SaaS for clinical laboratories: patient registration, quality control, digital-signature result delivery, full audit trails, and role-based staff management. Guided workflows that reduce errors and accelerate report turnaround.",
   "product_impact": "Built, launched, and maintained independently.",
   "product_cta": "Start free",
   "product_cta_sub": "free registration · no credit card",
@@ -67,7 +67,7 @@
   "projects_subtitle": "Selected · Ongoing",
   "project_view_study": "View Study →",
   "projects_more": "More Projects",
-  "footer_available": "Available for collaborations",
+  "footer_available": "Open to conversations",
   "experience": "Experience",
   "projects": "Projects",
   "projects_search_label": "Search projects",
@@ -87,30 +87,35 @@
   "language_spanish": "Spanish",
   "language_english": "English",
   "experience_items": {
+    "brania": {
+      "title": "Senior Full Stack Engineer at Brania",
+      "date": "Jul 2026 - Present",
+      "description": "Building product features end to end, from frontend to backend, on an AI-powered platform."
+    },
     "enti": {
       "title": "Full Stack at ENTI",
-      "date": "Aug 2023 - Present",
-      "description": "End-to-end web product delivery for US and LATAM clients.\n\nCurrently in production: mobile-first e-wallet in Next.js with secure sessions — HTTPOnly cookies, token refresh, and protected REST endpoints. Migrated the data layer from DynamoDB to Django microservices and legacy Power BI dashboards to SparkSQL jobs in Scala on Superset."
+      "date": "Aug 2023 - Jul 2026",
+      "description": "End-to-end web product delivery for US and LATAM clients.\n\nCurrently in production: mobile-first e-wallet in Next.js with secure sessions: HTTPOnly cookies, token refresh, and protected REST endpoints. Migrated the data layer from DynamoDB to Django microservices and legacy Power BI dashboards to SparkSQL jobs in Scala on Superset."
     },
     "softtek": {
       "title": "Full Stack at Softtek",
       "date": "Jun 2022 - Aug 2023",
-      "description": "Regulated loan management platform for US lending operations across multiple state jurisdictions.\n\nBuilt jurisdiction-configurable form rules: one codebase enforcing state-by-state regulatory requirements without forking. Contributed to a multi-quarter .NET legacy migration and took end-to-end ownership of triage — bugs, new form fields, and registration logic in a regulated environment."
+      "description": "Regulated loan management platform for US lending operations across multiple state jurisdictions.\n\nBuilt jurisdiction-configurable form rules: one codebase enforcing state-by-state regulatory requirements without forking. Contributed to a multi-quarter .NET legacy migration and took end-to-end ownership of triage: bugs, new form fields, and registration logic in a regulated environment."
     },
     "scandia": {
       "title": "Full Stack at Scandia",
       "date": "Jan 2020 - Jun 2022",
-      "description": "Frontend and technical SEO for Scandia's e-commerce storefront portfolio — saunas, spas, and wellness products.\n\nPerformance and SEO optimizations that improved organic ranking and top-of-funnel traffic across multiple brands. Shopify theme customization, third-party API integration, and pixel-accurate responsive layouts from Figma."
+      "description": "Frontend and technical SEO for Scandia's e-commerce storefront portfolio (saunas, spas, and wellness products).\n\nPerformance and SEO optimizations that improved organic ranking and top-of-funnel traffic across multiple brands. Shopify theme customization, third-party API integration, and pixel-accurate responsive layouts from Figma."
     },
     "iotam": {
       "title": "Full Stack at IOTAM",
       "date": "Jul 2021 - Dec 2021",
-      "description": "IoT startup (field data metering) — refactored the client app to support product growth. Improved component responsiveness and maintainability, coordinated with backend for reliable data flow from physical meters, and worked with design on data visualization and UI states."
+      "description": "IoT startup (field data metering). Refactored the client app to support product growth. Improved component responsiveness and maintainability, coordinated with backend for reliable data flow from physical meters, and worked with design on data visualization and UI states."
     },
     "brightcoders": {
       "title": "Full Stack Internship at BrightCoders",
       "date": "Feb 2021 - Jul 2021",
-      "description": "Intensive professional development program using Ruby on Rails — code challenges in small teams and a collaborative final project."
+      "description": "Intensive professional development program using Ruby on Rails: code challenges in small teams and a collaborative final project."
     }
   },
   "project_items": {
@@ -160,7 +165,7 @@
     },
     "checker": {
       "title": "Checker",
-      "description": "Fleet management SaaS for gig drivers on Uber, Didi, Cabify and InDrive — shifts, earnings, and vehicle tracking in one place."
+      "description": "Fleet management SaaS for gig drivers on Uber, Didi, Cabify and InDrive: shifts, earnings, and vehicle tracking in one place."
     }
   },
   "projects_entry_label": "Entry",
@@ -186,38 +191,39 @@
   "contact_error": "Something went wrong. Try again.",
   "last_visitor_from": "Last visitor from",
   "privacy": "Privacy",
-  "services_label": "Services",
-  "services_title": "Let's build",
-  "services_title_accent": "something",
-  "services_cta": "Let's talk about your project →",
+  "services_label": "What I build",
+  "services_title": "What I",
+  "services_title_accent": "build",
+  "contact_wa_message": "Hi Javier, I saw your portfolio and I'd like to connect.",
+  "services_cta": "Let's talk →",
   "services_items": {
-    "landing": { "name": "Landing Pages", "desc": "conversion from the first scroll" },
-    "webapp":  { "name": "Web Apps",      "desc": "full product, from spec to production" },
-    "mvp":     { "name": "MVPs",          "desc": "from idea to fast validation" },
-    "cms":     { "name": "CMS",           "desc": "content you control" },
-    "crm":     { "name": "CRM",           "desc": "client flows tailored to you" },
-    "ai":      { "name": "AI Automations","desc": "manual processes that disappear" }
+    "agents": { "name": "AI Agents", "desc": "LLM agents with tools, memory, and guardrails" },
+    "rag": { "name": "RAG Pipelines", "desc": "answers grounded in real data" },
+    "evals": { "name": "LLM Evals", "desc": "quality you can measure before shipping" },
+    "automations": { "name": "AI Automations", "desc": "manual processes that disappear" },
+    "saas": { "name": "SaaS Platforms", "desc": "multi-tenant products, from spec to production" },
+    "webapps": { "name": "Web Apps", "desc": "fast, accessible frontends in production" }
   },
   "services_process": {
-    "idea":   { "name": "Idea",   "desc": "We understand the problem and goal" },
-    "build":  { "name": "Build",  "desc": "We build fast, iterate with you" },
+    "plan":   { "name": "Plan",   "desc": "Understand the problem, draw the blueprint" },
+    "build":  { "name": "Build",  "desc": "Build fast, iterate with feedback" },
     "launch": { "name": "Launch", "desc": "Delivery, support, evolution" }
   },
-  "not_found_title": "404 — Unexecuted idea.",
+  "not_found_title": "404. Unexecuted idea.",
   "not_found_message": "The best ideas start without a URL. Tell me yours.",
   "not_found_cta": "Let's talk →",
   "mantecado": {
     "greeting_0": "Meow! How can I help you?",
     "greeting_1": "Purrr... hi there!",
-    "greeting_2": "You woke me up! But that's okay — what do you need?",
+    "greeting_2": "You woke me up! But that's okay. What do you need?",
     "greeting_3": "Nyaaa~ ask me anything!",
     "greeting_4": "Hi! I'm Mantecado, Javier's cat.",
+    "open_chat": "Chat with Mantecado",
     "online": "Online",
     "coming_soon": "Chat coming soon...",
     "wa_bubble": "Purrr... the chat is under construction, but you can talk directly to my owner.",
     "wa_cta": "Write to Javier",
-    "wa_phone": "+52 990 414 7791",
-    "wa_message": "Hi Javier, I saw your portfolio and I want to get in touch"
+    "wa_phone": "+52 990 414 7791"
   },
   "visitors_nav": "Visitors",
   "visitors_title": "Visitors from around the world",

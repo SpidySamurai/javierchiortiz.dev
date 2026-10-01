@@ -9,7 +9,7 @@ const content = {
       {
         heading: 'What data is collected',
         items: [
-          'Page path, locale, and referrer — stored in our database.',
+          'Page path, locale, and referrer: stored in our database.',
           'Approximate location (city and country) derived from your IP address via ip-api.com. The IP itself is not stored.',
           'Section interaction data (which sections you viewed and for how long) via PostHog.',
           'Anonymous session recordings (no personal information, all inputs masked) via PostHog.',
@@ -22,9 +22,9 @@ const content = {
       {
         heading: 'Third-party processors',
         items: [
-          'PostHog (posthog.com) — analytics and session recording.',
-          'ip-api.com — IP-to-city/country geolocation.',
-          'Supabase (supabase.com) — database hosting.',
+          'PostHog (posthog.com): analytics and session recording.',
+          'ip-api.com: IP-to-city/country geolocation.',
+          'Supabase (supabase.com): database hosting.',
         ],
       },
       {
@@ -45,7 +45,7 @@ const content = {
       {
         heading: 'Datos que se recopilan',
         items: [
-          'Ruta de página, idioma y referrer — almacenados en nuestra base de datos.',
+          'Ruta de página, idioma y referrer: almacenados en nuestra base de datos.',
           'Ubicación aproximada (ciudad y país) derivada de tu dirección IP a través de ip-api.com. La IP en sí no se almacena.',
           'Datos de interacción por sección (qué secciones viste y por cuánto tiempo) a través de PostHog.',
           'Grabaciones de sesión anónimas (sin información personal, todos los inputs enmascarados) a través de PostHog.',
@@ -58,9 +58,9 @@ const content = {
       {
         heading: 'Procesadores externos',
         items: [
-          'PostHog (posthog.com) — analíticas y grabación de sesión.',
-          'ip-api.com — geolocalización IP a ciudad/país.',
-          'Supabase (supabase.com) — alojamiento de base de datos.',
+          'PostHog (posthog.com): analíticas y grabación de sesión.',
+          'ip-api.com: geolocalización IP a ciudad/país.',
+          'Supabase (supabase.com): alojamiento de base de datos.',
         ],
       },
       {

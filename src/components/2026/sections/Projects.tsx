@@ -17,6 +17,7 @@ import { projects } from '@/data/projects';
 import type { DataProject } from '@/types';
 import { EASE } from '@/components/2026/ui/Reveal';
 import { TextReveal } from '@/components/2026/ui/TextReveal';
+import { whatsappUrl } from '@/lib/contact';
 
 const TILT_SPRING = { stiffness: 130, damping: 16, mass: 0.4 };
 
@@ -56,7 +57,7 @@ function ProjectImage({
   return (
     <Image
       src={imageUrl}
-      alt={`${title} — ${description}`}
+      alt={`${title}: ${description}`}
       fill
       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
       className="absolute inset-0 w-full object-cover"
@@ -316,7 +317,7 @@ function FeaturedProject({
         {project.imageUrl ? (
           <Image
             src={project.imageUrl}
-            alt={`${project.title} — ${project.description ?? ''}`}
+            alt={`${project.title}: ${project.description ?? ''}`}
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover object-top transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
@@ -402,9 +403,6 @@ function FeaturedProject({
     </motion.div>
   );
 }
-
-const WA_PHONE = '529904147791';
-const WA_MESSAGE = "Hi! I saw your portfolio and I'd like to start a project together.";
 
 export default function Projects() {
   const t = useTranslations('common');
@@ -536,7 +534,7 @@ export default function Projects() {
           {/* WhatsApp CTA — slot 6, magnetic lead action */}
           <motion.a
             key="wa-cta"
-            href={`https://wa.me/${WA_PHONE}?text=${encodeURIComponent(WA_MESSAGE)}`}
+            href={whatsappUrl(t('contact_wa_message'))}
             target="_blank"
             rel="noopener noreferrer"
             variants={item}

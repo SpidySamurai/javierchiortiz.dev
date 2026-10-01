@@ -23,7 +23,7 @@ export default function TwentyOnePilotsPost({ post, locale }: { post: BlogPost; 
         className="mt-3 text-sm italic"
         style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
       >
-        — A song that explains it better than words.
+        A song that explains it better than words.
       </p>
     </div>
   ) : null;
