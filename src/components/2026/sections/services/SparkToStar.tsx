@@ -225,6 +225,7 @@ export function SparkToStar({ p, w, h, xs, scale = 1 }: SceneProps) {
         from: toViewport(a),
         to: toViewport(b),
         durationMs: (T.lift[1] - T.lift[0]) * 1000,
+        source: 'factory',
       });
     });
   }, [p, launchX, wl, scale, h]);
