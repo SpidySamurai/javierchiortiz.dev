@@ -206,3 +206,10 @@ export function carAt(t: number): number {
   }
   return CAR[CAR.length - 1][3];
 }
+
+/** Launch: where the product settles in orbit, and the support heartbeat drawn over it (orbit-local). */
+export const ORBIT: Pt = [1172, 160];
+export const HB: Polyline = [[-196, 0], [-166, 0], [-156, -15], [-147, 13], [-139, -5], [-131, 0], [-84, 0]];
+export const HB_LEN = linesLen([HB]);
+/** Launch-clock time (s, T = s - SH) at which the product leaves the pad. */
+export const LIFTOFF_T = 10.6;
