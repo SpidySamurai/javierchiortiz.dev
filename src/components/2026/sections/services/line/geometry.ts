@@ -1,5 +1,5 @@
 /** Static geometry of the production line: stations, iso cubes, blueprint, plates, arm IK. */
-import { dPath, hull, linesLen, ptsStr, type Polyline, type Pt } from './math';
+import { dPath, expo, hull, linesLen, prog, ptsStr, type Polyline, type Pt } from './math';
 
 /** Scene space. Everything is authored in a 1280 x 440 viewBox. */
 export const VIEW_W = 1280;
@@ -175,4 +175,34 @@ export function ik(p: Pt, t: Pt): { elbow: Pt; tip: Pt } {
   const vy = t[1] - e[1];
   const vl = Math.hypot(vx, vy) || 1;
   return { elbow: e, tip: [e[0] + (vx / vl) * L2, e[1] + (vy / vl) * L2] };
+}
+
+/** Build stage: when each of the five cubes is dropped in, and where the gantry carries its grip. */
+export const GRIP_Y = BEAM + 20;
+export const ST = [4.8, 5.16, 5.52, 5.88, 8.7] as const;
+/** Start offset of each cube above its seat, so its top sits at the grip height. */
+export const Y0 = TOPC.map((c) => GRIP_Y - (PY + c[1]));
+const TX = TOPC.map((c) => c[0]);
+
+/** Carriage keyframes: [start, end, fromX, toX] in seconds / piece-local x. */
+const CAR: readonly (readonly [number, number, number, number])[] = [
+  [4.58, 4.78, 0, TX[0]],
+  [4.96, 5.14, TX[0], TX[1]],
+  [5.32, 5.5, TX[1], TX[2]],
+  [5.68, 5.86, TX[2], TX[3]],
+  [6.14, 6.3, TX[3], 0],
+  [6.85, 7.0, 0, TX[2]],
+  [7.47, 7.6, TX[2], 0],
+  [8.5, 8.68, 0, TX[4]],
+  [8.96, 9.15, TX[4], 0],
+];
+
+export function carAt(t: number): number {
+  if (t < CAR[0][0]) return 0;
+  for (let i = 0; i < CAR.length; i++) {
+    const g = CAR[i];
+    if (t < g[0]) return CAR[i - 1][3];
+    if (t <= g[1]) return g[2] + (g[3] - g[2]) * expo(prog(t, g[0], g[1]));
+  }
+  return CAR[CAR.length - 1][3];
 }
