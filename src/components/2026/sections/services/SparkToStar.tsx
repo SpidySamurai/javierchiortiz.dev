@@ -1,10 +1,11 @@
 'use client';
 
-import { useId } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { motion, useMotionValue, useTransform, type MotionValue } from 'framer-motion';
 import { DrawPath } from '@/components/2026/ui/motion/DrawPath';
 import { BLUEPRINT, CUBES, OUTLINE, type Cube } from './form';
-import { STAR_ANGLE, T, objectX, seg, sparkOpacity, sparkTail, sparkX, starAt, useSeg } from './timeline';
+import { emitShootingStar } from '@/lib/skyEvents';
+import { CYCLE, STAR_ANGLE, T, objectX, seg, sparkOpacity, sparkTail, sparkX, starAt, useSeg } from './timeline';
 
 type XS = readonly [number, number, number];
 
@@ -201,8 +202,36 @@ export function SparkToStar({ p, w, h, xs, scale = 1 }: SceneProps) {
   const starOpacity = useTransform(p, (v) => starAt(v, local[2], wl).opacity);
   const starScale = useTransform(p, (v) => starAt(v, local[2], wl).scale);
 
+  // Announce the launch so the rest of the page (the cat) can watch the star lift off.
+  const svgRef = useRef<SVGSVGElement>(null);
+  const launchX = local[2];
+  useEffect(() => {
+    const liftP = T.lift[0] / CYCLE;
+    const x0 = launchX;
+    let prev = p.get();
+    return p.on('change', (v) => {
+      const crossed = prev < liftP && v >= liftP && v - prev < 0.2;
+      prev = v;
+      const svg = svgRef.current;
+      if (!crossed || !svg) return;
+      const rect = svg.getBoundingClientRect();
+      const a = starAt(liftP, x0, wl);
+      const b = starAt(T.lift[1] / CYCLE, x0, wl);
+      const toViewport = (pt: { x: number; y: number }) => ({
+        x: rect.left + pt.x * scale,
+        y: rect.top + h / 2 + pt.y * scale,
+      });
+      emitShootingStar({
+        from: toViewport(a),
+        to: toViewport(b),
+        durationMs: (T.lift[1] - T.lift[0]) * 1000,
+      });
+    });
+  }, [p, launchX, wl, scale, h]);
+
   return (
     <svg
+      ref={svgRef}
       aria-hidden
       width={w}
       height={h}
