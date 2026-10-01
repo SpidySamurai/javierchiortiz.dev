@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useAnimate, useInView } from 'framer-motion';
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { TextReveal } from '@/components/2026/ui/TextReveal';
+import { whatsappUrl } from '@/lib/contact';
 
 const SERVICE_KEYS = ['agents', 'rag', 'evals', 'automations', 'saas', 'webapps'] as const;
 const STATION_KEYS = ['idea', 'build', 'launch'] as const;
 const STATION_ICONS = ['lightbulb', 'terminal', 'rocket_launch'] as const;
-const WA_PHONE = '529904147791';
 
 // ~11.5s per loop, 5 items evenly staggered
 const ITEM_COUNT = 5;
@@ -504,7 +504,6 @@ function ServiceRow({ index, name, desc }: { index: number; name: string; desc: 
 
 export default function Services() {
   const t = useTranslations('common');
-  const locale = useLocale();
   const beltRef = useRef<HTMLDivElement>(null);
   const [beltPos, setBeltPos] = useState<BeltPos>(DEFAULT_POS);
   // Gate the belt's JS loops + CSS animations on visibility (perf).
@@ -529,11 +528,7 @@ export default function Services() {
     return () => ro.disconnect();
   }, []);
 
-  const waMessage =
-    locale === 'es'
-      ? 'Hola Javier, vi tu portfolio y quiero contactarte'
-      : 'Hi Javier, I saw your portfolio and want to get in touch';
-  const waHref = `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(waMessage)}`;
+  const waHref = whatsappUrl(t('contact_wa_message'));
 
   return (
     <section
