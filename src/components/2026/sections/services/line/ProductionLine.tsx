@@ -1,9 +1,10 @@
 'use client';
 
-import { useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import LineScene from './LineScene';
 import { STAGES, STAGE_ICONS, type Stage } from './stages';
+import { useLineCopy } from './useLineCopy';
 import { useLineDriver } from './useLineDriver';
 
 const NAME_KEY: Record<Stage, string> = { plan: 'lbl.planName', build: 'lbl.buildName', launch: 'lbl.launchName' };
@@ -13,8 +14,8 @@ const RING_KEY: Record<Stage, string> = { plan: 'lbl.planRing', build: 'lbl.buil
 export default function ProductionLine() {
   const t = useTranslations('common');
   const rootRef = useRef<HTMLDivElement>(null);
-  const labels = useMemo(() => ({}), []);
-  useLineDriver({ rootRef, labels });
+  const copy = useLineCopy();
+  useLineDriver({ rootRef, labels: copy });
 
   return (
     <div ref={rootRef}>
@@ -61,7 +62,7 @@ export default function ProductionLine() {
           );
         })}
       </div>
-      <LineScene />
+      <LineScene copy={copy} />
     </div>
   );
 }

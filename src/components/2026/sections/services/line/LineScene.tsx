@@ -1,8 +1,9 @@
-import { useId, type CSSProperties } from 'react';
+import { useId, type CSSProperties, type ReactNode } from 'react';
 import {
   AXES_D, AXES_LEN, B, BUILD_MARKS_D, CIRCLE_D, CIRCLE_LEN, DIMS_D, DIMS_LEN, FRONT, HULL_D, HULL_LEN, L, P, PIV,
-  PLAN_GRID_D, PY, TOP, VIEW_H, VIEW_W,
+  BEAM, CUBE_STR, HULL4_STR, HULL5_STR, HULL_C2_STR, PLAN_GRID_D, PY, TOP, TOPC, VIEW_H, VIEW_W,
 } from './geometry';
+import type { Labels } from './bind';
 
 /**
  * The scene markup. Static React: every animated attribute is declared with
@@ -26,6 +27,8 @@ const C = {
 } as const;
 
 interface SceneProps {
+  /** Static scene text (step names), already translated. */
+  copy: Labels;
   /** viewBox to show. Mobile crops around one station. */
   viewBox?: string;
   className?: string;
@@ -52,6 +55,9 @@ function Backdrop({ id }: { id: string }) {
       {/* Drafting table post */}
       <line x1={PIV[0]} y1={140} x2={PIV[0]} y2={PIV[1]} stroke={C.outlineVariant} strokeWidth={4} strokeLinecap="round" />
       <rect x={96} y={132} width={28} height={12} rx={3} fill={C.steel} />
+      {/* Gantry posts */}
+      <line x1={548} y1={376} x2={548} y2={BEAM} stroke={C.outlineVariant} strokeWidth={5} strokeLinecap="round" />
+      <line x1={732} y1={376} x2={732} y2={BEAM} stroke={C.outlineVariant} strokeWidth={5} strokeLinecap="round" />
     </>
   );
 }
@@ -111,6 +117,22 @@ function Blueprint() {
   );
 }
 
+/** One iso cube: three shaded faces plus the lit windows that switch on at launch. */
+function Cube({ k, children }: { k: number; children?: ReactNode }) {
+  const c = CUBE_STR[k];
+  const edge = { stroke: C.bg, strokeWidth: 1, strokeOpacity: 0.5 };
+  return (
+    <g data-bind={`transform:c${k}.tf,opacity:c${k}.op`}>
+      <polygon points={c.top} fill="var(--ln-cube-top)" {...edge} />
+      <polygon points={c.right} fill="var(--ln-cube-right)" {...edge} />
+      <polygon points={c.left} fill="var(--ln-cube-left)" {...edge} />
+      <polygon points={c.wr} fill={C.spark} data-bind={`opacity:c${k}.win`} />
+      <polygon points={c.wl} fill={C.spark} data-bind={`opacity:c${k}.win`} />
+      {children}
+    </g>
+  );
+}
+
 /** The product piece: outline, ignition tail and glow. Cubes land here in the build stage. */
 function Product() {
   return (
@@ -123,6 +145,90 @@ function Product() {
       <line x1={0} y1={-26} x2={0} y2={-26} data-bind="x1:piece.tailX" stroke={C.spark} strokeWidth={3} strokeLinecap="round" opacity={0.7} />
       <circle cx={0} cy={-26} r={14} fill={C.spark} opacity={0.55} style={{ filter: 'blur(8px)' }} />
       <circle cx={0} cy={-26} r={5} fill="color-mix(in srgb, var(--ds-spark) 25%, white)" />
+      <Cube k={0} />
+      <Cube k={1} />
+      <Cube k={2}>
+        {/* Feedback flag on the misaligned block */}
+        <polygon points={HULL_C2_STR} data-bind="opacity:flag.op" fill="none" stroke="var(--ds-issue)" strokeWidth={2.5} strokeLinejoin="round" />
+        <circle cx={TOPC[2][0] - 34} cy={TOPC[2][1] - 6} r={9} fill="var(--ds-issue)" data-bind="opacity:flag.op" />
+        <path
+          d={`M${TOPC[2][0] - 34} ${TOPC[2][1] - 11} L${TOPC[2][0] - 34} ${TOPC[2][1] - 5} M${TOPC[2][0] - 34} ${TOPC[2][1] - 1.5} L${TOPC[2][0] - 34} ${TOPC[2][1] - 1}`}
+          data-bind="opacity:flag.op" fill="none" stroke={C.bg} strokeWidth={2.2} strokeLinecap="round"
+        />
+      </Cube>
+      <Cube k={3} />
+      <Cube k={4} />
+      <polygon points={HULL4_STR} data-bind="opacity:pass.op4" fill="none" stroke="var(--ds-pass)" strokeWidth={2.5} strokeLinejoin="round" />
+      <polygon points={HULL5_STR} data-bind="opacity:pass.op5" fill="none" stroke="var(--ds-pass)" strokeWidth={2.5} strokeLinejoin="round" />
+    </g>
+  );
+}
+
+/** Gantry: scanning beam, rail, carriage and grip, plus the pass check and the feedback bubble. */
+function Gantry() {
+  return (
+    <>
+      <line x1={548} x2={732} data-bind="y1:scan.y,y2:scan.y,opacity:scan.op" stroke={C.primary} strokeWidth={10} style={{ filter: 'blur(5px)' }} />
+      <line x1={548} x2={732} data-bind="y1:scan.y,y2:scan.y,opacity:scan.op" stroke={C.on} strokeWidth={1.5} />
+
+      <rect x={536} y={BEAM} width={208} height={8} rx={3} fill={C.steel} />
+      <rect x={536} y={BEAM} width={208} height={8} rx={3} fill={C.vivid} data-bind="opacity:gantry.glow" />
+      <rect data-bind="x:gantry.carX" y={184} width={24} height={10} rx={2} fill={C.outlineVariant} />
+      <line y1={194} data-bind="x1:gantry.armX,x2:gantry.armX,y2:gantry.armY" stroke={C.primary} strokeWidth={2} />
+      <path data-bind="d:gantry.gripD" fill="none" stroke={C.primary} strokeWidth={2.5} strokeLinecap="round" />
+
+      <circle cx={724} cy={214} r={11} fill="var(--ds-pass)" data-bind="opacity:pass.checkOp" />
+      <path
+        d="M718.5 214 L722.5 218 L729.5 210" data-bind="opacity:pass.checkOp"
+        fill="none" stroke={C.bg} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round"
+      />
+
+      <g data-bind="transform:fb.tf,opacity:fb.op">
+        <rect x={-17} y={-13} width={34} height={24} rx={7} fill={C.plate} stroke={C.spark} strokeWidth={1.6} />
+        <polygon points="-8,11 0,11 -10,19" fill={C.plate} stroke={C.spark} strokeWidth={1.6} strokeLinejoin="round" />
+        <path d="M0 -6 L0 4 M-5 -1 L5 -1" fill="none" stroke={C.spark} strokeWidth={2} strokeLinecap="round" />
+      </g>
+    </>
+  );
+}
+
+const STEP_ROWS = [
+  { key: 'b', label: 'step.build', y: 214.5 },
+  { key: 't', label: 'step.test', y: 234.5 },
+  { key: 'f', label: 'step.feedback', y: 254.5 },
+  { key: 'i', label: 'step.improve', y: 274.5 },
+] as const;
+
+/** Iteration counter, the four-step cycle and a status line, drawn next to the gantry. */
+function StepIndicator({ copy }: { copy: Labels }) {
+  return (
+    <g data-bind="opacity:steps.op">
+      <g transform="translate(746 189)" fill="none" stroke={C.primary} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M10 6 A4 4 0 1 1 8.2 2.7 M8.5 0.8 L8.5 3 L10.7 3" />
+      </g>
+      <text
+        x={763} y={195} fontSize={10} fontWeight={600} letterSpacing="0.16em" dominantBaseline="central"
+        fill={C.onVariant} data-bind="text:steps.iter" style={{ fontFamily: 'var(--font-inter), sans-serif' }}
+      />
+      {STEP_ROWS.map((r) => (
+        <g key={r.key}>
+          <circle cx={749.5} cy={r.y} r={3.5} data-bind={`s.fill:steps.${r.key}.dot`} />
+          <text
+            x={760} y={r.y} fontSize={11} fontWeight={800} letterSpacing="0.1em" dominantBaseline="central"
+            data-bind={`s.fill:steps.${r.key}.c`} style={{ fontFamily: 'var(--font-manrope), sans-serif' }}
+          >
+            {copy[r.label]}
+          </text>
+        </g>
+      ))}
+      <text
+        fontSize={11} fontWeight={600} dominantBaseline="central" data-wrap={17}
+        data-bind="wrap:ver.text,s.fill:ver.color" style={{ fontFamily: 'var(--font-inter), sans-serif' }}
+      >
+        <tspan x={746} y={296} />
+        <tspan x={746} y={311} />
+        <tspan x={746} y={326} />
+      </text>
     </g>
   );
 }
@@ -143,16 +249,23 @@ function DraftingArm() {
   );
 }
 
-export default function LineScene({ viewBox = `0 0 ${VIEW_W} ${VIEW_H}`, className }: SceneProps) {
+export default function LineScene({ copy, viewBox = `0 0 ${VIEW_W} ${VIEW_H}`, className }: SceneProps) {
   const id = useId();
   const [, , w, h] = viewBox.split(' ').map(Number);
-  const style: CSSProperties = { display: 'block', width: '100%', height: 'auto', aspectRatio: `${w} / ${h}` };
+  const style = {
+    display: 'block', width: '100%', height: 'auto', aspectRatio: `${w} / ${h}`,
+    '--ln-cube-top': 'color-mix(in srgb, var(--ds-primary-container) 55%, white)',
+    '--ln-cube-right': 'var(--ds-primary-container)',
+    '--ln-cube-left': 'color-mix(in srgb, var(--ds-primary-container) 73%, black)',
+  } as CSSProperties;
   return (
     <svg aria-hidden viewBox={viewBox} className={className} style={style} overflow={viewBox.startsWith('0 0') ? 'visible' : 'hidden'}>
       <Backdrop id={id} />
       <Band />
       <Blueprint />
       <Product />
+      <Gantry />
+      <StepIndicator copy={copy} />
       <DraftingArm />
     </svg>
   );
