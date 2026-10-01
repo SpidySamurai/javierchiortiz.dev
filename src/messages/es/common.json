@@ -38,7 +38,7 @@
   "hero_description_long": "6+ años entregando plataformas SaaS, automatizaciones con IA y productos web en producción. Actualmente Senior Full Stack Engineer en Brania.",
   "hero_cta": "Hablemos",
   "hero_cta_sub": "remoto · async-friendly",
-  "hero_comet_caption": "cometas como ideas — breves, únicas, irrepetibles",
+  "hero_comet_caption": "cometas como ideas: breves, únicas, irrepetibles",
   "hero_ticker": "Curador • Desarrollador • Diseñador",
   "hero_svc_agents": "Agentes de IA",
   "hero_svc_agents_sub": "agentes LLM con herramientas, memoria y guardrails",
@@ -56,7 +56,7 @@
   "product_title": "SaaS",
   "product_title_accent": "en Producción",
   "product_badge": "Live · SaaS propio",
-  "product_description": "Lab2Next es un SaaS para laboratorios clínicos — registro de pacientes, control de calidad, entrega de resultados con firma digital, trazabilidad completa y gestión de personal con roles. Workflows guiados que reducen errores y aceleran la entrega de reportes.",
+  "product_description": "Lab2Next es un SaaS para laboratorios clínicos: registro de pacientes, control de calidad, entrega de resultados con firma digital, trazabilidad completa y gestión de personal con roles. Workflows guiados que reducen errores y aceleran la entrega de reportes.",
   "product_impact": "Construido, lanzado y mantenido de forma independiente.",
   "product_cta": "Empieza gratis",
   "product_cta_sub": "registro gratuito · sin tarjeta",
@@ -95,27 +95,27 @@
     "enti": {
       "title": "Full Stack en ENTI",
       "date": "Ago 2023 - Jul 2026",
-      "description": "Diseño y entrego productos web de extremo a extremo para clientes del mercado US y LATAM.\n\nActualmente en producción: e-wallet mobile-first en Next.js con sesiones seguras — cookies HTTPOnly, refresh tokens y endpoints REST protegidos. Migré el data layer de DynamoDB a microservicios Django y de dashboards Power BI a jobs SparkSQL en Scala sobre Superset."
+      "description": "Diseño y entrego productos web de extremo a extremo para clientes del mercado US y LATAM.\n\nActualmente en producción: e-wallet mobile-first en Next.js con sesiones seguras: cookies HTTPOnly, refresh tokens y endpoints REST protegidos. Migré el data layer de DynamoDB a microservicios Django y de dashboards Power BI a jobs SparkSQL en Scala sobre Superset."
     },
     "softtek": {
       "title": "Full Stack en Softtek",
       "date": "Jun 2022 - Ago 2023",
-      "description": "Plataforma regulada de loan management para operaciones de US lending en múltiples jurisdicciones estatales.\n\nConstruí reglas de formulario configurables por jurisdicción: un codebase que cumple requisitos regulatorios estado por estado sin forkear. Contribuí a la migración de .NET legacy hacia framework moderno y tomé ownership del triaje end-to-end — bugs, nuevos campos y lógica de registro en entorno regulado."
+      "description": "Plataforma regulada de loan management para operaciones de US lending en múltiples jurisdicciones estatales.\n\nConstruí reglas de formulario configurables por jurisdicción: un codebase que cumple requisitos regulatorios estado por estado sin forkear. Contribuí a la migración de .NET legacy hacia framework moderno y tomé ownership del triaje end-to-end: bugs, nuevos campos y lógica de registro en entorno regulado."
     },
     "scandia": {
       "title": "Full Stack en Scandia",
       "date": "Ene 2020 - Jun 2022",
-      "description": "Frontend y SEO técnico para el portafolio de storefronts e-commerce de Scandia — saunas, spas y productos de bienestar.\n\nOptimizaciones de performance y SEO que mejoraron ranking orgánico y tráfico top-of-funnel a través de múltiples marcas. Customización de temas Shopify, integración de APIs de terceros y layouts responsive pixel-accurate desde Figma."
+      "description": "Frontend y SEO técnico para el portafolio de storefronts e-commerce de Scandia (saunas, spas y productos de bienestar).\n\nOptimizaciones de performance y SEO que mejoraron ranking orgánico y tráfico top-of-funnel a través de múltiples marcas. Customización de temas Shopify, integración de APIs de terceros y layouts responsive pixel-accurate desde Figma."
     },
     "iotam": {
       "title": "Full Stack en IOTAM",
       "date": "Jul 2021 - Dic 2021",
-      "description": "Startup de IoT (medición de datos en campo) — refactorización de la app cliente para soportar el crecimiento del producto. Mejoré responsividad y mantenibilidad de componentes clave, coordiné con backend para flujo confiable desde medidores físicos y trabajé con diseño en visualización de datos y estados de UI."
+      "description": "Startup de IoT (medición de datos en campo). Refactorización de la app cliente para soportar el crecimiento del producto. Mejoré responsividad y mantenibilidad de componentes clave, coordiné con backend para flujo confiable desde medidores físicos y trabajé con diseño en visualización de datos y estados de UI."
     },
     "brightcoders": {
       "title": "Full Stack Internship en BrightCoders",
       "date": "Feb 2021 - Jul 2021",
-      "description": "Programa intensivo de desarrollo profesional con Ruby on Rails — resolución de retos en equipos pequeños y proyecto final colaborativo."
+      "description": "Programa intensivo de desarrollo profesional con Ruby on Rails: resolución de retos en equipos pequeños y proyecto final colaborativo."
     }
   },
   "project_items": {
@@ -169,7 +169,7 @@
     },
     "checker": {
       "title": "Checker",
-      "description": "SaaS de gestión de flota para conductores de Uber, Didi, Cabify e InDrive — turnos, ganancias y seguimiento de vehículos en un solo lugar."
+      "description": "SaaS de gestión de flota para conductores de Uber, Didi, Cabify e InDrive: turnos, ganancias y seguimiento de vehículos en un solo lugar."
     }
   },
   "projects_entry_label": "Entry",
@@ -213,13 +213,13 @@
     "build":  { "name": "Build",  "desc": "Construir rápido, iterar con feedback" },
     "launch": { "name": "Launch", "desc": "Entrega, soporte, evolución" }
   },
-  "not_found_title": "404 — Idea sin ejecutar.",
+  "not_found_title": "404. Idea sin ejecutar.",
   "not_found_message": "Las mejores ideas empiezan sin URL. Cuéntame la tuya.",
   "not_found_cta": "Hablemos →",
   "mantecado": {
     "greeting_0": "¡Miau! ¿En qué te puedo ayudar?",
     "greeting_1": "Purrr... ¡hola, hola!",
-    "greeting_2": "¡Me despertaste! Pero no importa — ¿qué necesitas?",
+    "greeting_2": "¡Me despertaste! Pero no importa. ¿Qué necesitas?",
     "greeting_3": "Nyaaa~ ¡pregúntame lo que quieras!",
     "greeting_4": "¡Hola! Soy Mantecado, el gato de Javier.",
     "online": "Online",

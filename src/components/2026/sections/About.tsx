@@ -362,7 +362,7 @@ export default function About() {
               className="text-xs not-italic tracking-widest uppercase"
               style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-inter), sans-serif' }}
             >
-              — {t('about_quote_author')}
+              {t('about_quote_author')}
             </cite>
           </motion.blockquote>
         </div>

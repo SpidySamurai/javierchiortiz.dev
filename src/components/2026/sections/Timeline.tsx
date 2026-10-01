@@ -196,7 +196,7 @@ function TierBadge({ label, isLead }: { label: string; isLead?: boolean }) {
 function YearDisplay({ align = 'left', date }: { align?: 'left' | 'right'; date?: string }) {
   const t = useTranslations('common');
   const duration = date ? parseDuration(date, t('duration_yr'), t('duration_mo')) : null;
-  const period = date ? date.toUpperCase().replace(' - ', ' — ') : null;
+  const period = date ? date.toUpperCase() : null;
   return (
     <motion.span
       className="font-black leading-none block"
