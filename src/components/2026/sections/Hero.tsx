@@ -11,6 +11,7 @@ import type { Container } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
 import { loadEmittersPlugin } from '@tsparticles/plugin-emitters';
 import { loadTrailEffect } from '@tsparticles/effect-trail';
+import { whatsappUrl } from '@/lib/contact';
 
 function getParticlesOptions(isDark: boolean) {
   return {
@@ -512,7 +513,7 @@ export default function Hero() {
             {/* CTA — committed periwinkle button */}
             <div className="flex flex-col gap-2 flex-shrink-0 items-start md:items-center">
               <a
-                href={`https://wa.me/529904147791?text=${encodeURIComponent("Hi! I saw your portfolio and I'd like to start a project together.")}`}
+                href={whatsappUrl(t('contact_wa_message'))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group/cta inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-bold text-sm uppercase tracking-widest transition-transform duration-200 motion-safe:hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--ds-primary-vivid)]"

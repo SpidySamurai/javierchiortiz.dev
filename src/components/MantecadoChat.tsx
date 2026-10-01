@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import { whatsappUrl } from '@/lib/contact';
 import styles from './FlatCat.module.css';
 
 type Phase = 'idle' | 'chat';
@@ -115,7 +116,8 @@ function WhatsAppIcon() {
 
 export default function MantecadoChat() {
   const t = useTranslations('common.mantecado');
-  const waHref = `https://wa.me/529904147791?text=${encodeURIComponent(t('wa_message'))}`;
+  const tCommon = useTranslations('common');
+  const waHref = whatsappUrl(tCommon('contact_wa_message'));
   const [phase, setPhase] = useState<Phase>('idle');
   const [greeting, setGreeting] = useState('');
   const [showTyping, setShowTyping] = useState(false);
