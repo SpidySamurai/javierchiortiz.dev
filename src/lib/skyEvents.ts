@@ -16,6 +16,8 @@ export interface ShootingStar {
   to: SkyPoint;
   /** How long the star takes to travel from `from` to `to`. */
   durationMs: number;
+  /** Who launched it. The cat only cheers for the factory; hero comets just catch its eye. */
+  source?: 'hero' | 'factory';
 }
 
 type ShootingStarListener = (star: ShootingStar) => void;

@@ -11,20 +11,28 @@ import {
   type MotionValue,
 } from 'framer-motion';
 import {
+  CAT_RIGHT_EDGE,
   CAT_VIEWBOX,
   HEAD_CENTER,
   PEEK_Y,
+  POUNCE_COOLDOWN_MS,
+  POUNCE_RADIUS_PX,
+  POUNCE_REST_MS,
   PUPIL_MAX,
   SLEEP_AFTER_MS,
   STAR_COOLDOWN_MS,
   STAR_WAKE_COOLDOWN_MS,
   WAKE_RADIUS_PX,
+  WAVE_IDLE_MS,
+  WAVE_WELCOME_MS,
   closestApproach,
   crossesViewport,
   gazeOffset,
   lerpPoint,
+  pounceLeap,
   randomBetween,
 } from '@/lib/catLife';
+import { NEUTRAL_POSE, momentPose, momentSeconds, type MomentContext, type MomentKind, type MomentPose } from '@/lib/catMoments';
 import { onShootingStar, type ShootingStar } from '@/lib/skyEvents';
 
 const EXPO_OUT = cubicBezier(0.16, 1, 0.3, 1);
@@ -32,6 +40,27 @@ const CUBIC_OUT = cubicBezier(0.33, 1, 0.68, 1);
 
 /** Critically damped (damping = 2 * sqrt(stiffness)): glides to the target, never overshoots. */
 const GAZE_SPRING = { stiffness: 120, damping: 21.9, mass: 1, restDelta: 0.01 } as const;
+
+const WELCOME_KEY = 'mantecado-welcomed';
+/** Backup for browsers where sessionStorage throws (private modes, blocked storage). */
+let welcomedInMemory = false;
+
+const hasWelcomed = () => {
+  try {
+    return welcomedInMemory || window.sessionStorage.getItem(WELCOME_KEY) === '1';
+  } catch {
+    return welcomedInMemory;
+  }
+};
+
+const markWelcomed = () => {
+  welcomedInMemory = true;
+  try {
+    window.sessionStorage.setItem(WELCOME_KEY, '1');
+  } catch {
+    // Storage is optional; the in-memory flag covers this page.
+  }
+};
 
 const BREATH_PERIOD_S = 3.5;
 const SLEEP_BREATH_PERIOD_S = 6;
@@ -60,6 +89,8 @@ export interface MantecadoLife {
   zClock: MotionValue<number>;
   pupilX: MotionValue<number>;
   pupilY: MotionValue<number>;
+  /** The active moment's pose offsets (neutral when none plays). Added to the life motion. */
+  pose: MotionValue<MomentPose>;
   /** Pointer and focus handlers for the cat's button. */
   bind: {
     onPointerEnter: (e: React.PointerEvent) => void;
@@ -94,11 +125,17 @@ export function useMantecadoLife(): MantecadoLife {
   const pupilX = useSpring(rawX, GAZE_SPRING);
   const pupilY = useSpring(rawY, GAZE_SPRING);
 
+  const pose = useMotionValue<MomentPose>(NEUTRAL_POSE);
+
   const hovered = useRef(false);
   const focused = useRef(false);
+  /** A moment is playing: the cat stays risen until it ends. */
+  const momentOn = useRef(false);
+  /** Set by the effect: waves when the cat is greeted after a long idle. */
+  const hoverCue = useRef<(() => void) | null>(null);
 
   const syncRise = useCallback(() => {
-    const target = hovered.current || focused.current ? 1 : 0;
+    const target = hovered.current || focused.current || momentOn.current ? 1 : 0;
     if (reduceMotion) {
       rise.set(target);
       return;
@@ -112,6 +149,7 @@ export function useMantecadoLife(): MantecadoLife {
         if (e.pointerType === 'touch') return;
         hovered.current = true;
         syncRise();
+        hoverCue.current?.();
       },
       onPointerLeave: (e) => {
         if (e.pointerType === 'touch') return;
@@ -122,6 +160,7 @@ export function useMantecadoLife(): MantecadoLife {
         if (!e.currentTarget.matches(':focus-visible')) return;
         focused.current = true;
         syncRise();
+        hoverCue.current?.();
       },
       onBlur: () => {
         focused.current = false;
@@ -202,6 +241,34 @@ export function useMantecadoLife(): MantecadoLife {
     let lastStarWake = -Infinity;
     let starAnim: AnimationPlaybackControls | undefined;
     let resleepTimer = 0;
+    let returnedAt = -Infinity;
+    let momentAnim: AnimationPlaybackControls | undefined;
+    /* Pounce: only with a fine pointer, once per visit near the cat. */
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    let restTimer = 0;
+    let lastPounce = -Infinity;
+    let pounceArmed = true;
+
+    /* Moments: one at a time. The pose is driven by one clock in seconds, never by React state. */
+    const playMoment = (kind: MomentKind, opts: { ctx?: MomentContext; speed?: number; onEnd?: () => void } = {}) => {
+      if (momentAnim || document.hidden) return false;
+      momentOn.current = true;
+      syncRise();
+      const total = momentSeconds(kind, opts.ctx);
+      momentAnim = animate(0, total, {
+        duration: total / (opts.speed ?? 1),
+        ease: 'linear',
+        onUpdate: (u) => pose.set(momentPose(kind, u, opts.ctx)),
+        onComplete: () => {
+          momentAnim = undefined;
+          momentOn.current = false;
+          pose.set(NEUTRAL_POSE);
+          syncRise();
+          opts.onEnd?.();
+        },
+      });
+      return true;
+    };
 
     /* Breathing: eases back to rest, then loops at the requested pace. */
     const startBreath = (periodS: number) => {
@@ -282,9 +349,11 @@ export function useMantecadoLife(): MantecadoLife {
       if (document.hidden) loops.z.pause();
     };
 
-    const wake = () => {
+    const wake = (stretch = false) => {
       if (!asleep) return;
       asleep = false;
+      // A shorter stretch greets the new day. It is skipped if another moment is already playing.
+      if (stretch) playMoment('stretch', { speed: 1.4 });
       animate(sleep, 0, { duration: 0.45, ease: EXPO_OUT });
       perkEars(1.1);
       startBreath(BREATH_PERIOD_S);
@@ -299,22 +368,47 @@ export function useMantecadoLife(): MantecadoLife {
         sleepTimer = later(checkSleep, Math.max(1000, SLEEP_AFTER_MS - idle));
         return;
       }
-      if (pointerNear()) {
-        sleepTimer = later(checkSleep, 5000);
+      if (pointerNear() || momentAnim) {
+        sleepTimer = later(checkSleep, momentAnim ? 1500 : 5000);
         return;
       }
-      fallAsleep();
+      // Stretch and yawn first, then drop off unless someone showed up meanwhile.
+      const settle = () => {
+        if (!asleep && performance.now() - lastInput >= SLEEP_AFTER_MS) fallAsleep();
+        else armSleep();
+      };
+      if (!playMoment('stretch', { onEnd: settle })) fallAsleep();
     };
     const armSleep = () => {
       if (!sleepTimer) sleepTimer = later(checkSleep, SLEEP_AFTER_MS);
     };
 
     const onInput = () => {
-      lastInput = performance.now();
+      const now = performance.now();
+      if (now - lastInput > WAVE_IDLE_MS) returnedAt = now;
+      lastInput = now;
       if (resleepTimer) cancel(resleepTimer);
       resleepTimer = 0;
-      if (asleep) wake();
+      if (asleep) wake(true);
       armSleep();
+    };
+
+    /* A pointer that stops near the cat gets pounced at. The leap goes toward it, within the viewport. */
+    const tryPounce = () => {
+      restTimer = 0;
+      if (!pointer || asleep || momentAnim || document.hidden || hovered.current || focused.current) return;
+      if (!pounceArmed || performance.now() - lastPounce < POUNCE_COOLDOWN_MS) return;
+      const c = headCenter();
+      const dx = pointer.x - c.x;
+      const dy = pointer.y - c.y;
+      if (Math.hypot(dx, dy) > POUNCE_RADIUS_PX) return;
+      const k = rect.width / CAT_VIEWBOX.w;
+      const roomRight = window.innerWidth - (rect.left + (CAT_RIGHT_EDGE - CAT_VIEWBOX.x) * k) - 4;
+      const leap = pounceLeap(dx, dy, k, roomRight);
+      if (playMoment('pounce', { ctx: { leapX: leap.x, leapY: leap.y } })) {
+        lastPounce = performance.now();
+        pounceArmed = false;
+      }
     };
 
     const onPointerMove = (e: PointerEvent) => {
@@ -322,6 +416,13 @@ export function useMantecadoLife(): MantecadoLife {
       if (e.pointerType === 'touch') return;
       pointer = { x: e.clientX, y: e.clientY };
       if (!starActive) aim(e.clientX, e.clientY);
+      if (finePointer && e.pointerType === 'mouse') {
+        const c = headCenter();
+        const near = Math.hypot(pointer.x - c.x, pointer.y - c.y) <= POUNCE_RADIUS_PX;
+        if (!near) pounceArmed = true;
+        if (restTimer) cancel(restTimer);
+        restTimer = near ? later(tryPounce, POUNCE_REST_MS) : 0;
+      }
     };
 
     /* Shooting stars: the gaze rides the star, the ears perk, the tail flicks as it passes. */
@@ -333,6 +434,9 @@ export function useMantecadoLife(): MantecadoLife {
       if (asleep && now - lastStarWake < STAR_WAKE_COOLDOWN_MS) return;
       starStartedAt = now;
 
+      // The factory launch is worth cheering for; hero comets only catch the cat's eye.
+      if (star.source === 'factory') playMoment('rocket', { ctx: { flight: star.durationMs / 1000 } });
+
       starAnim?.stop();
       if (asleep) {
         lastStarWake = now;
@@ -341,7 +445,7 @@ export function useMantecadoLife(): MantecadoLife {
         if (resleepTimer) cancel(resleepTimer);
         resleepTimer = later(() => {
           resleepTimer = 0;
-          if (!asleep && performance.now() - lastInput >= SLEEP_AFTER_MS) fallAsleep();
+          if (!asleep && !momentAnim && performance.now() - lastInput >= SLEEP_AFTER_MS) fallAsleep();
         }, star.durationMs + 3000);
       }
 
@@ -372,9 +476,11 @@ export function useMantecadoLife(): MantecadoLife {
       if (document.hidden) {
         allLoops().forEach((c) => c.pause());
         starAnim?.pause();
+        momentAnim?.pause();
       } else {
         allLoops().forEach((c) => c.play());
         starAnim?.play();
+        momentAnim?.play();
         onInput();
       }
     };
@@ -391,6 +497,23 @@ export function useMantecadoLife(): MantecadoLife {
     scheduleTwitch();
     armSleep();
 
+    /* Wave hello once per browser session, and again when the cat is greeted after a long idle. */
+    const welcome = () => {
+      if (hasWelcomed()) return;
+      if (asleep || document.hidden || momentAnim) {
+        later(welcome, WAVE_WELCOME_MS);
+        return;
+      }
+      markWelcomed();
+      playMoment('wave');
+    };
+    if (!hasWelcomed()) later(welcome, WAVE_WELCOME_MS);
+    hoverCue.current = () => {
+      if (asleep || momentAnim) return;
+      const now = performance.now();
+      if (now - lastInput > WAVE_IDLE_MS || now - returnedAt < 400) playMoment('wave');
+    };
+
     const passive = { passive: true } as const;
     window.addEventListener('pointermove', onPointerMove, passive);
     window.addEventListener('pointerdown', onInput, passive);
@@ -403,6 +526,7 @@ export function useMantecadoLife(): MantecadoLife {
     const offStar = onShootingStar(watchStar);
 
     return () => {
+      hoverCue.current = null;
       offStar();
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerdown', onInput);
@@ -416,8 +540,11 @@ export function useMantecadoLife(): MantecadoLife {
       timers.clear();
       allLoops().forEach((c) => c.stop());
       starAnim?.stop();
+      momentAnim?.stop();
+      momentOn.current = false;
+      pose.set(NEUTRAL_POSE);
     };
-  }, [reduceMotion, breath, blink, flick, perk, pupilX, pupilY, rawX, rawY, rise, sleep, tailPhase, twitchL, twitchR, zClock]);
+  }, [reduceMotion, breath, blink, flick, perk, pose, pupilX, pupilY, rawX, rawY, rise, sleep, syncRise, tailPhase, twitchL, twitchR, zClock]);
 
   return {
     svgRef,
@@ -433,6 +560,7 @@ export function useMantecadoLife(): MantecadoLife {
     zClock,
     pupilX,
     pupilY,
+    pose,
     bind,
   };
 }
