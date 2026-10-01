@@ -388,6 +388,7 @@ export default function Hero() {
         from: { x: rect.left + startX * kx, y: rect.top },
         to: { x: rect.left + (startX - run) * kx, y: rect.top + run * ky },
         durationMs: (run / COMET_SPEED) * 1000,
+        source: 'hero',
       });
     }
 

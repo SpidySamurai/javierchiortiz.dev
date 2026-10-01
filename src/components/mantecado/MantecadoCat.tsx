@@ -16,6 +16,8 @@ import { MC } from './palette';
 const WHISKER = 'rgba(51, 41, 43, 0.35)';
 const EYES = [27, 73] as const;
 const EYE_Y = 55;
+const PUPIL_R = 4;
+const IRIS_R = 9;
 
 /** Rotate or scale around a point in drawing units, not around the element's own box. */
 const pivot = (x: number, y: number) => ({
@@ -29,39 +31,61 @@ const clamp01 = (n: number) => (n < 0 ? 0 : n > 1 ? 1 : n);
 function Eye({
   cx,
   lid,
+  happy,
+  scale,
+  dilate,
   pupilX,
   pupilY,
   clipId,
 }: {
   cx: number;
+  scale: MotionValue<number>;
+  dilate: MotionValue<number>;
   lid: MotionValue<number>;
+  happy: MotionValue<number>;
   pupilX: MotionValue<number>;
   pupilY: MotionValue<number>;
   clipId: string;
 }) {
   const topY = useTransform(lid, (l) => -12.5 + 13.7 * l);
   const bottomY = useTransform(lid, (l) => 12.5 - 13.7 * l);
-  const edge = useTransform(lid, (l) => clamp01(l * 4));
+  const edge = useTransform([lid, happy], ([l, h]: number[]) => clamp01(l * 4) * (1 - h));
+  // Dilated pupils grow, and their reach shrinks so they stay inside the iris (radius 9).
+  const grow = useTransform(dilate, (d) => 1 + 0.75 * d);
+  const reach = useTransform(dilate, (d) => (IRIS_R - 0.4 - PUPIL_R * (1 + 0.75 * d)) / (IRIS_R - 0.4 - PUPIL_R));
+  const gx = useTransform([pupilX, reach], ([v, k]: number[]) => v * k);
+  const gy = useTransform([pupilY, reach], ([v, k]: number[]) => v * k);
+  // The highlight rides the pupil, up and to the right.
+  const hlX = useTransform([gx, grow], ([v, g]: number[]) => v + PUPIL_R * g * 0.38);
+  const hlY = useTransform([gy, grow], ([v, g]: number[]) => v - PUPIL_R * g * 0.38);
   return (
-    <g transform={`translate(${cx} ${EYE_Y})`}>
-      <circle r={12} fill={MC.dark} />
-      <circle r={9} fill={MC.eyeYellow} />
-      <motion.circle r={4} fill={MC.dark} style={{ x: pupilX, y: pupilY }} />
-      <g clipPath={`url(#${clipId})`}>
-        <motion.rect x={-13} y={0} width={26} height={26} fill={MC.white} style={{ y: bottomY }} />
-        <motion.g style={{ y: topY }}>
-          <rect x={-13} y={-26} width={26} height={26} fill={MC.white} />
-          <motion.path
-            d="M-10.5 0 Q0 4 10.5 0"
-            fill="none"
-            stroke={MC.dark}
-            strokeWidth={2.6}
-            strokeLinecap="round"
-            style={{ opacity: edge }}
-          />
+    <motion.g style={{ scale, ...pivot(cx, EYE_Y) }}>
+      <g transform={`translate(${cx} ${EYE_Y})`}>
+        <circle r={12} fill={MC.dark} />
+        <circle r={9} fill={MC.eyeYellow} />
+        <motion.circle r={PUPIL_R} fill={MC.dark} style={{ x: gx, y: gy, scale: grow }} />
+        <motion.circle r={1.3} fill="#fff" opacity={0.9} style={{ x: hlX, y: hlY }} />
+        <g clipPath={`url(#${clipId})`}>
+          <motion.rect x={-13} y={0} width={26} height={26} fill={MC.white} style={{ y: bottomY }} />
+          <motion.g style={{ y: topY }}>
+            <rect x={-13} y={-26} width={26} height={26} fill={MC.white} />
+            <motion.path
+              d="M-10.5 0 Q0 4 10.5 0"
+              fill="none"
+              stroke={MC.dark}
+              strokeWidth={2.6}
+              strokeLinecap="round"
+              style={{ opacity: edge }}
+            />
+          </motion.g>
+        </g>
+        {/* Happy squint: covers the eye with the face colour and draws an arch */}
+        <motion.g style={{ opacity: happy }}>
+          <circle r={12.8} fill={MC.white} />
+          <path d="M-9 4 Q0 -8 9 4" fill="none" stroke={MC.dark} strokeWidth={3} strokeLinecap="round" />
         </motion.g>
       </g>
-    </g>
+    </motion.g>
   );
 }
 
@@ -82,10 +106,78 @@ function Ear({
   return (
     <motion.g style={{ rotate, scaleY, ...pivot(baseX, 24.3) }}>
       <g transform={`rotate(${resting} ${apexX} 5)`}>
-        <path d={`M${apexX} -15 L${apexX - 15} 25 L${apexX + 15} 25 Z`} fill={MC.orange} />
+        <path
+          d={`M${apexX} -15 L${apexX - 15} 25 L${apexX + 15} 25 Z`}
+          fill={MC.orange}
+          stroke={MC.orange}
+          strokeWidth={2}
+          strokeLinejoin="round"
+        />
         <path d={`M${apexX} 0 L${apexX - 8} 25 L${apexX + 8} 25 Z`} fill={MC.nose} />
       </g>
     </motion.g>
+  );
+}
+
+/**
+ * The left front limb. It pivots at the shoulder. At rest it is invisible
+ * (white on white) and only its paw bump shows, so the cat has exactly two
+ * paws. While raised, the limb fades in and the bump gives way to pink pads.
+ */
+function Limb({ rotate, lines }: { rotate: MotionValue<number>; lines: MotionValue<number> }) {
+  const limbOp = useTransform(rotate, (r) => clamp01(r / 25));
+  const bumpOp = useTransform(rotate, (r) => 0.1 * (1 - clamp01(r / 40)));
+  const padsOp = useTransform(rotate, (r) => clamp01((r - 40) / 60));
+  return (
+    <motion.g style={{ rotate, ...pivot(53, 114) }}>
+      <g transform="translate(53 114)">
+        <motion.rect
+          x={-8}
+          y={0}
+          width={16}
+          height={36}
+          rx={8}
+          fill={MC.white}
+          stroke={MC.dark}
+          strokeOpacity={0.14}
+          strokeWidth={1}
+          style={{ opacity: limbOp }}
+        />
+        <motion.path d="M-8 36 V34 A8 8 0 0 1 0 26 A8 8 0 0 1 8 34 V36 Z" fill="#000" style={{ opacity: bumpOp }} />
+        <motion.g style={{ opacity: padsOp }} fill={MC.nose}>
+          <circle cx={0} cy={29} r={3.8} />
+          <circle cx={-4.5} cy={23} r={1.8} />
+          <circle cx={0} cy={21} r={1.8} />
+          <circle cx={4.5} cy={23} r={1.8} />
+        </motion.g>
+        <motion.path
+          d="M-15 24 Q-21 31 -15 38 M15 24 Q21 31 15 38"
+          fill="none"
+          stroke={MC.sparkle}
+          strokeWidth={2}
+          strokeLinecap="round"
+          style={{ opacity: lines }}
+        />
+      </g>
+    </motion.g>
+  );
+}
+
+const SPARKLES = [
+  { x: -6, y: 0, size: 1.1, fill: MC.eyeYellow },
+  { x: 106, y: 6, size: 0.8, fill: MC.sparkle },
+  { x: 52, y: -26, size: 0.9, fill: MC.eyeYellow },
+] as const;
+
+/** A tiny four-point star that grows and fades with `amount`. */
+function Sparkle({ amount, size, fill }: { amount: MotionValue<number>; size: number; fill: string }) {
+  const scale = useTransform(amount, (a) => Math.max(0.01, a * size));
+  return (
+    <motion.path
+      d="M0 -6.4 L1.3 -1.3 L6.4 0 L1.3 1.3 L0 6.4 L-1.3 1.3 L-6.4 0 L-1.3 -1.3 Z"
+      fill={fill}
+      style={{ scale, opacity: amount }}
+    />
   );
 }
 
@@ -107,21 +199,58 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
   const t = useTranslations('common.mantecado');
   const uid = useId().replace(/:/g, '');
   const life = useMantecadoLife();
-  const { rise, sleep, breath, perk, tailPhase, flick, twitchL, twitchR, blink, zClock } = life;
+  const { rise, sleep, breath, perk, tailPhase, flick, twitchL, twitchR, blink, zClock, pose } = life;
 
-  const bodyShape = 'M30 150 V90 A40 40 0 0 1 70 50 H80 A40 40 0 0 1 120 90 V150 Z';
+  const bodyShape = 'M30 150 V90 A40 40 0 0 1 70 50 H74 C96 52 116 76 118 104 V150 Z';
   const headShape = 'M45 0 H55 A45 45 0 0 1 100 45 A45 45 0 0 1 55 90 H45 A45 45 0 0 1 0 45 A45 45 0 0 1 45 0 Z';
   const tailShape = 'M90 125 H127.5 A12.5 12.5 0 0 1 127.5 150 H90 Z';
 
-  const sink = useTransform(rise, (v) => PEEK_Y * (1 - v));
-  const headY = useTransform([breath, sleep], ([b, s]: number[]) => -1.3 * b + 9 * s);
-  const headTilt = useTransform(sleep, (s) => 4 * s);
-  const chest = useTransform(breath, (b) => 1 + 0.018 * b);
-  const tailRotate = useTransform([tailPhase, rise, sleep, flick], ([ph, r, s, f]: number[]) => ph * (2.5 + 7.5 * r) * (1 - s) - 22 * f);
-  const earL = useTransform([twitchL, perk, sleep], ([w, p, s]: number[]) => -w + 6 * p - 5 * s);
-  const earR = useTransform([twitchR, perk, sleep], ([w, p, s]: number[]) => w - 6 * p + 5 * s);
-  const earScale = useTransform(perk, (p) => 1 + 0.08 * p);
-  const lid = useTransform([blink, sleep], ([b, s]: number[]) => Math.max(b, clamp01(s / 0.7)));
+  // Moment pose channels, one motion value each
+  const mHeadRot = useTransform(pose, (p) => p.headRot);
+  const mTail = useTransform(pose, (p) => p.tail);
+  const mEarL = useTransform(pose, (p) => p.earL);
+  const mEarR = useTransform(pose, (p) => p.earR);
+  const mEarS = useTransform(pose, (p) => p.earS);
+  const mHeadY = useTransform(pose, (p) => p.headY);
+  const mChest = useTransform(pose, (p) => p.chest);
+  const mLid = useTransform(pose, (p) => p.lid);
+  const mMouth = useTransform(pose, (p) => p.mouth);
+  const mPaws = useTransform(pose, (p) => p.paws);
+  const eyeScale = useTransform(pose, (p) => p.eyeScale);
+  const dilate = useTransform(pose, (p) => p.dilate);
+  const shiftX = useTransform(pose, (p) => p.shiftX);
+  const wiggle = useTransform(pose, (p) => p.rot);
+  const mLift = useTransform(pose, (p) => p.lift);
+  const squashX = useTransform(pose, (p) => p.squashX);
+  const squashY = useTransform(pose, (p) => p.squashY);
+  const sparkle = useTransform(pose, (p) => p.sparkle);
+
+  const sink = useTransform([rise, mLift], ([v, l]: number[]) => PEEK_Y * (1 - v) + l);
+  const headY = useTransform([breath, sleep, mHeadY], ([b, s, m]: number[]) => -1.3 * b + 9 * s + m);
+  const headTilt = useTransform([sleep, mHeadRot], ([s, r]: number[]) => 4 * s + r);
+  const chest = useTransform([breath, mChest], ([b, m]: number[]) => (1 + 0.018 * b) * m);
+  const tailRotate = useTransform(
+    [tailPhase, rise, sleep, flick, mTail],
+    ([ph, r, s, f, m]: number[]) => ph * (2.5 + 7.5 * r) * (1 - s) - 22 * f + m,
+  );
+  const earL = useTransform([twitchL, perk, sleep, mEarL], ([w, k, s, m]: number[]) => -w + 6 * k - 5 * s + m);
+  const earR = useTransform([twitchR, perk, sleep, mEarR], ([w, k, s, m]: number[]) => w - 6 * k + 5 * s + m);
+  const earScale = useTransform([perk, mEarS], ([k, m]: number[]) => (1 + 0.08 * k) * m);
+  const happy = useTransform(pose, (p) => p.happy);
+  const pawRot = useTransform(pose, (p) => p.pawRot);
+  const waveLines = useTransform(pose, (p) => p.waveLines);
+  const lid = useTransform([blink, sleep, mLid], ([b, s, m]: number[]) => Math.max(b, clamp01(s / 0.7), m));
+  // Yawn: the small mouth gives way to an open one
+  const smallMouth = useTransform(mMouth, (m) => (m > 0.03 ? 0 : 1));
+  const yawnOp = useTransform(mMouth, (m) => (m > 0.03 ? 1 : 0));
+  const yawnScale = useTransform(mMouth, (m) => Math.max(0.01, m));
+  const yawnY = useTransform(mMouth, (m) => 76 + 2 * m);
+  const tongueY = useTransform(mMouth, (m) => 80 + 4 * m);
+  // Stretching paws slide outward along the floor
+  const pawsOp = useTransform(mPaws, (p) => clamp01(p * 3));
+  const pawsScale = useTransform(mPaws, (p) => 0.8 + 0.4 * p);
+  const pawLX = useTransform(mPaws, (p) => -8 * p);
+  const pawRX = useTransform(mPaws, (p) => 8 * p);
 
   return (
     <button
@@ -160,7 +289,7 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
           <clipPath id={`${uid}-eye`}><circle r={12.7} /></clipPath>
         </defs>
 
-        <motion.g style={{ y: sink }}>
+        <motion.g style={{ x: shiftX, y: sink, rotate: wiggle, scaleX: squashX, scaleY: squashY, ...pivot(75, 150) }}>
           {/* Tail, behind the body */}
           <motion.g style={{ rotate: tailRotate, ...pivot(100, 137.5) }}>
             <path d={tailShape} fill={MC.orange} />
@@ -175,8 +304,24 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
           <motion.g style={{ scaleY: chest, ...pivot(75, 150) }}>
             <path d={bodyShape} fill={MC.white} />
             <circle cx={30} cy={100} r={41.2} fill={MC.orange} clipPath={`url(#${uid}-body)`} />
-            <path d="M45 150 V148 A8 8 0 0 1 53 140 A8 8 0 0 1 61 148 V150 Z" fill="#000" opacity={0.1} />
             <path d="M75 150 V148 A8 8 0 0 1 83 140 A8 8 0 0 1 91 148 V150 Z" fill="#000" opacity={0.1} />
+          </motion.g>
+          {/* Front paws pushed out while stretching */}
+          <motion.g style={{ opacity: pawsOp }}>
+            {[{ cx: 53, x: pawLX }, { cx: 83, x: pawRX }].map((paw) => (
+              <motion.ellipse
+                key={paw.cx}
+                cx={paw.cx}
+                cy={146}
+                rx={10}
+                ry={6}
+                fill={MC.white}
+                stroke={MC.dark}
+                strokeOpacity={0.18}
+                strokeWidth={1}
+                style={{ x: paw.x, scale: pawsScale }}
+              />
+            ))}
           </motion.g>
 
           {/* Head */}
@@ -187,18 +332,38 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
             <Ear side="right" rotate={earR} scaleY={earScale} />
 
             {EYES.map((cx) => (
-              <Eye key={cx} cx={cx} lid={lid} pupilX={life.pupilX} pupilY={life.pupilY} clipId={`${uid}-eye`} />
+              <Eye key={cx} cx={cx} lid={lid} happy={happy} scale={eyeScale} dilate={dilate} pupilX={life.pupilX} pupilY={life.pupilY} clipId={`${uid}-eye`} />
             ))}
+
+            {/* Blush */}
+            <ellipse cx={14} cy={70} rx={6} ry={3} fill={MC.nose} opacity={0.22} />
+            <ellipse cx={86} cy={70} rx={6} ry={3} fill={MC.nose} opacity={0.22} />
 
             {/* Nose and mouth */}
             <path d="M45 60 H55 L50 68 Z" fill={MC.nose} />
-            <rect x={47} y={66} width={2} height={6} fill={MC.nose} transform="rotate(30 48 69)" />
-            <rect x={51} y={66} width={2} height={6} fill={MC.nose} transform="rotate(-30 52 69)" />
+            <motion.g style={{ opacity: smallMouth }}>
+              <rect x={47} y={66} width={2} height={6} fill={MC.nose} transform="rotate(30 48 69)" />
+              <rect x={51} y={66} width={2} height={6} fill={MC.nose} transform="rotate(-30 52 69)" />
+            </motion.g>
+            <motion.g style={{ opacity: yawnOp }}>
+              <motion.ellipse cx={50} cy={0} rx={7} ry={10} fill={MC.mouth} style={{ y: yawnY, scale: yawnScale }} />
+              <motion.ellipse cx={50} cy={0} rx={4} ry={4} fill={MC.nose} style={{ y: tongueY, scale: yawnScale }} />
+            </motion.g>
 
             {/* Whiskers */}
             <rect x={-15} y={57} width={35} height={1.5} rx={0.75} fill={WHISKER} transform="rotate(-8 2.5 57.75)" />
             <rect x={80} y={57} width={35} height={1.5} rx={0.75} fill={WHISKER} transform="rotate(8 97.5 57.75)" />
           </motion.g>
+
+          {/* Left front limb, over the head while it waves */}
+          <Limb rotate={pawRot} lines={waveLines} />
+
+          {/* Sparkles after a cheer */}
+          {SPARKLES.map((sp) => (
+            <g key={sp.x} transform={`translate(${sp.x} ${sp.y})`}>
+              <Sparkle amount={sparkle} size={sp.size} fill={sp.fill} />
+            </g>
+          ))}
 
           {/* Sleep glyphs */}
           {[0, 1, 2].map((i) => (
