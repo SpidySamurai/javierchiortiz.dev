@@ -11,6 +11,11 @@ export const STAR_COOLDOWN_MS = 700;
 /** A sleeping cat is roused by a star at most this often, so busy skies do not keep it up. */
 export const STAR_WAKE_COOLDOWN_MS = 60_000;
 
+/** The welcome wave plays this long after the cat first shows up. */
+export const WAVE_WELCOME_MS = 1500;
+/** Hovering or focusing the cat after this much inactivity gets a wave. */
+export const WAVE_IDLE_MS = 60_000;
+
 export const randomBetween = (min: number, max: number) => min + Math.random() * (max - min);
 
 export const lerpPoint = (a: SkyPoint, b: SkyPoint, t: number): SkyPoint => ({

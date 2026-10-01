@@ -1,7 +1,7 @@
 'use client';
 
 import { useId } from 'react';
-import { motion, useMotionValue, useTransform, type MotionValue } from 'framer-motion';
+import { motion, useTransform, type MotionValue } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { useMantecadoLife } from '@/hooks/useMantecadoLife';
 import { CAT_SCALE, CAT_VIEWBOX, PEEK_Y } from '@/lib/catLife';
@@ -30,19 +30,21 @@ const clamp01 = (n: number) => (n < 0 ? 0 : n > 1 ? 1 : n);
 function Eye({
   cx,
   lid,
+  happy,
   pupilX,
   pupilY,
   clipId,
 }: {
   cx: number;
   lid: MotionValue<number>;
+  happy: MotionValue<number>;
   pupilX: MotionValue<number>;
   pupilY: MotionValue<number>;
   clipId: string;
 }) {
   const topY = useTransform(lid, (l) => -12.5 + 13.7 * l);
   const bottomY = useTransform(lid, (l) => 12.5 - 13.7 * l);
-  const edge = useTransform(lid, (l) => clamp01(l * 4));
+  const edge = useTransform([lid, happy], ([l, h]: number[]) => clamp01(l * 4) * (1 - h));
   // The highlight rides the pupil, up and to the right.
   const hlX = useTransform(pupilX, (v) => v + PUPIL_R * 0.38);
   const hlY = useTransform(pupilY, (v) => v - PUPIL_R * 0.38);
@@ -66,6 +68,11 @@ function Eye({
           />
         </motion.g>
       </g>
+      {/* Happy squint: covers the eye with the face colour and draws an arch */}
+      <motion.g style={{ opacity: happy }}>
+        <circle r={12.8} fill={MC.white} />
+        <path d="M-9 4 Q0 -8 9 4" fill="none" stroke={MC.dark} strokeWidth={3} strokeLinecap="round" />
+      </motion.g>
     </g>
   );
 }
@@ -105,7 +112,7 @@ function Ear({
  * (white on white) and only its paw bump shows, so the cat has exactly two
  * paws. While raised, the limb fades in and the bump gives way to pink pads.
  */
-function Limb({ rotate }: { rotate: MotionValue<number> }) {
+function Limb({ rotate, lines }: { rotate: MotionValue<number>; lines: MotionValue<number> }) {
   const limbOp = useTransform(rotate, (r) => clamp01(r / 25));
   const bumpOp = useTransform(rotate, (r) => 0.1 * (1 - clamp01(r / 40)));
   const padsOp = useTransform(rotate, (r) => clamp01((r - 40) / 60));
@@ -131,6 +138,14 @@ function Limb({ rotate }: { rotate: MotionValue<number> }) {
           <circle cx={0} cy={21} r={1.8} />
           <circle cx={4.5} cy={23} r={1.8} />
         </motion.g>
+        <motion.path
+          d="M-15 24 Q-21 31 -15 38 M15 24 Q21 31 15 38"
+          fill="none"
+          stroke={MC.sparkle}
+          strokeWidth={2}
+          strokeLinecap="round"
+          style={{ opacity: lines }}
+        />
       </g>
     </motion.g>
   );
@@ -154,21 +169,33 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
   const t = useTranslations('common.mantecado');
   const uid = useId().replace(/:/g, '');
   const life = useMantecadoLife();
-  const { rise, sleep, breath, perk, tailPhase, flick, twitchL, twitchR, blink, zClock } = life;
+  const { rise, sleep, breath, perk, tailPhase, flick, twitchL, twitchR, blink, zClock, pose } = life;
 
   const bodyShape = 'M30 150 V90 A40 40 0 0 1 70 50 H74 C96 52 116 76 118 104 V150 Z';
   const headShape = 'M45 0 H55 A45 45 0 0 1 100 45 A45 45 0 0 1 55 90 H45 A45 45 0 0 1 0 45 A45 45 0 0 1 45 0 Z';
   const tailShape = 'M90 125 H127.5 A12.5 12.5 0 0 1 127.5 150 H90 Z';
 
+  // Moment pose channels, one motion value each
+  const mHeadRot = useTransform(pose, (p) => p.headRot);
+  const mTail = useTransform(pose, (p) => p.tail);
+  const mEarL = useTransform(pose, (p) => p.earL);
+  const mEarR = useTransform(pose, (p) => p.earR);
+  const mEarS = useTransform(pose, (p) => p.earS);
+
   const sink = useTransform(rise, (v) => PEEK_Y * (1 - v));
   const headY = useTransform([breath, sleep], ([b, s]: number[]) => -1.3 * b + 9 * s);
-  const headTilt = useTransform(sleep, (s) => 4 * s);
+  const headTilt = useTransform([sleep, mHeadRot], ([s, r]: number[]) => 4 * s + r);
   const chest = useTransform(breath, (b) => 1 + 0.018 * b);
-  const tailRotate = useTransform([tailPhase, rise, sleep, flick], ([ph, r, s, f]: number[]) => ph * (2.5 + 7.5 * r) * (1 - s) - 22 * f);
-  const earL = useTransform([twitchL, perk, sleep], ([w, p, s]: number[]) => -w + 6 * p - 5 * s);
-  const earR = useTransform([twitchR, perk, sleep], ([w, p, s]: number[]) => w - 6 * p + 5 * s);
-  const earScale = useTransform(perk, (p) => 1 + 0.08 * p);
-  const pawRot = useMotionValue(0);
+  const tailRotate = useTransform(
+    [tailPhase, rise, sleep, flick, mTail],
+    ([ph, r, s, f, m]: number[]) => ph * (2.5 + 7.5 * r) * (1 - s) - 22 * f + m,
+  );
+  const earL = useTransform([twitchL, perk, sleep, mEarL], ([w, k, s, m]: number[]) => -w + 6 * k - 5 * s + m);
+  const earR = useTransform([twitchR, perk, sleep, mEarR], ([w, k, s, m]: number[]) => w - 6 * k + 5 * s + m);
+  const earScale = useTransform([perk, mEarS], ([k, m]: number[]) => (1 + 0.08 * k) * m);
+  const happy = useTransform(pose, (p) => p.happy);
+  const pawRot = useTransform(pose, (p) => p.pawRot);
+  const waveLines = useTransform(pose, (p) => p.waveLines);
   const lid = useTransform([blink, sleep], ([b, s]: number[]) => Math.max(b, clamp01(s / 0.7)));
 
   return (
@@ -233,7 +260,7 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
             <Ear side="right" rotate={earR} scaleY={earScale} />
 
             {EYES.map((cx) => (
-              <Eye key={cx} cx={cx} lid={lid} pupilX={life.pupilX} pupilY={life.pupilY} clipId={`${uid}-eye`} />
+              <Eye key={cx} cx={cx} lid={lid} happy={happy} pupilX={life.pupilX} pupilY={life.pupilY} clipId={`${uid}-eye`} />
             ))}
 
             {/* Blush */}
@@ -251,7 +278,7 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
           </motion.g>
 
           {/* Left front limb, over the head while it waves */}
-          <Limb rotate={pawRot} />
+          <Limb rotate={pawRot} lines={waveLines} />
 
           {/* Sleep glyphs */}
           {[0, 1, 2].map((i) => (
