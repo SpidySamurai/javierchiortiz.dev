@@ -27,7 +27,7 @@ import {
   lerpPoint,
   randomBetween,
 } from '@/lib/catLife';
-import { MOMENT_SECONDS, NEUTRAL_POSE, momentPose, type MomentKind, type MomentPose } from '@/lib/catMoments';
+import { NEUTRAL_POSE, momentPose, momentSeconds, type MomentContext, type MomentKind, type MomentPose } from '@/lib/catMoments';
 import { onShootingStar, type ShootingStar } from '@/lib/skyEvents';
 
 const EXPO_OUT = cubicBezier(0.16, 1, 0.3, 1);
@@ -240,14 +240,15 @@ export function useMantecadoLife(): MantecadoLife {
     let momentAnim: AnimationPlaybackControls | undefined;
 
     /* Moments: one at a time. The pose is driven by one clock in seconds, never by React state. */
-    const playMoment = (kind: MomentKind, opts: { speed?: number; onEnd?: () => void } = {}) => {
+    const playMoment = (kind: MomentKind, opts: { ctx?: MomentContext; speed?: number; onEnd?: () => void } = {}) => {
       if (momentAnim || document.hidden) return false;
       momentOn.current = true;
       syncRise();
-      momentAnim = animate(0, MOMENT_SECONDS, {
-        duration: MOMENT_SECONDS / (opts.speed ?? 1),
+      const total = momentSeconds(kind, opts.ctx);
+      momentAnim = animate(0, total, {
+        duration: total / (opts.speed ?? 1),
         ease: 'linear',
-        onUpdate: (u) => pose.set(momentPose(kind, u)),
+        onUpdate: (u) => pose.set(momentPose(kind, u, opts.ctx)),
         onComplete: () => {
           momentAnim = undefined;
           momentOn.current = false;
@@ -397,6 +398,9 @@ export function useMantecadoLife(): MantecadoLife {
       if (!crossesViewport(star, window.innerWidth, window.innerHeight)) return;
       if (asleep && now - lastStarWake < STAR_WAKE_COOLDOWN_MS) return;
       starStartedAt = now;
+
+      // The factory launch is worth cheering for; hero comets only catch the cat's eye.
+      if (star.source === 'factory') playMoment('rocket', { ctx: { flight: star.durationMs / 1000 } });
 
       starAnim?.stop();
       if (asleep) {

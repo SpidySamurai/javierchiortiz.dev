@@ -31,11 +31,13 @@ function Eye({
   cx,
   lid,
   happy,
+  scale,
   pupilX,
   pupilY,
   clipId,
 }: {
   cx: number;
+  scale: MotionValue<number>;
   lid: MotionValue<number>;
   happy: MotionValue<number>;
   pupilX: MotionValue<number>;
@@ -49,31 +51,33 @@ function Eye({
   const hlX = useTransform(pupilX, (v) => v + PUPIL_R * 0.38);
   const hlY = useTransform(pupilY, (v) => v - PUPIL_R * 0.38);
   return (
-    <g transform={`translate(${cx} ${EYE_Y})`}>
-      <circle r={12} fill={MC.dark} />
-      <circle r={9} fill={MC.eyeYellow} />
-      <motion.circle r={PUPIL_R} fill={MC.dark} style={{ x: pupilX, y: pupilY }} />
-      <motion.circle r={1.3} fill="#fff" opacity={0.9} style={{ x: hlX, y: hlY }} />
-      <g clipPath={`url(#${clipId})`}>
-        <motion.rect x={-13} y={0} width={26} height={26} fill={MC.white} style={{ y: bottomY }} />
-        <motion.g style={{ y: topY }}>
-          <rect x={-13} y={-26} width={26} height={26} fill={MC.white} />
-          <motion.path
-            d="M-10.5 0 Q0 4 10.5 0"
-            fill="none"
-            stroke={MC.dark}
-            strokeWidth={2.6}
-            strokeLinecap="round"
-            style={{ opacity: edge }}
-          />
+    <motion.g style={{ scale, ...pivot(cx, EYE_Y) }}>
+      <g transform={`translate(${cx} ${EYE_Y})`}>
+        <circle r={12} fill={MC.dark} />
+        <circle r={9} fill={MC.eyeYellow} />
+        <motion.circle r={PUPIL_R} fill={MC.dark} style={{ x: pupilX, y: pupilY }} />
+        <motion.circle r={1.3} fill="#fff" opacity={0.9} style={{ x: hlX, y: hlY }} />
+        <g clipPath={`url(#${clipId})`}>
+          <motion.rect x={-13} y={0} width={26} height={26} fill={MC.white} style={{ y: bottomY }} />
+          <motion.g style={{ y: topY }}>
+            <rect x={-13} y={-26} width={26} height={26} fill={MC.white} />
+            <motion.path
+              d="M-10.5 0 Q0 4 10.5 0"
+              fill="none"
+              stroke={MC.dark}
+              strokeWidth={2.6}
+              strokeLinecap="round"
+              style={{ opacity: edge }}
+            />
+          </motion.g>
+        </g>
+        {/* Happy squint: covers the eye with the face colour and draws an arch */}
+        <motion.g style={{ opacity: happy }}>
+          <circle r={12.8} fill={MC.white} />
+          <path d="M-9 4 Q0 -8 9 4" fill="none" stroke={MC.dark} strokeWidth={3} strokeLinecap="round" />
         </motion.g>
       </g>
-      {/* Happy squint: covers the eye with the face colour and draws an arch */}
-      <motion.g style={{ opacity: happy }}>
-        <circle r={12.8} fill={MC.white} />
-        <path d="M-9 4 Q0 -8 9 4" fill="none" stroke={MC.dark} strokeWidth={3} strokeLinecap="round" />
-      </motion.g>
-    </g>
+    </motion.g>
   );
 }
 
@@ -151,6 +155,24 @@ function Limb({ rotate, lines }: { rotate: MotionValue<number>; lines: MotionVal
   );
 }
 
+const SPARKLES = [
+  { x: -6, y: 0, size: 1.1, fill: MC.eyeYellow },
+  { x: 106, y: 6, size: 0.8, fill: MC.sparkle },
+  { x: 52, y: -26, size: 0.9, fill: MC.eyeYellow },
+] as const;
+
+/** A tiny four-point star that grows and fades with `amount`. */
+function Sparkle({ amount, size, fill }: { amount: MotionValue<number>; size: number; fill: string }) {
+  const scale = useTransform(amount, (a) => Math.max(0.01, a * size));
+  return (
+    <motion.path
+      d="M0 -6.4 L1.3 -1.3 L6.4 0 L1.3 1.3 L0 6.4 L-1.3 1.3 L-6.4 0 L-1.3 -1.3 Z"
+      fill={fill}
+      style={{ scale, opacity: amount }}
+    />
+  );
+}
+
 /** A small z that drifts up and fades. Decorative. */
 function Zed({ clock, sleep, index }: { clock: MotionValue<number>; sleep: MotionValue<number>; index: number }) {
   const phase = (v: number) => (v + index / 3) % 1;
@@ -186,8 +208,13 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
   const mLid = useTransform(pose, (p) => p.lid);
   const mMouth = useTransform(pose, (p) => p.mouth);
   const mPaws = useTransform(pose, (p) => p.paws);
+  const eyeScale = useTransform(pose, (p) => p.eyeScale);
+  const mLift = useTransform(pose, (p) => p.lift);
+  const squashX = useTransform(pose, (p) => p.squashX);
+  const squashY = useTransform(pose, (p) => p.squashY);
+  const sparkle = useTransform(pose, (p) => p.sparkle);
 
-  const sink = useTransform(rise, (v) => PEEK_Y * (1 - v));
+  const sink = useTransform([rise, mLift], ([v, l]: number[]) => PEEK_Y * (1 - v) + l);
   const headY = useTransform([breath, sleep, mHeadY], ([b, s, m]: number[]) => -1.3 * b + 9 * s + m);
   const headTilt = useTransform([sleep, mHeadRot], ([s, r]: number[]) => 4 * s + r);
   const chest = useTransform([breath, mChest], ([b, m]: number[]) => (1 + 0.018 * b) * m);
@@ -251,7 +278,7 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
           <clipPath id={`${uid}-eye`}><circle r={12.7} /></clipPath>
         </defs>
 
-        <motion.g style={{ y: sink }}>
+        <motion.g style={{ y: sink, scaleX: squashX, scaleY: squashY, ...pivot(75, 150) }}>
           {/* Tail, behind the body */}
           <motion.g style={{ rotate: tailRotate, ...pivot(100, 137.5) }}>
             <path d={tailShape} fill={MC.orange} />
@@ -294,7 +321,7 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
             <Ear side="right" rotate={earR} scaleY={earScale} />
 
             {EYES.map((cx) => (
-              <Eye key={cx} cx={cx} lid={lid} happy={happy} pupilX={life.pupilX} pupilY={life.pupilY} clipId={`${uid}-eye`} />
+              <Eye key={cx} cx={cx} lid={lid} happy={happy} scale={eyeScale} pupilX={life.pupilX} pupilY={life.pupilY} clipId={`${uid}-eye`} />
             ))}
 
             {/* Blush */}
@@ -319,6 +346,13 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
 
           {/* Left front limb, over the head while it waves */}
           <Limb rotate={pawRot} lines={waveLines} />
+
+          {/* Sparkles after a cheer */}
+          {SPARKLES.map((sp) => (
+            <g key={sp.x} transform={`translate(${sp.x} ${sp.y})`}>
+              <Sparkle amount={sparkle} size={sp.size} fill={sp.fill} />
+            </g>
+          ))}
 
           {/* Sleep glyphs */}
           {[0, 1, 2].map((i) => (
