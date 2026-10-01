@@ -11,9 +11,13 @@ import {
   type MotionValue,
 } from 'framer-motion';
 import {
+  CAT_RIGHT_EDGE,
   CAT_VIEWBOX,
   HEAD_CENTER,
   PEEK_Y,
+  POUNCE_COOLDOWN_MS,
+  POUNCE_RADIUS_PX,
+  POUNCE_REST_MS,
   PUPIL_MAX,
   SLEEP_AFTER_MS,
   STAR_COOLDOWN_MS,
@@ -25,6 +29,7 @@ import {
   crossesViewport,
   gazeOffset,
   lerpPoint,
+  pounceLeap,
   randomBetween,
 } from '@/lib/catLife';
 import { NEUTRAL_POSE, momentPose, momentSeconds, type MomentContext, type MomentKind, type MomentPose } from '@/lib/catMoments';
@@ -238,6 +243,11 @@ export function useMantecadoLife(): MantecadoLife {
     let resleepTimer = 0;
     let returnedAt = -Infinity;
     let momentAnim: AnimationPlaybackControls | undefined;
+    /* Pounce: only with a fine pointer, once per visit near the cat. */
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    let restTimer = 0;
+    let lastPounce = -Infinity;
+    let pounceArmed = true;
 
     /* Moments: one at a time. The pose is driven by one clock in seconds, never by React state. */
     const playMoment = (kind: MomentKind, opts: { ctx?: MomentContext; speed?: number; onEnd?: () => void } = {}) => {
@@ -383,11 +393,36 @@ export function useMantecadoLife(): MantecadoLife {
       armSleep();
     };
 
+    /* A pointer that stops near the cat gets pounced at. The leap goes toward it, within the viewport. */
+    const tryPounce = () => {
+      restTimer = 0;
+      if (!pointer || asleep || momentAnim || document.hidden || hovered.current || focused.current) return;
+      if (!pounceArmed || performance.now() - lastPounce < POUNCE_COOLDOWN_MS) return;
+      const c = headCenter();
+      const dx = pointer.x - c.x;
+      const dy = pointer.y - c.y;
+      if (Math.hypot(dx, dy) > POUNCE_RADIUS_PX) return;
+      const k = rect.width / CAT_VIEWBOX.w;
+      const roomRight = window.innerWidth - (rect.left + (CAT_RIGHT_EDGE - CAT_VIEWBOX.x) * k) - 4;
+      const leap = pounceLeap(dx, dy, k, roomRight);
+      if (playMoment('pounce', { ctx: { leapX: leap.x, leapY: leap.y } })) {
+        lastPounce = performance.now();
+        pounceArmed = false;
+      }
+    };
+
     const onPointerMove = (e: PointerEvent) => {
       onInput();
       if (e.pointerType === 'touch') return;
       pointer = { x: e.clientX, y: e.clientY };
       if (!starActive) aim(e.clientX, e.clientY);
+      if (finePointer && e.pointerType === 'mouse') {
+        const c = headCenter();
+        const near = Math.hypot(pointer.x - c.x, pointer.y - c.y) <= POUNCE_RADIUS_PX;
+        if (!near) pounceArmed = true;
+        if (restTimer) cancel(restTimer);
+        restTimer = near ? later(tryPounce, POUNCE_REST_MS) : 0;
+      }
     };
 
     /* Shooting stars: the gaze rides the star, the ears perk, the tail flicks as it passes. */

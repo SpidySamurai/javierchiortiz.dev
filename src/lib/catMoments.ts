@@ -7,11 +7,14 @@
  * at the neutral pose, so it can begin and finish without a visible jump.
  */
 
-export type MomentKind = 'wave' | 'stretch' | 'rocket';
+export type MomentKind = 'wave' | 'stretch' | 'rocket' | 'pounce';
 
 export interface MomentContext {
   /** Rocket: seconds the star takes to fly, so the hop lands when it arrives. */
   flight?: number;
+  /** Pounce: where the leap lands, in drawing units from the resting spot (y is up when negative). */
+  leapX?: number;
+  leapY?: number;
 }
 
 export interface MomentPose {
@@ -32,7 +35,11 @@ export interface MomentPose {
   paws: number;
   /** Multiplier on eye size. */
   eyeScale: number;
-  /** Whole cat: units lifted (negative is up) and squash and stretch around its feet. */
+  /** 0..1 pupil dilation. */
+  dilate: number;
+  /** Whole cat: sideways shift, units lifted (negative is up), wiggle degrees, and squash and stretch around its feet. */
+  shiftX: number;
+  rot: number;
   lift: number;
   squashX: number;
   squashY: number;
@@ -59,6 +66,9 @@ export const NEUTRAL_POSE: MomentPose = {
   mouth: 0,
   paws: 0,
   eyeScale: 1,
+  dilate: 0,
+  shiftX: 0,
+  rot: 0,
   lift: 0,
   squashX: 1,
   squashY: 1,
@@ -135,6 +145,40 @@ export function momentPose(kind: MomentKind, u: number, ctx: MomentContext = {})
     p.happy = prog(v, 2.3, 2.42) * (1 - prog(v, 2.95, 3.1));
     p.sparkle = Math.sin(Math.PI * prog(v, 2.25, 3.1));
     p.tail = -25 * perk + 10 * Math.sin(v * 16) * prog(v, 2.3, 2.45) * (1 - prog(v, 2.95, 3.1));
+  }
+  if (kind === 'pounce') {
+    const leapX = ctx.leapX ?? -80;
+    const leapY = ctx.leapY ?? 0;
+    p.dilate = prog(u, 0.2, 0.45) * (1 - prog(u, 1.9, 2.2));
+    const crouch = expo(prog(u, 0.3, 0.7)) * (1 - prog(u, 1.3, 1.38));
+    p.lift = 9 * crouch;
+    p.chest = 1 - 0.07 * crouch;
+    p.headY = 3 * crouch;
+    p.earL = 5 * crouch;
+    p.earR = -5 * crouch;
+    const wiggle = u >= 0.7 && u < 1.3 ? Math.sin(((u - 0.7) / 0.6) * 6 * Math.PI) : 0;
+    p.rot = 3 * wiggle;
+    p.tail = 14 * wiggle;
+    // Leap out, hold, then shuffle back with two or three small hops.
+    const jump = prog(u, 1.3, 1.62);
+    const arc = Math.sin(Math.PI * jump);
+    const back = prog(u, 2.4, 3.2);
+    const reach = u < 1.3 ? 0 : u < 2.4 ? expo(jump) : 1 - easeInOut3(back);
+    p.shiftX = leapX * reach;
+    p.lift += leapY * reach - 37 * arc;
+    if (u >= 2.4) p.lift -= 4 * Math.abs(Math.sin(back * Math.PI * 3));
+    p.squashX *= 1 + 0.12 * arc;
+    p.squashY *= 1 - 0.08 * arc;
+    p.earL -= 12 * arc;
+    p.earR += 12 * arc;
+    const land = Math.sin(Math.PI * prog(u, 1.62, 1.75));
+    p.squashY *= 1 - 0.07 * land;
+    p.squashX *= 1 + 0.04 * land;
+    // Puzzled tilt once the target is gone
+    const puzzled = prog(u, 1.95, 2.1) * (1 - prog(u, 2.35, 2.5));
+    p.headRot -= 9 * puzzled;
+    p.earL -= 4 * puzzled;
+    p.earR -= 8 * puzzled;
   }
   return p;
 }

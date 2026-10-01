@@ -16,6 +16,14 @@ export const WAVE_WELCOME_MS = 1500;
 /** Hovering or focusing the cat after this much inactivity gets a wave. */
 export const WAVE_IDLE_MS = 60_000;
 
+/** A pointer resting this close to the cat, for this long, gets pounced at. */
+export const POUNCE_RADIUS_PX = 180;
+export const POUNCE_REST_MS = 1500;
+/** At least this long between two pounces. */
+export const POUNCE_COOLDOWN_MS = 20_000;
+/** How far the cat leaps toward the pointer, in screen pixels. */
+export const POUNCE_LEAP_PX = 40;
+
 export const randomBetween = (min: number, max: number) => min + Math.random() * (max - min);
 
 export const lerpPoint = (a: SkyPoint, b: SkyPoint, t: number): SkyPoint => ({
@@ -33,6 +41,19 @@ export function gazeOffset(dx: number, dy: number, max: number, reach = 160): Sk
   if (dist < 0.5) return { x: 0, y: 0 };
   const lean = Math.min(1, dist / reach) * max;
   return { x: (dx / dist) * lean, y: (dy / dist) * lean };
+}
+
+/**
+ * Leap offset in drawing units toward a pointer `dx, dy` pixels away. The cat
+ * only moves up and sideways (it sits on the bottom edge) and never farther
+ * right than `roomRightPx`, so it stays inside the viewport.
+ */
+export function pounceLeap(dx: number, dy: number, pxPerUnit: number, roomRightPx: number): SkyPoint {
+  const dist = Math.hypot(dx, dy);
+  if (dist < 0.5) return { x: 0, y: 0 };
+  const x = Math.min((dx / dist) * POUNCE_LEAP_PX, Math.max(0, roomRightPx));
+  const y = Math.min(0, dy / dist) * POUNCE_LEAP_PX * 0.5;
+  return { x: x / pxPerUnit, y: y / pxPerUnit };
 }
 
 /** Position 0..1 along the segment where it passes closest to `p`. */
@@ -60,6 +81,8 @@ export const CAT_VIEWBOX = { x: -20, y: -35, w: 170, h: 185 } as const;
 export const CAT_SCALE = 0.5;
 /** How far the cat sinks, in drawing units, while only its head peeks out. */
 export const PEEK_Y = 50;
+/** Rightmost drawing x of the cat (the tail tip). */
+export const CAT_RIGHT_EDGE = 140;
 export const HEAD_CENTER: SkyPoint = { x: 50, y: 45 };
 /** Farthest a pupil may sit from its eye centre (inner radius 9, pupil radius 4). */
 export const PUPIL_MAX = 4.6;
