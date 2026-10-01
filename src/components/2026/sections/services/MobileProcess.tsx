@@ -1,91 +1,46 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { animate, motion, useInView, useMotionValue, useReducedMotion } from 'framer-motion';
-import type { AnimationPlaybackControls } from 'framer-motion';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { SparkToStar } from './SparkToStar';
-import { CYCLE, REST, STAGES, STAGE_ICONS, STATIC_P } from './timeline';
+import LineScene from './line/LineScene';
+import { CROPS, SLICES, STAGES, STAGE_ICONS, STATIC_AT, type Stage } from './line/stages';
+import { useLineCopy } from './line/useLineCopy';
+import { useLineDriver } from './line/useLineDriver';
 
-const STEP_INTERVAL = 3800;
-const STAGE_H = 230;
+/** Seconds a finished step stays on screen before the next one starts. */
+const HOLD_S = 1.4;
 
-/** Mobile: the same motion graphic as a stepper. Each step plays its stage into view. */
+/** One station of the production line, cropped, playing only its own slice of the timeline. */
+function StepScene({ stage, reduced }: { stage: Stage; reduced: boolean }) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const copy = useLineCopy();
+  const [from, to] = SLICES[stage];
+  useLineDriver({ rootRef, from, to, loop: false, staticAt: reduced ? STATIC_AT[stage] : undefined, labels: copy });
+  return (
+    <div ref={rootRef} className="w-full">
+      <LineScene copy={copy} viewBox={CROPS[stage]} />
+    </div>
+  );
+}
+
+/** Mobile: the same scene as a stepper. Each step plays its stage, then hands over to the next. */
 export default function MobileProcess() {
   const t = useTranslations('common');
   const [step, setStep] = useState(0);
-  const [width, setWidth] = useState(326);
   const rootRef = useRef<HTMLDivElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
   const inView = useInView(rootRef);
-  const inViewRef = useRef(inView);
-  const controlsRef = useRef<AnimationPlaybackControls | undefined>(undefined);
-  const reduceMotion = useReducedMotion();
-  const p = useMotionValue(0);
-  const frame = useMotionValue(STATIC_P.plan);
-
-  useEffect(() => {
-    const el = stageRef.current;
-    if (!el) return;
-    const update = () => setWidth(el.offsetWidth);
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const reduceMotion = useReducedMotion() ?? false;
 
   useEffect(() => {
     if (!inView || reduceMotion) return;
-    const id = setInterval(() => setStep((s) => (s + 1) % STAGES.length), STEP_INTERVAL);
-    return () => clearInterval(id);
-  }, [inView, reduceMotion]);
-
-  // Nothing plays offscreen.
-  useEffect(() => {
-    inViewRef.current = inView;
-    if (inView) controlsRef.current?.play();
-    else controlsRef.current?.pause();
-  }, [inView]);
-
-  useEffect(() => {
-    if (reduceMotion) {
-      frame.set(STATIC_P[STAGES[step]]);
-      return;
-    }
-    const target = REST[STAGES[step]];
-    const el = stageRef.current;
-    // Looping or going back: fade out, restart the piece from its first frame.
-    const restart = target < p.get() && el;
-    let cancelled = false;
-
-    const play = () => {
-      const c = animate(p, target, { duration: Math.abs(target - p.get()) * CYCLE, ease: 'linear' });
-      if (!inViewRef.current) c.pause();
-      controlsRef.current = c;
-    };
-
-    if (restart) {
-      const out = animate(el, { opacity: 0 }, { duration: 0.2, ease: [0.7, 0, 0.84, 0] });
-      controlsRef.current = out;
-      out.then(() => {
-        if (cancelled) return;
-        p.set(0);
-        animate(el, { opacity: 1 }, { duration: 0.2, ease: [0.16, 1, 0.3, 1] });
-        play();
-      });
-    } else {
-      play();
-    }
-    return () => {
-      cancelled = true;
-      controlsRef.current?.stop();
-      if (el) el.style.opacity = '1';
-    };
-  }, [step, reduceMotion, p, frame]);
+    const [from, to] = SLICES[STAGES[step]];
+    const id = setTimeout(() => setStep((s) => (s + 1) % STAGES.length), (to - from + HOLD_S) * 1000);
+    return () => clearTimeout(id);
+  }, [step, inView, reduceMotion]);
 
   const key = STAGES[step];
   const stepData = t.raw(`services_process.${key}`) as { name: string; desc: string };
-  const scale = Math.max(1.2, Math.min(1.7, width / 210));
 
   return (
     <div ref={rootRef} className="flex flex-col items-center gap-6">
@@ -116,23 +71,7 @@ export default function MobileProcess() {
         ))}
       </div>
 
-      <div ref={stageRef} className="relative w-full" style={{ height: STAGE_H }}>
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute', top: '50%', left: 0, right: 0, height: 1,
-            backgroundImage:
-              'repeating-linear-gradient(to right, color-mix(in srgb, var(--ds-primary) 16%, transparent) 0, color-mix(in srgb, var(--ds-primary) 16%, transparent) 5px, transparent 5px, transparent 16px)',
-          }}
-        />
-        <SparkToStar
-          p={reduceMotion ? frame : p}
-          w={width}
-          h={STAGE_H}
-          xs={[width / 2, width / 2, width / 2]}
-          scale={scale}
-        />
-      </div>
+      <StepScene key={key} stage={key} reduced={reduceMotion} />
 
       <motion.div
         key={step}
