@@ -17,6 +17,7 @@ const WHISKER = 'rgba(51, 41, 43, 0.35)';
 const EYES = [27, 73] as const;
 const EYE_Y = 55;
 const PUPIL_R = 4;
+const IRIS_R = 9;
 
 /** Rotate or scale around a point in drawing units, not around the element's own box. */
 const pivot = (x: number, y: number) => ({
@@ -32,12 +33,14 @@ function Eye({
   lid,
   happy,
   scale,
+  dilate,
   pupilX,
   pupilY,
   clipId,
 }: {
   cx: number;
   scale: MotionValue<number>;
+  dilate: MotionValue<number>;
   lid: MotionValue<number>;
   happy: MotionValue<number>;
   pupilX: MotionValue<number>;
@@ -47,15 +50,20 @@ function Eye({
   const topY = useTransform(lid, (l) => -12.5 + 13.7 * l);
   const bottomY = useTransform(lid, (l) => 12.5 - 13.7 * l);
   const edge = useTransform([lid, happy], ([l, h]: number[]) => clamp01(l * 4) * (1 - h));
+  // Dilated pupils grow, and their reach shrinks so they stay inside the iris (radius 9).
+  const grow = useTransform(dilate, (d) => 1 + 0.75 * d);
+  const reach = useTransform(dilate, (d) => (IRIS_R - 0.4 - PUPIL_R * (1 + 0.75 * d)) / (IRIS_R - 0.4 - PUPIL_R));
+  const gx = useTransform([pupilX, reach], ([v, k]: number[]) => v * k);
+  const gy = useTransform([pupilY, reach], ([v, k]: number[]) => v * k);
   // The highlight rides the pupil, up and to the right.
-  const hlX = useTransform(pupilX, (v) => v + PUPIL_R * 0.38);
-  const hlY = useTransform(pupilY, (v) => v - PUPIL_R * 0.38);
+  const hlX = useTransform([gx, grow], ([v, g]: number[]) => v + PUPIL_R * g * 0.38);
+  const hlY = useTransform([gy, grow], ([v, g]: number[]) => v - PUPIL_R * g * 0.38);
   return (
     <motion.g style={{ scale, ...pivot(cx, EYE_Y) }}>
       <g transform={`translate(${cx} ${EYE_Y})`}>
         <circle r={12} fill={MC.dark} />
         <circle r={9} fill={MC.eyeYellow} />
-        <motion.circle r={PUPIL_R} fill={MC.dark} style={{ x: pupilX, y: pupilY }} />
+        <motion.circle r={PUPIL_R} fill={MC.dark} style={{ x: gx, y: gy, scale: grow }} />
         <motion.circle r={1.3} fill="#fff" opacity={0.9} style={{ x: hlX, y: hlY }} />
         <g clipPath={`url(#${clipId})`}>
           <motion.rect x={-13} y={0} width={26} height={26} fill={MC.white} style={{ y: bottomY }} />
@@ -209,6 +217,9 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
   const mMouth = useTransform(pose, (p) => p.mouth);
   const mPaws = useTransform(pose, (p) => p.paws);
   const eyeScale = useTransform(pose, (p) => p.eyeScale);
+  const dilate = useTransform(pose, (p) => p.dilate);
+  const shiftX = useTransform(pose, (p) => p.shiftX);
+  const wiggle = useTransform(pose, (p) => p.rot);
   const mLift = useTransform(pose, (p) => p.lift);
   const squashX = useTransform(pose, (p) => p.squashX);
   const squashY = useTransform(pose, (p) => p.squashY);
@@ -278,7 +289,7 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
           <clipPath id={`${uid}-eye`}><circle r={12.7} /></clipPath>
         </defs>
 
-        <motion.g style={{ y: sink, scaleX: squashX, scaleY: squashY, ...pivot(75, 150) }}>
+        <motion.g style={{ x: shiftX, y: sink, rotate: wiggle, scaleX: squashX, scaleY: squashY, ...pivot(75, 150) }}>
           {/* Tail, behind the body */}
           <motion.g style={{ rotate: tailRotate, ...pivot(100, 137.5) }}>
             <path d={tailShape} fill={MC.orange} />
@@ -321,7 +332,7 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
             <Ear side="right" rotate={earR} scaleY={earScale} />
 
             {EYES.map((cx) => (
-              <Eye key={cx} cx={cx} lid={lid} happy={happy} scale={eyeScale} pupilX={life.pupilX} pupilY={life.pupilY} clipId={`${uid}-eye`} />
+              <Eye key={cx} cx={cx} lid={lid} happy={happy} scale={eyeScale} dilate={dilate} pupilX={life.pupilX} pupilY={life.pupilY} clipId={`${uid}-eye`} />
             ))}
 
             {/* Blush */}
