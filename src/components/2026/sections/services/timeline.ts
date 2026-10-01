@@ -1,39 +1,48 @@
 import { cubicBezier, useTransform, type MotionValue } from 'framer-motion';
 
-/** One factory cycle, in seconds. Every visual below is a pure function of cycle progress 0..1. */
-export const CYCLE = 8;
+/** One cycle, in seconds. Every visual is a pure function of cycle progress 0..1. */
+export const CYCLE = 9;
 
 export const EXPO_OUT = cubicBezier(0.16, 1, 0.3, 1);
-export const EXPO_IN = cubicBezier(0.7, 0, 0.84, 0);
 
-/** Key moments in seconds. Travel eases out, dwell lets the artifact transform. */
+/** Key windows in seconds: [start, end]. */
 export const T = {
-  arriveIdea: 0.9,
-  leaveIdea: 2.3,
-  arriveBuild: 3.2,
-  leaveBuild: 4.9,
-  arriveLaunch: 5.8,
-  leaveLaunch: 7.4,
+  enter: [0, 0.9],
+  grid: [0.5, 1.1],
+  axes: [0.6, 1.3],
+  circle: [0.7, 1.5],
+  dims: [1.0, 1.8],
+  outline: [1.5, 2.3],
+  leave1: [2.5, 3.2],
+  blocks: [3.2, 3.5, 3.8, 4.1, 4.4],
+  blockDur: 0.55,
+  clamp: [4.95, 5.8],
+  leave2: [5.5, 6.2],
+  ignite: [6.2, 6.9],
+  lift: [6.9, 8.5],
 } as const;
 
-export type Stage = 'idea' | 'build' | 'launch';
-export const STAGES: readonly Stage[] = ['idea', 'build', 'launch'];
+export type Stage = 'plan' | 'build' | 'launch';
+export const STAGES: readonly Stage[] = ['plan', 'build', 'launch'];
 
-/** Progress at which each stage is fully formed (used by static and stepper views). */
-export const REST: Record<Stage, number> = {
-  idea: 2.2 / CYCLE,
-  build: 4.9 / CYCLE,
-  launch: 7.2 / CYCLE,
+export const STAGE_ICONS: Record<Stage, string> = {
+  plan: 'architecture',
+  build: 'construction',
+  launch: 'rocket_launch',
 };
 
-/** Arrival time (seconds) of the artifact at each station. */
-export const ARRIVE: Record<Stage, number> = {
-  idea: T.arriveIdea,
-  build: T.arriveBuild,
-  launch: T.arriveLaunch,
-};
+/** Seconds at which the form reaches each station. */
+export const ARRIVE: Record<Stage, number> = { plan: T.enter[1], build: T.leave1[1], launch: T.leave2[1] };
+
+/** Stepper targets (progress): where each step's playback ends. */
+export const REST: Record<Stage, number> = { plan: 2.4 / CYCLE, build: 5.35 / CYCLE, launch: 8.6 / CYCLE };
+
+/** Frozen frames for the reduced-motion strip. */
+export const STATIC_P: Record<Stage, number> = { plan: 2.4 / CYCLE, build: 5.35 / CYCLE, launch: 7.75 / CYCLE };
+export const FIXTURE_P: Record<Stage, number> = { plan: 2.3 / CYCLE, build: 5.9 / CYCLE, launch: 6.6 / CYCLE };
 
 const clamp01 = (n: number) => (n < 0 ? 0 : n > 1 ? 1 : n);
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /** Eased 0..1 for the window [a, b] seconds of the cycle. */
 export function seg(progress: number, a: number, b: number, ease: (t: number) => number = EXPO_OUT) {
@@ -49,34 +58,47 @@ export function useSeg(
   return useTransform(progress, (v) => seg(v, a, b, ease));
 }
 
-const CARD_W = 160;
+type XS = readonly [number, number, number];
 
-/** Left edge of the artifact for a track of width w. Stations sit at 25 / 50 / 75%. */
-export function artifactX(progress: number, w: number) {
-  const left = (frac: number) => w * frac - CARD_W / 2;
-  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-  const s = progress * CYCLE;
-  const enter = -CARD_W - 30;
-  const exit = w + 30;
-
-  if (s < T.arriveIdea) return lerp(enter, left(0.25), seg(progress, 0, T.arriveIdea));
-  if (s < T.leaveIdea) return left(0.25);
-  if (s < T.arriveBuild) return lerp(left(0.25), left(0.5), seg(progress, T.leaveIdea, T.arriveBuild));
-  if (s < T.leaveBuild) return left(0.5);
-  if (s < T.arriveLaunch) return lerp(left(0.5), left(0.75), seg(progress, T.leaveBuild, T.arriveLaunch));
-  if (s < T.leaveLaunch) return left(0.75);
-  return lerp(left(0.75), exit, seg(progress, T.leaveLaunch, CYCLE, EXPO_IN));
+/** Station x positions in local units; the form slides station to station. */
+export function objectX(v: number, xs: XS) {
+  const s = v * CYCLE;
+  if (s < T.leave1[0]) return xs[0];
+  if (s < T.leave2[0]) return lerp(xs[0], xs[1], seg(v, T.leave1[0], T.leave1[1]));
+  return lerp(xs[1], xs[2], seg(v, T.leave2[0], T.leave2[1]));
 }
 
-/** 0..1..0 press stamp: a quick drop on arrival, a slow release. */
-export function stamp(progress: number) {
-  const down = seg(progress, T.arriveBuild, T.arriveBuild + 0.12);
-  const up = seg(progress, T.arriveBuild + 0.22, T.arriveBuild + 0.9);
-  return down * (1 - up);
+const SPARK_FROM = -30;
+
+export function sparkX(v: number, xs: XS) {
+  if (v * CYCLE < T.enter[1]) return lerp(SPARK_FROM, xs[0], seg(v, T.enter[0], T.enter[1]));
+  return objectX(v, xs);
 }
 
-export const STAGE_ICONS: Record<Stage, string> = {
-  idea: 'lightbulb',
-  build: 'terminal',
-  launch: 'rocket_launch',
-};
+export function sparkTail(v: number) {
+  return 42 * Math.pow(1 - seg(v, T.enter[0], T.enter[1]), 0.7);
+}
+
+export function sparkOpacity(v: number) {
+  const s = v * CYCLE;
+  const breathe = 0.88 + 0.12 * Math.sin(s * 5);
+  return seg(v, 0, 0.18) * (1 - seg(v, 3.45, 4.0)) * breathe;
+}
+
+/** The shooting star climbs this far above horizontal. */
+export const STAR_ANGLE = (-26 * Math.PI) / 180;
+
+/** Head position, tail length and opacity of the star in local units. x0 is the launch station. */
+export function starAt(v: number, x0: number, w: number) {
+  const s = v * CYCLE;
+  const t = clamp01((s - T.lift[0]) / (T.lift[1] - T.lift[0]));
+  const e = Math.pow(t, 2.4);
+  const dist = e * ((w - x0 + 60) / Math.cos(STAR_ANGLE));
+  return {
+    x: x0 + dist * Math.cos(STAR_ANGLE),
+    y: dist * Math.sin(STAR_ANGLE),
+    len: 10 + 190 * Math.pow(e, 0.6),
+    opacity: seg(v, 6.85, 7.15) * (1 - clamp01((e - 0.75) / 0.25)),
+    scale: 0.45 + 0.55 * seg(v, 6.9, 7.5),
+  };
+}
