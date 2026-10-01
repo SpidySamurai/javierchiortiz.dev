@@ -8,7 +8,7 @@ export const projects: DataProject[] = [
     title: 'Lab2Next',
     imageUrl: '/utils/img/lab2next-screenshot.png',
     description:
-      'Marketing landing for the Lab2Next SaaS — conversion-focused, fast, and SEO-optimized to turn clinical-lab owners into free-trial signups.',
+      'Marketing landing for the Lab2Next SaaS: conversion-focused, fast, and SEO-optimized to turn clinical-lab owners into free-trial signups.',
     stack: ['Next.js', 'React', 'Tailwind CSS'],
     liveUrl: 'https://lab2next.com/',
     repoUrl: null,
@@ -34,7 +34,7 @@ export const projects: DataProject[] = [
     imageUrl: '/utils/img/checker-screenshot.png',
     imagePosition: 'center top',
     description:
-      'Fleet management SaaS for gig drivers on Uber, Didi, Cabify and InDrive — shifts, earnings, and vehicle tracking in one place.',
+      'Fleet management SaaS for gig drivers on Uber, Didi, Cabify and InDrive: shifts, earnings, and vehicle tracking in one place.',
     stack: ['Next.js', 'TypeScript', 'React'],
     liveUrl: 'http://checker.lab2next.com/',
     repoUrl: 'https://github.com/SpidySamurai/checker',

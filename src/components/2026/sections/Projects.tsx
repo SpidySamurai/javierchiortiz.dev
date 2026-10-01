@@ -57,7 +57,7 @@ function ProjectImage({
   return (
     <Image
       src={imageUrl}
-      alt={`${title} — ${description}`}
+      alt={`${title}: ${description}`}
       fill
       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
       className="absolute inset-0 w-full object-cover"
@@ -317,7 +317,7 @@ function FeaturedProject({
         {project.imageUrl ? (
           <Image
             src={project.imageUrl}
-            alt={`${project.title} — ${project.description ?? ''}`}
+            alt={`${project.title}: ${project.description ?? ''}`}
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover object-top transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"

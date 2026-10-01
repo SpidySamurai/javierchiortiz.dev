@@ -69,7 +69,7 @@ export default function Product() {
           >
             <Image
               src="/utils/img/lab2next-app-screenshot.png"
-              alt="Lab2Next — patient registration dashboard for clinical labs"
+              alt="Lab2Next: patient registration dashboard for clinical labs"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover object-top transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
