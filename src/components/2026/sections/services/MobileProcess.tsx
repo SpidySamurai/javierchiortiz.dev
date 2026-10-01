@@ -2,26 +2,37 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { animate, motion, useInView, useMotionValue, useReducedMotion } from 'framer-motion';
+import type { AnimationPlaybackControls } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { Artifact } from './Artifact';
-import { CYCLE, REST, STAGES, STAGE_ICONS } from './timeline';
+import { SparkToStar } from './SparkToStar';
+import { CYCLE, REST, STAGES, STAGE_ICONS, STATIC_P } from './timeline';
 
-/** Cycle progress at which the artifact is an empty card, just after it arrives. */
-const BLANK = 0.8 / CYCLE;
-const STEP_INTERVAL = 3600;
-/** The stepper plays the factory timeline a bit faster than the belt. */
-const SPEED = 0.6;
+const STEP_INTERVAL = 3800;
+const STAGE_H = 230;
 
-/** Mobile: the same artifact as a stepper. Each step plays the transformation into that stage. */
+/** Mobile: the same motion graphic as a stepper. Each step plays its stage into view. */
 export default function MobileProcess() {
   const t = useTranslations('common');
   const [step, setStep] = useState(0);
+  const [width, setWidth] = useState(326);
   const rootRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const inView = useInView(rootRef);
+  const inViewRef = useRef(inView);
+  const controlsRef = useRef<AnimationPlaybackControls | undefined>(undefined);
   const reduceMotion = useReducedMotion();
-  const p = useMotionValue(REST.idea);
-  const prevStep = useRef(0);
+  const p = useMotionValue(0);
+  const frame = useMotionValue(STATIC_P.plan);
+
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const update = () => setWidth(el.offsetWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!inView || reduceMotion) return;
@@ -29,48 +40,52 @@ export default function MobileProcess() {
     return () => clearInterval(id);
   }, [inView, reduceMotion]);
 
+  // Nothing plays offscreen.
   useEffect(() => {
-    const target = REST[STAGES[step]];
-    const card = cardRef.current;
-    const wrapped = step === 0 && prevStep.current !== 0;
-    prevStep.current = step;
+    inViewRef.current = inView;
+    if (inView) controlsRef.current?.play();
+    else controlsRef.current?.pause();
+  }, [inView]);
 
+  useEffect(() => {
     if (reduceMotion) {
-      p.set(target);
+      frame.set(STATIC_P[STAGES[step]]);
       return;
     }
-
-    let controls: { stop: () => void } | undefined;
+    const target = REST[STAGES[step]];
+    const el = stageRef.current;
+    // Looping or going back: fade out, restart the piece from its first frame.
+    const restart = target < p.get() && el;
     let cancelled = false;
+
     const play = () => {
-      controls = animate(p, target, {
-        duration: Math.abs(target - p.get()) * CYCLE * SPEED,
-        ease: 'linear',
-      });
+      const c = animate(p, target, { duration: Math.abs(target - p.get()) * CYCLE, ease: 'linear' });
+      if (!inViewRef.current) c.pause();
+      controlsRef.current = c;
     };
 
-    if (wrapped && card) {
-      // Looping back: fade the finished app out, restart from a blank card.
-      const fade = animate(card, { opacity: 0 }, { duration: 0.2, ease: [0.7, 0, 0.84, 0] });
-      fade.then(() => {
+    if (restart) {
+      const out = animate(el, { opacity: 0 }, { duration: 0.2, ease: [0.7, 0, 0.84, 0] });
+      controlsRef.current = out;
+      out.then(() => {
         if (cancelled) return;
-        p.set(BLANK);
-        animate(card, { opacity: 1 }, { duration: 0.2, ease: [0.16, 1, 0.3, 1] });
+        p.set(0);
+        animate(el, { opacity: 1 }, { duration: 0.2, ease: [0.16, 1, 0.3, 1] });
         play();
       });
-      controls = fade;
     } else {
       play();
     }
     return () => {
       cancelled = true;
-      controls?.stop();
-      if (card) card.style.opacity = '1';
+      controlsRef.current?.stop();
+      if (el) el.style.opacity = '1';
     };
-  }, [step, reduceMotion, p]);
+  }, [step, reduceMotion, p, frame]);
 
   const key = STAGES[step];
   const stepData = t.raw(`services_process.${key}`) as { name: string; desc: string };
+  const scale = Math.max(1.2, Math.min(1.7, width / 210));
 
   return (
     <div ref={rootRef} className="flex flex-col items-center gap-6">
@@ -101,8 +116,22 @@ export default function MobileProcess() {
         ))}
       </div>
 
-      <div ref={cardRef}>
-        <Artifact progress={p} />
+      <div ref={stageRef} className="relative w-full" style={{ height: STAGE_H }}>
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute', top: '50%', left: 0, right: 0, height: 1,
+            backgroundImage:
+              'repeating-linear-gradient(to right, color-mix(in srgb, var(--ds-primary) 16%, transparent) 0, color-mix(in srgb, var(--ds-primary) 16%, transparent) 5px, transparent 5px, transparent 16px)',
+          }}
+        />
+        <SparkToStar
+          p={reduceMotion ? frame : p}
+          w={width}
+          h={STAGE_H}
+          xs={[width / 2, width / 2, width / 2]}
+          scale={scale}
+        />
       </div>
 
       <motion.div

@@ -205,7 +205,7 @@
     "webapps": { "name": "Web Apps", "desc": "fast, accessible frontends in production" }
   },
   "services_process": {
-    "idea":   { "name": "Idea",   "desc": "Understand the problem and the goal" },
+    "plan":   { "name": "Plan",   "desc": "Understand the problem, draw the blueprint" },
     "build":  { "name": "Build",  "desc": "Build fast, iterate with feedback" },
     "launch": { "name": "Launch", "desc": "Delivery, support, evolution" }
   },
