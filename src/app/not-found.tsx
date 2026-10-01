@@ -40,7 +40,7 @@ export default function NotFound() {
             margin: 0,
           }}
         >
-          404 — Unexecuted idea.
+          404. Unexecuted idea.
         </h1>
         <p style={{ fontFamily: 'sans-serif', fontSize: '0.9rem', color: '#c7c4d7', margin: 0 }}>
           The best ideas start without a URL. Tell me yours.

@@ -92,7 +92,7 @@ export default function BlogCover({ theme, height = '200px' }: BlogCoverProps) {
     <div className="relative w-full overflow-hidden" style={{ height }}>
       <Image
         src="/blog/spiderman-cover.jpg"
-        alt="Spider-Man — Peter Parker"
+        alt="Spider-Man (Peter Parker)"
         fill
         className="object-cover object-center"
         sizes="(max-width: 768px) 100vw, 50vw"

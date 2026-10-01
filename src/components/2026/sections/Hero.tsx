@@ -11,6 +11,11 @@ import type { Container } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
 import { loadEmittersPlugin } from '@tsparticles/plugin-emitters';
 import { loadTrailEffect } from '@tsparticles/effect-trail';
+import { whatsappUrl } from '@/lib/contact';
+import { emitShootingStar } from '@/lib/skyEvents';
+
+/** Measured comet speed along each axis (px/s) for the 45 degree trail. */
+const COMET_SPEED = 340;
 
 function getParticlesOptions(isDark: boolean) {
   return {
@@ -151,7 +156,8 @@ function AnimatedHeadline({
           transition={{ delay: i * 0.1, duration: 0.55, ease: 'easeOut' }}
           className="inline-block"
           style={{
-            marginRight: '0.22em',
+            // No gap before a trailing punctuation token like "."
+            marginRight: /^[.,!?;:]+$/.test(words[i + 1]?.text ?? '') ? 0 : '0.22em',
             ...(word.isAccent ? { color: 'var(--ds-primary-vivid)', fontStyle: 'italic' } : {}),
           }}
         >
@@ -299,12 +305,12 @@ export default function Hero() {
 
   const services = useMemo<ServiceItem[]>(
     () => [
-      { label: t('hero_svc_landing'), sub: t('hero_svc_landing_sub') },
-      { label: t('hero_svc_webapp'), sub: t('hero_svc_webapp_sub') },
-      { label: t('hero_svc_mvp'), sub: t('hero_svc_mvp_sub') },
-      { label: t('hero_svc_cms'), sub: t('hero_svc_cms_sub') },
-      { label: t('hero_svc_crm'), sub: t('hero_svc_crm_sub') },
-      { label: t('hero_svc_ai'), sub: t('hero_svc_ai_sub') },
+      { label: t('hero_svc_agents'), sub: t('hero_svc_agents_sub') },
+      { label: t('hero_svc_rag'), sub: t('hero_svc_rag_sub') },
+      { label: t('hero_svc_evals'), sub: t('hero_svc_evals_sub') },
+      { label: t('hero_svc_automations'), sub: t('hero_svc_automations_sub') },
+      { label: t('hero_svc_saas'), sub: t('hero_svc_saas_sub') },
+      { label: t('hero_svc_webapps'), sub: t('hero_svc_webapps_sub') },
     ],
     [t],
   );
@@ -370,6 +376,20 @@ export default function Hero() {
         },
       }
     );
+
+    // Tell the rest of the page (the cat) a star is crossing the sky. The comet
+    // flies at 45 degrees down-left until it leaves the canvas.
+    const rect = container.canvas.element?.getBoundingClientRect();
+    if (rect) {
+      const run = Math.min(startX, height);
+      const kx = rect.width / width;
+      const ky = rect.height / height;
+      emitShootingStar({
+        from: { x: rect.left + startX * kx, y: rect.top },
+        to: { x: rect.left + (startX - run) * kx, y: rect.top + run * ky },
+        durationMs: (run / COMET_SPEED) * 1000,
+      });
+    }
 
     // Animate virtual cursor along the comet trajectory to trigger hover repulse
     const duration = 2200;
@@ -511,7 +531,7 @@ export default function Hero() {
             {/* CTA — committed periwinkle button */}
             <div className="flex flex-col gap-2 flex-shrink-0 items-start md:items-center">
               <a
-                href={`https://wa.me/529904147791?text=${encodeURIComponent("Hi! I saw your portfolio and I'd like to start a project together.")}`}
+                href={whatsappUrl(t('contact_wa_message'))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group/cta inline-flex items-center gap-2 px-7 py-3.5 rounded-lg font-bold text-sm uppercase tracking-widest transition-transform duration-200 motion-safe:hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--ds-primary-vivid)]"

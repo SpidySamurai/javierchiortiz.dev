@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
-import type { ReactNode } from 'react';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { useRef, type ReactNode } from 'react';
 import { EASE } from './Reveal';
 
 interface TextRevealProps {
@@ -18,6 +18,10 @@ interface TextRevealProps {
  */
 export function TextReveal({ children, delay = 0, className }: TextRevealProps) {
   const reduce = useReducedMotion();
+  // Observe the unclipped frame, not the hidden text: the text sits outside the
+  // overflow-hidden frame, so observing it can never report "in view".
+  const frameRef = useRef<HTMLSpanElement>(null);
+  const inView = useInView(frameRef, { once: true, margin: '-40px' });
 
   if (reduce) {
     return (
@@ -36,12 +40,17 @@ export function TextReveal({ children, delay = 0, className }: TextRevealProps) 
 
   return (
     // pb buffer keeps descenders / italics from clipping against the mask edge.
-    <span className={className} style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.12em' }}>
+    <span
+      ref={frameRef}
+      className={className}
+      // paddingRight keeps the overhang of a trailing italic glyph from being clipped.
+      style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.12em', paddingRight: '0.12em' }}
+    >
       <motion.span
         style={{ display: 'block', willChange: 'transform' }}
-        initial={{ y: '120%' }}
-        whileInView={{ y: 0 }}
-        viewport={{ once: true, margin: '-40px' }}
+        // 150% keeps accents (í, ó) from peeking above the mask edge before the reveal.
+        initial={{ y: '150%' }}
+        animate={inView ? { y: 0 } : undefined}
         transition={{ duration: 0.7, ease: EASE, delay }}
       >
         {children}
