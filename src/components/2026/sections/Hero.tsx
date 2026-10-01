@@ -151,7 +151,8 @@ function AnimatedHeadline({
           transition={{ delay: i * 0.1, duration: 0.55, ease: 'easeOut' }}
           className="inline-block"
           style={{
-            marginRight: '0.22em',
+            // No gap before a trailing punctuation token like "."
+            marginRight: /^[.,!?;:]+$/.test(words[i + 1]?.text ?? '') ? 0 : '0.22em',
             ...(word.isAccent ? { color: 'var(--ds-primary-vivid)', fontStyle: 'italic' } : {}),
           }}
         >
