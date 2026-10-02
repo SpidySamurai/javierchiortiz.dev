@@ -11,7 +11,7 @@ export const experiences: DataExperience[] = [
     title: 'Full Stack Developer at ENTI',
     date: 'Aug 2023 - Present',
     description:
-      'Build and maintain scalable UI interfaces for data-heavy applications, enabling internal teams and external clients to access dynamic dashboards and tools. Lead the development of a responsive multi-page portal and collaborate with backend engineers to integrate secure APIs and optimize user workflows. Currently building a mobile-first e-wallet web app focused on real-time account and transaction views with secure session management.',
+      'Build and maintain scalable UI interfaces for data-heavy applications, enabling internal teams and external clients to access dynamic dashboards and tools. Lead the development of a responsive multi-page portal and collaborate with backend engineers to integrate secure APIs and optimize user workflows.',
     stack: [...FRONTEND, ...WEB, ...DATA, 'Superset', 'SQL', 'Django', 'Python'],
     url: 'https://en-ti.com/index.html',
   },
