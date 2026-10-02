@@ -7,10 +7,10 @@
   "about_label": "La persona detrás del código",
   "about_title": "Quién",
   "about_title_accent": "Soy",
-  "about_paragraph_1": "Soy ingeniero de software senior con IA. Llevo 6+ años entregando productos web de producción: fintech con autenticación segura, plataformas SaaS complejas y e-commerce con foco en performance.",
-  "about_paragraph_2": "Mi stack principal es React, Next.js, TypeScript y Tailwind. He construido e-wallets con sesiones seguras, portales de datos intensivos, plataformas multi-tenant y migraciones de BI legacy a Spark + Superset.",
-  "about_paragraph_3": "Tomo ownership de extremo a extremo: desde el spec hasta el mantenimiento post-launch. Soy autodidacta, proactivo y meticuloso con la DX, la calidad del producto y la accesibilidad.",
-  "about_paragraph_4": "Fuera del trabajo practico Karate Shotokan (2° Dan), aprendo tecnología y juego títulos de exploración y fantasía. Creo que el buen código y las artes marciales comparten claridad, disciplina y mejora constante.",
+  "about_paragraph_1": "Soy ingeniero de software senior y construyo productos con IA. Hoy estoy construyendo Brania, una plataforma impulsada por IA, como Senior Full Stack Engineer: diseño y entrego funcionalidades completas, del frontend al backend.",
+  "about_paragraph_2": "En paralelo opero Lab2Next, mi propio SaaS para laboratorios clínicos. Lo diseñé, lo construí y lo lancé por mi cuenta, y lo mantengo en producción, desde el producto y la infraestructura hasta el soporte.",
+  "about_paragraph_3": "En más de 6 años he entregado software en producción para clientes de Estados Unidos y Latinoamérica: portales con datos intensivos, plataformas multi-tenant y la migración de BI legacy a Spark + Superset. Trabajo sobre todo con React, Next.js, TypeScript y Node, y me hago cargo del ciclo completo, del spec al mantenimiento después del lanzamiento.",
+  "about_paragraph_4": "Fuera del código practico Karate Shotokan (2° Dan) y juego títulos de exploración y fantasía. El karate y el software me enseñaron lo mismo: claridad, disciplina y mejorar un poco cada día.",
   "about_quote": "No temo al hombre que ha practicado 10,000 patadas una vez, sino al que ha practicado una patada 10,000 veces.",
   "about_quote_author": "Bruce Lee",
   "duration_yr": "a",
@@ -95,7 +95,7 @@
     "enti": {
       "title": "Full Stack en ENTI",
       "date": "Ago 2023 - Jul 2026",
-      "description": "Diseño y entrego productos web de extremo a extremo para clientes del mercado US y LATAM.\n\nActualmente en producción: e-wallet mobile-first en Next.js con sesiones seguras: cookies HTTPOnly, refresh tokens y endpoints REST protegidos. Migré el data layer de DynamoDB a microservicios Django y de dashboards Power BI a jobs SparkSQL en Scala sobre Superset."
+      "description": "Diseñé y entregué productos web de extremo a extremo para clientes del mercado US y LATAM.\n\nMigré el data layer de DynamoDB a microservicios Django y los dashboards de Power BI a jobs SparkSQL en Scala sobre Superset."
     },
     "softtek": {
       "title": "Full Stack en Softtek",
@@ -119,10 +119,6 @@
     }
   },
   "project_items": {
-    "wallet-app": {
-      "title": "Wallet App",
-      "description": "Aplicación de billetera con autenticación, envíos, recepción y manejo de transacciones."
-    },
     "scandia-ecommerce": {
       "title": "Scandia Manufacturing",
       "description": "Colaboré en la construcción de páginas, componentes y responsiveness para este sitio e-commerce líder en la industria."
