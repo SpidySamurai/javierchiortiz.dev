@@ -1,7 +1,5 @@
 import type { DataProject } from '@/types';
 
-const imgPath = '/utils/img/01b6c8e2-295f-494e-acd0-e71473ebf089.png';
-
 export const projects: DataProject[] = [
   {
     id: 'lab2next',
@@ -85,20 +83,6 @@ export const projects: DataProject[] = [
     isWork: true,
     company: 'Scandia',
     companyUrl: 'https://scandiamfg.com/',
-  },
-  {
-    id: 'wallet-app',
-    title: 'Wallet App',
-    imageUrl: imgPath,
-    description:
-      'Aplicación de billetera con autenticación, enviar, recibir y manejo de transacciones.',
-    stack: ['Next', 'Tailwind', 'TypeScript', 'React'],
-    projectUrl: 'https://miwallet.com',
-    liveUrl: null,
-    repoUrl: 'https://github.com/SpidySamurai/wallet-app',
-    category: 'featured',
-    status: 'wip',
-    hidden: true,
   },
 
   // Entry-level / pinned repos

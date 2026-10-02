@@ -7,10 +7,10 @@
   "about_label": "The person behind the code",
   "about_title": "Who",
   "about_title_accent": "I Am",
-  "about_paragraph_1": "I'm a senior AI software engineer with 6+ years delivering production web products: fintech with secure authentication, complex SaaS platforms, and performance-focused e-commerce.",
-  "about_paragraph_2": "My main stack is React, Next.js, TypeScript, and Tailwind. I've built secure-session e-wallets, data-intensive portals, multi-tenant platforms, and legacy BI migrations to Spark + Superset.",
-  "about_paragraph_3": "I take end-to-end ownership: from spec to post-launch maintenance. Self-taught, proactive, and meticulous about DX, product quality, and accessibility.",
-  "about_paragraph_4": "Outside of work, I practice Shotokan Karate (2nd Dan), learn about technology, and play exploration and fantasy titles. I believe that good code and martial arts share clarity, discipline, and constant improvement.",
+  "about_paragraph_1": "I'm a senior software engineer who builds products with AI. Right now I'm building Brania, an AI-powered platform, as a Senior Full Stack Engineer: I design and ship complete features, from frontend to backend.",
+  "about_paragraph_2": "In parallel I run Lab2Next, my own SaaS for clinical labs. I designed, built and launched it on my own, and I keep it running in production, from product and infrastructure to support.",
+  "about_paragraph_3": "Over 6+ years I've shipped production software for clients in the US and Latin America: data-intensive portals, multi-tenant platforms, and a legacy BI migration to Spark + Superset. I work mostly with React, Next.js, TypeScript and Node, and I own the full cycle, from spec to post-launch maintenance.",
+  "about_paragraph_4": "Away from code I practice Shotokan Karate (2nd Dan) and play exploration and fantasy games. Karate and software taught me the same things: clarity, discipline and getting a little better every day.",
   "about_quote": "I fear not the man who has practiced 10,000 kicks once, but I fear the man who has practiced one kick 10,000 times.",
   "about_quote_author": "Bruce Lee",
   "duration_yr": "yr",
@@ -95,7 +95,7 @@
     "enti": {
       "title": "Full Stack at ENTI",
       "date": "Aug 2023 - Jul 2026",
-      "description": "End-to-end web product delivery for US and LATAM clients.\n\nCurrently in production: mobile-first e-wallet in Next.js with secure sessions: HTTPOnly cookies, token refresh, and protected REST endpoints. Migrated the data layer from DynamoDB to Django microservices and legacy Power BI dashboards to SparkSQL jobs in Scala on Superset."
+      "description": "Delivered end-to-end web products for US and LATAM clients.\n\nMigrated the data layer from DynamoDB to Django microservices and legacy Power BI dashboards to SparkSQL jobs in Scala on Superset."
     },
     "softtek": {
       "title": "Full Stack at Softtek",
@@ -119,10 +119,6 @@
     }
   },
   "project_items": {
-    "wallet-app": {
-      "title": "Wallet App",
-      "description": "Wallet application with authentication, sending, receiving, and transaction management."
-    },
     "scandia-ecommerce": {
       "title": "Scandia Manufacturing",
       "description": "Collaborated on building pages, components, and responsiveness for this industry-leading e-commerce site."
