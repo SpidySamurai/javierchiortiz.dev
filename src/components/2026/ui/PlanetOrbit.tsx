@@ -7,6 +7,7 @@ import {
   createFx,
   drawBeams,
   drawBurnUps,
+  drawLogo,
   drawPlanet,
   drawRing,
   drawRingLabel,
@@ -17,6 +18,7 @@ import { onShootingStar } from '@/lib/skyEvents';
 import {
   INITIAL_RING_ROT,
   cometLimbImpact,
+  eggState,
   genCities,
   isCompact,
   planetGeo,
@@ -36,6 +38,8 @@ interface PlanetOrbitProps {
   started: boolean;
   /** The six translated service labels, drawn lowercased. */
   labels: string[];
+  /** `performance.now()` at the easter egg click, or null while no egg runs. */
+  eggAt: number | null;
 }
 
 /** Mutable scene state kept outside React: it changes every frame. */
@@ -65,17 +69,17 @@ const SPIN_RATE = 0.000012;
  * Planet horizon, city lights and the six-satellite orbit ring, painted on one
  * canvas that fills its positioned parent. Decorative only.
  */
-export default function PlanetOrbit({ activeIndex, started, labels }: PlanetOrbitProps) {
+export default function PlanetOrbit({ activeIndex, started, labels, eggAt }: PlanetOrbitProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useReducedMotion() ?? false;
-  const propsRef = useRef({ activeIndex, started, labels });
+  const propsRef = useRef({ activeIndex, started, labels, eggAt });
   const targetRef = useRef<((now: number) => void) | null>(null);
 
   // Declared before the scene effect so the scene always reads fresh props.
   useEffect(() => {
-    propsRef.current = { activeIndex, started, labels };
+    propsRef.current = { activeIndex, started, labels, eggAt };
     targetRef.current?.(performance.now());
-  }, [activeIndex, started, labels]);
+  }, [activeIndex, started, labels, eggAt]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -149,6 +153,8 @@ export default function PlanetOrbit({ activeIndex, started, labels }: PlanetOrbi
       const rr = rm
         ? { rot: st.rotTo, k: 1 }
         : ringRotation(st.rotFrom, st.rotTo, st.rotT0, now);
+      const eggAt = propsRef.current.eggAt;
+      const egg = eggAt === null ? null : eggState(now - eggAt, rm);
       const sats = ringSatellites(
         G,
         ringG,
@@ -157,21 +163,32 @@ export default function PlanetOrbit({ activeIndex, started, labels }: PlanetOrbi
         st.started ? st.index : -1,
         now,
         !rm,
+        egg && { state: egg, W },
       );
       const spin = rm ? 0 : (now - st.t0) * SPIN_RATE;
 
-      drawRing(ctx, at, false);
+      drawRing(ctx, at, false, egg?.q ?? 0);
       sats.filter((s) => !s.front).forEach((s) => drawSat(ctx, s, now, rm));
-      drawPlanet(ctx, G, st.cities, st.fx, { W, H, now, still: rm, spin });
-      drawRing(ctx, at, true);
+      drawPlanet(ctx, G, st.cities, st.fx, {
+        W,
+        H,
+        now,
+        still: rm,
+        spin,
+        red: egg?.red ?? 0,
+      });
+      drawRing(ctx, at, true, egg?.q ?? 0);
       const active = sats.find((s) => s.active) ?? null;
       if (!rm) drawBeams(ctx, G, st.fx, active, now, spin, compact ? 4 : 9);
+      if (egg) drawLogo(ctx, sats, egg);
       sats
         .filter((s) => s.front)
         .sort((a, b) => a.depth - b.depth)
         .forEach((s) => drawSat(ctx, s, now, rm));
       const names = propsRef.current.labels;
+      const quietLabels = egg !== null && egg.q > 0.05;
       sats.forEach((s) => {
+        if (quietLabels) return;
         if (compact && !s.active) return;
         drawRingLabel(ctx, s, names[s.i] ?? '', W);
       });

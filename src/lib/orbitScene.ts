@@ -76,6 +76,23 @@ export interface RingSat {
   hidden: boolean;
   /** Beam intensity (rotation progress) for the active satellite. */
   on?: number;
+  /** 0..1 progress of the glide to its easter egg logo vertex, when it left the ring. */
+  egg?: number;
+}
+
+/** Easter egg timeline sampled at one instant, all ramps 0..1. */
+export interface EggState {
+  /** Milliseconds since the click. */
+  t: number;
+  rm: boolean;
+  /** Quiet: dims the ring line, hides labels and beams. */
+  q: number;
+  /** Warm to red shift of the city lights. */
+  red: number;
+  /** Logo stroke draw-in. */
+  lines: number;
+  /** Glide progress of satellite i from the ring (0) to its logo vertex (1). */
+  k: (i: number) => number;
 }
 
 export function isCompact(W: number): boolean {
@@ -188,7 +205,69 @@ export function ringRotation(from: number, to: number, t0: number, now: number) 
   return { rot: from + (to - from) * easeInOutCubic(k), k };
 }
 
-/** The six satellites for a ring rotation. `animated` adds the idle bob. */
+/** Total egg duration: the moment everything resumes. */
+export const EGG_END_MS = 7600;
+/** Reduced motion shows one static frame for this long. */
+export const EGG_RM_END_MS = 6000;
+/** When the caption switches to the lyric and back, in ms after the click. */
+export const EGG_LYRIC_MS = 1200;
+export const EGG_CAPTION_BACK_MS = 7000;
+
+const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+
+/** Egg ramps at t ms after the click, or null once the egg is over. */
+export function eggState(t: number, rm: boolean): EggState | null {
+  if (t >= (rm ? EGG_RM_END_MS : EGG_END_MS)) return null;
+  if (rm) return { t, rm, q: 1, red: 1, lines: 1, k: () => 1 };
+  return {
+    t,
+    rm,
+    q: Math.min(clamp01(t / 600), 1 - clamp01((t - 6200) / 800)),
+    red: Math.min(clamp01((t - 700) / 1200), 1 - clamp01((t - 6400) / 1000)),
+    lines: Math.min(clamp01((t - 1900) / 700), 1 - clamp01((t - 6000) / 400)),
+    k: (i) =>
+      Math.min(
+        easeInOutCubic(clamp01((t - 400 - 70 * i) / 1300)),
+        1 - easeInOutCubic(clamp01((t - 6200 - 50 * i) / 1200)),
+      ),
+  };
+}
+
+/** Vertices of the |-/ logo in logo units: bar, dash, slash. */
+const LOGO_VERTS: readonly (readonly [number, number])[] = [
+  [0, -1],
+  [0, 1],
+  [0.55, 0],
+  [1.15, 0],
+  [1.6, 1],
+  [2.1, -1],
+];
+
+/** Canvas position of logo vertex i, centered on the planet in front of it. */
+export function logoVertex(G: PlanetGeo, W: number, i: number): { x: number; y: number } {
+  const compact = isCompact(W);
+  const sc = compact ? 38 : 54;
+  const [vx, vy] = LOGO_VERTS[i];
+  return { x: G.cx + (vx - 1.05) * sc, y: G.limbTop + (compact ? 58 : 82) + vy * sc };
+}
+
+export type RGB = readonly [number, number, number];
+
+/** Blend two RGB triples by k, as the "r,g,b" body of a canvas color string. */
+export function mixRGB(a: RGB, b: RGB, k: number): string {
+  return a.map((v, n) => Math.round(v + (b[n] - v) * k)).join(',');
+}
+
+/** Warm city light and cluster glow colors, and their red egg counterparts. */
+export const LIGHT_WARM: RGB = [255, 214, 160];
+export const LIGHT_RED: RGB = [235, 64, 72];
+export const GLOW_WARM: RGB = [255, 190, 120];
+export const GLOW_RED: RGB = [220, 40, 52];
+
+/**
+ * The six satellites for a ring rotation. `animated` adds the idle bob. While an
+ * egg runs, `egg` pulls each satellite toward its logo vertex.
+ */
 export function ringSatellites(
   G: PlanetGeo,
   ring: RingGeo,
@@ -197,6 +276,7 @@ export function ringSatellites(
   activeIndex: number,
   now: number,
   animated: boolean,
+  egg: { state: EggState; W: number } | null = null,
 ): RingSat[] {
   const sats: RingSat[] = [];
   for (let i = 0; i < SATELLITE_COUNT; i++) {
@@ -206,7 +286,7 @@ export function ringSatellites(
     const front = p.depth > 0;
     const active = i === activeIndex;
     const dn = (p.depth + 1) / 2;
-    sats.push({
+    const sat: RingSat = {
       x: p.x,
       y: p.y + (animated ? Math.sin(now / 900 + i) * 1.2 : 0),
       ang: Math.atan2(q.y - p.y, q.x - p.x),
@@ -217,8 +297,24 @@ export function ringSatellites(
       active,
       alpha: active ? 1 : 0.45 + 0.3 * dn,
       hidden: !front && p.y > limbY(G, p.x) - 2,
-      on: active ? progress : undefined,
-    });
+      on: active ? progress * (egg ? 1 - egg.state.q : 1) : undefined,
+    };
+    const ek = egg ? egg.state.k(i) : 0;
+    if (egg && ek > 0) {
+      const v = logoVertex(G, egg.W, i);
+      sat.x += (v.x - sat.x) * ek;
+      sat.y += (v.y - sat.y) * ek;
+      sat.scale += (0.8 - sat.scale) * ek;
+      sat.alpha += (1 - sat.alpha) * ek;
+      sat.egg = ek;
+      if (ek > 0.5) {
+        sat.front = true;
+        sat.hidden = false;
+        sat.ang = Math.PI;
+        sat.depth = 1;
+      }
+    }
+    sats.push(sat);
   }
   return sats;
 }

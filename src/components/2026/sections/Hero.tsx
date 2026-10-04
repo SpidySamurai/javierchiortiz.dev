@@ -489,6 +489,7 @@ export default function Hero() {
         activeIndex={serviceIdx}
         started={servicesStarted}
         labels={serviceLabels}
+        eggAt={null}
       />
 
       {/* |-/ easter egg trigger — drifts like a particle */}
