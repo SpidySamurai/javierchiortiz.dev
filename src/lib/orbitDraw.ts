@@ -4,10 +4,16 @@
  */
 
 import {
+  GLOW_RED,
+  GLOW_WARM,
+  LIGHT_RED,
+  LIGHT_WARM,
   easeOutCubic,
   limbY,
   lightPos,
+  mixRGB,
   type CityField,
+  type EggState,
   type Light,
   type PlanetGeo,
   type RingPoint,
@@ -61,6 +67,8 @@ export interface PlanetOptions {
   /** Static frame: no twinkle, no flares. */
   still: boolean;
   spin: number;
+  /** 0..1 warm to red shift of lights and glows while the easter egg runs. */
+  red?: number;
 }
 
 export function drawPlanet(
@@ -68,8 +76,10 @@ export function drawPlanet(
   G: PlanetGeo,
   cities: CityField,
   fx: OrbitFx,
-  { W, H, now, still, spin }: PlanetOptions,
+  { W, H, now, still, spin, red = 0 }: PlanetOptions,
 ): void {
+  const lc = mixRGB(LIGHT_WARM, LIGHT_RED, red);
+  const gc = mixRGB(GLOW_WARM, GLOW_RED, red);
   ctx.beginPath();
   ctx.arc(G.cx, G.cy, G.R, 0, Math.PI * 2);
   const body = ctx.createLinearGradient(0, G.limbTop, 0, H);
@@ -90,8 +100,8 @@ export function drawPlanet(
     if (edge <= 0) continue;
     const r = 8 + C.size * 1.1;
     const g = ctx.createRadialGradient(x, y, 0, x, y, r);
-    g.addColorStop(0, 'rgba(255,190,120,' + (0.07 * Math.sqrt(cz) * edge).toFixed(3) + ')');
-    g.addColorStop(1, 'rgba(255,190,120,0)');
+    g.addColorStop(0, 'rgba(' + gc + ',' + ((0.07 + 0.06 * red) * Math.sqrt(cz) * edge).toFixed(3) + ')');
+    g.addColorStop(1, 'rgba(' + gc + ',0)');
     ctx.fillStyle = g;
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -107,7 +117,7 @@ export function drawPlanet(
     if (edge <= 0) continue;
     const tw = still ? 0.9 : 0.75 + 0.25 * Math.sin(now * 0.0021 + L.tw);
     const a = L.b * Math.sqrt(p.cz) * edge * tw;
-    ctx.fillStyle = 'rgba(255,214,160,' + a.toFixed(3) + ')';
+    ctx.fillStyle = 'rgba(' + lc + ',' + a.toFixed(3) + ')';
     ctx.fillRect(p.x - L.sz / 2, p.y - L.sz / 2, L.sz, L.sz);
     if (edge >= 1 && L.b > 0.5) vis.push({ L, x: p.x, y: p.y });
   }
@@ -127,7 +137,7 @@ export function drawPlanet(
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.scale(1, 0.45);
-      ctx.strokeStyle = 'rgba(255,214,160,' + (0.55 * (1 - k)).toFixed(3) + ')';
+      ctx.strokeStyle = 'rgba(' + lc + ',' + (0.55 * (1 - k)).toFixed(3) + ')';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.arc(0, 0, 3 + 16 * e, 0, Math.PI * 2);
@@ -171,18 +181,22 @@ export function drawPlanet(
   ctx.restore();
 }
 
-/** Back half (front=false) or front half (front=true) of the ring line. */
+/**
+ * Back half (front=false) or front half (front=true) of the ring line.
+ * `quiet` (0..1) dims it, up to 75%, while the easter egg runs.
+ */
 export function drawRing(
   ctx: CanvasRenderingContext2D,
   at: (th: number) => RingPoint,
   front: boolean,
+  quiet = 0,
 ): void {
   ctx.lineWidth = 1;
   let prev: RingPoint | null = null;
   for (let s = 0; s <= 120; s++) {
     const p = at((s / 120) * Math.PI * 2);
     if (prev && p.depth > 0 === front && prev.depth > 0 === front) {
-      const a = front ? 0.16 + 0.16 * p.depth : 0.1;
+      const a = (front ? 0.16 + 0.16 * p.depth : 0.1) * (1 - 0.75 * quiet);
       ctx.strokeStyle = 'rgba(192,193,255,' + a.toFixed(3) + ')';
       ctx.beginPath();
       ctx.moveTo(prev.x, prev.y);
@@ -370,4 +384,55 @@ export function drawBurnUps(
     ctx.fillRect(s.x - 0.8, s.y - 0.8, 1.6, 1.6);
   }
   fx.sparks = alive;
+}
+
+/** Satellite index pairs joined by each stroke of the |-/ logo: bar, dash, slash. */
+const LOGO_STROKES = [
+  [0, 1],
+  [2, 3],
+  [4, 5],
+] as const;
+
+/**
+ * Red |-/ logo drawn between the satellites that glided to its vertices: a glow
+ * stroke plus a core stroke per bar, and a heartbeat glow on each vertex.
+ */
+export function drawLogo(ctx: CanvasRenderingContext2D, sats: RingSat[], egg: EggState): void {
+  if (egg.lines <= 0) return;
+  const beat = egg.rm ? 0 : Math.pow(Math.max(0, Math.sin((egg.t / 800) * Math.PI)), 6);
+  ctx.save();
+  ctx.lineCap = 'round';
+  LOGO_STROKES.forEach(([ia, ib], n) => {
+    const A = sats[ia];
+    const B = sats[ib];
+    if (!A || !B) return;
+    const f = Math.min(1, Math.max(0, egg.lines * 1.4 - n * 0.2));
+    if (f <= 0) return;
+    const ex = A.x + (B.x - A.x) * f;
+    const ey = A.y + (B.y - A.y) * f;
+    ctx.strokeStyle = 'rgba(230,57,70,' + (0.16 + 0.14 * beat).toFixed(3) + ')';
+    ctx.lineWidth = 7;
+    ctx.beginPath();
+    ctx.moveTo(A.x, A.y);
+    ctx.lineTo(ex, ey);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(240,96,104,0.85)';
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(A.x, A.y);
+    ctx.lineTo(ex, ey);
+    ctx.stroke();
+  });
+  for (const s of sats) {
+    if ((s.egg ?? 0) < 0.5) continue;
+    const r = 20 + 8 * beat;
+    const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r);
+    g.addColorStop(0, 'rgba(230,57,70,' + (0.28 * egg.lines * (1 + beat)).toFixed(3) + ')');
+    g.addColorStop(1, 'rgba(230,57,70,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
 }
