@@ -3,9 +3,8 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%&!?';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { TwentyOnePilotsEgg } from './TwentyOnePilotsEgg';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import type { Container } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
@@ -13,11 +12,24 @@ import { loadEmittersPlugin } from '@tsparticles/plugin-emitters';
 import { loadTrailEffect } from '@tsparticles/effect-trail';
 import { whatsappUrl } from '@/lib/contact';
 import { emitShootingStar } from '@/lib/skyEvents';
-import { cometLimbImpact, planetGeo } from '@/lib/orbitScene';
+import {
+  EGG_CAPTION_BACK_MS,
+  EGG_END_MS,
+  EGG_LYRIC_MS,
+  EGG_RM_END_MS,
+  cometLimbImpact,
+  planetGeo,
+} from '@/lib/orbitScene';
 import PlanetOrbit from '@/components/2026/ui/PlanetOrbit';
 
 /** Measured comet speed along each axis (px/s) for the 45 degree trail. */
 const COMET_SPEED = 340;
+
+/** Easter egg caption: a lyric, so it stays English in every locale. */
+const EGG_LYRIC = 'sometimes quiet is violent';
+/** Longest wait for an in-flight comet before the particles freeze. */
+const MAX_COMET_WAIT_MS = 3000;
+const EGG_RED = '#e63946';
 
 function getParticlesOptions(isDark: boolean) {
   return {
@@ -65,39 +77,64 @@ function getParticlesOptions(isDark: boolean) {
 const ParticleBackground = memo(function ParticleBackground({
   onLoaded,
   options,
+  dimmed,
+  instant,
 }: {
   onLoaded: (c: Container | undefined) => void;
   options: ReturnType<typeof getParticlesOptions>;
+  /** Dim the stars to about 40% while the easter egg runs. */
+  dimmed: boolean;
+  /** Skip the dimming transition (reduced motion). */
+  instant: boolean;
 }) {
   return (
-    <Particles
-      id="hero-particles"
+    <div
       className="absolute inset-0 z-0"
-      style={{ pointerEvents: 'none' }}
-      particlesLoaded={async (c) => onLoaded(c)}
-      options={options}
-    />
+      style={{
+        pointerEvents: 'none',
+        opacity: dimmed ? 0.4 : 1,
+        transition: instant ? 'none' : 'opacity 600ms ease-in-out',
+      }}
+    >
+      <Particles
+        id="hero-particles"
+        className="absolute inset-0 z-0"
+        style={{ pointerEvents: 'none' }}
+        particlesLoaded={async (c) => onLoaded(c)}
+        options={options}
+      />
+    </div>
   );
 });
 function TypingText({
   text,
   start,
+  instant = false,
   style,
   className,
 }: {
   text: string;
   start: boolean;
+  /** Show the full text at once instead of typing it (reduced motion). */
+  instant?: boolean;
   style?: React.CSSProperties;
   className?: string;
 }) {
-  const [count, setCount] = useState(0);
+  // Retype whenever the text changes: reset the count during render so the old
+  // length never flashes against the new text.
+  const [typed, setTyped] = useState({ text, count: 0 });
+  if (typed.text !== text) setTyped({ text, count: 0 });
+  const count = instant ? text.length : typed.text === text ? typed.count : 0;
   const done = count >= text.length;
 
   useEffect(() => {
     if (!start || done) return;
-    const t = setTimeout(() => setCount((c) => c + 1), 55);
+    const t = setTimeout(
+      () => setTyped((s) => (s.text === text ? { text, count: s.count + 1 } : s)),
+      55,
+    );
     return () => clearTimeout(t);
-  }, [count, done, start]);
+  }, [count, done, start, text]);
 
   return (
     <span className={className} style={style}>
@@ -216,6 +253,7 @@ const ScrambleServiceCycler = memo(function ScrambleServiceCycler({
   active,
   idx,
   started,
+  frozen,
   onStart,
   onAdvance,
 }: {
@@ -224,6 +262,8 @@ const ScrambleServiceCycler = memo(function ScrambleServiceCycler({
   /** Index and started flag are owned by Hero so the planet ring can follow them. */
   idx: number;
   started: boolean;
+  /** Stop advancing; the interval restarts from zero when it clears. */
+  frozen: boolean;
   onStart: () => void;
   onAdvance: () => void;
 }) {
@@ -234,10 +274,10 @@ const ScrambleServiceCycler = memo(function ScrambleServiceCycler({
   }, [active, onStart]);
 
   useEffect(() => {
-    if (!started) return;
+    if (!started || frozen) return;
     const timer = setInterval(onAdvance, 3200);
     return () => clearInterval(timer);
-  }, [started, onAdvance]);
+  }, [started, frozen, onAdvance]);
 
   const current = services[idx];
   const label = useScramble(started ? current.label : '');
@@ -306,7 +346,16 @@ export default function Hero() {
   const isDark = true; // dark-only site — no theme branching (avoids hydration mismatch)
   const [particlesReady, setParticlesReady] = useState(false);
   const [typingDone, setTypingDone] = useState(false);
-  const [eggOpen, setEggOpen] = useState(false);
+  const reduceMotion = useReducedMotion() ?? false;
+  /** performance.now() at the easter egg click; null while no egg runs. */
+  const [eggAt, setEggAt] = useState<number | null>(null);
+  const [eggLyric, setEggLyric] = useState(false);
+  const [eggHot, setEggHot] = useState(false);
+  const eggActive = eggAt !== null;
+  const eggRunningRef = useRef(false);
+  const eggTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const heroInViewRef = useRef(true);
+  const cometEndRef = useRef(0);
   const [serviceIdx, setServiceIdx] = useState(0);
   const [servicesStarted, setServicesStarted] = useState(false);
   const cometContainerRef = useRef<Container | null>(null);
@@ -344,10 +393,13 @@ export default function Hero() {
     if (!particlesReady || !el) return;
     const io = new IntersectionObserver(
       ([entry]) => {
+        heroInViewRef.current = entry.isIntersecting;
         const c = cometContainerRef.current;
         if (!c) return;
-        if (entry.isIntersecting) c.play();
-        else c.pause();
+        // The egg keeps the stars frozen until it ends, in view or not.
+        if (entry.isIntersecting) {
+          if (!eggRunningRef.current) c.play();
+        } else c.pause();
       },
       { threshold: 0 },
     );
@@ -364,7 +416,7 @@ export default function Hero() {
   }, []);
 
   const fireComet = useCallback(() => {
-    if (!cometContainerRef.current) return;
+    if (!cometContainerRef.current || eggRunningRef.current) return;
     const container = cometContainerRef.current;
     const { width, height } = container.canvas.size;
     const startX = width * (0.3 + Math.random() * 0.7); // anywhere from 30% to 100% along top
@@ -411,6 +463,7 @@ export default function Hero() {
         durationMs: (run / COMET_SPEED) * 1000,
         source: 'hero',
       });
+      cometEndRef.current = performance.now() + (run / COMET_SPEED) * 1000;
     }
 
     // Animate virtual cursor along the comet trajectory to trigger hover repulse
@@ -452,6 +505,39 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, [particlesReady, typingDone, fireComet]);
 
+  const clearEggTimers = useCallback(() => {
+    eggTimersRef.current.forEach(clearTimeout);
+    eggTimersRef.current = [];
+  }, []);
+
+  useEffect(() => clearEggTimers, [clearEggTimers]);
+
+  // The quiet moment: freeze the sky, retype the caption as the lyric, then
+  // hand everything back. Clicks are ignored until it ends.
+  const startEgg = useCallback(() => {
+    if (eggRunningRef.current) return;
+    eggRunningRef.current = true;
+    const now = performance.now();
+    const after = (fn: () => void, ms: number) =>
+      eggTimersRef.current.push(setTimeout(fn, ms));
+    setEggAt(now);
+    // Comets already in flight finish before the stars freeze.
+    const pauseIn = reduceMotion
+      ? 0
+      : Math.min(MAX_COMET_WAIT_MS, Math.max(600, cometEndRef.current - now));
+    after(() => cometContainerRef.current?.pause(), pauseIn);
+    after(() => setEggLyric(true), reduceMotion ? 0 : EGG_LYRIC_MS);
+    after(() => setEggLyric(false), reduceMotion ? EGG_RM_END_MS : EGG_CAPTION_BACK_MS);
+    after(
+      () => {
+        eggRunningRef.current = false;
+        setEggAt(null);
+        if (heroInViewRef.current) cometContainerRef.current?.play();
+      },
+      reduceMotion ? EGG_RM_END_MS : EGG_END_MS,
+    );
+  }, [reduceMotion]);
+
   return (
     <section
       ref={sectionRef}
@@ -465,6 +551,8 @@ export default function Hero() {
           key="dark"
           onLoaded={handleParticlesLoaded}
           options={particlesOptions}
+          dimmed={eggActive}
+          instant={reduceMotion}
         />
       )}
 
@@ -489,35 +577,50 @@ export default function Hero() {
         activeIndex={serviceIdx}
         started={servicesStarted}
         labels={serviceLabels}
-        eggAt={null}
+        eggAt={eggAt}
       />
 
-      {/* |-/ easter egg trigger — drifts like a particle */}
-      <motion.span
-        onClick={() => setEggOpen(true)}
-        className="absolute top-[218px] right-[20%] cursor-pointer z-20 hidden md:block"
-        animate={{
-          opacity: [0.04, 0.18, 0.06, 0.22, 0.04, 0.14, 0.04],
-          scale: [1, 1.04, 0.98, 1.06, 1, 1.02, 1],
-        }}
-        transition={{
-          duration: 8,
-          ease: 'easeInOut',
-          repeat: Infinity,
-          repeatType: 'mirror',
-          times: [0, 0.2, 0.35, 0.55, 0.7, 0.85, 1],
-        }}
-        style={{
-          color: 'color-mix(in srgb, var(--ds-on-surface) 100%, transparent)',
-          fontFamily: 'var(--font-inter), sans-serif',
-          fontSize: '2rem',
-          letterSpacing: '0.5em',
-          userSelect: 'none',
-        }}
-        whileHover={{ opacity: 0.35, scale: 1.05, transition: { duration: 0.3 } }}
+      {/* |-/ easter egg trigger: faint until hovered, red while the egg runs */}
+      <button
+        type="button"
+        onClick={startEgg}
+        onMouseEnter={() => setEggHot(true)}
+        onMouseLeave={() => setEggHot(false)}
+        onFocus={(e) => setEggHot(e.currentTarget.matches(':focus-visible'))}
+        onBlur={() => setEggHot(false)}
+        aria-label={t('hero_egg_label')}
+        className="absolute z-20 bottom-[196px] left-2 md:bottom-auto md:left-auto md:top-[218px] md:right-[20%] min-h-11 min-w-11 px-2.5 py-1.5 cursor-pointer select-none rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--ds-primary-vivid)]"
       >
-        |-/
-      </motion.span>
+        <motion.span
+          aria-hidden
+          className="inline-block text-2xl md:text-[2rem] leading-none transition-colors duration-[600ms]"
+          animate={
+            eggActive
+              ? { opacity: 0.6, transition: { duration: 0.3 } }
+              : eggHot
+                ? { opacity: 0.4, transition: { duration: 0.3 } }
+                : reduceMotion
+                  ? { opacity: 0.1, transition: { duration: 0 } }
+                  : {
+                      opacity: [0.04, 0.18, 0.06, 0.22, 0.04, 0.14, 0.04],
+                      transition: {
+                        duration: 8,
+                        ease: 'easeInOut',
+                        repeat: Infinity,
+                        repeatType: 'mirror',
+                        times: [0, 0.2, 0.35, 0.55, 0.7, 0.85, 1],
+                      },
+                    }
+          }
+          style={{
+            color: eggActive ? EGG_RED : 'var(--ds-on-surface)',
+            fontFamily: 'var(--font-inter), sans-serif',
+            letterSpacing: '0.5em',
+          }}
+        >
+          |-/
+        </motion.span>
+      </button>
 
       <div className="relative z-10 max-w-3xl mx-auto space-y-10 md:text-center">
           {/* Headline */}
@@ -555,6 +658,7 @@ export default function Hero() {
               active={typingDone}
               idx={serviceIdx}
               started={servicesStarted}
+              frozen={eggActive}
               onStart={handleServicesStart}
               onAdvance={handleServicesAdvance}
             />
@@ -601,10 +705,13 @@ export default function Hero() {
       </div>
 
       {/* Comet caption */}
-      <p className="hidden md:block absolute bottom-10 right-8 md:right-16 text-xs italic pointer-events-none">
+      <p
+        className={`${eggActive ? 'block' : 'hidden md:block'} absolute bottom-10 right-8 md:right-16 text-xs italic pointer-events-none`}
+      >
         <TypingText
-          text={t('hero_comet_caption')}
+          text={eggLyric ? EGG_LYRIC : t('hero_comet_caption')}
           start={typingDone}
+          instant={reduceMotion}
           style={{
             color: 'color-mix(in srgb, var(--ds-primary) 75%, transparent)',
             fontFamily: 'var(--font-inter), sans-serif',
@@ -612,11 +719,6 @@ export default function Hero() {
           }}
         />
       </p>
-
-      {/* Easter egg overlay */}
-      <AnimatePresence>
-        {eggOpen && <TwentyOnePilotsEgg onClose={() => setEggOpen(false)} />}
-      </AnimatePresence>
 
       {/* Editorial ticker */}
       <div
