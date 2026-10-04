@@ -13,6 +13,8 @@ import { loadEmittersPlugin } from '@tsparticles/plugin-emitters';
 import { loadTrailEffect } from '@tsparticles/effect-trail';
 import { whatsappUrl } from '@/lib/contact';
 import { emitShootingStar } from '@/lib/skyEvents';
+import { cometLimbImpact, planetGeo } from '@/lib/orbitScene';
+import PlanetOrbit from '@/components/2026/ui/PlanetOrbit';
 
 /** Measured comet speed along each axis (px/s) for the 45 degree trail. */
 const COMET_SPEED = 340;
@@ -212,24 +214,30 @@ interface ServiceItem {
 const ScrambleServiceCycler = memo(function ScrambleServiceCycler({
   services,
   active,
+  idx,
+  started,
+  onStart,
+  onAdvance,
 }: {
   services: ServiceItem[];
   active: boolean;
+  /** Index and started flag are owned by Hero so the planet ring can follow them. */
+  idx: number;
+  started: boolean;
+  onStart: () => void;
+  onAdvance: () => void;
 }) {
-  const [idx, setIdx] = useState(0);
-  const [started, setStarted] = useState(false);
-
   useEffect(() => {
     if (!active) return;
-    const t = setTimeout(() => setStarted(true), 350);
+    const t = setTimeout(onStart, 350);
     return () => clearTimeout(t);
-  }, [active]);
+  }, [active, onStart]);
 
   useEffect(() => {
     if (!started) return;
-    const timer = setInterval(() => setIdx((i) => (i + 1) % services.length), 3200);
+    const timer = setInterval(onAdvance, 3200);
     return () => clearInterval(timer);
-  }, [started, services.length]);
+  }, [started, onAdvance]);
 
   const current = services[idx];
   const label = useScramble(started ? current.label : '');
@@ -299,6 +307,8 @@ export default function Hero() {
   const [particlesReady, setParticlesReady] = useState(false);
   const [typingDone, setTypingDone] = useState(false);
   const [eggOpen, setEggOpen] = useState(false);
+  const [serviceIdx, setServiceIdx] = useState(0);
+  const [servicesStarted, setServicesStarted] = useState(false);
   const cometContainerRef = useRef<Container | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const particlesOptions = useMemo(() => getParticlesOptions(isDark), [isDark]);
@@ -313,6 +323,14 @@ export default function Hero() {
       { label: t('hero_svc_webapps'), sub: t('hero_svc_webapps_sub') },
     ],
     [t],
+  );
+
+  const serviceLabels = useMemo(() => services.map((s) => s.label), [services]);
+  const handleTypingDone = useCallback(() => setTypingDone(true), []);
+  const handleServicesStart = useCallback(() => setServicesStarted(true), []);
+  const handleServicesAdvance = useCallback(
+    () => setServiceIdx((i) => (i + 1) % services.length),
+    [services.length],
   );
 
   const handleParticlesLoaded = useCallback((c: Container | undefined) => {
@@ -378,12 +396,15 @@ export default function Hero() {
     );
 
     // Tell the rest of the page (the cat) a star is crossing the sky. The comet
-    // flies at 45 degrees down-left until it leaves the canvas.
+    // flies at 45 degrees down-left until it leaves the canvas or burns up.
     const rect = container.canvas.element?.getBoundingClientRect();
     if (rect) {
-      const run = Math.min(startX, height);
       const kx = rect.width / width;
       const ky = rect.height / height;
+      // The comet passes behind the planet: stop it where it meets the limb, using
+      // the same geometry PlanetOrbit draws the burn-up with (CSS px, hero-sized).
+      const impact = cometLimbImpact(planetGeo(rect.width, rect.height), startX * kx, 0);
+      const run = impact ? Math.min(startX, height, impact.run / kx) : Math.min(startX, height);
       emitShootingStar({
         from: { x: rect.left + startX * kx, y: rect.top },
         to: { x: rect.left + (startX - run) * kx, y: rect.top + run * ky },
@@ -435,7 +456,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       data-track-section="hero"
-      className="relative px-8 md:px-16 pt-24 pb-24 md:pb-40 overflow-hidden"
+      className="relative px-8 md:px-16 pt-24 pb-[260px] md:pb-[340px] md:min-h-[860px] overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
     >
       {/* Unified particles — background + comets in one container */}
@@ -462,6 +483,13 @@ export default function Hero() {
           style={{ background: 'rgba(96,100,232,0.07)', filter: 'blur(100px)' }}
         />
       )}
+
+      {/* Planet horizon + orbit ring: above the particles, below the content */}
+      <PlanetOrbit
+        activeIndex={serviceIdx}
+        started={servicesStarted}
+        labels={serviceLabels}
+      />
 
       {/* |-/ easter egg trigger — drifts like a particle */}
       <motion.span
@@ -496,7 +524,7 @@ export default function Hero() {
             pre={t('hero_headline_pre')}
             accent={t('hero_headline_accent')}
             post={t('hero_headline_post')}
-            onDone={() => setTypingDone(true)}
+            onDone={handleTypingDone}
           />
 
           {/* Description */}
@@ -521,7 +549,14 @@ export default function Hero() {
             className="flex flex-col sm:flex-row items-start md:items-center md:justify-center gap-10 sm:gap-8"
           >
             {/* Scrambler */}
-            <ScrambleServiceCycler services={services} active={typingDone} />
+            <ScrambleServiceCycler
+              services={services}
+              active={typingDone}
+              idx={serviceIdx}
+              started={servicesStarted}
+              onStart={handleServicesStart}
+              onAdvance={handleServicesAdvance}
+            />
 
             {/* Vertical divider */}
             <div
