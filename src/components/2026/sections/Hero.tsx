@@ -13,6 +13,7 @@ import { loadEmittersPlugin } from '@tsparticles/plugin-emitters';
 import { loadTrailEffect } from '@tsparticles/effect-trail';
 import { whatsappUrl } from '@/lib/contact';
 import { emitShootingStar } from '@/lib/skyEvents';
+import { cometLimbImpact, planetGeo } from '@/lib/orbitScene';
 import PlanetOrbit from '@/components/2026/ui/PlanetOrbit';
 
 /** Measured comet speed along each axis (px/s) for the 45 degree trail. */
@@ -395,12 +396,15 @@ export default function Hero() {
     );
 
     // Tell the rest of the page (the cat) a star is crossing the sky. The comet
-    // flies at 45 degrees down-left until it leaves the canvas.
+    // flies at 45 degrees down-left until it leaves the canvas or burns up.
     const rect = container.canvas.element?.getBoundingClientRect();
     if (rect) {
-      const run = Math.min(startX, height);
       const kx = rect.width / width;
       const ky = rect.height / height;
+      // The comet passes behind the planet: stop it where it meets the limb, using
+      // the same geometry PlanetOrbit draws the burn-up with (CSS px, hero-sized).
+      const impact = cometLimbImpact(planetGeo(rect.width, rect.height), startX * kx, 0);
+      const run = impact ? Math.min(startX, height, impact.run / kx) : Math.min(startX, height);
       emitShootingStar({
         from: { x: rect.left + startX * kx, y: rect.top },
         to: { x: rect.left + (startX - run) * kx, y: rect.top + run * ky },

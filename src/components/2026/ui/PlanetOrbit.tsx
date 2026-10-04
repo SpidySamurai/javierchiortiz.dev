@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import {
+  addBurnUp,
   createFx,
   drawBeams,
   drawBurnUps,
@@ -12,8 +13,10 @@ import {
   drawSat,
   type OrbitFx,
 } from '@/lib/orbitDraw';
+import { onShootingStar } from '@/lib/skyEvents';
 import {
   INITIAL_RING_ROT,
+  cometLimbImpact,
   genCities,
   isCompact,
   planetGeo,
@@ -51,6 +54,8 @@ interface SceneState {
   rotT0: number;
   index: number;
   started: boolean;
+  /** Comet burn-ups waiting for their moment, in canvas px. */
+  burns: { at: number; x: number; y: number }[];
 }
 
 const MAX_DPR = 2;
@@ -93,6 +98,7 @@ export default function PlanetOrbit({ activeIndex, started, labels }: PlanetOrbi
       rotT0: -1e9,
       index: -1,
       started: false,
+      burns: [],
     };
     let disposed = false;
 
@@ -169,7 +175,12 @@ export default function PlanetOrbit({ activeIndex, started, labels }: PlanetOrbi
         if (compact && !s.active) return;
         drawRingLabel(ctx, s, names[s.i] ?? '', W);
       });
-      if (!rm) drawBurnUps(ctx, st.fx, now, dt);
+      if (!rm) {
+        const due = st.burns.filter((b) => b.at <= now);
+        st.burns = st.burns.filter((b) => b.at > now);
+        for (const b of due) if (now - b.at < 1000) addBurnUp(st.fx, b.x, b.y, now);
+        drawBurnUps(ctx, st.fx, now, dt);
+      }
     };
 
     const drawStatic = () => {
@@ -197,6 +208,27 @@ export default function PlanetOrbit({ activeIndex, started, labels }: PlanetOrbi
     targetRef.current = rm ? drawStatic : applyTarget;
     applyTarget(performance.now());
 
+    // Hero comets keep flying behind the opaque planet; play the burn-up where
+    // their path first meets the limb, when they get there.
+    const offStar = rm
+      ? null
+      : onShootingStar((star) => {
+          if (star.source !== 'hero' || !st.W || !st.H) return;
+          const rect = canvas.getBoundingClientRect();
+          if (!rect.width || !rect.height) return;
+          const kx = st.W / rect.width;
+          const ky = st.H / rect.height;
+          const fromX = (star.from.x - rect.left) * kx;
+          const fromY = (star.from.y - rect.top) * ky;
+          const toX = (star.to.x - rect.left) * kx;
+          const toY = (star.to.y - rect.top) * ky;
+          const hit = cometLimbImpact(planetGeo(st.W, st.H), fromX, fromY);
+          if (!hit) return;
+          const path = Math.hypot(toX - fromX, toY - fromY);
+          const frac = path > 0 ? Math.min(1, (hit.run * Math.SQRT2) / path) : 1;
+          st.burns.push({ at: performance.now() + star.durationMs * frac, x: hit.x, y: hit.y });
+        });
+
     let io: IntersectionObserver | null = null;
     let ro: ResizeObserver | null = null;
     if (rm) {
@@ -219,6 +251,7 @@ export default function PlanetOrbit({ activeIndex, started, labels }: PlanetOrbi
       disposed = true;
       targetRef.current = null;
       pause();
+      offStar?.();
       io?.disconnect();
       ro?.disconnect();
     };
