@@ -532,6 +532,7 @@ export default function Hero() {
     after(
       () => {
         eggRunningRef.current = false;
+        eggTimersRef.current = [];
         setEggAt(null);
         if (heroInViewRef.current) cometContainerRef.current?.play();
       },
@@ -587,7 +588,14 @@ export default function Hero() {
         onClick={startEgg}
         onMouseEnter={() => setEggHot(true)}
         onMouseLeave={() => setEggHot(false)}
-        onFocus={(e) => setEggHot(e.currentTarget.matches(':focus-visible'))}
+        onFocus={(e) => {
+          // Engines without :focus-visible throw from matches(); treat focus as visible.
+          let visible = true;
+          try {
+            visible = e.currentTarget.matches(':focus-visible');
+          } catch {}
+          setEggHot(visible);
+        }}
         onBlur={() => setEggHot(false)}
         aria-label={t('hero_egg_label')}
         className="absolute z-20 bottom-[196px] left-2 md:bottom-auto md:left-auto md:top-[218px] md:right-[20%] min-h-11 min-w-11 px-2.5 py-1.5 cursor-pointer select-none rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--ds-primary-vivid)]"

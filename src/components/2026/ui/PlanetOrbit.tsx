@@ -72,14 +72,18 @@ const SPIN_RATE = 0.000012;
 export default function PlanetOrbit({ activeIndex, started, labels, eggAt }: PlanetOrbitProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useReducedMotion() ?? false;
-  const propsRef = useRef({ activeIndex, started, labels, eggAt });
+  const propsRef = useRef({ activeIndex, started, labels, eggAt, eggRm: reduceMotion });
   const targetRef = useRef<((now: number) => void) | null>(null);
 
   // Declared before the scene effect so the scene always reads fresh props.
   useEffect(() => {
-    propsRef.current = { activeIndex, started, labels, eggAt };
+    // Snapshot reduced motion when an egg starts, like Hero does for its timers,
+    // so both follow the same timeline even if the preference flips mid-egg.
+    const prev = propsRef.current;
+    const eggRm = eggAt !== null && eggAt === prev.eggAt ? prev.eggRm : reduceMotion;
+    propsRef.current = { activeIndex, started, labels, eggAt, eggRm };
     targetRef.current?.(performance.now());
-  }, [activeIndex, started, labels, eggAt]);
+  }, [activeIndex, started, labels, eggAt, reduceMotion]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -154,7 +158,7 @@ export default function PlanetOrbit({ activeIndex, started, labels, eggAt }: Pla
         ? { rot: st.rotTo, k: 1 }
         : ringRotation(st.rotFrom, st.rotTo, st.rotT0, now);
       const eggAt = propsRef.current.eggAt;
-      const egg = eggAt === null ? null : eggState(now - eggAt, rm);
+      const egg = eggAt === null ? null : eggState(now - eggAt, propsRef.current.eggRm);
       const sats = ringSatellites(
         G,
         ringG,

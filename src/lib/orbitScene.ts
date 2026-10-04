@@ -205,8 +205,9 @@ export function ringRotation(from: number, to: number, t0: number, now: number) 
   return { rot: from + (to - from) * easeInOutCubic(k), k };
 }
 
-/** Total egg duration: the moment everything resumes. */
-export const EGG_END_MS = 7600;
+/** Total egg duration: the moment everything resumes. The last satellite's
+ *  return glide ends at 6200 + 50 * 5 + 1200 = 7650 ms, so this leaves a margin. */
+export const EGG_END_MS = 7700;
 /** Reduced motion shows one static frame for this long. */
 export const EGG_RM_END_MS = 6000;
 /** When the caption switches to the lyric and back, in ms after the click. */
