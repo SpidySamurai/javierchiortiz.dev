@@ -213,7 +213,8 @@ export default function PlanetOrbit({ activeIndex, started, labels }: PlanetOrbi
     const offStar = rm
       ? null
       : onShootingStar((star) => {
-          if (star.source !== 'hero' || !st.W || !st.H) return;
+          // Skip while paused offscreen: only render() drains the queue.
+          if (star.source !== 'hero' || !st.W || !st.H || !st.raf) return;
           const rect = canvas.getBoundingClientRect();
           if (!rect.width || !rect.height) return;
           const kx = st.W / rect.width;
@@ -223,7 +224,8 @@ export default function PlanetOrbit({ activeIndex, started, labels }: PlanetOrbi
           const toX = (star.to.x - rect.left) * kx;
           const toY = (star.to.y - rect.top) * ky;
           const hit = cometLimbImpact(planetGeo(st.W, st.H), fromX, fromY);
-          if (!hit) return;
+          // A hit past the left edge means the comet leaves before reaching the limb.
+          if (!hit || hit.x < 0) return;
           const path = Math.hypot(toX - fromX, toY - fromY);
           const frac = path > 0 ? Math.min(1, (hit.run * Math.SQRT2) / path) : 1;
           st.burns.push({ at: performance.now() + star.durationMs * frac, x: hit.x, y: hit.y });
