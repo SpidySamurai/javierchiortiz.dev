@@ -124,7 +124,8 @@ function TypingText({
   // length never flashes against the new text.
   const [typed, setTyped] = useState({ text, count: 0 });
   if (typed.text !== text) setTyped({ text, count: 0 });
-  const count = instant ? text.length : typed.text === text ? typed.count : 0;
+  // `start` gates instant too, so the first client render matches the server HTML.
+  const count = instant && start ? text.length : typed.text === text ? typed.count : 0;
   const done = count >= text.length;
 
   useEffect(() => {
