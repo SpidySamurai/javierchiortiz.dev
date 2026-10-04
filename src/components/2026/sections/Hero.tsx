@@ -494,7 +494,7 @@ export default function Hero() {
       {/* |-/ easter egg trigger — drifts like a particle */}
       <motion.span
         onClick={() => setEggOpen(true)}
-        className="absolute top-1/3 right-[20%] cursor-pointer z-20 hidden md:block"
+        className="absolute top-[218px] right-[20%] cursor-pointer z-20 hidden md:block"
         animate={{
           opacity: [0.04, 0.18, 0.06, 0.22, 0.04, 0.14, 0.04],
           scale: [1, 1.04, 0.98, 1.06, 1, 1.02, 1],
