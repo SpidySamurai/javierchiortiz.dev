@@ -30,8 +30,8 @@ export default function HomeShell({ posts, sidebarCollapsed }: { posts: Post[]; 
       <main className="sidebar-main pt-20">
         <Hero />
         <Product />
-        <Services />
         <Projects />
+        <Services />
         <WhyMe />
         <About />
         <BlogPreview posts={posts} />

@@ -15,7 +15,7 @@ export default function Product() {
       id="product"
       data-track-section="product"
       className="px-8 lg:px-20 py-32 overflow-hidden"
-      style={{ backgroundColor: 'var(--ds-bg)' }}
+      style={{ backgroundColor: 'var(--ds-surface)' }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Section header — mirrors the Projects showcase header */}
