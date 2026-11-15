@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 
-/** Lets the hero settle before the run starts. */
-const RUN_DELAY_MS = 600;
+/** How far down the page has to move before the run starts, so a nudge does not trigger it. */
+const RUN_SCROLL_PX = 40;
 
 export interface MantecadoEntrance {
   /** The run across the bottom of the screen is playing. */
@@ -17,10 +17,10 @@ export interface MantecadoEntrance {
 }
 
 /**
- * When Mantecado shows up on the home page. Every time the page loads he runs
- * across the screen; he peeks from his corner only while the element
- * with `heroId` is out of view, so he never covers the hero. Reduced motion:
- * no run.
+ * When Mantecado shows up on the home page. On every visit he runs across the
+ * screen the first time the page scrolls down, so he does not compete with the
+ * hero on load; he peeks from his corner only while the element with `heroId`
+ * is out of view, so he never covers the hero. Reduced motion: no run.
  */
 export function useMantecadoEntrance(heroId: string): MantecadoEntrance {
   const reduceMotion = useReducedMotion() ?? false;
@@ -40,8 +40,14 @@ export function useMantecadoEntrance(heroId: string): MantecadoEntrance {
 
   useEffect(() => {
     if (reduceMotion) return;
-    const timer = window.setTimeout(() => setRunning(true), RUN_DELAY_MS);
-    return () => window.clearTimeout(timer);
+    const startY = window.scrollY;
+    const onScroll = () => {
+      if (window.scrollY - startY < RUN_SCROLL_PX) return;
+      window.removeEventListener('scroll', onScroll);
+      setRunning(true);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, [reduceMotion]);
 
   const endRun = useCallback(() => setRunning(false), []);
