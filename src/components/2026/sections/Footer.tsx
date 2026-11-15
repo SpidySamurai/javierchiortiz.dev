@@ -2,6 +2,7 @@
 
 import { useTranslations, useLocale } from 'next-intl';
 import VisitorCounter from '@/components/2026/ui/VisitorCounter';
+import { CONTACT_EMAIL } from '@/lib/contact';
 
 export default function Footer() {
   const t = useTranslations('common');
@@ -40,7 +41,7 @@ export default function Footer() {
         {/* Links */}
         <div className="flex gap-8">
           <a
-            href="mailto:javier@javierchiortiz.dev"
+            href={`mailto:${CONTACT_EMAIL}`}
             className="text-xs font-bold uppercase tracking-widest transition-colors text-[var(--ds-on-surface-variant)] hover:text-[var(--ds-primary)]"
           >
             Email
