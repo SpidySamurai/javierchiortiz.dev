@@ -128,14 +128,14 @@
   "project_items": {
     "brania": {
       "title": "brania.ai",
-      "kind": "Marketing site · HTML, CSS and JavaScript",
-      "description": "Home, product pages (Bedrock, Foundation and Autopilot), trust, team and legal pages. Contact form through Resend.",
+      "kind": "Marketing site",
+      "description": "Home, product pages (Bedrock, Foundation and Autopilot), trust, team and legal pages.",
       "client": "BRANIA",
       "role": "Senior Full Stack Engineer on Bedrock and Foundation, and owner of the site",
       "period": "Jul 2026 - Present · contract"
     },
     "scandia-ecommerce": {
-      "kind": "E-commerce · Shopify",
+      "kind": "E-commerce",
       "title": "Scandia Manufacturing",
       "description": "Collaborated on building pages, components, and responsiveness for this industry-leading e-commerce site.",
       "client": "Scandia Manufacturing",
@@ -143,7 +143,7 @@
       "period": "Jan 2020 - Jun 2022"
     },
     "saunas-com": {
-      "kind": "E-commerce · Shopify",
+      "kind": "E-commerce",
       "title": "Saunas.com",
       "description": "E-commerce platform for sauna and steam room products. Feature-rich implementation related to Scandia Mfg.",
       "client": "Scandia Manufacturing",
@@ -151,7 +151,7 @@
       "period": "Jan 2020 - Jun 2022"
     },
     "sun-valley-salt": {
-      "kind": "E-commerce · Shopify",
+      "kind": "E-commerce",
       "title": "Sun Valley Salt",
       "description": "E-commerce platform for Himalayan salt wall panels. Manufacturing and customization focus.",
       "client": "Scandia Manufacturing",
