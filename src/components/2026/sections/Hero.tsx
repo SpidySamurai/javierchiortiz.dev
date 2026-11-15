@@ -744,15 +744,6 @@ export default function Hero() {
                   arrow_forward
                 </span>
               </a>
-              <span
-                className="text-xs italic tracking-widest"
-                style={{
-                  color: 'color-mix(in srgb, var(--ds-primary) 60%, transparent)',
-                  fontFamily: 'var(--font-inter), sans-serif',
-                }}
-              >
-                {t('hero_cta_sub')}
-              </span>
             </div>
           </motion.div>
       </div>

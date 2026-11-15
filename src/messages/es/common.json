@@ -37,7 +37,6 @@
   "hero_headline_post": ".",
   "hero_description_long": "6+ años entregando plataformas SaaS, automatizaciones con IA y productos web en producción. Actualmente Senior Full Stack Engineer en Brania.",
   "hero_cta": "Hablemos",
-  "hero_cta_sub": "remoto · async-friendly",
   "hero_comet_caption": "cometas como ideas: breves, únicas, irrepetibles",
   "hero_egg_label": "Reproducir el easter egg de twenty one pilots",
   "hero_ticker": "Curador • Desarrollador • Diseñador",
@@ -281,7 +280,7 @@
   "blog_title_accent": "más allá del código",
   "blog_view_all": "Ver todos los posts",
   "blog_read_time": "{n} min de lectura",
-  "closing_line": "Cuéntame sobre tu proyecto. Remoto · async-friendly.",
+  "closing_line": "Cuéntame sobre tu proyecto.",
   "closing_wa_label": "Hablemos por WhatsApp",
   "closing_copy_label": "Copiar email",
   "closing_copied": "Email copiado"

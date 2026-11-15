@@ -37,7 +37,6 @@
   "hero_headline_post": ".",
   "hero_description_long": "6+ years shipping SaaS platforms, AI automations, and production web products. Currently Senior Full Stack Engineer at Brania.",
   "hero_cta": "Let's talk",
-  "hero_cta_sub": "remote · async-friendly",
   "hero_comet_caption": "comets like ideas: brief, unique, unrepeatable",
   "hero_egg_label": "Play the twenty one pilots easter egg",
   "hero_ticker": "Curator • Developer • Designer",
@@ -277,7 +276,7 @@
   "blog_title_accent": "Beyond Code",
   "blog_view_all": "View all posts",
   "blog_read_time": "{n} min read",
-  "closing_line": "Tell me about your project. Remote · async-friendly.",
+  "closing_line": "Tell me about your project.",
   "closing_wa_label": "Let's talk on WhatsApp",
   "closing_copy_label": "Copy email",
   "closing_copied": "Email copied"
