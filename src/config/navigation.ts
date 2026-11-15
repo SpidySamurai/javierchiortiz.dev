@@ -5,4 +5,3 @@ export const NAV_ITEMS = [
 ] as const;
 
 export type NavItem = (typeof NAV_ITEMS)[number];
-export const SECTION_IDS = NAV_ITEMS.map((item) => item.id) as string[];

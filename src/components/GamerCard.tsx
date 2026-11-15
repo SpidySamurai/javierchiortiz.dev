@@ -49,18 +49,13 @@ export default function GamerCard({ isOpen, onClose, anchorY }: GamerCardProps) 
   const marvel = useMarvelRivals(MARVEL_UID);
   const [currentTime, setCurrentTime] = useState(0);
   const [isMd, setIsMd] = useState(false);
-  const [isXl, setIsXl] = useState(false);
 
   useEffect(() => {
     const mdQ = window.matchMedia('(min-width: 768px)');
-    const xlQ = window.matchMedia('(min-width: 1280px)');
     setIsMd(mdQ.matches);
-    setIsXl(xlQ.matches);
     const onMd = (e: MediaQueryListEvent) => setIsMd(e.matches);
-    const onXl = (e: MediaQueryListEvent) => setIsXl(e.matches);
     mdQ.addEventListener('change', onMd);
-    xlQ.addEventListener('change', onXl);
-    return () => { mdQ.removeEventListener('change', onMd); xlQ.removeEventListener('change', onXl); };
+    return () => mdQ.removeEventListener('change', onMd);
   }, []);
 
   useEffect(() => {
@@ -132,17 +127,15 @@ export default function GamerCard({ isOpen, onClose, anchorY }: GamerCardProps) 
     ? Math.min(anchorY + 64, (isMd ? window.innerHeight : 800) - 340)
     : 80;
 
-  const cardPos: React.CSSProperties = isXl
-    ? { left: 'calc(var(--sidebar-w, 16rem) + 8px)', bottom: '3.5rem' }
-    : isMd
+  const cardPos: React.CSSProperties = isMd
     ? { left: '272px', top: tabletTop }
     : { top: 'calc(50vh - 160px)', left: 'calc(50vw - 130px)' };
 
   // On tablet the drawer is z-9999; card must be above it; backdrop below drawer so drawer stays interactive
-  const backdropZ = isXl ? 40 : 9997;
-  const cardZ = isXl ? 50 : 10000;
+  const backdropZ = 9997;
+  const cardZ = 10000;
 
-  const animProps = !isXl && !isMd
+  const animProps = !isMd
     ? { initial: { opacity: 0, y: -8 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -8 } }
     : { initial: { opacity: 0, x: -8 }, animate: { opacity: 1, x: 0 }, exit: { opacity: 0, x: -8 } };
 

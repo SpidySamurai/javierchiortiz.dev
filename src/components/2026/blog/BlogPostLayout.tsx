@@ -8,7 +8,6 @@ import type { BlogPost } from '@/data/blog';
 import { getTheme } from '@/data/blogThemes';
 import BlogCover from '@/components/2026/ui/BlogCover';
 import Header from '@/components/2026/layout/Header';
-import Sidebar from '@/components/2026/layout/Sidebar';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
 import CustomCursor from '@/components/2026/ui/CustomCursor';
 
@@ -17,10 +16,9 @@ interface BlogPostLayoutProps {
   locale: string;
   heroSlot?: React.ReactNode;
   midSlot?: React.ReactNode;
-  sidebarCollapsed?: boolean;
 }
 
-export default function BlogPostLayout({ post, locale, heroSlot, midSlot, sidebarCollapsed }: BlogPostLayoutProps) {
+export default function BlogPostLayout({ post, locale, heroSlot, midSlot }: BlogPostLayoutProps) {
   const tb = useTranslations('blog');
   const title = tb(`${post.slug}.title`);
   const sections = tb.raw(`${post.slug}.sections`) as Array<{ heading?: string; body: string[] }>;
@@ -42,9 +40,8 @@ export default function BlogPostLayout({ post, locale, heroSlot, midSlot, sideba
       <ScrollProgress />
       <CustomCursor />
       <Header />
-      <Sidebar defaultCollapsed={sidebarCollapsed} />
 
-      <main className="sidebar-main pt-20">
+      <main className="pt-20">
         <article style={{ backgroundColor: 'var(--ds-bg)' }}>
           {/* Hero */}
           <motion.div

@@ -46,7 +46,7 @@ function MobileDrawer({
       <div
         aria-hidden
         onClick={onClose}
-        className="ds-2026 fixed inset-0 transition-opacity duration-200 xl:hidden"
+        className="ds-2026 fixed inset-0 transition-opacity duration-200"
         style={{
           background: 'color-mix(in srgb, var(--ds-bg) 80%, transparent)',
           opacity: open ? 1 : 0,
@@ -60,7 +60,7 @@ function MobileDrawer({
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
-        className="ds-2026 fixed top-0 left-0 h-full w-64 flex flex-col pt-6 p-6 transition-transform duration-300 xl:hidden"
+        className="ds-2026 fixed top-0 left-0 h-full w-64 flex flex-col pt-6 p-6 transition-transform duration-300"
         style={{
           backgroundColor: 'var(--ds-surface)',
           transform: open ? 'translateX(0)' : 'translateX(-100%)',
@@ -264,7 +264,7 @@ export default function Header() {
   return (
     <>
       <header
-        className="header-adaptive fixed top-0 left-0 w-full flex items-center px-8 py-4 z-50"
+        className="fixed top-0 left-0 w-full flex items-center px-8 py-4 z-50"
         style={{
           backgroundColor: 'color-mix(in srgb, var(--ds-bg) 60%, transparent)',
           backdropFilter: 'blur(24px)',
@@ -292,13 +292,8 @@ export default function Header() {
           <LastVisitorChip />
         </div>
 
-        {/* Desktop controls */}
-        <div className="hidden xl:flex items-center gap-3 ml-auto">
-          <LanguageSwitcher />
-        </div>
-
-        {/* Mobile controls */}
-        <div className="xl:hidden flex items-center gap-2 ml-auto">
+        {/* Language and the menu, at every width: the menu holds every destination */}
+        <div className="flex items-center gap-2 ml-auto">
           <LanguageSwitcher />
           <button
             className="p-2 rounded"

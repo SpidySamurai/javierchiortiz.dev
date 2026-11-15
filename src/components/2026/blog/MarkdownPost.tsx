@@ -1,17 +1,14 @@
 import type { Post } from '@/types/database';
 import Header from '@/components/2026/layout/Header';
-import Sidebar from '@/components/2026/layout/Sidebar';
 import MarkdownRenderer from '@/components/2026/blog/MarkdownRenderer';
 import RepoCard from '@/components/2026/blog/RepoCard';
 import BlogCover from '@/components/2026/ui/BlogCover';
 import BlogCard from '@/components/2026/ui/BlogCard';
 import { getTheme } from '@/data/blogThemes';
-import { getSidebarCollapsed } from '@/lib/sidebarState';
 import { getPublishedPosts } from '@/lib/blogQueries';
 import Link from 'next/link';
 
 export default async function MarkdownPost({ post, locale }: { post: Post; locale: string }) {
-  const sidebarCollapsed = await getSidebarCollapsed();
   const allPosts = await getPublishedPosts();
   const suggestions = allPosts.filter((p) => p.slug !== post.slug).slice(0, 3);
   const title = locale === 'es' ? (post.title_es || post.title_en) : post.title_en;
@@ -41,8 +38,7 @@ export default async function MarkdownPost({ post, locale }: { post: Post; local
       }
     >
       <Header />
-      <Sidebar defaultCollapsed={sidebarCollapsed} />
-      <main className="sidebar-main pt-20">
+      <main className="pt-20">
         {/* Hero */}
         {hasImageHero && (
           <div style={{ width: '100%', height: 420, overflow: 'hidden' }}>

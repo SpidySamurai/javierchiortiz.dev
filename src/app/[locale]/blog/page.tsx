@@ -2,11 +2,9 @@ import type { Metadata } from 'next';
 import { getPublishedPosts } from '@/lib/blogQueries';
 import BlogCard from '@/components/2026/ui/BlogCard';
 import Header from '@/components/2026/layout/Header';
-import Sidebar from '@/components/2026/layout/Sidebar';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
 import CustomCursor from '@/components/2026/ui/CustomCursor';
 import BackBreadcrumb from '@/components/2026/ui/BackBreadcrumb';
-import { getSidebarCollapsed } from '@/lib/sidebarState';
 import type { Post } from '@/types/database';
 
 const BASE_URL = 'https://javierchiortiz.dev';
@@ -36,15 +34,14 @@ export async function generateMetadata({
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const [posts, sidebarCollapsed] = await Promise.all([getPublishedPosts(), getSidebarCollapsed()]);
+  const posts = await getPublishedPosts();
 
   return (
     <div className="ds-2026" style={{ minHeight: '100vh' }}>
       <ScrollProgress />
       <CustomCursor />
       <Header />
-      <Sidebar defaultCollapsed={sidebarCollapsed} />
-      <main className="sidebar-main pt-20">
+      <main className="pt-20">
         <BackBreadcrumb />
         <section className="py-28 px-8" style={{ backgroundColor: 'var(--ds-bg)' }}>
           <div className="max-w-7xl mx-auto">
