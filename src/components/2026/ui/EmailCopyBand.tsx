@@ -40,6 +40,7 @@ export default function EmailCopyBand() {
       <button
         type="button"
         onClick={copy}
+        data-copied={copied}
         aria-label={`${t('closing_copy_label')}: ${EMAIL}`}
         className="group/band relative w-full overflow-hidden rounded-xl cursor-pointer text-center transition-colors duration-300 motion-reduce:transition-none hover:bg-[color:color-mix(in_srgb,var(--ds-primary)_8%,var(--ds-surface-high))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--ds-primary)]"
         style={{
@@ -63,7 +64,7 @@ export default function EmailCopyBand() {
               key={i}
               data-char={ch}
               style={{ '--i': i } as React.CSSProperties}
-              className="relative inline-block overflow-hidden pb-[0.12em] after:absolute after:left-0 after:top-0 after:content-[attr(data-char)] after:text-[color:var(--ds-primary)] after:translate-y-full after:transition-transform after:duration-500 after:ease-out after:[transition-delay:calc(var(--i)*22ms)] group-hover/band:after:translate-y-0 group-focus-visible/band:after:translate-y-0 motion-reduce:after:transition-none"
+              className="relative inline-block overflow-hidden pb-[0.12em] after:absolute after:left-0 after:top-0 after:content-[attr(data-char)] after:text-[color:var(--ds-primary)] after:translate-y-full after:transition-transform after:duration-500 after:ease-out after:[transition-delay:calc(var(--i)*22ms)] group-hover/band:after:translate-y-0 group-focus-visible/band:after:translate-y-0 group-data-[copied=true]/band:after:translate-y-0 motion-reduce:after:transition-none"
             >
               {ch}
             </span>
