@@ -286,7 +286,7 @@ const ScrambleServiceCycler = memo(function ScrambleServiceCycler({
   return (
     <div className="space-y-1.5 flex-shrink-0 min-w-[14rem]">
       {/* Progress pills */}
-      <div className="flex gap-1 items-center mb-2">
+      <div className="flex gap-1 items-center md:justify-center mb-2">
         {services.map((_, i) => (
           <div
             key={i}
@@ -302,9 +302,29 @@ const ScrambleServiceCycler = memo(function ScrambleServiceCycler({
         ))}
       </div>
 
-      {/* Scrambling label */}
+      {/* Width of the longest service, so the divider and CTA beside it never move */}
+      <div aria-hidden className="invisible h-0 my-0 overflow-hidden">
+        {services.map((s) => (
+          <div key={s.label}>
+            <div
+              className="text-2xl font-bold tracking-tight whitespace-nowrap"
+              style={{ fontFamily: 'var(--font-manrope), sans-serif', letterSpacing: '-0.01em' }}
+            >
+              {s.label}
+            </div>
+            <div
+              className="text-sm italic whitespace-nowrap"
+              style={{ fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              {s.sub}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Scrambling label: w-0 min-w-full keeps its changing text out of the box width */}
       <p
-        className="text-2xl font-bold tracking-tight"
+        className="text-2xl font-bold tracking-tight w-0 min-w-full whitespace-nowrap"
         style={{
           color: 'var(--ds-on-surface)',
           fontFamily: 'var(--font-manrope), sans-serif',
@@ -328,7 +348,7 @@ const ScrambleServiceCycler = memo(function ScrambleServiceCycler({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
           transition={{ duration: 0.22 }}
-          className="text-sm italic"
+          className="text-sm italic w-0 min-w-full whitespace-nowrap"
           style={{
             color: 'var(--ds-on-surface-variant)',
             fontFamily: 'var(--font-inter), sans-serif',
