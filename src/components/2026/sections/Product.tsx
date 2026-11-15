@@ -78,23 +78,6 @@ export default function Product() {
 
           {/* Editorial copy */}
           <div className="flex flex-col">
-            {/* Live pulse eyebrow */}
-            <div className="flex items-center gap-2.5 mb-5">
-              <span className="relative flex h-2 w-2">
-                <span
-                  className="absolute inline-flex h-full w-full rounded-full opacity-75 motion-safe:animate-ping"
-                  style={{ backgroundColor: '#4ade80' }}
-                />
-                <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: '#4ade80' }} />
-              </span>
-              <span
-                className="text-xs uppercase tracking-[0.3em] font-bold"
-                style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
-              >
-                {t('product_badge')}
-              </span>
-            </div>
-
             <h3
               className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-5"
               style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
