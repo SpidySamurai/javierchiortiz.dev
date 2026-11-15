@@ -634,7 +634,7 @@ export default function Hero() {
       </button>
 
       {/* Name across the full content width: font size follows the container width
-          (100cqw / 6.8 ~ the width-to-size ratio of this string in Manrope 800 at -0.045em),
+          (100cqw / 6.86 ~ the width-to-size ratio of this string in Manrope 800 at -0.045em),
           capped at 160px and 12svh so the hero fits the viewport on wide or short screens */}
       <div className="relative z-10 mb-2" style={{ containerType: 'inline-size' }}>
         <motion.p
@@ -645,12 +645,13 @@ export default function Hero() {
           style={{
             color: 'var(--ds-on-surface)',
             fontFamily: 'var(--font-manrope), sans-serif',
-            fontSize: 'min(calc(100cqw / 6.8), 160px, 12svh)',
+            fontSize: 'min(calc(100cqw / 6.86), 160px, 12svh)',
             letterSpacing: '-0.045em',
             lineHeight: 0.9,
           }}
         >
-          Javier Chi Ortíz
+          {/* The r and t touch at this tight tracking: open that one pair */}
+          Javier Chi O<span style={{ letterSpacing: '0.01em' }}>r</span>tíz
         </motion.p>
       </div>
 
