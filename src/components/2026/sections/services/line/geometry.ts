@@ -1,9 +1,19 @@
-/** Static geometry of the production line: stations, iso cubes, blueprint, plates, arm IK. */
-import { dPath, expo, hull, linesLen, prog, ptsStr, type Polyline, type Pt } from './math';
+/** Static geometry of the production line: stations, timings, plates, arm IK, carriage, launch path. */
+import { dPath, expo, linesLen, prog, type Polyline, type Pt } from './math';
+import { TOPC } from './cubes';
 
 /** Scene space. Everything is authored in a 1280 x 440 viewBox. */
 export const VIEW_W = 1280;
 export const VIEW_H = 440;
+
+/** One loop of the line, in seconds. */
+export const CYCLE = 19.9;
+/** The launch is shifted by SH so the build has room to iterate. */
+export const SH = 1.3;
+/** Launch clock (T = s - SH): the product leaves the pad, reaches orbit, and the cycle fades out. */
+export const LIFTOFF_T = 10.9;
+export const ARRIVE_T = 12.5;
+export const END_T = 18.6;
 
 /** Station x positions: plan, build, launch. */
 export const P = 320;
@@ -13,119 +23,9 @@ export const L = 960;
 export const TOP = 306;
 export const FRONT = 354;
 /** Y where the piece rests on the belt. */
-export const PY = 318;
+export const PY = 313;
 export const START = -48;
-export const CY = -26;
 export const BEAM = 176;
-
-const A = 34;
-const C30 = 0.8660254;
-
-export function iso(x: number, y: number, z: number): Pt {
-  return [(x - y) * A * C30, (x + y - 2) * A * 0.5 - z * A];
-}
-
-function bil(p0: Pt, p1: Pt, p3: Pt, u: number, v: number): Pt {
-  return [p0[0] + u * (p1[0] - p0[0]) + v * (p3[0] - p0[0]), p0[1] + u * (p1[1] - p0[1]) + v * (p3[1] - p0[1])];
-}
-
-function winQuad(face: readonly Pt[]): string {
-  const [p0, p1, , p3] = face;
-  return ptsStr([bil(p0, p1, p3, 0.3, 0.3), bil(p0, p1, p3, 0.7, 0.3), bil(p0, p1, p3, 0.7, 0.72), bil(p0, p1, p3, 0.3, 0.72)]);
-}
-
-/** Cube cells: the 2x2 base, the second floor, the third floor (the update module). */
-const CUBES: readonly (readonly [number, number, number])[] = [
-  [0, 0, 0],
-  [1, 0, 0],
-  [0, 1, 0],
-  [1, 1, 0],
-  [0.5, 0.5, 1],
-  [0.5, 0.5, 2],
-];
-
-const FACES = CUBES.map(([i, j, k]) => ({
-  top: [iso(i, j, k + 1), iso(i + 1, j, k + 1), iso(i + 1, j + 1, k + 1), iso(i, j + 1, k + 1)] as Pt[],
-  right: [iso(i + 1, j, k), iso(i + 1, j + 1, k), iso(i + 1, j + 1, k + 1), iso(i + 1, j, k + 1)] as Pt[],
-  left: [iso(i, j + 1, k), iso(i + 1, j + 1, k), iso(i + 1, j + 1, k + 1), iso(i, j + 1, k + 1)] as Pt[],
-}));
-
-const VERTS = CUBES.map(([i, j, k]) => {
-  const v: Pt[] = [];
-  for (let dx = 0; dx < 2; dx++) for (let dy = 0; dy < 2; dy++) for (let dz = 0; dz < 2; dz++) v.push(iso(i + dx, j + dy, k + dz));
-  return v;
-});
-
-/** Pre-stringified polygon points per cube. */
-export const CUBE_STR = FACES.map((f) => ({
-  top: ptsStr(f.top),
-  right: ptsStr(f.right),
-  left: ptsStr(f.left),
-  wr: winQuad(f.right),
-  wl: winQuad(f.left),
-}));
-
-/** Centre of each cube's top face (piece-local). */
-export const TOPC: Pt[] = FACES.map((f) => {
-  let x = 0;
-  let y = 0;
-  for (const q of f.top) {
-    x += q[0];
-    y += q[1];
-  }
-  return [x / 4, y / 4];
-});
-
-const HULL5 = hull(VERTS.slice(0, 5).flat());
-const HULL4 = hull(VERTS.slice(0, 4).flat());
-const HULL_C2 = hull(VERTS[2]);
-
-export const HULL5_STR = ptsStr(HULL5);
-export const HULL4_STR = ptsStr(HULL4);
-export const HULL_C2_STR = ptsStr(HULL_C2);
-
-export const HULL_LINES: Polyline[] = [[...HULL5, HULL5[0]]];
-export const HULL_LEN = linesLen(HULL_LINES);
-export const HULL_D = dPath(HULL_LINES);
-
-const BB = HULL5.reduce(
-  (b, p) => ({
-    minX: Math.min(b.minX, p[0]),
-    maxX: Math.max(b.maxX, p[0]),
-    minY: Math.min(b.minY, p[1]),
-    maxY: Math.max(b.maxY, p[1]),
-  }),
-  { minX: 1e9, maxX: -1e9, minY: 1e9, maxY: -1e9 },
-);
-
-/** Blueprint drawn at the plan station (piece-local, origin at the belt rest point). */
-export const CIRCLE: Polyline[] = [
-  Array.from({ length: 73 }, (_, q): Pt => {
-    const ang = -Math.PI / 2 + (q / 72) * Math.PI * 2;
-    return [Math.cos(ang) * 76, CY + Math.sin(ang) * 76];
-  }),
-];
-export const AXES: Polyline[] = [
-  [[-C30 * 104, CY - 52], [C30 * 104, CY + 52]],
-  [[C30 * 104, CY - 52], [-C30 * 104, CY + 52]],
-  [[0, CY - 104], [0, CY + 66]],
-];
-const DY = BB.minY - 24;
-const DXX = BB.maxX + 30;
-export const DIMS: Polyline[] = [
-  [[BB.minX, DY + 8], [BB.minX, DY - 6]],
-  [[BB.minX, DY], [BB.maxX, DY]],
-  [[BB.maxX, DY - 6], [BB.maxX, DY + 8]],
-  [[DXX - 8, BB.minY], [DXX + 6, BB.minY]],
-  [[DXX, BB.minY], [DXX, BB.maxY]],
-  [[DXX - 8, BB.maxY], [DXX + 6, BB.maxY]],
-];
-export const CIRCLE_D = dPath(CIRCLE);
-export const CIRCLE_LEN = linesLen(CIRCLE);
-export const AXES_D = dPath(AXES);
-export const AXES_LEN = linesLen(AXES);
-export const DIMS_D = dPath(DIMS);
-export const DIMS_LEN = linesLen(DIMS);
 
 /** Station floor plates: perspective grid (plan) and corner marks (build). */
 function plateGrid(cx: number): string {
@@ -156,12 +56,17 @@ function plateMarks(cx: number): string {
 
 export const PLAN_GRID_D = plateGrid(P);
 export const BUILD_MARKS_D = plateMarks(B);
+/** Treads on the belt surface repeat every TREAD_PITCH px. */
+export const TREAD_PITCH = 36;
+/** Roller spacing and half-turns over the whole run, so spokes match when the loop wraps. */
+export const ROLLER_X: number[] = Array.from({ length: Math.ceil((VIEW_W - 22) / 44) }, (_, i) => 22 + i * 44);
+export const ROLLER_TURNS = 46;
 
 /** Drafting arm: two 170 segments pivoting at PIV. */
 export const PIV: Pt = [110, 236];
 export const REST: Pt = [180, 250];
-const L1 = 170;
-const L2 = 170;
+export const L1 = 170;
+export const L2 = 170;
 
 export function ik(p: Pt, t: Pt): { elbow: Pt; tip: Pt } {
   const dx = t[0] - p[0];
@@ -178,7 +83,7 @@ export function ik(p: Pt, t: Pt): { elbow: Pt; tip: Pt } {
 }
 
 /** Build stage: when each of the five cubes is dropped in, and where the gantry carries its grip. */
-export const GRIP_Y = BEAM + 20;
+export const GRIP_Y = BEAM + 28;
 export const ST = [4.8, 5.16, 5.52, 5.88, 8.7] as const;
 /** Start offset of each cube above its seat, so its top sits at the grip height. */
 export const Y0 = TOPC.map((c) => GRIP_Y - (PY + c[1]));
@@ -208,8 +113,17 @@ export function carAt(t: number): number {
 }
 
 /** Launch: where the product settles in orbit, and the support heartbeat drawn over it (orbit-local). */
-export const ORBIT: Pt = [1172, 160];
+export const ORBIT: Pt = [1140, 160];
 export const HB: Polyline = [[-196, 0], [-166, 0], [-156, -15], [-147, 13], [-139, -5], [-131, 0], [-84, 0]];
 export const HB_LEN = linesLen([HB]);
-/** Launch-clock time (s, T = s - SH) at which the product leaves the pad. */
-export const LIFTOFF_T = 10.6;
+
+/** Update swarm: modules leave the pad, orbit with depth, then snap in one by one. */
+export const SC_ORB = 0.55;
+export const SW_LAUNCH = 13.4;
+export const SW_ORB = 14.0;
+export const SW_W = 2.2;
+export const SW_IN = [15.3, 15.75, 16.2, 16.65] as const;
+const SW_TGT = [0, Math.PI, Math.PI, Math.PI / 2] as const;
+export const SW_A0 = SW_IN.map((t, i) => SW_TGT[i] - SW_W * (t - SW_ORB));
+
+export const COUNT = { puffs: 14, exhaust: 16, sparks: 18, swarm: 4, pulses: 3 } as const;

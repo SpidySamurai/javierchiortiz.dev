@@ -173,6 +173,75 @@ html[data-theme='light'] {
   --ds-success: #4ade80;
   --ds-icon-muted: #94a3b8;
 
+  /* Services production line scene. Wall, floor and belt follow the theme; steel, glass,
+     the dark screens (andon board, module faces) and the flame stay dark in both. */
+  --ds-scene-wall-a: #0a1224;
+  --ds-scene-wall-b: #111b36;
+  --ds-scene-floor-a: #121c38;
+  --ds-scene-floor-b: #0a1122;
+  --ds-scene-floor-line: #18223f;
+  --ds-scene-belt-top-a: #121a2d;
+  --ds-scene-belt-top-b: #1b2338;
+  --ds-scene-belt-front-a: #2f3852;
+  --ds-scene-belt-front-b: #191f32;
+  --ds-scene-belt-edge: #2f3852;
+  --ds-scene-belt-rim: #4a5576;
+  --ds-scene-belt-tread: #252e47;
+  --ds-scene-roller: #3c4663;
+  --ds-scene-roller-hub: #141a2b;
+  --ds-scene-roller-spoke: #7d86ab;
+  --ds-scene-steel-hi: #4e5876;
+  --ds-scene-steel-lo: #2c3349;
+  --ds-scene-steel-mid: #3a4460;
+  --ds-scene-steel-light: #56618a;
+  --ds-scene-steel-bright: #8a92b4;
+  --ds-scene-steel-shade: #161c2e;
+  --ds-scene-steel-deep: #232b41;
+  --ds-scene-steel-base: #262e45;
+  --ds-scene-glass: #0a1124;
+  --ds-scene-glass-hi: #0d1630;
+  --ds-scene-ink: #0e1244;
+  --ds-scene-hot: #fff4dc;
+  --ds-scene-dome: #e9e2ff;
+  --ds-scene-puff-a: #8d93ad;
+  --ds-scene-puff-b: #a7acc4;
+  --ds-scene-screen-on: #dae2fd;
+  --ds-scene-screen-muted: #c7c4d7;
+  --ds-scene-screen-dim: #6c6f8c;
+  --ds-scene-screen-done: #a9a8c4;
+  --ds-scene-screen-off: #222c4f;
+  --ds-scene-screen-ok-dot: #173a3a;
+  --ds-scene-screen-rule: #141d38;
+  --ds-scene-screen-accent: #c0c1ff;
+  --ds-scene-screen-pass: #5ee3ad;
+  --ds-scene-screen-warm: #f0b45a;
+  --ds-scene-screen-issue: #f2875f;
+  --ds-scene-screen-lit: #262c8c;
+  --ds-scene-screen-glow: #9497ff;
+  --ds-scene-ui-dim-a: #3c4888;
+  --ds-scene-ui-dim-b: #283262;
+  --ds-scene-ui-dim-acc: #3a3d78;
+  --ds-scene-ui-dim-ok: #27504f;
+  --ds-scene-ui-dim-w: #4a3f3a;
+  --ds-scene-ui-lit-a: #f4f5ff;
+  --ds-scene-ui-lit-b: #b3b5ff;
+  --ds-scene-tone-base-top: #d2d3ff;
+  --ds-scene-tone-base-right: #8b8eff;
+  --ds-scene-tone-base-left: #5a5ccb;
+  --ds-scene-tone-base-edge: #1d2156;
+  --ds-scene-tone-nova-top: #e4e5ff;
+  --ds-scene-tone-nova-right: #a3a6ff;
+  --ds-scene-tone-nova-left: #6f72d9;
+  --ds-scene-tone-nova-edge: #24286a;
+  --ds-scene-tone-evo-top: #f1f2ff;
+  --ds-scene-tone-evo-right: #c4c6ff;
+  --ds-scene-tone-evo-left: #8c8fe6;
+  --ds-scene-tone-evo-edge: #2a2e72;
+  --ds-scene-tone-steel-top: #4f5a78;
+  --ds-scene-tone-steel-right: #4a5470;
+  --ds-scene-tone-steel-left: #2f3750;
+  --ds-scene-tone-steel-edge: #0b1020;
+
   --ds-font-display: var(--font-manrope), sans-serif;
   --ds-font-body: var(--font-inter), sans-serif;
 
@@ -224,6 +293,37 @@ html[data-theme='light'] .ds-2026 {
   --ds-error: #b91c1c;
   --ds-success: #166534;
   --ds-icon-muted: #6b7fa0;
+
+  /* Services production line scene: a light shop floor; steel, glass, screens and flame stay as in dark. */
+  --ds-scene-wall-a: #eaeefa;
+  --ds-scene-wall-b: #d9e0f2;
+  --ds-scene-floor-a: #d3dbef;
+  --ds-scene-floor-b: #c3cde6;
+  --ds-scene-floor-line: #bcc7e2;
+  --ds-scene-belt-top-a: #8e9bbf;
+  --ds-scene-belt-top-b: #7f8db4;
+  --ds-scene-belt-front-a: #5e6a8e;
+  --ds-scene-belt-front-b: #444e6f;
+  --ds-scene-belt-edge: #6f7ca3;
+  --ds-scene-belt-rim: #c9d2ee;
+  --ds-scene-belt-tread: #7482aa;
+  --ds-scene-roller: #5a6688;
+  --ds-scene-roller-hub: #323b58;
+  --ds-scene-roller-spoke: #b8c2e0;
+  --ds-scene-puff-a: #7f88a8;
+  --ds-scene-puff-b: #99a2c0;
+  --ds-scene-tone-base-top: #a3a6ff;
+  --ds-scene-tone-base-right: #6b6ee8;
+  --ds-scene-tone-base-left: #4547b8;
+  --ds-scene-tone-base-edge: #1d2156;
+  --ds-scene-tone-nova-top: #b4b7ff;
+  --ds-scene-tone-nova-right: #7d80f2;
+  --ds-scene-tone-nova-left: #5254c8;
+  --ds-scene-tone-nova-edge: #24286a;
+  --ds-scene-tone-evo-top: #fbfbff;
+  --ds-scene-tone-evo-right: #d3d5ff;
+  --ds-scene-tone-evo-left: #a0a3ec;
+  --ds-scene-tone-evo-edge: #2a2e72;
 }
 
 /* global.css */
