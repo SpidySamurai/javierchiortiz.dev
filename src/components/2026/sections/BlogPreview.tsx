@@ -7,7 +7,6 @@ import type { Post } from '@/types/database';
 import BlogCard from '@/components/2026/ui/BlogCard';
 import { Reveal, EASE } from '@/components/2026/ui/Reveal';
 import { ScrollFillText } from '@/components/2026/ui/ScrollFillText';
-import { StandUp } from '@/components/2026/ui/StandUp';
 
 // Hoisted so the motion component identity is stable across renders.
 const MotionLink = motion.create(Link);
@@ -103,12 +102,10 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
           viewport={{ once: true, margin: '-40px' }}
           className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
-          {adapted.map((post, i) => (
-            <StandUp key={post.slug} lead={i === 0 ? 0.124 : 0}>
-              <motion.div variants={item} className="h-full">
-                <BlogCard post={post} locale={locale} />
-              </motion.div>
-            </StandUp>
+          {adapted.map((post) => (
+            <motion.div key={post.slug} variants={item}>
+              <BlogCard post={post} locale={locale} />
+            </motion.div>
           ))}
         </motion.div>
 

@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { EASE } from '@/components/2026/ui/Reveal';
 import { TextReveal } from '@/components/2026/ui/TextReveal';
-import { StandUp } from '@/components/2026/ui/StandUp';
 
 export default function Product() {
   const t = useTranslations('common');
@@ -60,24 +59,22 @@ export default function Product() {
           className="group grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-14"
         >
           {/* Screenshot — clean bordered frame, zooms on hover */}
-          <StandUp className="order-1 lg:order-none">
-            <div
-              className="relative w-full overflow-hidden rounded-2xl"
-              style={{
-                aspectRatio: '16 / 10',
-                boxShadow:
-                  '0 0 0 1px color-mix(in srgb, var(--ds-primary) 18%, transparent), 0 40px 90px -20px color-mix(in srgb, var(--ds-bg) 80%, transparent)',
-              }}
-            >
-              <Image
-                src="/utils/img/lab2next-app-screenshot.png"
-                alt="Lab2Next: patient registration dashboard for clinical labs"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover object-top transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
-              />
-            </div>
-          </StandUp>
+          <div
+            className="relative w-full overflow-hidden rounded-md order-1 lg:order-none"
+            style={{
+              aspectRatio: '16 / 10',
+              boxShadow:
+                '0 0 0 1px color-mix(in srgb, var(--ds-primary) 18%, transparent), 0 40px 90px -20px color-mix(in srgb, var(--ds-bg) 80%, transparent)',
+            }}
+          >
+            <Image
+              src="/utils/img/lab2next-app-screenshot.png"
+              alt="Lab2Next: patient registration dashboard for clinical labs"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover object-top transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
+            />
+          </div>
 
           {/* Editorial copy */}
           <div className="flex flex-col">
