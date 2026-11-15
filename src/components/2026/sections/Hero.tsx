@@ -185,7 +185,7 @@ function AnimatedHeadline({
 
   return (
     <h1
-      className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tighter leading-[0.95]"
+      className="text-3xl sm:text-4xl md:text-[56px] font-extrabold tracking-tight leading-[1.05]"
       style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
     >
       {words.map((word, i) => (
@@ -630,6 +630,26 @@ export default function Hero() {
           |-/
         </motion.span>
       </button>
+
+      {/* Name across the full content width: font size follows the container width
+          (100cqw / 6.8 ~ the width-to-size ratio of this string in Manrope 800 at -0.045em) */}
+      <div className="relative z-10 mb-5 md:mb-6" style={{ containerType: 'inline-size' }}>
+        <motion.p
+          initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="font-extrabold whitespace-nowrap md:text-center"
+          style={{
+            color: 'var(--ds-on-surface)',
+            fontFamily: 'var(--font-manrope), sans-serif',
+            fontSize: 'calc(100cqw / 6.8)',
+            letterSpacing: '-0.045em',
+            lineHeight: 0.9,
+          }}
+        >
+          Javier Chi Ortíz
+        </motion.p>
+      </div>
 
       <div className="relative z-10 max-w-3xl mx-auto space-y-10 md:text-center">
           {/* Headline */}
