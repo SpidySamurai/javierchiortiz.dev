@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import type { Post } from '@/types/database';
 import BlogCard from '@/components/2026/ui/BlogCard';
 import { Reveal, EASE } from '@/components/2026/ui/Reveal';
@@ -25,7 +25,13 @@ interface BlogCardShape {
   coverAspectCard?: string | null;
 }
 
-function adaptPost(post: Post, locale: string): BlogCardShape {
+function adaptPost(
+  post: Post,
+  locale: string,
+  formatReadTime: (minutes: number) => string
+): BlogCardShape {
+  // read_time is stored as free text (e.g. "5 min read"); localize the common shape, keep anything else as is.
+  const minutes = /^\s*(\d+)\s*min/i.exec(post.read_time)?.[1];
   return {
     slug: post.slug,
     date: post.published_at
@@ -35,7 +41,7 @@ function adaptPost(post: Post, locale: string): BlogCardShape {
         })
       : '',
     category: post.category,
-    readTime: post.read_time,
+    readTime: minutes ? formatReadTime(Number(minutes)) : post.read_time,
     coverTheme: (post.cover_theme as 'pilots' | 'spiderman' | 'karate') ?? 'pilots',
     theme: post.cover_theme ?? undefined,
     title: locale === 'es' ? post.title_es : post.title_en,
@@ -47,9 +53,10 @@ function adaptPost(post: Post, locale: string): BlogCardShape {
 }
 
 export default function BlogPreview({ posts }: { posts: Post[] }) {
+  const t = useTranslations('common');
   const locale = useLocale();
   const reduce = useReducedMotion();
-  const adapted = posts.slice(0, 2).map((p) => adaptPost(p, locale));
+  const adapted = posts.slice(0, 2).map((p) => adaptPost(p, locale, (n) => t('blog_read_time', { n })));
 
   // Parent owns timing; each card item carries the actual reveal values.
   const container = { hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } } };
@@ -80,8 +87,10 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
             style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
             <TextReveal>
-              Thoughts &{' '}
-              <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>Beyond Code</span>
+              {t('blog_title')}{' '}
+              <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
+                {t('blog_title_accent')}
+              </span>
             </TextReveal>
           </h2>
         </Reveal>
@@ -119,7 +128,7 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
               fontFamily: 'var(--font-manrope), sans-serif',
             }}
           >
-            View all posts
+            {t('blog_view_all')}
             <span
               translate="no"
               aria-hidden

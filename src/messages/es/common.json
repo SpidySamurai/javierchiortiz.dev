@@ -276,5 +276,9 @@
   "why_3_title": "6+ años en producción",
   "why_3_body": "Software para clientes de Estados Unidos y Latinoamérica: portales con datos intensivos, plataformas multi-tenant y migración de BI legacy a Spark + Superset.",
   "why_4_title": "Hoy, IA en producción",
-  "why_4_body": "Senior Full Stack Engineer en Brania, una plataforma impulsada por IA: diseño y entrego funcionalidades completas, del frontend al backend."
+  "why_4_body": "Senior Full Stack Engineer en Brania, una plataforma impulsada por IA: diseño y entrego funcionalidades completas, del frontend al backend.",
+  "blog_title": "Ideas y",
+  "blog_title_accent": "más allá del código",
+  "blog_view_all": "Ver todos los posts",
+  "blog_read_time": "{n} min de lectura"
 }
