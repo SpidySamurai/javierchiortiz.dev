@@ -7,6 +7,7 @@ import Product from '@/components/2026/sections/Product';
 import About from '@/components/2026/sections/About';
 import WhyMe from '@/components/2026/sections/WhyMe';
 import Services from '@/components/2026/sections/Services';
+import Closing from '@/components/2026/sections/Closing';
 import Footer from '@/components/2026/sections/Footer';
 import BlogPreview from '@/components/2026/sections/BlogPreview';
 import MantecadoChat from '@/components/MantecadoChat';
@@ -34,6 +35,7 @@ export default function HomeShell({ posts, sidebarCollapsed }: { posts: Post[]; 
         <WhyMe />
         <About />
         <BlogPreview posts={posts} />
+        <Closing />
         <Footer />
       </main>
     </div>

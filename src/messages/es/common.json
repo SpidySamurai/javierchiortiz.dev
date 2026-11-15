@@ -280,5 +280,9 @@
   "blog_title": "Ideas y",
   "blog_title_accent": "más allá del código",
   "blog_view_all": "Ver todos los posts",
-  "blog_read_time": "{n} min de lectura"
+  "blog_read_time": "{n} min de lectura",
+  "closing_line": "Cuéntame sobre tu proyecto. Remoto · async-friendly.",
+  "closing_wa_label": "Hablemos por WhatsApp",
+  "closing_copy_label": "Copiar email",
+  "closing_copied": "Email copiado"
 }

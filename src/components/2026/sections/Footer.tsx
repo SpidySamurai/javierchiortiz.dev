@@ -10,8 +10,7 @@ export default function Footer() {
 
   return (
     <footer
-      id="contact"
-      data-track-section="contact"
+      data-track-section="footer"
       className="py-20 px-8 md:px-16 border-t"
       style={{
         backgroundColor: 'var(--ds-bg)',
@@ -81,6 +80,33 @@ export default function Footer() {
           </a>
           <VisitorCounter />
         </div>
+      </div>
+
+      {/* Closing signature: the name fills the content width (6.8 = measured width/size ratio). */}
+      <div
+        aria-hidden
+        className="max-w-7xl mx-auto mt-16 select-none"
+        style={{ containerType: 'inline-size' }}
+      >
+        <p
+          style={{
+            margin: 0,
+            fontFamily: 'var(--font-manrope), sans-serif',
+            fontWeight: 800,
+            letterSpacing: '-0.045em',
+            lineHeight: 0.86,
+            fontSize: 'calc(100cqw / 6.8)',
+            whiteSpace: 'nowrap',
+            paddingBottom: '0.08em',
+            backgroundImage: 'linear-gradient(90deg, var(--ds-on-surface), var(--ds-primary))',
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            color: 'transparent',
+          }}
+        >
+          Javier Chi Ortíz
+        </p>
       </div>
     </footer>
   );
