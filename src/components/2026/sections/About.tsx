@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
-import { TextReveal } from '@/components/2026/ui/TextReveal';
+import { ScrollFillText } from '@/components/2026/ui/ScrollFillText';
 import {
   SiReact,
   SiNextdotjs,
@@ -224,21 +224,14 @@ export default function About() {
             className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-10"
             style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
-            <TextReveal delay={0.1}>
+            <ScrollFillText>
               {t('about_title')}{' '}
               <em style={{ color: 'var(--ds-primary)' }}>{t('about_title_accent')}</em>
-            </TextReveal>
+            </ScrollFillText>
           </h2>
 
           <div className="flex flex-col gap-5">
-            {(
-              [
-                'about_paragraph_1',
-                'about_paragraph_2',
-                'about_paragraph_3',
-                'about_paragraph_4',
-              ] as const
-            ).map((key, i) => (
+            {(['about_paragraph_1', 'about_paragraph_4'] as const).map((key, i) => (
               <motion.p
                 key={key}
                 initial={{ opacity: 0, y: 12 }}

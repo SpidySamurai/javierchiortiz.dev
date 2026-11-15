@@ -48,6 +48,23 @@ Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS v4 (CSS `@them
 | `/blog`  | Blog                            |
 | `/admin` | CMS (authenticated)             |
 
+## Where things live
+
+```
+src/
+  app/[locale]/        # pages: 2026 home at /, legacy design at /2025, blog, experience, visitors
+  app/admin/           # CMS, with its components in _components/
+  app/api/             # route handlers (analytics, contact, visitors, Marvel stats)
+  components/2026/     # 2026 design: layout/, sections/, ui/ (primitives and motion)
+  components/2025/     # legacy design
+  components/providers/
+  data/                # static content (projects, experience, stack)
+  lib/                 # Supabase queries and pure logic
+  hooks/
+  messages/{en,es}/    # all visible copy
+public/videos/projects/ # project walkthrough loops
+```
+
 ## Run it locally
 
 ```bash

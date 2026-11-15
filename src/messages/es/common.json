@@ -56,7 +56,6 @@
   "product_label": "Producto Propio",
   "product_title": "SaaS",
   "product_title_accent": "en Producción",
-  "product_badge": "Live · SaaS propio",
   "product_description": "Lab2Next es un SaaS para laboratorios clínicos: registro de pacientes, control de calidad, entrega de resultados con firma digital, trazabilidad completa y gestión de personal con roles. Workflows guiados que reducen errores y aceleran la entrega de reportes.",
   "product_impact": "Construido, lanzado y mantenido de forma independiente.",
   "product_cta": "Empieza gratis",
@@ -65,6 +64,10 @@
   "projects_label": "Portafolio",
   "projects_title": "Galería de",
   "projects_title_accent": "Trabajo",
+  "projects_intro": "Storefronts e-commerce que construí como Full Stack en Scandia Manufacturing.",
+  "projects_client": "Cliente",
+  "projects_role": "Mi rol",
+  "projects_period": "Periodo",
   "projects_subtitle": "Selección · En curso",
   "project_view_study": "Ver estudio →",
   "projects_more": "Más proyectos",
@@ -122,15 +125,24 @@
   "project_items": {
     "scandia-ecommerce": {
       "title": "Scandia Manufacturing",
-      "description": "Colaboré en la construcción de páginas, componentes y responsiveness para este sitio e-commerce líder en la industria."
+      "description": "Colaboré en la construcción de páginas, componentes y responsiveness para este sitio e-commerce líder en la industria.",
+      "client": "Scandia Manufacturing",
+      "role": "Full Stack · frontend y SEO técnico",
+      "period": "Ene 2020 - Jun 2022"
     },
     "saunas-com": {
       "title": "Saunas.com",
-      "description": "Plataforma de e-commerce para productos de sauna y vapor. Implementación rica en funcionalidades relacionada con Scandia Mfg."
+      "description": "Plataforma de e-commerce para productos de sauna y vapor. Implementación rica en funcionalidades relacionada con Scandia Mfg.",
+      "client": "Scandia Manufacturing",
+      "role": "Full Stack · frontend y SEO técnico",
+      "period": "Ene 2020 - Jun 2022"
     },
     "sun-valley-salt": {
       "title": "Sun Valley Salt",
-      "description": "Plataforma de e-commerce para paneles de pared de sal del Himalaya. Enfoque en manufactura y personalización."
+      "description": "Plataforma de e-commerce para paneles de pared de sal del Himalaya. Enfoque en manufactura y personalización.",
+      "client": "Scandia Manufacturing",
+      "role": "Full Stack · frontend y SEO técnico",
+      "period": "Ene 2020 - Jun 2022"
     },
     "lab2next": {
       "title": "Lab2Next",
@@ -163,10 +175,6 @@
     "kittys-api-consuming": {
       "title": "Kittys API Consuming",
       "description": "Mini app con The Cat API: genera gatos aleatorios, guarda favoritos y permite subir tus fotos."
-    },
-    "checker": {
-      "title": "Checker",
-      "description": "SaaS de gestión de flota para conductores de Uber, Didi, Cabify e InDrive: turnos, ganancias y seguimiento de vehículos en un solo lugar."
     }
   },
   "projects_entry_label": "Entry",
@@ -256,5 +264,25 @@
   "leave_memory_subtitle": "¿Pasaste por aquí? Déjame una nota.",
   "leave_memory_placeholder": "Escribe tu mensaje aquí...",
   "leave_memory_submit": "Enviar",
-  "leave_memory_soon": "Próximamente"
+  "leave_memory_soon": "Próximamente",
+  "why_label": "Por qué trabajar conmigo",
+  "why_title": "Del spec a",
+  "why_title_accent": "producción",
+  "why_title_end": ", y después.",
+  "why_1_title": "Ciclo completo",
+  "why_1_body": "Me hago cargo del ciclo completo, del spec al mantenimiento después del lanzamiento.",
+  "why_2_title": "Mi propio SaaS en producción",
+  "why_2_body": "Lab2Next: lo diseñé, lo construí y lo lancé por mi cuenta, y lo mantengo en producción.",
+  "why_3_title": "6+ años en producción",
+  "why_3_body": "Software para clientes de Estados Unidos y Latinoamérica: portales con datos intensivos, plataformas multi-tenant y migración de BI legacy a Spark + Superset.",
+  "why_4_title": "Hoy, IA en producción",
+  "why_4_body": "Senior Full Stack Engineer en Brania, una plataforma impulsada por IA: diseño y entrego funcionalidades completas, del frontend al backend.",
+  "blog_title": "Ideas y",
+  "blog_title_accent": "más allá del código",
+  "blog_view_all": "Ver todos los posts",
+  "blog_read_time": "{n} min de lectura",
+  "closing_line": "Cuéntame sobre tu proyecto. Remoto · async-friendly.",
+  "closing_wa_label": "Hablemos por WhatsApp",
+  "closing_copy_label": "Copiar email",
+  "closing_copied": "Email copiado"
 }

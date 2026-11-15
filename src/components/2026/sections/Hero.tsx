@@ -185,7 +185,7 @@ function AnimatedHeadline({
 
   return (
     <h1
-      className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tighter leading-[0.95]"
+      className="text-3xl sm:text-4xl md:text-[56px] font-extrabold tracking-tight leading-[1.05]"
       style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
     >
       {words.map((word, i) => (
@@ -540,11 +540,13 @@ export default function Hero() {
     );
   }, [reduceMotion]);
 
+  // Desktop/tablet height: at most 860px, and never taller than the viewport minus the 5rem
+  // header, so the whole hero (orbit and comet caption included) fits without scrolling.
   return (
     <section
       ref={sectionRef}
       data-track-section="hero"
-      className="relative px-8 md:px-16 pt-24 pb-[260px] md:pb-[340px] md:min-h-[860px] overflow-hidden"
+      className="relative px-8 md:px-16 pt-24 md:pt-[min(6rem,7svh)] pb-[260px] md:pb-[clamp(210px,33svh,300px)] md:min-h-[min(860px,calc(100svh-5rem))] overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
     >
       {/* Unified particles — background + comets in one container */}
@@ -631,7 +633,28 @@ export default function Hero() {
         </motion.span>
       </button>
 
-      <div className="relative z-10 max-w-3xl mx-auto space-y-10 md:text-center">
+      {/* Name across the full content width: font size follows the container width
+          (100cqw / 6.8 ~ the width-to-size ratio of this string in Manrope 800 at -0.045em),
+          capped at 160px and 12svh so the hero fits the viewport on wide or short screens */}
+      <div className="relative z-10 mb-2" style={{ containerType: 'inline-size' }}>
+        <motion.p
+          initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="font-extrabold whitespace-nowrap md:text-center"
+          style={{
+            color: 'var(--ds-on-surface)',
+            fontFamily: 'var(--font-manrope), sans-serif',
+            fontSize: 'min(calc(100cqw / 6.8), 160px, 12svh)',
+            letterSpacing: '-0.045em',
+            lineHeight: 0.9,
+          }}
+        >
+          Javier Chi Ortíz
+        </motion.p>
+      </div>
+
+      <div className="relative z-10 max-w-3xl mx-auto space-y-8 md:text-center">
           {/* Headline */}
           <AnimatedHeadline
             pre={t('hero_headline_pre')}

@@ -65,3 +65,8 @@ src/app/*/test-gamercard/
 next-env.d.ts
 PROFILE_README.md
 .superpowers/
+
+# Local agent tooling (this repository is public)
+odd/
+.atl/
+.codegraph/
