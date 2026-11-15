@@ -6,7 +6,10 @@ export const LAB2NEXT_APP_URL = 'https://app.lab2next.com/';
 /** What the product does for a lab, as message keys under `common.product_caps`. */
 export const LAB2NEXT_CAPABILITIES = ['orders', 'delivery', 'quality', 'operations'] as const;
 
-/** A walkthrough of the app in its dark theme: dashboard, orders, an order with its QR, patients. */
+/**
+ * A walkthrough of the app in its own brand theme with a fictitious, busy lab: dashboard,
+ * recent activity, an order with validated results and the patient's results QR.
+ */
 export const LAB2NEXT_LOOP: LoopSources = {
   desktop: '/videos/projects/lab2next-desktop.mp4',
   mobile: '/videos/projects/lab2next-mobile.mp4',
