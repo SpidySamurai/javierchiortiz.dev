@@ -5,7 +5,20 @@ import { motion, useTransform, type MotionValue } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { useMantecadoLife } from '@/hooks/useMantecadoLife';
 import { CAT_SCALE, CAT_VIEWBOX, PEEK_Y } from '@/lib/catLife';
-import { MC } from './palette';
+import { MC } from '@/lib/catPalette';
+import {
+  EARS,
+  EAR_BASE_Y,
+  EYE_X,
+  EYE_Y,
+  HEAD_PATCH,
+  HEAD_SHAPE,
+  NOSE_SHAPE,
+  SIT_BODY_SHAPE,
+  SIT_TAIL_SHAPE,
+  earInnerShape,
+  earShape,
+} from '@/lib/catShapes';
 
 /**
  * Mantecado as a living SVG. Same flat silhouette as the CSS cat in FlatCat:
@@ -13,9 +26,6 @@ import { MC } from './palette';
  * moves reads a motion value from useMantecadoLife.
  */
 
-const WHISKER = 'rgba(51, 41, 43, 0.35)';
-const EYES = [27, 73] as const;
-const EYE_Y = 55;
 const PUPIL_R = 4;
 const IRIS_R = 9;
 
@@ -100,20 +110,18 @@ function Ear({
 }) {
   const left = side === 'left';
   // Static resting pose (the old CSS rotated each ear 15 degrees outward), then the live motion on top.
-  const apexX = left ? 20 : 80;
-  const baseX = left ? 25.2 : 74.8;
-  const resting = left ? -15 : 15;
+  const { apex: apexX, base: baseX, resting } = left ? EARS.left : EARS.right;
   return (
-    <motion.g style={{ rotate, scaleY, ...pivot(baseX, 24.3) }}>
+    <motion.g style={{ rotate, scaleY, ...pivot(baseX, EAR_BASE_Y) }}>
       <g transform={`rotate(${resting} ${apexX} 5)`}>
         <path
-          d={`M${apexX} -15 L${apexX - 15} 25 L${apexX + 15} 25 Z`}
+          d={earShape(apexX)}
           fill={MC.orange}
           stroke={MC.orange}
           strokeWidth={2}
           strokeLinejoin="round"
         />
-        <path d={`M${apexX} 0 L${apexX - 8} 25 L${apexX + 8} 25 Z`} fill={MC.nose} />
+        <path d={earInnerShape(apexX)} fill={MC.nose} />
       </g>
     </motion.g>
   );
@@ -195,15 +203,12 @@ function Zed({ clock, sleep, index }: { clock: MotionValue<number>; sleep: Motio
   );
 }
 
-export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
+export default function MantecadoCat() {
   const t = useTranslations('common.mantecado');
   const uid = useId().replace(/:/g, '');
   const life = useMantecadoLife();
   const { rise, sleep, breath, perk, tailPhase, flick, twitchL, twitchR, blink, zClock, pose } = life;
 
-  const bodyShape = 'M30 150 V90 A40 40 0 0 1 70 50 H74 C96 52 116 76 118 104 V150 Z';
-  const headShape = 'M45 0 H55 A45 45 0 0 1 100 45 A45 45 0 0 1 55 90 H45 A45 45 0 0 1 0 45 A45 45 0 0 1 45 0 Z';
-  const tailShape = 'M90 125 H127.5 A12.5 12.5 0 0 1 127.5 150 H90 Z';
 
   // Moment pose channels, one motion value each
   const mHeadRot = useTransform(pose, (p) => p.headRot);
@@ -255,8 +260,8 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
   return (
     <button
       type="button"
-      onClick={onOpen}
-      aria-label={t('open_chat')}
+      onClick={life.cheer}
+      aria-label={t('pet')}
       {...life.bind}
       className="absolute cursor-pointer rounded-[22px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ds-primary)]"
       style={{
@@ -283,16 +288,16 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
         style={{ position: 'absolute', inset: 0, overflow: 'visible', pointerEvents: 'none' }}
       >
         <defs>
-          <clipPath id={`${uid}-body`}><path d={bodyShape} /></clipPath>
-          <clipPath id={`${uid}-head`}><path d={headShape} /></clipPath>
-          <clipPath id={`${uid}-tail`}><path d={tailShape} /></clipPath>
+          <clipPath id={`${uid}-body`}><path d={SIT_BODY_SHAPE} /></clipPath>
+          <clipPath id={`${uid}-head`}><path d={HEAD_SHAPE} /></clipPath>
+          <clipPath id={`${uid}-tail`}><path d={SIT_TAIL_SHAPE} /></clipPath>
           <clipPath id={`${uid}-eye`}><circle r={12.7} /></clipPath>
         </defs>
 
         <motion.g style={{ x: shiftX, y: sink, rotate: wiggle, scaleX: squashX, scaleY: squashY, ...pivot(75, 150) }}>
           {/* Tail, behind the body */}
           <motion.g style={{ rotate: tailRotate, ...pivot(100, 137.5) }}>
-            <path d={tailShape} fill={MC.orange} />
+            <path d={SIT_TAIL_SHAPE} fill={MC.orange} />
             <g clipPath={`url(#${uid}-tail)`} fill="#000" opacity={0.05}>
               <rect x={98} y={125} width={8} height={25} />
               <rect x={114} y={125} width={8} height={25} />
@@ -302,7 +307,7 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
 
           {/* Body */}
           <motion.g style={{ scaleY: chest, ...pivot(75, 150) }}>
-            <path d={bodyShape} fill={MC.white} />
+            <path d={SIT_BODY_SHAPE} fill={MC.white} />
             <circle cx={30} cy={100} r={41.2} fill={MC.orange} clipPath={`url(#${uid}-body)`} />
             <path d="M75 150 V148 A8 8 0 0 1 83 140 A8 8 0 0 1 91 148 V150 Z" fill="#000" opacity={0.1} />
           </motion.g>
@@ -326,12 +331,12 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
 
           {/* Head */}
           <motion.g style={{ y: headY, rotate: headTilt, ...pivot(50, 90) }}>
-            <path d={headShape} fill={MC.white} />
-            <path d="M0 0 H66.5 L0 66.5 Z" fill={MC.orange} clipPath={`url(#${uid}-head)`} />
+            <path d={HEAD_SHAPE} fill={MC.white} />
+            <path d={HEAD_PATCH} fill={MC.orange} clipPath={`url(#${uid}-head)`} />
             <Ear side="left" rotate={earL} scaleY={earScale} />
             <Ear side="right" rotate={earR} scaleY={earScale} />
 
-            {EYES.map((cx) => (
+            {EYE_X.map((cx) => (
               <Eye key={cx} cx={cx} lid={lid} happy={happy} scale={eyeScale} dilate={dilate} pupilX={life.pupilX} pupilY={life.pupilY} clipId={`${uid}-eye`} />
             ))}
 
@@ -340,7 +345,7 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
             <ellipse cx={86} cy={70} rx={6} ry={3} fill={MC.nose} opacity={0.22} />
 
             {/* Nose and mouth */}
-            <path d="M45 60 H55 L50 68 Z" fill={MC.nose} />
+            <path d={NOSE_SHAPE} fill={MC.nose} />
             <motion.g style={{ opacity: smallMouth }}>
               <rect x={47} y={66} width={2} height={6} fill={MC.nose} transform="rotate(30 48 69)" />
               <rect x={51} y={66} width={2} height={6} fill={MC.nose} transform="rotate(-30 52 69)" />
@@ -351,8 +356,8 @@ export default function MantecadoCat({ onOpen }: { onOpen: () => void }) {
             </motion.g>
 
             {/* Whiskers */}
-            <rect x={-15} y={57} width={35} height={1.5} rx={0.75} fill={WHISKER} transform="rotate(-8 2.5 57.75)" />
-            <rect x={80} y={57} width={35} height={1.5} rx={0.75} fill={WHISKER} transform="rotate(8 97.5 57.75)" />
+            <rect x={-15} y={57} width={35} height={1.5} rx={0.75} fill={MC.whisker} transform="rotate(-8 2.5 57.75)" />
+            <rect x={80} y={57} width={35} height={1.5} rx={0.75} fill={MC.whisker} transform="rotate(8 97.5 57.75)" />
           </motion.g>
 
           {/* Left front limb, over the head while it waves */}

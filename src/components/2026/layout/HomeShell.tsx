@@ -10,7 +10,7 @@ import Services from '@/components/2026/sections/Services';
 import Closing from '@/components/2026/sections/Closing';
 import Footer from '@/components/2026/sections/Footer';
 import BlogPreview from '@/components/2026/sections/BlogPreview';
-import MantecadoChat from '@/components/MantecadoChat';
+import Mantecado from '@/components/2026/layout/mantecado/Mantecado';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
 import BackToTop from '@/components/2026/ui/BackToTop';
 import AtmosphereOverlay from '@/components/2026/ui/AtmosphereOverlay';
@@ -25,7 +25,7 @@ export default function HomeShell({ posts, sidebarCollapsed }: { posts: Post[]; 
       <AtmosphereOverlay />
       <Header />
       <Sidebar defaultCollapsed={sidebarCollapsed} />
-      <MantecadoChat />
+      <Mantecado />
       <BackToTop />
       <main className="sidebar-main pt-20">
         <Hero />

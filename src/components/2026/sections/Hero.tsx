@@ -565,6 +565,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
+      id="hero"
       data-track-section="hero"
       className="relative px-8 md:px-16 pt-24 md:pt-[min(6rem,7svh)] pb-[260px] md:pb-[clamp(210px,33svh,300px)] md:min-h-[min(860px,calc(100svh-5rem))] overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
