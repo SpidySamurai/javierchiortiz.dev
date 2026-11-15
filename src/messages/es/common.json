@@ -65,6 +65,10 @@
   "projects_label": "Portafolio",
   "projects_title": "Galería de",
   "projects_title_accent": "Trabajo",
+  "projects_intro": "Storefronts e-commerce que construí como Full Stack en Scandia Manufacturing.",
+  "projects_client": "Cliente",
+  "projects_role": "Mi rol",
+  "projects_period": "Periodo",
   "projects_subtitle": "Selección · En curso",
   "project_view_study": "Ver estudio →",
   "projects_more": "Más proyectos",
@@ -122,15 +126,24 @@
   "project_items": {
     "scandia-ecommerce": {
       "title": "Scandia Manufacturing",
-      "description": "Colaboré en la construcción de páginas, componentes y responsiveness para este sitio e-commerce líder en la industria."
+      "description": "Colaboré en la construcción de páginas, componentes y responsiveness para este sitio e-commerce líder en la industria.",
+      "client": "Scandia Manufacturing",
+      "role": "Full Stack · frontend y SEO técnico",
+      "period": "Ene 2020 - Jun 2022"
     },
     "saunas-com": {
       "title": "Saunas.com",
-      "description": "Plataforma de e-commerce para productos de sauna y vapor. Implementación rica en funcionalidades relacionada con Scandia Mfg."
+      "description": "Plataforma de e-commerce para productos de sauna y vapor. Implementación rica en funcionalidades relacionada con Scandia Mfg.",
+      "client": "Scandia Manufacturing",
+      "role": "Full Stack · frontend y SEO técnico",
+      "period": "Ene 2020 - Jun 2022"
     },
     "sun-valley-salt": {
       "title": "Sun Valley Salt",
-      "description": "Plataforma de e-commerce para paneles de pared de sal del Himalaya. Enfoque en manufactura y personalización."
+      "description": "Plataforma de e-commerce para paneles de pared de sal del Himalaya. Enfoque en manufactura y personalización.",
+      "client": "Scandia Manufacturing",
+      "role": "Full Stack · frontend y SEO técnico",
+      "period": "Ene 2020 - Jun 2022"
     },
     "lab2next": {
       "title": "Lab2Next",
@@ -163,10 +176,6 @@
     "kittys-api-consuming": {
       "title": "Kittys API Consuming",
       "description": "Mini app con The Cat API: genera gatos aleatorios, guarda favoritos y permite subir tus fotos."
-    },
-    "checker": {
-      "title": "Checker",
-      "description": "SaaS de gestión de flota para conductores de Uber, Didi, Cabify e InDrive: turnos, ganancias y seguimiento de vehículos en un solo lugar."
     }
   },
   "projects_entry_label": "Entry",

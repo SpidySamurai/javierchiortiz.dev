@@ -38,6 +38,7 @@ export const projects: DataProject[] = [
     repoUrl: 'https://github.com/SpidySamurai/checker',
     category: 'featured',
     status: 'wip',
+    hidden: true,
   },
   {
     id: 'scandia-ecommerce',
@@ -53,6 +54,10 @@ export const projects: DataProject[] = [
     isWork: true,
     company: 'Scandia',
     companyUrl: 'https://scandiamfg.com/',
+    videoDesktop: '/videos/projects/scandia-desktop.mp4',
+    videoMobile: '/videos/projects/scandia-mobile.mp4',
+    posterDesktop: '/utils/img/projects/scandia-desktop.jpg',
+    posterMobile: '/utils/img/projects/scandia-mobile.jpg',
   },
   {
     id: 'saunas-com',
@@ -68,6 +73,10 @@ export const projects: DataProject[] = [
     isWork: true,
     company: 'Scandia',
     companyUrl: 'https://scandiamfg.com/',
+    videoDesktop: '/videos/projects/saunas-desktop.mp4',
+    videoMobile: '/videos/projects/saunas-mobile.mp4',
+    posterDesktop: '/utils/img/projects/saunas-desktop.jpg',
+    posterMobile: '/utils/img/projects/saunas-mobile.jpg',
   },
   {
     id: 'sun-valley-salt',
@@ -83,6 +92,10 @@ export const projects: DataProject[] = [
     isWork: true,
     company: 'Scandia',
     companyUrl: 'https://scandiamfg.com/',
+    videoDesktop: '/videos/projects/sunvalley-desktop.mp4',
+    videoMobile: '/videos/projects/sunvalley-mobile.mp4',
+    posterDesktop: '/utils/img/projects/sunvalley-desktop.jpg',
+    posterMobile: '/utils/img/projects/sunvalley-mobile.jpg',
   },
 
   // Entry-level / pinned repos

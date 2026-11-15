@@ -47,6 +47,10 @@ export type DataProject = {
   isWork?: boolean;
   company?: string;
   companyUrl?: string;
+  videoDesktop?: string;
+  videoMobile?: string;
+  posterDesktop?: string;
+  posterMobile?: string;
 };
 
 export type DataExperience = {

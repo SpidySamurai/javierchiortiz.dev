@@ -65,6 +65,10 @@
   "projects_label": "Showcase",
   "projects_title": "Gallery of",
   "projects_title_accent": "Work",
+  "projects_intro": "E-commerce storefronts I built as a Full Stack engineer at Scandia Manufacturing.",
+  "projects_client": "Client",
+  "projects_role": "My role",
+  "projects_period": "Period",
   "projects_subtitle": "Selected · Ongoing",
   "project_view_study": "View Study →",
   "projects_more": "More Projects",
@@ -122,15 +126,24 @@
   "project_items": {
     "scandia-ecommerce": {
       "title": "Scandia Manufacturing",
-      "description": "Collaborated on building pages, components, and responsiveness for this industry-leading e-commerce site."
+      "description": "Collaborated on building pages, components, and responsiveness for this industry-leading e-commerce site.",
+      "client": "Scandia Manufacturing",
+      "role": "Full Stack · frontend and technical SEO",
+      "period": "Jan 2020 - Jun 2022"
     },
     "saunas-com": {
       "title": "Saunas.com",
-      "description": "E-commerce platform for sauna and steam room products. Feature-rich implementation related to Scandia Mfg."
+      "description": "E-commerce platform for sauna and steam room products. Feature-rich implementation related to Scandia Mfg.",
+      "client": "Scandia Manufacturing",
+      "role": "Full Stack · frontend and technical SEO",
+      "period": "Jan 2020 - Jun 2022"
     },
     "sun-valley-salt": {
       "title": "Sun Valley Salt",
-      "description": "E-commerce platform for Himalayan salt wall panels. Manufacturing and customization focus."
+      "description": "E-commerce platform for Himalayan salt wall panels. Manufacturing and customization focus.",
+      "client": "Scandia Manufacturing",
+      "role": "Full Stack · frontend and technical SEO",
+      "period": "Jan 2020 - Jun 2022"
     },
     "lab2next": {
       "title": "Lab2Next",
@@ -159,10 +172,6 @@
     "kittys-api-consuming": {
       "title": "Kittys API Consuming",
       "description": "Mini app with The Cat API: generates random cats, saves favorites, and allows you to upload your photos."
-    },
-    "checker": {
-      "title": "Checker",
-      "description": "Fleet management SaaS for gig drivers on Uber, Didi, Cabify and InDrive: shifts, earnings, and vehicle tracking in one place."
     }
   },
   "projects_entry_label": "Entry",
