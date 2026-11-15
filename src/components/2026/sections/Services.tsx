@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { TextReveal } from '@/components/2026/ui/TextReveal';
+import { ScrollFillText } from '@/components/2026/ui/ScrollFillText';
 import { whatsappUrl } from '@/lib/contact';
 import ProductionLine from './services/line/ProductionLine';
 import MobileProcess from './services/MobileProcess';
@@ -114,12 +114,12 @@ export default function Services() {
             className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
             style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
-            <TextReveal>
+            <ScrollFillText>
               {t('services_title')}{' '}
               <span style={{ color: 'var(--ds-primary-vivid)', fontStyle: 'italic' }}>
                 {t('services_title_accent')}
               </span>
-            </TextReveal>
+            </ScrollFillText>
           </h3>
         </motion.div>
 

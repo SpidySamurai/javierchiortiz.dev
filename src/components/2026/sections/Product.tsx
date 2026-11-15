@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { EASE } from '@/components/2026/ui/Reveal';
 import { TextReveal } from '@/components/2026/ui/TextReveal';
+import { StandUp } from '@/components/2026/ui/StandUp';
 
 export default function Product() {
   const t = useTranslations('common');
@@ -59,35 +60,43 @@ export default function Product() {
           className="group grid grid-cols-1 lg:grid-cols-2 items-center gap-8 lg:gap-14"
         >
           {/* Screenshot — clean bordered frame, zooms on hover */}
-          <div
-            className="relative w-full overflow-hidden rounded-2xl order-1 lg:order-none"
-            style={{
-              aspectRatio: '16 / 10',
-              boxShadow:
-                '0 0 0 1px color-mix(in srgb, var(--ds-primary) 18%, transparent), 0 40px 90px -20px color-mix(in srgb, var(--ds-bg) 80%, transparent)',
-            }}
-          >
-            <Image
-              src="/utils/img/lab2next-app-screenshot.png"
-              alt="Lab2Next: patient registration dashboard for clinical labs"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover object-top transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
-            />
-          </div>
+          <StandUp className="order-1 lg:order-none">
+            <div
+              className="relative w-full overflow-hidden rounded-2xl"
+              style={{
+                aspectRatio: '16 / 10',
+                boxShadow:
+                  '0 0 0 1px color-mix(in srgb, var(--ds-primary) 18%, transparent), 0 40px 90px -20px color-mix(in srgb, var(--ds-bg) 80%, transparent)',
+              }}
+            >
+              <Image
+                src="/utils/img/lab2next-app-screenshot.png"
+                alt="Lab2Next: patient registration dashboard for clinical labs"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-top transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
+              />
+            </div>
+          </StandUp>
 
           {/* Editorial copy */}
           <div className="flex flex-col">
             <h3
               className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-5"
-              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+              style={{
+                color: 'var(--ds-on-surface)',
+                fontFamily: 'var(--font-manrope), sans-serif',
+              }}
             >
               <TextReveal>Lab2Next</TextReveal>
             </h3>
 
             <p
               className="text-base md:text-lg leading-relaxed mb-4 max-w-xl"
-              style={{ color: 'var(--ds-on-surface-variant)', fontFamily: 'var(--font-inter), sans-serif' }}
+              style={{
+                color: 'var(--ds-on-surface-variant)',
+                fontFamily: 'var(--font-inter), sans-serif',
+              }}
             >
               {t('product_description')}
             </p>
@@ -125,7 +134,10 @@ export default function Product() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:rounded focus-visible:[outline-color:var(--ds-primary)]"
-                style={{ color: 'var(--ds-outline)', fontFamily: 'var(--font-manrope), sans-serif' }}
+                style={{
+                  color: 'var(--ds-outline)',
+                  fontFamily: 'var(--font-manrope), sans-serif',
+                }}
               >
                 {t('product_info')}
               </a>

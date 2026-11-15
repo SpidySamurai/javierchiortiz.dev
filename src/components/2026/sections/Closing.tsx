@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Reveal } from '@/components/2026/ui/Reveal';
-import { TextReveal } from '@/components/2026/ui/TextReveal';
+import { ScrollFillText } from '@/components/2026/ui/ScrollFillText';
 import EmailCopyBand from '@/components/2026/ui/EmailCopyBand';
 import { whatsappUrl } from '@/lib/contact';
 
@@ -34,9 +34,9 @@ export default function Closing() {
               className="text-4xl md:text-6xl font-black tracking-tighter"
               style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
             >
-              <TextReveal>
+              <ScrollFillText>
                 {lead} <em style={{ color: 'var(--ds-primary)' }}>{accent}</em>
-              </TextReveal>
+              </ScrollFillText>
             </h2>
             <p
               className="text-lg leading-relaxed"

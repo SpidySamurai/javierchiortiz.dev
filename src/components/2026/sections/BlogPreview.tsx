@@ -6,7 +6,8 @@ import { useLocale, useTranslations } from 'next-intl';
 import type { Post } from '@/types/database';
 import BlogCard from '@/components/2026/ui/BlogCard';
 import { Reveal, EASE } from '@/components/2026/ui/Reveal';
-import { TextReveal } from '@/components/2026/ui/TextReveal';
+import { ScrollFillText } from '@/components/2026/ui/ScrollFillText';
+import { StandUp } from '@/components/2026/ui/StandUp';
 
 // Hoisted so the motion component identity is stable across renders.
 const MotionLink = motion.create(Link);
@@ -86,12 +87,12 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
             className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
             style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
-            <TextReveal>
+            <ScrollFillText>
               {t('blog_title')}{' '}
               <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
                 {t('blog_title_accent')}
               </span>
-            </TextReveal>
+            </ScrollFillText>
           </h2>
         </Reveal>
 
@@ -102,10 +103,12 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
           viewport={{ once: true, margin: '-40px' }}
           className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
-          {adapted.map((post) => (
-            <motion.div key={post.slug} variants={item}>
-              <BlogCard post={post} locale={locale} />
-            </motion.div>
+          {adapted.map((post, i) => (
+            <StandUp key={post.slug} lead={i === 0 ? 0.124 : 0}>
+              <motion.div variants={item} className="h-full">
+                <BlogCard post={post} locale={locale} />
+              </motion.div>
+            </StandUp>
           ))}
         </motion.div>
 

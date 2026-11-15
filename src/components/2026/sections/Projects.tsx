@@ -6,7 +6,8 @@ import { useTranslations } from 'next-intl';
 import { projects } from '@/data/projects';
 import type { DataProject } from '@/types';
 import { EASE } from '@/components/2026/ui/Reveal';
-import { TextReveal } from '@/components/2026/ui/TextReveal';
+import { ScrollFillText } from '@/components/2026/ui/ScrollFillText';
+import { StandUp } from '@/components/2026/ui/StandUp';
 
 const FONT_BODY = 'var(--font-inter), sans-serif';
 const FONT_HEAD = 'var(--font-manrope), sans-serif';
@@ -156,24 +157,28 @@ function ProjectPanel({
 
       {project.videoDesktop && project.videoMobile && (
         <div className="grid gap-3 md:gap-4" style={{ gridTemplateColumns: MEDIA_COLUMNS }}>
-          <div className="relative" style={{ aspectRatio: '16 / 9' }}>
-            <WalkthroughVideo
-              src={project.videoDesktop}
-              poster={project.posterDesktop}
-              radius={6}
-              label={`${title}, desktop`}
-              reduce={reduce}
-            />
-          </div>
-          <div className="relative">
-            <WalkthroughVideo
-              src={project.videoMobile}
-              poster={project.posterMobile}
-              radius={8}
-              label={`${title}, mobile`}
-              reduce={reduce}
-            />
-          </div>
+          <StandUp>
+            <div className="relative" style={{ aspectRatio: '16 / 9' }}>
+              <WalkthroughVideo
+                src={project.videoDesktop}
+                poster={project.posterDesktop}
+                radius={6}
+                label={`${title}, desktop`}
+                reduce={reduce}
+              />
+            </div>
+          </StandUp>
+          <StandUp lead={0.08}>
+            <div className="relative h-full">
+              <WalkthroughVideo
+                src={project.videoMobile}
+                poster={project.posterMobile}
+                radius={8}
+                label={`${title}, mobile`}
+                reduce={reduce}
+              />
+            </div>
+          </StandUp>
         </div>
       )}
 
@@ -230,12 +235,12 @@ export default function Projects() {
               className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
               style={{ color: 'var(--ds-on-surface)', fontFamily: FONT_HEAD }}
             >
-              <TextReveal>
+              <ScrollFillText>
                 {t('projects_title')}{' '}
                 <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
                   {t('projects_title_accent')}
                 </span>
-              </TextReveal>
+              </ScrollFillText>
             </h2>
           </div>
           <span

@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Reveal, StaggerGroup } from '@/components/2026/ui/Reveal';
-import { TextReveal } from '@/components/2026/ui/TextReveal';
+import { ScrollFillText } from '@/components/2026/ui/ScrollFillText';
 
 const POINTS = [1, 2, 3, 4] as const;
 
@@ -28,11 +28,11 @@ export default function WhyMe() {
             className="text-4xl md:text-5xl font-black tracking-tighter"
             style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
-            <TextReveal>
+            <ScrollFillText>
               {t('why_title')}{' '}
               <em style={{ color: 'var(--ds-primary)' }}>{t('why_title_accent')}</em>
               {t('why_title_end')}
-            </TextReveal>
+            </ScrollFillText>
           </h2>
         </div>
 
