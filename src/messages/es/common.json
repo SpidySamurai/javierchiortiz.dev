@@ -264,5 +264,17 @@
   "leave_memory_subtitle": "¿Pasaste por aquí? Déjame una nota.",
   "leave_memory_placeholder": "Escribe tu mensaje aquí...",
   "leave_memory_submit": "Enviar",
-  "leave_memory_soon": "Próximamente"
+  "leave_memory_soon": "Próximamente",
+  "why_label": "Por qué trabajar conmigo",
+  "why_title": "Del spec a",
+  "why_title_accent": "producción",
+  "why_title_end": ", y después.",
+  "why_1_title": "Ciclo completo",
+  "why_1_body": "Me hago cargo del ciclo completo, del spec al mantenimiento después del lanzamiento.",
+  "why_2_title": "Mi propio SaaS en producción",
+  "why_2_body": "Lab2Next: lo diseñé, lo construí y lo lancé por mi cuenta, y lo mantengo en producción.",
+  "why_3_title": "6+ años en producción",
+  "why_3_body": "Software para clientes de Estados Unidos y Latinoamérica: portales con datos intensivos, plataformas multi-tenant y migración de BI legacy a Spark + Superset.",
+  "why_4_title": "Hoy, IA en producción",
+  "why_4_body": "Senior Full Stack Engineer en Brania, una plataforma impulsada por IA: diseño y entrego funcionalidades completas, del frontend al backend."
 }

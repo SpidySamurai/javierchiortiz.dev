@@ -5,6 +5,7 @@ import Hero from '@/components/2026/sections/Hero';
 import Projects from '@/components/2026/sections/Projects';
 import Product from '@/components/2026/sections/Product';
 import About from '@/components/2026/sections/About';
+import WhyMe from '@/components/2026/sections/WhyMe';
 import Services from '@/components/2026/sections/Services';
 import Footer from '@/components/2026/sections/Footer';
 import BlogPreview from '@/components/2026/sections/BlogPreview';
@@ -28,9 +29,10 @@ export default function HomeShell({ posts, sidebarCollapsed }: { posts: Post[]; 
       <main className="sidebar-main pt-20">
         <Hero />
         <Product />
-        <Projects />
-        <About />
         <Services />
+        <Projects />
+        <WhyMe />
+        <About />
         <BlogPreview posts={posts} />
         <Footer />
       </main>

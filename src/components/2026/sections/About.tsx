@@ -231,14 +231,7 @@ export default function About() {
           </h2>
 
           <div className="flex flex-col gap-5">
-            {(
-              [
-                'about_paragraph_1',
-                'about_paragraph_2',
-                'about_paragraph_3',
-                'about_paragraph_4',
-              ] as const
-            ).map((key, i) => (
+            {(['about_paragraph_1', 'about_paragraph_4'] as const).map((key, i) => (
               <motion.p
                 key={key}
                 initial={{ opacity: 0, y: 12 }}
