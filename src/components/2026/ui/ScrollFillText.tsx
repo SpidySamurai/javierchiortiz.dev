@@ -15,8 +15,10 @@ function fillWords(node: ReactNode, counter: { n: number }): ReactNode {
     return node.split(/(\s+)/).map((part, i) => {
       if (part === '' || /^\s+$/.test(part)) return part;
       const index = counter.n++;
+      // No inline opacity: words render fully visible on the server and without JS;
+      // the scroll handler dims and fills them once it runs.
       return (
-        <span key={i} data-fill-word={index} style={{ opacity: MIN_OPACITY }}>
+        <span key={i} data-fill-word={index}>
           {part}
         </span>
       );
