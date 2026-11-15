@@ -67,8 +67,8 @@
   "projects_label": "Showcase",
   "projects_title": "Gallery of",
   "projects_title_accent": "Work",
-  "projects_intro": "E-commerce storefronts I built as a Full Stack engineer at Scandia Manufacturing.",
-  "projects_client": "Client",
+  "projects_intro": "Sites I built: brania.ai, which I own, and the e-commerce storefronts of Scandia Manufacturing.",
+  "projects_company": "Company",
   "projects_role": "My role",
   "projects_period": "Period",
   "projects_subtitle": "Selected · Ongoing",
@@ -126,7 +126,15 @@
     }
   },
   "project_items": {
+    "brania": {
+      "title": "brania.ai",
+      "kind": "Marketing site · HTML, CSS and JavaScript",
+      "description": "Home, product pages (Bedrock, Foundation and Autopilot), trust, team and legal pages. Contact form through Resend.",
+      "client": "BRANIA",
+      "role": "Site owner"
+    },
     "scandia-ecommerce": {
+      "kind": "E-commerce · Shopify",
       "title": "Scandia Manufacturing",
       "description": "Collaborated on building pages, components, and responsiveness for this industry-leading e-commerce site.",
       "client": "Scandia Manufacturing",
@@ -134,6 +142,7 @@
       "period": "Jan 2020 - Jun 2022"
     },
     "saunas-com": {
+      "kind": "E-commerce · Shopify",
       "title": "Saunas.com",
       "description": "E-commerce platform for sauna and steam room products. Feature-rich implementation related to Scandia Mfg.",
       "client": "Scandia Manufacturing",
@@ -141,6 +150,7 @@
       "period": "Jan 2020 - Jun 2022"
     },
     "sun-valley-salt": {
+      "kind": "E-commerce · Shopify",
       "title": "Sun Valley Salt",
       "description": "E-commerce platform for Himalayan salt wall panels. Manufacturing and customization focus.",
       "client": "Scandia Manufacturing",
