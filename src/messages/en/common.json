@@ -224,6 +224,7 @@
   "services_line": {
     "iteration_1": "ITERATION 1",
     "iteration_2": "ITERATION 2",
+    "iteration_3": "ITERATION 3",
     "step_build": "BUILD",
     "step_test": "TEST",
     "step_feedback": "FEEDBACK",
@@ -238,6 +239,12 @@
     "status_improving": "improving: v2",
     "status_testing_2": "testing v2",
     "status_ready": "v2 ready to ship",
+    "status_update_plan": "update: designing",
+    "status_update_build": "update: building",
+    "status_update_test": "update: testing",
+    "status_update_ready": "update: ready to ship",
+    "status_update_live": "update: integrating",
+    "status_update_done": "v1.4 live",
     "deployed": "DEPLOYED"
   },
   "not_found_title": "404. Unexecuted idea.",

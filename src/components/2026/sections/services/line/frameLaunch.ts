@@ -7,6 +7,7 @@
 import { A, BOOST_H, NOZ } from './cubes';
 import { ARRIVE_T, COUNT, END_T, HB, HB_LEN, L, LIFTOFF_T, ORBIT, PY } from './geometry';
 import { bez, dPath, expo, lerp, n, prog, ptsStr, type Pt } from './math';
+import { U_IGN, U_LAMP, U_TL, padAt } from './updatePass';
 import type { Frame } from './frame';
 
 export interface Pose {
@@ -24,7 +25,7 @@ function climb(fu: number): number {
 
 export function launchFrame(f: Frame, s: number, T: number, pieceX: number): Pose {
   const launchOff = 1 - prog(T, END_T - 0.8, END_T - 0.2);
-  const launchA = prog(T, 9.5, 9.8) * launchOff;
+  const launchA = padAt(s, T, launchOff);
   const fadeEnd = 1 - prog(T, END_T - 0.25, END_T);
   const dock = expo(prog(T, 9.62, 9.92));
   const liftY = -BOOST_H * A * dock;
@@ -50,12 +51,16 @@ export function launchFrame(f: Frame, s: number, T: number, pieceX: number): Pos
 
   boosterFrame(f, s, T, dock, ax, ay, sc);
 
-  // Countdown, umbilical, beacon.
+  // Countdown lamps: reset while the update is planned, count down again for its launch.
   for (let i = 0; i < 3; i++) {
-    const v = prog(T, 9.7 + i * 0.15, 9.8 + i * 0.15) * launchOff;
+    const v = Math.max(
+      prog(T, 9.7 + i * 0.15, 9.8 + i * 0.15) * (1 - prog(s, 14.2, 14.5)),
+      prog(s, U_LAMP + i * 0.12, U_LAMP + 0.1 + i * 0.12),
+    ) * launchOff;
     f[`lamp${i}.glow`] = n(0.8 * v);
     f[`lamp${i}.on`] = n(v);
   }
+  // Umbilical and beacon.
   const cx2 = 876 + 26 * prog(T, 9.6, 9.8) * (1 - expo(prog(T, 10.1, 10.25)));
   f['umb.w'] = n(cx2 - 876);
   f['umb.clawX'] = n(cx2 - 4);
@@ -192,6 +197,10 @@ function groundFrame(f: Frame, s: number, T: number, le: number): void {
     f[`puff${k}.op`] = n(u2 > 0 ? 0.36 * prog(u2, 0, 0.08) * (1 - prog(T, 12.4, 13.8)) : 0);
   }
   const flick = 0.85 + 0.15 * Math.sin(s * 53) * Math.sin(s * 31);
-  f['ground.op'] = n((0.25 * prog(T, 10.25, 10.6) + 0.35 * prog(T, 10.75, 11.0)) * (1 - prog(T, 11.2, 12.0)) * flick);
+  // The update's short ignition warms the pad again.
+  const uIgn = prog(s, U_IGN, U_IGN + 0.15) * (1 - prog(s, U_TL[3] + 0.15, U_TL[3] + 0.6));
+  const launchOff = 1 - prog(T, END_T - 0.8, END_T - 0.2);
+  f['ground.op'] = n(((0.25 * prog(T, 10.25, 10.6) + 0.35 * prog(T, 10.75, 11.0)) * (1 - prog(T, 11.2, 12.0)) + 0.3 * uIgn) * flick);
+  f.padWarm = n((0.3 + 0.35 * prog(T, 10.25, 10.8) * (1 - prog(T, 11.4, 12.2))) * prog(T, 9.8, 10.3) * launchOff + 0.35 * uIgn);
   f['deploy.op'] = n(prog(T, 12.3, 12.5) * (1 - prog(T, 13.3, 13.6)));
 }

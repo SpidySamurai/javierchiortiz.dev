@@ -198,6 +198,13 @@ html[data-theme='light'] {
   --ds-scene-steel-shade: #161c2e;
   --ds-scene-steel-deep: #232b41;
   --ds-scene-steel-base: #262e45;
+  /* Foreground arm and column: brighter edge, deeper shade, so they read nearer the camera. */
+  --ds-scene-fg-arm-hi: #c9cdea;
+  --ds-scene-fg-arm-mid: #6a7196;
+  --ds-scene-fg-arm-lo: #1f2439;
+  --ds-scene-fg-steel-hi: #3f4864;
+  --ds-scene-fg-steel-mid: #262d43;
+  --ds-scene-fg-steel-lo: #141928;
   --ds-scene-glass: #0a1124;
   --ds-scene-glass-hi: #0d1630;
   --ds-scene-ink: #0e1244;

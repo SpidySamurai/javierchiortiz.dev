@@ -57,6 +57,9 @@ export function SceneDefs({ id }: { id: string }) {
       <Linear id={q('steelV')} stops={[[0, v('steel-hi')], [1, v('steel-lo')]]} />
       <Linear id={q('steelH')} stops={[[0, v('steel-hi')], [1, v('steel-lo')]]} x2={1} y2={0} />
       <Linear id={q('armU')} stops={[[0, v('steel-bright')], [0.45, `color-mix(in srgb, ${v('steel-bright')} 45%, ${v('steel-mid')})`], [1, v('steel-mid')]]} />
+      {/* Foreground tones for the arm and column in front of the belt */}
+      <Linear id={q('armF')} stops={[[0, v('fg-arm-hi')], [0.4, v('fg-arm-mid')], [1, v('fg-arm-lo')]]} />
+      <Linear id={q('steelF')} stops={[[0, v('fg-steel-hi')], [0.55, v('fg-steel-mid')], [1, v('fg-steel-lo')]]} x2={1} y2={0} />
       <Linear id={q('board')} stops={[[0, v('steel-mid')], [1, v('steel-shade')]]} />
       <Linear id={q('glass')} stops={[[0, v('glass-hi')], [1, v('glass')]]} />
       <Linear id={q('coneV')} stops={[[0, vivid, 0.26], [1, vivid, 0]]} />

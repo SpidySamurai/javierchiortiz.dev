@@ -3,13 +3,15 @@ import { AndonBoard } from './AndonBoard';
 import { Backdrop, Pedestal } from './Backdrop';
 import { Belt } from './Belt';
 import { Blueprint } from './Blueprint';
-import { DraftingArm, GantryBeam, GantryFx, GantryLegs } from './Gantry';
+import { DraftArm, GantryBeam, GantryFx, GantryLegs } from './Gantry';
+import { ForegroundColumn } from './ForegroundColumn';
 import { LaunchFx, LivePulses, SeparationRing } from './LaunchFx';
 import { LaunchTower, Umbilical } from './LaunchTower';
 import { OrbitBack, OrbitFront } from './OrbitMarks';
 import { Piece } from './Piece';
 import { SceneDefs, SceneIdProvider } from './SceneDefs';
-import { VIEW_H, VIEW_W } from './geometry';
+import { UpdateOutlines, UpdatePassMark, UpdateWorld } from './UpdatePass';
+import { PIV, PIV2, K2, VIEW_H, VIEW_W } from './geometry';
 import type { Labels } from './bind';
 
 /**
@@ -49,9 +51,14 @@ export default function LineScene({ copy, viewBox = `0 0 ${VIEW_W} ${VIEW_H}`, c
           <OrbitBack />
           <Piece />
           <SeparationRing />
+          <UpdateWorld />
+          <UpdateOutlines />
+          <UpdatePassMark />
           <GantryBeam />
           <GantryFx />
-          <DraftingArm />
+          <DraftArm id="a1" piv={PIV} k={1} />
+          <ForegroundColumn />
+          <DraftArm id="a2" piv={PIV2} k={K2} fg />
           <OrbitFront copy={copy} />
         </g>
       </SceneIdProvider>

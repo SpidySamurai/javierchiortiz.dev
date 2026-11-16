@@ -1,5 +1,5 @@
 import { ptsStr } from './math';
-import { L1, L2, PIV } from './geometry';
+import { L1, L2 } from './geometry';
 import { useGrad } from './SceneDefs';
 
 /** Gantry legs, light beam, carriage with gripper; scan plane, pass check and the feedback bubble. */
@@ -78,33 +78,54 @@ export function GantryFx() {
   );
 }
 
-/** Drafting arm: two segments with joints, the emitter head and the tracing light. In front of everything. */
-export function DraftingArm() {
+/** Outline of the foreground arm: a thin dark edge that separates it from the belt behind. */
+const FG_EDGE = 'color-mix(in srgb, var(--ds-scene-steel-shade) 60%, black)';
+
+interface ArmProps {
+  /** Frame key prefix: a1 or a2. */
+  id: 'a1' | 'a2';
+  piv: readonly [number, number];
+  /** Scale of the whole arm (links, thickness, joints). */
+  k: number;
+  /** Foreground arm: darker tones and an outline. */
+  fg?: boolean;
+}
+
+/** Drafting arm: two segments with joints, the emitter head and the tracing light. */
+export function DraftArm({ id, piv, k, fg = false }: ArmProps) {
   const g = useGrad();
+  const l1 = L1 * k;
+  const l2 = L2 * k;
+  const fill = g(fg ? 'armF' : 'armU');
+  const ol = fg ? { stroke: FG_EDGE, strokeWidth: 1.2, strokeOpacity: 0.8 } : {};
+  const joint = fg ? s('steel-deep') : 'var(--ds-surface-highest)';
+  const jointHi = fg ? s('steel-hi') : s('steel-light');
+  const hand = s('steel-mid');
+  const handHi = fg ? s('steel-bright') : s('steel-light');
   return (
     <>
-      <g data-bind="opacity:arm.op">
-        <g data-bind="transform:arm.upperTf">
-          <rect x={-8} y={-8} width={L1 + 16} height={16} rx={8} fill={g('armU')} />
-          <rect x={28} y={-2.5} width={L1 - 56} height={5} rx={2.5} fill={s('steel-lo')} opacity={0.55} />
+      <g data-bind={`opacity:${id}.op`}>
+        <g data-bind={`transform:${id}.upperTf`}>
+          <rect x={-8 * k} y={-8 * k} width={l1 + 16 * k} height={16 * k} rx={8 * k} fill={fill} {...ol} />
+          <rect x={28 * k} y={-2.5 * k} width={l1 - 56 * k} height={5 * k} rx={2.5 * k} fill={s('steel-lo')} opacity={fg ? 0.75 : 0.55} />
         </g>
-        <g data-bind="transform:arm.foreTf">
-          <rect x={-6} y={-6} width={L2 - 14} height={12} rx={6} fill={g('armU')} />
-          <rect x={L2 - 30} y={-8.5} width={24} height={17} rx={4} fill={s('steel-mid')} />
-          <rect x={L2 - 30} y={-8.5} width={24} height={3} rx={1.5} fill={s('steel-light')} />
-          <polygon points={`${L2 - 6},-5 ${L2},-2 ${L2},2 ${L2 - 6},5`} fill={s('steel-bright')} />
+        <g data-bind={`transform:${id}.foreTf`}>
+          <rect x={-6 * k} y={-6 * k} width={l2 - 14 * k} height={12 * k} rx={6 * k} fill={fill} {...ol} />
+          <rect x={l2 - 30 * k} y={-8.5 * k} width={24 * k} height={17 * k} rx={4 * k} fill={hand} {...ol} />
+          <rect x={l2 - 30 * k} y={-8.5 * k} width={24 * k} height={3 * k} rx={1.5 * k} fill={handHi} />
+          <polygon points={`${l2 - 6 * k},${-5 * k} ${l2},${-2 * k} ${l2},${2 * k} ${l2 - 6 * k},${5 * k}`} fill={s('steel-bright')} />
         </g>
-        <circle cx={PIV[0]} cy={PIV[1]} r={17} fill="var(--ds-surface-highest)" />
-        <circle cx={PIV[0]} cy={PIV[1]} r={11} fill={s('steel-light')} />
-        <circle cx={PIV[0]} cy={PIV[1]} r={4} fill="var(--ds-primary)" />
-        <g data-bind="transform:arm.elbowTf">
-          <circle r={12} fill="var(--ds-surface-highest)" />
-          <circle r={7} fill={s('steel-light')} />
-          <circle r={2.8} fill="var(--ds-primary)" />
+        <circle cx={piv[0]} cy={piv[1]} r={17 * k} fill={joint} {...ol} />
+        <circle cx={piv[0]} cy={piv[1]} r={11 * k} fill={jointHi} />
+        <circle cx={piv[0]} cy={piv[1]} r={4 * k} fill="var(--ds-primary)" />
+        <g data-bind={`transform:${id}.elbowTf`}>
+          <circle r={12 * k} fill={joint} {...ol} />
+          <circle r={7 * k} fill={jointHi} />
+          <circle r={2.8 * k} fill="var(--ds-primary)" />
         </g>
       </g>
-      <circle r={9} fill="var(--ds-primary-container)" opacity={0} style={{ filter: 'blur(4px)' }} data-bind="cx:arm.tx,cy:arm.ty,opacity:arm.tipGlow" />
-      <circle r={2.8} fill="var(--ds-on-surface)" data-bind="cx:arm.tx,cy:arm.ty,opacity:arm.tipOp" />
+      <circle r={9 * k} fill="var(--ds-primary-container)" opacity={0} style={{ filter: 'blur(4px)' }} data-bind={`cx:${id}.tx,cy:${id}.ty,opacity:${id}.tipGlow`} />
+      <circle r={2.8 * k} fill="var(--ds-on-surface)" data-bind={`cx:${id}.tx,cy:${id}.ty,opacity:${id}.tipOp`} />
     </>
   );
 }

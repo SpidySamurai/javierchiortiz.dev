@@ -58,8 +58,8 @@ export function AndonBoard({ copy }: { copy: Labels }) {
           x={528} y={52} fontSize={13} fontWeight={800} letterSpacing="0.14em" dominantBaseline="central" fill={s('screen-muted')}
           style={HEAD} data-bind="text:steps.iter"
         />
-        {[0, 1].map((i) => (
-          <rect key={i} x={748 + i * 16} y={48} width={12} height={8} rx={3} fill={s('screen-off')} data-bind={`s.fill:pip.${i}`} />
+        {[0, 1, 2].map((i) => (
+          <rect key={i} x={732 + i * 16} y={48} width={12} height={8} rx={3} fill={s('screen-off')} data-bind={`s.fill:pip.${i}`} />
         ))}
         <rect x={506} y={66} width={268} height={2} fill={s('screen-rule')} />
         <rect x={628} y={76} width={2} height={62} fill={s('screen-rule')} />
