@@ -14,7 +14,7 @@ export default function WhyMe() {
       className="py-28 px-8 lg:px-20"
       style={{ backgroundColor: 'var(--ds-bg)', scrollMarginTop: '5rem' }}
     >
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-[5fr_7fr] gap-12 lg:gap-24 items-start">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-14 items-start">
         <div className="min-w-0 lg:sticky lg:top-28">
           <Reveal y={20} className="mb-4">
             <span
@@ -25,7 +25,7 @@ export default function WhyMe() {
             </span>
           </Reveal>
           <h2
-            className="text-4xl md:text-5xl font-black tracking-tighter"
+            className="text-4xl md:text-5xl lg:text-[64px] leading-none font-extrabold tracking-[-0.03em]"
             style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
             <ScrollFillText>
@@ -36,33 +36,31 @@ export default function WhyMe() {
           </h2>
         </div>
 
-        <StaggerGroup className="flex flex-col gap-3" stagger={0.1}>
+        {/* A plain list with hairline separators, as in the approved canvas (board 13) */}
+        <StaggerGroup className="flex flex-col" stagger={0.1}>
           {POINTS.map((n) => (
             <Reveal key={n} y={20}>
               <div
-                className="flex gap-5 p-6 rounded-xl"
-                style={{ backgroundColor: 'var(--ds-surface-container)' }}
+                className="grid grid-cols-[28px_1fr] gap-3.5 py-5"
+                style={{ boxShadow: '0 1px 0 color-mix(in srgb, var(--ds-on-surface) 7%, transparent)' }}
               >
                 <span
                   translate="no"
                   aria-hidden
-                  className="material-symbols-outlined shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-xl"
-                  style={{
-                    color: 'var(--ds-primary)',
-                    backgroundColor: 'color-mix(in srgb, var(--ds-primary) 12%, transparent)',
-                  }}
+                  className="material-symbols-outlined text-xl mt-0.5"
+                  style={{ color: 'var(--ds-primary)' }}
                 >
                   check
                 </span>
                 <div className="min-w-0">
                   <h3
-                    className="text-lg font-extrabold mb-1.5"
+                    className="text-[19px] font-bold"
                     style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
                   >
                     {t(`why_${n}_title`)}
                   </h3>
                   <p
-                    className="text-base leading-relaxed"
+                    className="text-sm leading-[1.55] mt-1"
                     style={{
                       color: 'var(--ds-on-surface-variant)',
                       fontFamily: 'var(--font-inter), sans-serif',
