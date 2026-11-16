@@ -1,8 +1,17 @@
 import { useTranslations } from 'next-intl';
 import { Reveal, StaggerGroup } from '@/components/2026/ui/Reveal';
 import { ScrollFillText } from '@/components/2026/ui/ScrollFillText';
+import { CompanyBand } from '@/components/2026/sections/why/CompanyBand';
+import { COMPANIES } from '@/data/companies';
 
-const POINTS = [1, 2, 3, 4] as const;
+/** Point number (message keys why_N_title / why_N_body) and its Material Symbols icon. */
+const POINTS = [
+  [1, 'search'],
+  [2, 'biotech'],
+  [3, 'deployed_code'],
+  [4, 'auto_awesome'],
+  [5, 'foundation'],
+] as const;
 
 export default function WhyMe() {
   const t = useTranslations('common');
@@ -38,7 +47,7 @@ export default function WhyMe() {
 
         {/* A plain list with hairline separators, as in the approved canvas (board 13) */}
         <StaggerGroup className="flex flex-col" stagger={0.1}>
-          {POINTS.map((n) => (
+          {POINTS.map(([n, icon]) => (
             <Reveal key={n} y={20}>
               <div
                 className="grid grid-cols-[28px_1fr] gap-3.5 py-5"
@@ -50,7 +59,7 @@ export default function WhyMe() {
                   className="material-symbols-outlined text-xl mt-0.5"
                   style={{ color: 'var(--ds-primary)' }}
                 >
-                  check
+                  {icon}
                 </span>
                 <div className="min-w-0">
                   <h3
@@ -73,6 +82,10 @@ export default function WhyMe() {
             </Reveal>
           ))}
         </StaggerGroup>
+      </div>
+
+      <div className="max-w-7xl mx-auto">
+        <CompanyBand label={t('why_band_label')} companies={COMPANIES} />
       </div>
     </section>
   );
