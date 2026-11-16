@@ -20,6 +20,7 @@ function MobileDrawer({
   isBlogActive,
   isVisitorsActive,
   isExperienceActive,
+  isWorkActive,
   sectionHref,
   isUnlocked,
   openCard,
@@ -33,6 +34,7 @@ function MobileDrawer({
   isBlogActive: boolean;
   isVisitorsActive: boolean;
   isExperienceActive: boolean;
+  isWorkActive: boolean;
   sectionHref: (id: string) => string;
   isUnlocked: boolean;
   openCard: (anchorY?: number) => void;
@@ -141,11 +143,11 @@ function MobileDrawer({
               fontFamily: 'var(--font-manrope), sans-serif',
               fontWeight: 700,
               color:
-                !isBlogActive && !isVisitorsActive && !isExperienceActive
+                !isBlogActive && !isVisitorsActive && !isExperienceActive && !isWorkActive
                   ? 'var(--ds-primary)'
                   : 'var(--ds-outline)',
               backgroundColor:
-                !isBlogActive && !isVisitorsActive && !isExperienceActive
+                !isBlogActive && !isVisitorsActive && !isExperienceActive && !isWorkActive
                   ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
                   : 'transparent',
             }}
@@ -156,6 +158,24 @@ function MobileDrawer({
             {t('home')}
           </Link>
           {NAV_ITEMS.slice(0, 1).map(renderSection)}
+          <Link
+            href={`/${locale}/work`}
+            onClick={onClose}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
+            style={{
+              fontFamily: 'var(--font-manrope), sans-serif',
+              fontWeight: 700,
+              color: isWorkActive ? 'var(--ds-primary)' : 'var(--ds-outline)',
+              backgroundColor: isWorkActive
+                ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+                : 'transparent',
+            }}
+          >
+            <span translate="no" className="material-symbols-outlined text-[20px]">
+              work
+            </span>
+            {t('nav_work')}
+          </Link>
           <Link
             href={`/${locale}/experience`}
             onClick={onClose}
@@ -277,12 +297,13 @@ export default function Header() {
   const isBlogActive = pathname.startsWith(`/${locale}/blog`);
   const isVisitorsActive = pathname.startsWith(`/${locale}/visitors`);
   const isExperienceActive = pathname.startsWith(`/${locale}/experience`);
+  const isWorkActive = pathname.startsWith(`/${locale}/work`);
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
-  // Whole destinations, not funnel sections: the home, the work gallery and the journey page.
+  // Whole destinations, not funnel sections: the home, the work page and the journey page.
   const PRIMARY_LINKS = [
     { key: 'home', href: `/${locale}`, active: isHome },
-    { key: 'projects', href: sectionHref('projects'), active: false },
+    { key: 'projects', href: `/${locale}/work`, active: isWorkActive },
     { key: 'nav_journey', href: `/${locale}/experience`, active: isExperienceActive },
   ] as const;
 
@@ -410,6 +431,7 @@ export default function Header() {
           isBlogActive={isBlogActive}
           isVisitorsActive={isVisitorsActive}
           isExperienceActive={isExperienceActive}
+          isWorkActive={isWorkActive}
           sectionHref={sectionHref}
           isUnlocked={isUnlocked}
           openCard={openCard}

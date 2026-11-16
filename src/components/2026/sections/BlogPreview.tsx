@@ -4,49 +4,19 @@ import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
 import type { Post } from '@/types/database';
-import { BlogRow, type BlogRowPost } from '@/components/2026/sections/blog/BlogRow';
+import { BlogRow } from '@/components/2026/sections/blog/BlogRow';
+import { adaptPostRow } from '@/lib/blogPostRow';
 import { Reveal, EASE } from '@/components/2026/ui/Reveal';
 import { ScrollFillText } from '@/components/2026/ui/ScrollFillText';
 
 // Hoisted so the motion component identity is stable across renders.
 const MotionLink = motion.create(Link);
 
-/** Category label in the reader's language; unknown categories keep their stored name. */
-function categoryLabel(category: string, t: ReturnType<typeof useTranslations<'common'>>): string {
-  const key = `blog_categories.${category.trim().toLowerCase()}`;
-  return t.has(key as Parameters<typeof t>[0]) ? t(key as Parameters<typeof t>[0]) : category;
-}
-
-function adaptPost(
-  post: Post,
-  locale: string,
-  t: ReturnType<typeof useTranslations<'common'>>
-): BlogRowPost {
-  // read_time is stored as free text (e.g. "5 min read"); localize the common shape, keep anything else as is.
-  const minutes = /^\s*(\d+)\s*min/i.exec(post.read_time)?.[1];
-  return {
-    slug: post.slug,
-    date: post.published_at
-      ? new Date(post.published_at).toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', {
-          month: 'long',
-          year: 'numeric',
-        })
-      : '',
-    category: categoryLabel(post.category, t),
-    readTime: minutes ? t('blog_read_time', { n: Number(minutes) }) : post.read_time,
-    coverTheme: (post.cover_theme as BlogRowPost['coverTheme']) ?? 'pilots',
-    title: locale === 'es' ? post.title_es : post.title_en,
-    excerpt: (locale === 'es' ? post.excerpt_es : post.excerpt_en) ?? undefined,
-    coverImageUrl: post.cover_image_url,
-    coverImagePosition: post.cover_image_position_card,
-  };
-}
-
 export default function BlogPreview({ posts }: { posts: Post[] }) {
   const t = useTranslations('common');
   const locale = useLocale();
   const reduce = useReducedMotion();
-  const adapted = posts.slice(0, 2).map((p) => adaptPost(p, locale, t));
+  const adapted = posts.slice(0, 2).map((p) => adaptPostRow(p, locale, t).row);
 
   // Parent owns timing; each card item carries the actual reveal values.
   const container = {
