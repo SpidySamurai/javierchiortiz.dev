@@ -579,6 +579,17 @@ html[data-theme='light'] .ds-2026 {
 .company-band-track {
   animation: company-band 40s linear infinite;
 }
+.company-band:hover .company-band-track,
+.company-band:focus-within .company-band-track {
+  animation-play-state: paused;
+}
+.company-link {
+  transition: color 0.2s ease;
+}
+.company-link:hover,
+.company-link:focus-visible {
+  color: var(--ds-on-surface);
+}
 @keyframes company-band {
   to {
     transform: translateX(calc(-50% - 2rem));

@@ -3,10 +3,17 @@ import type { Company } from '@/data/companies';
 const TONE = 'color-mix(in srgb, var(--ds-on-surface) 55%, transparent)';
 const HAIRLINE = 'color-mix(in srgb, var(--ds-on-surface) 7%, transparent)';
 
-function CompanyMark({ company }: { company: Company }) {
+/** One company as a link to its site; on hover or focus it lifts from the muted tone to full text color. */
+function CompanyMark({ company, hidden = false }: { company: Company; hidden?: boolean }) {
   const { logo } = company;
   return (
-    <span className="inline-flex items-center gap-2.5 shrink-0 whitespace-nowrap">
+    <a
+      href={company.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      tabIndex={hidden ? -1 : undefined}
+      className="company-link inline-flex items-center gap-2.5 shrink-0 whitespace-nowrap rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:[outline-color:var(--ds-primary)]"
+    >
       {logo && (
         <span
           aria-hidden
@@ -21,13 +28,15 @@ function CompanyMark({ company }: { company: Company }) {
         />
       )}
       {company.name}
-    </span>
+    </a>
   );
 }
 
 /**
  * A slow marquee of the companies Javier worked at and with: logo (when there is one) and name,
- * in one muted tone. The second copy only closes the loop; reduced motion shows one static row.
+ * in one muted tone, each linking to its site. Hover or keyboard focus pauses the band so a link
+ * can be clicked. The second copy only closes the loop (hidden and out of the tab order);
+ * reduced motion shows one static row.
  */
 export function CompanyBand({ label, companies }: { label: string; companies: readonly Company[] }) {
   return (
@@ -56,7 +65,7 @@ export function CompanyBand({ label, companies }: { label: string; companies: re
           <ul aria-hidden className="company-band-copy flex gap-16">
             {companies.map((c) => (
               <li key={c.name}>
-                <CompanyMark company={c} />
+                <CompanyMark company={c} hidden />
               </li>
             ))}
           </ul>

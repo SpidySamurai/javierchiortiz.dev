@@ -12,18 +12,20 @@ export interface CompanyLogo {
 
 export interface Company {
   name: string;
+  /** Official site, opened in a new tab. */
+  url: string;
   logo?: CompanyLogo;
 }
 
 const LOGOS = '/utils/img/companies';
 
 export const COMPANIES: readonly Company[] = [
-  { name: 'BRANIA', logo: { src: `${LOGOS}/brania.png`, width: 26.5, height: 30 } },
-  { name: 'ENTI', logo: { src: `${LOGOS}/enti.png`, width: 30, height: 30 } },
-  { name: 'Softtek', logo: { src: `${LOGOS}/softtek.svg`, width: 28, height: 28 } },
-  { name: 'Scandia Manufacturing', logo: { src: `${LOGOS}/scandia.png`, width: 11.5, height: 40 } },
-  { name: 'Saunas.com', logo: { src: `${LOGOS}/saunas.png`, width: 15, height: 32 } },
-  { name: 'Sun Valley Salt', logo: { src: `${LOGOS}/sunvalley.png`, width: 29, height: 24 } },
-  { name: 'IOTAM' },
-  { name: 'VezMex', logo: { src: `${LOGOS}/vezmex.svg`, width: 57, height: 28 } },
+  { name: 'BRANIA', url: 'https://www.brania.ai/', logo: { src: `${LOGOS}/brania.png`, width: 26.5, height: 30 } },
+  { name: 'ENTI', url: 'https://en-ti.com/', logo: { src: `${LOGOS}/enti.png`, width: 30, height: 30 } },
+  { name: 'Softtek', url: 'https://www.softtek.com/', logo: { src: `${LOGOS}/softtek.svg`, width: 28, height: 28 } },
+  { name: 'Scandia Manufacturing', url: 'https://scandiamfg.com/', logo: { src: `${LOGOS}/scandia.png`, width: 11.5, height: 40 } },
+  { name: 'Saunas.com', url: 'https://www.saunas.com/', logo: { src: `${LOGOS}/saunas.png`, width: 15, height: 32 } },
+  { name: 'Sun Valley Salt', url: 'https://sunvalleysalt.com/', logo: { src: `${LOGOS}/sunvalley.png`, width: 29, height: 24 } },
+  { name: 'IOTAM', url: 'https://iotam.com.mx/' },
+  { name: 'VezMex', url: 'https://vezmex.dev/', logo: { src: `${LOGOS}/vezmex.svg`, width: 57, height: 28 } },
 ];
