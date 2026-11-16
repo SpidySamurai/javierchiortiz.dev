@@ -23,17 +23,20 @@ And honestly, it is my playground. Half the features below exist because I wante
 
 ## A quick tour
 
-| Desktop | Mobile |
-| ------- | ------ |
-| ![Home on desktop](.github/readme/home-desktop.png) | ![Mobile views](.github/readme/mobile.png) |
+| Home | On a phone |
+| ---- | ---------- |
+| ![Home on desktop](.github/readme/home-desktop.png) | ![Hero, What I build and Journey on mobile](.github/readme/mobile.png) |
+| The 2026 redesign at `/`, in English and Spanish. | The hero, the What I build line and the journey, at phone width. |
 
-| Selected work, live links | Own products in production |
-| ------------------------- | -------------------------- |
-| ![Projects section](.github/readme/projects-desktop.png) | ![Lab2Next](.github/readme/lab2next-desktop.png) |
+| Work page | Lab2Next, my own product |
+| --------- | ------------------------ |
+| ![Work page](.github/readme/work-desktop.png) | ![Lab2Next section](.github/readme/lab2next-desktop.png) |
+| Products of my own and projects for companies, from the problem to production. | A SaaS for clinical labs that I designed and built from scratch. |
 
-Every dot on this globe is a real person who stopped by:
-
-![Visitors globe](.github/readme/visitors-globe.png)
+| Visitors |
+| -------- |
+| ![Visitors globe](.github/readme/visitors-globe.png) |
+| Every dot on this globe is a real person who stopped by. |
 
 ## Stack
 
