@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import { Reveal } from '@/components/2026/ui/Reveal';
 import { ScrollFillText } from '@/components/2026/ui/ScrollFillText';
 import AboutLinks from '@/components/2026/sections/about/AboutLinks';
-import StackRows from '@/components/2026/sections/about/StackRows';
+import StackPills from '@/components/2026/sections/about/StackPills';
 
 const PARAGRAPHS = ['about_paragraph_personal', 'about_paragraph_4'] as const;
 
@@ -75,7 +75,7 @@ export default function About() {
 
         {/* Right: stack rows + quote */}
         <div className="flex flex-col gap-8 min-w-0">
-          <StackRows />
+          <StackPills />
 
           <Reveal y={12}>
             <blockquote
