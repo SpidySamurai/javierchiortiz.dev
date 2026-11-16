@@ -41,10 +41,9 @@ export default async function OpenSourceList({ locale }: { locale: string }) {
         </div>
 
         <ul className="flex flex-col min-w-0" style={{ boxShadow: `0 -1px 0 ${HAIRLINE}` }}>
-          {OPEN_SOURCE.map(({ id, repo, language }) => {
+          {OPEN_SOURCE.map(({ id, repo }) => {
             const name = tr(`work_oss_items.${id}.name`);
             const path = `github.com/${GITHUB_USER}/${repo}`;
-            const meta = language === 'docs' ? t('work_oss_docs') : language;
             return (
               <li key={id} style={{ boxShadow: `0 1px 0 ${HAIRLINE}` }}>
                 <a
@@ -71,7 +70,7 @@ export default async function OpenSourceList({ locale }: { locale: string }) {
                       className="mt-2 text-xs break-all"
                       style={{ color: 'var(--ds-outline)', fontFamily: FONT_BODY }}
                     >
-                      {meta} · {path}
+                      {path}
                     </p>
                   </div>
                   <span

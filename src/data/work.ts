@@ -62,17 +62,15 @@ export interface OpenSourceEntry {
   id: string;
   /** Repository name under github.com/SpidySamurai. */
   repo: string;
-  /** A programming language, or `docs` for a documentation-only repository. */
-  language: 'Python' | 'TypeScript' | 'docs';
 }
 
 export const GITHUB_USER = 'SpidySamurai';
 
 /** The open source list, top to bottom. Append a repository here to add it. */
 export const OPEN_SOURCE: OpenSourceEntry[] = [
-  { id: 'lab2next-showcase', repo: 'lab2next-showcase', language: 'docs' },
-  { id: 'agents-tree', repo: 'claude-vezmex-team-tree', language: 'Python' },
-  { id: 'dev-environment-bootstrap', repo: 'dev-environment-bootstrap', language: 'Python' },
-  { id: 'solid-with-figures', repo: 'SOLID_with_figures', language: 'TypeScript' },
-  { id: 'portfolio', repo: 'javierchiortiz.dev', language: 'TypeScript' },
+  { id: 'lab2next-showcase', repo: 'lab2next-showcase' },
+  { id: 'agents-tree', repo: 'claude-vezmex-team-tree' },
+  { id: 'dev-environment-bootstrap', repo: 'dev-environment-bootstrap' },
+  { id: 'solid-with-figures', repo: 'SOLID_with_figures' },
+  { id: 'portfolio', repo: 'javierchiortiz.dev' },
 ];

@@ -337,7 +337,6 @@
   "work_oss_title": "Código",
   "work_oss_title_accent": "abierto",
   "work_oss_lead": "Lo que publico para que se vea cómo pienso como ingeniero: decisiones, herramientas y explicaciones.",
-  "work_oss_docs": "Documentación",
   "work_oss_view": "Ver en GitHub",
   "work_oss_items": {
     "lab2next-showcase": {"name": "Lab2Next, la historia de ingeniería", "description": "Cómo construí Lab2Next solo: la arquitectura, el motor de exámenes y 11 decisiones de arquitectura documentadas (ADRs). Sin código, la historia completa."},
