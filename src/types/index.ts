@@ -30,7 +30,7 @@ export interface Experience {
 }
 
 // Data shapes used by the local static data files (src/data/*)
-// These types match the shape used in src/data/projects.ts and src/data/experiences.ts
+// These types match the shape used in src/data/projects.ts
 export type DataProject = {
   id?: string;
   title: string;
