@@ -1,9 +1,7 @@
 'use client';
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
-const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$%&!?';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import type { Container } from '@tsparticles/engine';
@@ -21,12 +19,12 @@ import {
   planetGeo,
 } from '@/lib/orbitScene';
 import PlanetOrbit from '@/components/2026/ui/PlanetOrbit';
+import ScrambleServiceCycler, { type ServiceItem } from '@/components/2026/sections/hero/ScrambleServiceCycler';
+import { EGG_LYRIC, HERO_SERVICES } from '@/data/hero';
 
 /** Measured comet speed along each axis (px/s) for the 45 degree trail. */
 const COMET_SPEED = 340;
 
-/** Easter egg caption: a lyric, so it stays English in every locale. */
-const EGG_LYRIC = 'sometimes quiet is violent';
 /** Longest wait for an in-flight comet before the particles freeze. */
 const MAX_COMET_WAIT_MS = 3000;
 const EGG_RED = '#e63946';
@@ -208,140 +206,6 @@ function AnimatedHeadline({
   );
 }
 
-function useScramble(target: string) {
-  const [display, setDisplay] = useState('');
-
-  useEffect(() => {
-    let cancelled = false;
-    let frame = 0;
-    const PRE = 4;
-    const maxFrames = PRE + target.length;
-
-    function tick() {
-      if (cancelled) return;
-      frame++;
-      const resolved = Math.max(0, frame - PRE);
-      setDisplay(
-        target
-          .split('')
-          .map((ch, i) => {
-            if (ch === ' ') return ' ';
-            if (i < resolved) return ch;
-            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-          })
-          .join(''),
-      );
-      if (frame < maxFrames) setTimeout(tick, 35);
-      else if (!cancelled) setDisplay(target);
-    }
-
-    tick();
-    return () => {
-      cancelled = true;
-    };
-  }, [target]);
-
-  return display;
-}
-
-interface ServiceItem {
-  label: string;
-  sub: string;
-}
-
-const ScrambleServiceCycler = memo(function ScrambleServiceCycler({
-  services,
-  active,
-  idx,
-  started,
-  frozen,
-  onStart,
-  onAdvance,
-}: {
-  services: ServiceItem[];
-  active: boolean;
-  /** Index and started flag are owned by Hero so the planet ring can follow them. */
-  idx: number;
-  started: boolean;
-  /** Stop advancing; the interval restarts from zero when it clears. */
-  frozen: boolean;
-  onStart: () => void;
-  onAdvance: () => void;
-}) {
-  useEffect(() => {
-    if (!active) return;
-    const t = setTimeout(onStart, 350);
-    return () => clearTimeout(t);
-  }, [active, onStart]);
-
-  useEffect(() => {
-    if (!started || frozen) return;
-    const timer = setInterval(onAdvance, 3200);
-    return () => clearInterval(timer);
-  }, [started, frozen, onAdvance]);
-
-  const current = services[idx];
-  const label = useScramble(started ? current.label : '');
-
-  return (
-    <div className="space-y-1.5 flex-shrink-0 min-w-[14rem]">
-      {/* Progress pills */}
-      <div className="flex gap-1 items-center mb-2">
-        {services.map((_, i) => (
-          <div
-            key={i}
-            className="h-[2px] rounded-full transition-all duration-500"
-            style={{
-              width: i === idx ? '14px' : '4px',
-              backgroundColor:
-                i === idx
-                  ? 'var(--ds-primary)'
-                  : 'color-mix(in srgb, var(--ds-primary) 22%, transparent)',
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Scrambling label */}
-      <p
-        className="text-2xl font-bold tracking-tight"
-        style={{
-          color: 'var(--ds-on-surface)',
-          fontFamily: 'var(--font-manrope), sans-serif',
-          minHeight: '2rem',
-          letterSpacing: '-0.01em',
-        }}
-      >
-        {label}
-        {started && label !== current.label && (
-          <span
-            style={{ borderRight: '2px solid currentColor', marginLeft: '2px', opacity: 0.6 }}
-          />
-        )}
-      </p>
-
-      {/* Sub description */}
-      <AnimatePresence mode="wait">
-        <motion.p
-          key={idx}
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -5 }}
-          transition={{ duration: 0.22 }}
-          className="text-sm italic"
-          style={{
-            color: 'var(--ds-on-surface-variant)',
-            fontFamily: 'var(--font-inter), sans-serif',
-            minHeight: '1.25rem',
-          }}
-        >
-          {started ? current.sub : ''}
-        </motion.p>
-      </AnimatePresence>
-    </div>
-  );
-});
-
 export default function Hero() {
   const t = useTranslations('common');
   const isDark = true; // dark-only site — no theme branching (avoids hydration mismatch)
@@ -364,14 +228,7 @@ export default function Hero() {
   const particlesOptions = useMemo(() => getParticlesOptions(isDark), [isDark]);
 
   const services = useMemo<ServiceItem[]>(
-    () => [
-      { label: t('hero_svc_agents'), sub: t('hero_svc_agents_sub') },
-      { label: t('hero_svc_rag'), sub: t('hero_svc_rag_sub') },
-      { label: t('hero_svc_evals'), sub: t('hero_svc_evals_sub') },
-      { label: t('hero_svc_automations'), sub: t('hero_svc_automations_sub') },
-      { label: t('hero_svc_saas'), sub: t('hero_svc_saas_sub') },
-      { label: t('hero_svc_webapps'), sub: t('hero_svc_webapps_sub') },
-    ],
+    () => HERO_SERVICES.map(({ label, sub }) => ({ label: t(label), sub: t(sub) })),
     [t],
   );
 
@@ -545,6 +402,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
+      id="hero"
       data-track-section="hero"
       className="relative px-8 md:px-16 pt-24 md:pt-[min(6rem,7svh)] pb-[260px] md:pb-[clamp(210px,33svh,300px)] md:min-h-[min(860px,calc(100svh-5rem))] overflow-hidden"
       style={{ backgroundColor: 'var(--ds-bg)' }}
@@ -634,7 +492,7 @@ export default function Hero() {
       </button>
 
       {/* Name across the full content width: font size follows the container width
-          (100cqw / 6.8 ~ the width-to-size ratio of this string in Manrope 800 at -0.045em),
+          (100cqw / 6.86 ~ the width-to-size ratio of this string in Manrope 800 at -0.045em),
           capped at 160px and 12svh so the hero fits the viewport on wide or short screens */}
       <div className="relative z-10 mb-2" style={{ containerType: 'inline-size' }}>
         <motion.p
@@ -645,12 +503,13 @@ export default function Hero() {
           style={{
             color: 'var(--ds-on-surface)',
             fontFamily: 'var(--font-manrope), sans-serif',
-            fontSize: 'min(calc(100cqw / 6.8), 160px, 12svh)',
+            fontSize: 'min(calc(100cqw / 6.86), 160px, 12svh)',
             letterSpacing: '-0.045em',
             lineHeight: 0.9,
           }}
         >
-          Javier Chi Ortíz
+          {/* The r and t touch at this tight tracking: open that one pair */}
+          Javier Chi O<span style={{ letterSpacing: '0.01em' }}>r</span>tíz
         </motion.p>
       </div>
 
@@ -723,15 +582,6 @@ export default function Hero() {
                   arrow_forward
                 </span>
               </a>
-              <span
-                className="text-xs italic tracking-widest"
-                style={{
-                  color: 'color-mix(in srgb, var(--ds-primary) 60%, transparent)',
-                  fontFamily: 'var(--font-inter), sans-serif',
-                }}
-              >
-                {t('hero_cta_sub')}
-              </span>
             </div>
           </motion.div>
       </div>

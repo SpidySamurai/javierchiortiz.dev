@@ -1,8 +1,7 @@
 export const NAV_ITEMS = [
-  { id: 'services', icon: 'design_services', key: 'services_label' },
   { id: 'projects', icon: 'grid_view', key: 'projects' },
+  { id: 'services', icon: 'design_services', key: 'services_label' },
   { id: 'about', icon: 'person', key: 'about' },
 ] as const;
 
 export type NavItem = (typeof NAV_ITEMS)[number];
-export const SECTION_IDS = NAV_ITEMS.map((item) => item.id) as string[];

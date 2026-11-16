@@ -1,0 +1,139 @@
+/* Mantecado's run: one 2.2s cross of the viewport, a 0.36s gallop on top. */
+
+.run {
+  position: fixed;
+  left: 0;
+  bottom: 2px;
+  width: 130px;
+  height: 105px;
+  z-index: 9999;
+  pointer-events: none;
+  transform: translateX(-150px);
+  animation: cross 2.2s cubic-bezier(0.45, 0, 0.55, 1) forwards;
+}
+
+.run svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+@keyframes cross {
+  from {
+    transform: translateX(-150px);
+  }
+  to {
+    transform: translateX(calc(100vw + 20px));
+  }
+}
+
+/* Each moving part pivots on a point of the drawing, not on its own box. */
+.bob,
+.head,
+.tail,
+.backNear,
+.backFar,
+.frontNear,
+.frontFar {
+  transform-box: view-box;
+}
+
+.bob {
+  transform-origin: 100px 150px;
+  animation: bob 0.36s ease-in-out infinite;
+}
+
+.head {
+  transform-origin: 180px 96px;
+  animation: nod 0.36s ease-in-out infinite;
+}
+
+.tail {
+  transform-origin: 28px 92px;
+  animation: tail 0.72s ease-in-out infinite;
+}
+
+.backNear {
+  transform-origin: 62px 110px;
+  animation: back 0.36s ease-in-out infinite;
+}
+
+.backFar {
+  transform-origin: 74px 110px;
+  animation: back 0.36s ease-in-out -0.05s infinite;
+}
+
+.frontNear {
+  transform-origin: 150px 110px;
+  animation: front 0.36s ease-in-out infinite;
+}
+
+.frontFar {
+  transform-origin: 162px 110px;
+  animation: front 0.36s ease-in-out -0.05s infinite;
+}
+
+/* Back and front legs in counter-phase; the far pair trails the near pair. */
+@keyframes back {
+  0%,
+  100% {
+    transform: rotate(-34deg);
+  }
+  50% {
+    transform: rotate(46deg);
+  }
+}
+
+@keyframes front {
+  0%,
+  100% {
+    transform: rotate(42deg);
+  }
+  50% {
+    transform: rotate(-44deg);
+  }
+}
+
+/* The body rises 8 units mid-stride; the head eases 3 units against it. */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  25% {
+    transform: translateY(-4px) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0);
+  }
+  75% {
+    transform: translateY(-4px) rotate(2deg);
+  }
+}
+
+@keyframes nod {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+@keyframes tail {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(12deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .run {
+    display: none;
+  }
+}

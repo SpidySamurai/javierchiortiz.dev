@@ -4,68 +4,30 @@ import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useLocale, useTranslations } from 'next-intl';
 import type { Post } from '@/types/database';
-import BlogCard from '@/components/2026/ui/BlogCard';
+import { BlogRow } from '@/components/2026/sections/blog/BlogRow';
+import { adaptPostRow } from '@/lib/blogPostRow';
 import { Reveal, EASE } from '@/components/2026/ui/Reveal';
 import { ScrollFillText } from '@/components/2026/ui/ScrollFillText';
-import { StandUp } from '@/components/2026/ui/StandUp';
 
 // Hoisted so the motion component identity is stable across renders.
 const MotionLink = motion.create(Link);
-
-interface BlogCardShape {
-  slug: string;
-  date: string;
-  category: string;
-  readTime: string;
-  coverTheme: 'pilots' | 'spiderman' | 'karate';
-  theme?: string;
-  title?: string;
-  excerpt?: string;
-  coverImageUrl?: string | null;
-  coverImagePositionCard?: string | null;
-  coverAspectCard?: string | null;
-}
-
-function adaptPost(
-  post: Post,
-  locale: string,
-  formatReadTime: (minutes: number) => string
-): BlogCardShape {
-  // read_time is stored as free text (e.g. "5 min read"); localize the common shape, keep anything else as is.
-  const minutes = /^\s*(\d+)\s*min/i.exec(post.read_time)?.[1];
-  return {
-    slug: post.slug,
-    date: post.published_at
-      ? new Date(post.published_at).toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', {
-          month: 'long',
-          year: 'numeric',
-        })
-      : '',
-    category: post.category,
-    readTime: minutes ? formatReadTime(Number(minutes)) : post.read_time,
-    coverTheme: (post.cover_theme as 'pilots' | 'spiderman' | 'karate') ?? 'pilots',
-    theme: post.cover_theme ?? undefined,
-    title: locale === 'es' ? post.title_es : post.title_en,
-    excerpt: (locale === 'es' ? post.excerpt_es : post.excerpt_en) ?? undefined,
-    coverImageUrl: post.cover_image_url,
-    coverImagePositionCard: post.cover_image_position_card,
-    coverAspectCard: post.cover_image_aspect_card,
-  };
-}
 
 export default function BlogPreview({ posts }: { posts: Post[] }) {
   const t = useTranslations('common');
   const locale = useLocale();
   const reduce = useReducedMotion();
-  const adapted = posts.slice(0, 2).map((p) => adaptPost(p, locale, (n) => t('blog_read_time', { n })));
+  const adapted = posts.slice(0, 2).map((p) => adaptPostRow(p, locale, t).row);
 
   // Parent owns timing; each card item carries the actual reveal values.
-  const container = { hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } } };
+  const container = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+  };
   const item = reduce
     ? { hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.3 } } }
     : {
-        hidden: { opacity: 0, y: 28, scale: 0.97 },
-        show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: EASE } },
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } },
       };
 
   return (
@@ -76,39 +38,57 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
       style={{ backgroundColor: 'var(--ds-surface)', scrollMarginTop: '5rem' }}
     >
       <div className="max-w-7xl mx-auto">
-        <Reveal y={20} className="space-y-2 mb-16">
-          <span
-            className="text-xs uppercase tracking-[0.3em] font-bold block"
-            style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
+        <div className="grid lg:grid-cols-[1fr_1.1fr] gap-6 lg:gap-14 lg:items-end mb-12">
+          <Reveal y={20} className="space-y-2">
+            <span
+              className="text-xs uppercase tracking-[0.3em] font-bold block"
+              style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-inter), sans-serif' }}
+            >
+              BLOG
+            </span>
+            <h2
+              className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
+              style={{
+                color: 'var(--ds-on-surface)',
+                fontFamily: 'var(--font-manrope), sans-serif',
+              }}
+            >
+              <ScrollFillText>
+                {t('blog_title')}{' '}
+                <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
+                  {t('blog_title_accent')}
+                </span>
+              </ScrollFillText>
+            </h2>
+          </Reveal>
+          <p
+            className="text-base leading-relaxed max-w-xl"
+            style={{
+              color: 'var(--ds-on-surface-variant)',
+              fontFamily: 'var(--font-inter), sans-serif',
+            }}
           >
-            BLOG
-          </span>
-          <h2
-            className="text-4xl md:text-5xl font-black uppercase tracking-tighter"
-            style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
-          >
-            <ScrollFillText>
-              {t('blog_title')}{' '}
-              <span style={{ color: 'var(--ds-primary)', fontStyle: 'italic' }}>
-                {t('blog_title_accent')}
-              </span>
-            </ScrollFillText>
-          </h2>
-        </Reveal>
+            {t('blog_lead')}
+          </p>
+        </div>
 
         <motion.div
           variants={container}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: '-40px' }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          className="flex flex-col"
+          style={{ boxShadow: '0 -1px 0 color-mix(in srgb, var(--ds-on-surface) 7%, transparent)' }}
         >
-          {adapted.map((post, i) => (
-            <StandUp key={post.slug} lead={i === 0 ? 0.124 : 0}>
-              <motion.div variants={item} className="h-full">
-                <BlogCard post={post} locale={locale} />
-              </motion.div>
-            </StandUp>
+          {/* Editorial list, same hairline language as Why, About and the journey */}
+          {adapted.map((post) => (
+            <motion.div key={post.slug} variants={item}>
+              <BlogRow
+                post={post}
+                href={`/${locale}/blog/${post.slug}`}
+                readLabel={t('blog_read')}
+              />
+            </motion.div>
           ))}
         </motion.div>
 
@@ -117,7 +97,7 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
           whileInView={reduce ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={reduce ? { duration: 0.3 } : { duration: 0.45, ease: EASE, delay: 0.15 }}
-          className="mt-12 flex justify-center"
+          className="mt-10 flex"
         >
           <MotionLink
             href={`/${locale}/blog`}

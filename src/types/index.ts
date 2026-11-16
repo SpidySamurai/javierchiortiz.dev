@@ -61,3 +61,11 @@ export type DataExperience = {
   stack: string[];
   url?: string;
 };
+
+/** A walkthrough loop in its desktop and mobile captures. */
+export type LoopSources = {
+  desktop: string;
+  mobile: string;
+  desktopPoster?: string;
+  mobilePoster?: string;
+};

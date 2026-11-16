@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { CONTACT_EMAIL } from '@/lib/contact';
 
-const EMAIL = 'javier@javierchiortiz.dev';
 const CONFIRM_MS = 2200;
 
 /**
@@ -25,9 +25,9 @@ export default function EmailCopyBand() {
 
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(EMAIL);
+      await navigator.clipboard.writeText(CONTACT_EMAIL);
     } catch {
-      window.location.href = `mailto:${EMAIL}`;
+      window.location.href = `mailto:${CONTACT_EMAIL}`;
       return;
     }
     setCopied(true);
@@ -41,7 +41,7 @@ export default function EmailCopyBand() {
         type="button"
         onClick={copy}
         data-copied={copied}
-        aria-label={`${t('closing_copy_label')}: ${EMAIL}`}
+        aria-label={`${t('closing_copy_label')}: ${CONTACT_EMAIL}`}
         className="group/band relative w-full overflow-hidden rounded-xl cursor-pointer text-center transition-colors duration-300 motion-reduce:transition-none hover:bg-[color:color-mix(in_srgb,var(--ds-primary)_8%,var(--ds-surface-high))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:[outline-color:var(--ds-primary)]"
         style={{
           backgroundColor: 'var(--ds-surface-high)',
@@ -59,7 +59,7 @@ export default function EmailCopyBand() {
             color: 'var(--ds-outline-variant)',
           }}
         >
-          {EMAIL.split('').map((ch, i) => (
+          {CONTACT_EMAIL.split('').map((ch, i) => (
             <span
               key={i}
               data-char={ch}

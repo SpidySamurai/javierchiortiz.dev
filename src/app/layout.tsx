@@ -1,5 +1,5 @@
 import { Manrope, Inter } from 'next/font/google';
-import { headers, cookies } from 'next/headers';
+import { headers } from 'next/headers';
 import ConsoleBanner from '@/components/ConsoleBanner';
 
 const manrope = Manrope({
@@ -15,18 +15,16 @@ const inter = Inter({
 });
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const [headersList, cookieStore] = await Promise.all([headers(), cookies()]);
+  const headersList = await headers();
   const locale = headersList.get('x-locale') ?? 'en';
   // Dark-only site — theme is forced dark (next-themes forcedTheme), so the
   // server html must always render dark too, regardless of any stale cookie.
-  const collapsed = cookieStore.get('sidebar-collapsed')?.value === 'true';
 
   return (
     <html
       lang={locale}
       data-theme="dark"
       data-scroll-behavior="smooth"
-      {...(collapsed ? { 'data-sidebar-collapsed': '' } : {})}
     >
       <head>
         <link

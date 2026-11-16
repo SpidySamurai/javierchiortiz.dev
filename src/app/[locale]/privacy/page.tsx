@@ -29,7 +29,7 @@ const content = {
       },
       {
         heading: 'Cookies',
-        body: 'This site sets two functional cookies: "theme" (stores your light/dark preference) and "sidebar-collapsed" (stores your sidebar layout preference). Both are first-party, contain no personal data, and expire after one year. PostHog uses localStorage for anonymous session identification.',
+        body: 'This site sets one functional cookie: "theme" (stores your light/dark preference). It is first-party, contains no personal data, and expires after one year. PostHog uses localStorage for anonymous session identification.',
       },
       {
         heading: 'Contact',
@@ -65,7 +65,7 @@ const content = {
       },
       {
         heading: 'Cookies',
-        body: 'Este sitio establece dos cookies funcionales: "theme" (guarda tu preferencia claro/oscuro) y "sidebar-collapsed" (guarda tu preferencia de barra lateral). Ambas son de origen propio, no contienen datos personales y expiran después de un año. PostHog utiliza localStorage para identificación de sesión anónima.',
+        body: 'Este sitio establece una cookie funcional: "theme" (guarda tu preferencia claro/oscuro). Es de origen propio, no contiene datos personales y expira después de un año. PostHog utiliza localStorage para identificación de sesión anónima.',
       },
       {
         heading: 'Contacto',

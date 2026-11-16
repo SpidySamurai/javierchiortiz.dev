@@ -1,5 +1,4 @@
 import Header from '@/components/2026/layout/Header';
-import Sidebar from '@/components/2026/layout/Sidebar';
 import AnalyticsTracker from '@/components/2026/layout/AnalyticsTracker';
 import Hero from '@/components/2026/sections/Hero';
 import Projects from '@/components/2026/sections/Projects';
@@ -10,13 +9,13 @@ import Services from '@/components/2026/sections/Services';
 import Closing from '@/components/2026/sections/Closing';
 import Footer from '@/components/2026/sections/Footer';
 import BlogPreview from '@/components/2026/sections/BlogPreview';
-import MantecadoChat from '@/components/MantecadoChat';
+import Mantecado from '@/components/2026/layout/mantecado/Mantecado';
 import ScrollProgress from '@/components/2026/ui/ScrollProgress';
 import BackToTop from '@/components/2026/ui/BackToTop';
 import AtmosphereOverlay from '@/components/2026/ui/AtmosphereOverlay';
 import type { Post } from '@/types/database';
 
-export default function HomeShell({ posts, sidebarCollapsed }: { posts: Post[]; sidebarCollapsed?: boolean }) {
+export default function HomeShell({ posts }: { posts: Post[] }) {
 
   return (
     <div className="ds-2026" style={{ minHeight: '100vh' }}>
@@ -24,14 +23,13 @@ export default function HomeShell({ posts, sidebarCollapsed }: { posts: Post[]; 
       <ScrollProgress />
       <AtmosphereOverlay />
       <Header />
-      <Sidebar defaultCollapsed={sidebarCollapsed} />
-      <MantecadoChat />
+      <Mantecado />
       <BackToTop />
-      <main className="sidebar-main pt-20">
+      <main className="pt-20">
         <Hero />
         <Product />
-        <Services />
         <Projects />
+        <Services />
         <WhyMe />
         <About />
         <BlogPreview posts={posts} />

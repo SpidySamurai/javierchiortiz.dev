@@ -20,6 +20,7 @@ function MobileDrawer({
   isBlogActive,
   isVisitorsActive,
   isExperienceActive,
+  isWorkActive,
   sectionHref,
   isUnlocked,
   openCard,
@@ -33,6 +34,7 @@ function MobileDrawer({
   isBlogActive: boolean;
   isVisitorsActive: boolean;
   isExperienceActive: boolean;
+  isWorkActive: boolean;
   sectionHref: (id: string) => string;
   isUnlocked: boolean;
   openCard: (anchorY?: number) => void;
@@ -40,13 +42,34 @@ function MobileDrawer({
 }) {
   if (typeof document === 'undefined') return null;
 
+  // One home section (anchor link); the projects section leads, the rest follow the journey link.
+  const renderSection = ({ id, icon, key }: (typeof NAV_ITEMS)[number]) => (
+    <a
+      key={id}
+      href={sectionHref(id)}
+      onClick={onClose}
+      className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
+      style={{
+        fontFamily: 'var(--font-manrope), sans-serif',
+        fontWeight: 700,
+        color: 'var(--ds-outline)',
+        backgroundColor: 'transparent',
+      }}
+    >
+      <span translate="no" className="material-symbols-outlined text-[20px]">
+        {icon}
+      </span>
+      {t(key)}
+    </a>
+  );
+
   return createPortal(
     <>
       {/* Backdrop */}
       <div
         aria-hidden
         onClick={onClose}
-        className="ds-2026 fixed inset-0 transition-opacity duration-200 xl:hidden"
+        className="ds-2026 fixed inset-0 transition-opacity duration-200"
         style={{
           background: 'color-mix(in srgb, var(--ds-bg) 80%, transparent)',
           opacity: open ? 1 : 0,
@@ -60,7 +83,7 @@ function MobileDrawer({
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
-        className="ds-2026 fixed top-0 left-0 h-full w-64 flex flex-col pt-6 p-6 transition-transform duration-300 xl:hidden"
+        className="ds-2026 fixed top-0 left-0 h-full w-64 flex flex-col pt-6 p-6 transition-transform duration-300"
         style={{
           backgroundColor: 'var(--ds-surface)',
           transform: open ? 'translateX(0)' : 'translateX(-100%)',
@@ -72,7 +95,10 @@ function MobileDrawer({
           <div className="px-2">
             <span
               className="text-lg font-bold block"
-              style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
+              style={{
+                color: 'var(--ds-on-surface)',
+                fontFamily: 'var(--font-manrope), sans-serif',
+              }}
             >
               Javier Chi Ortíz
             </span>
@@ -91,7 +117,13 @@ function MobileDrawer({
             style={{ color: 'var(--ds-on-surface-variant)' }}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M6 18L18 6M6 6l12 12"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
         </div>
@@ -110,30 +142,40 @@ function MobileDrawer({
             style={{
               fontFamily: 'var(--font-manrope), sans-serif',
               fontWeight: 700,
-              color: !isBlogActive && !isVisitorsActive && !isExperienceActive ? 'var(--ds-primary)' : 'var(--ds-outline)',
-              backgroundColor: !isBlogActive && !isVisitorsActive && !isExperienceActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
+              color:
+                !isBlogActive && !isVisitorsActive && !isExperienceActive && !isWorkActive
+                  ? 'var(--ds-primary)'
+                  : 'var(--ds-outline)',
+              backgroundColor:
+                !isBlogActive && !isVisitorsActive && !isExperienceActive && !isWorkActive
+                  ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+                  : 'transparent',
             }}
           >
-            <span translate="no" className="material-symbols-outlined text-[20px]">home</span>
+            <span translate="no" className="material-symbols-outlined text-[20px]">
+              home
+            </span>
             {t('home')}
           </Link>
-          {NAV_ITEMS.map(({ id, icon, key }) => (
-            <a
-              key={id}
-              href={sectionHref(id)}
-              onClick={onClose}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
-              style={{
-                fontFamily: 'var(--font-manrope), sans-serif',
-                fontWeight: 700,
-                color: 'var(--ds-outline)',
-                backgroundColor: 'transparent',
-              }}
-            >
-              <span translate="no" className="material-symbols-outlined text-[20px]">{icon}</span>
-              {t(key)}
-            </a>
-          ))}
+          {NAV_ITEMS.slice(0, 1).map(renderSection)}
+          <Link
+            href={`/${locale}/work`}
+            onClick={onClose}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg uppercase tracking-widest text-xs transition-all duration-200"
+            style={{
+              fontFamily: 'var(--font-manrope), sans-serif',
+              fontWeight: 700,
+              color: isWorkActive ? 'var(--ds-primary)' : 'var(--ds-outline)',
+              backgroundColor: isWorkActive
+                ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+                : 'transparent',
+            }}
+          >
+            <span translate="no" className="material-symbols-outlined text-[20px]">
+              work
+            </span>
+            {t('nav_work')}
+          </Link>
           <Link
             href={`/${locale}/experience`}
             onClick={onClose}
@@ -142,12 +184,17 @@ function MobileDrawer({
               fontFamily: 'var(--font-manrope), sans-serif',
               fontWeight: 700,
               color: isExperienceActive ? 'var(--ds-primary)' : 'var(--ds-outline)',
-              backgroundColor: isExperienceActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
+              backgroundColor: isExperienceActive
+                ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+                : 'transparent',
             }}
           >
-            <span translate="no" className="material-symbols-outlined text-[20px]">work</span>
-            {t('experience')}
+            <span translate="no" className="material-symbols-outlined text-[20px]">
+              timeline
+            </span>
+            {t('nav_journey')}
           </Link>
+          {NAV_ITEMS.slice(1).map(renderSection)}
           <Link
             href={`/${locale}/blog`}
             onClick={onClose}
@@ -156,10 +203,14 @@ function MobileDrawer({
               fontFamily: 'var(--font-manrope), sans-serif',
               fontWeight: 700,
               color: isBlogActive ? 'var(--ds-primary)' : 'var(--ds-outline)',
-              backgroundColor: isBlogActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
+              backgroundColor: isBlogActive
+                ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+                : 'transparent',
             }}
           >
-            <span translate="no" className="material-symbols-outlined text-[20px]">edit_note</span>
+            <span translate="no" className="material-symbols-outlined text-[20px]">
+              edit_note
+            </span>
             Blog
           </Link>
           <Link
@@ -170,10 +221,14 @@ function MobileDrawer({
               fontFamily: 'var(--font-manrope), sans-serif',
               fontWeight: 700,
               color: isVisitorsActive ? 'var(--ds-primary)' : 'var(--ds-outline)',
-              backgroundColor: isVisitorsActive ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)' : 'transparent',
+              backgroundColor: isVisitorsActive
+                ? 'color-mix(in srgb, var(--ds-primary) 10%, transparent)'
+                : 'transparent',
             }}
           >
-            <span translate="no" className="material-symbols-outlined text-[20px]">public</span>
+            <span translate="no" className="material-symbols-outlined text-[20px]">
+              public
+            </span>
             {t('visitors_nav')}
           </Link>
         </nav>
@@ -191,9 +246,14 @@ function MobileDrawer({
               }}
               aria-label="Open Gamer Card"
               className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all"
-              style={{ color: 'var(--ds-on-surface-variant)', backgroundColor: 'color-mix(in srgb, var(--ds-primary) 5%, transparent)' }}
+              style={{
+                color: 'var(--ds-on-surface-variant)',
+                backgroundColor: 'color-mix(in srgb, var(--ds-primary) 5%, transparent)',
+              }}
             >
-              <span translate="no" className="material-symbols-outlined text-[18px]">sports_esports</span>
+              <span translate="no" className="material-symbols-outlined text-[18px]">
+                sports_esports
+              </span>
               {t('gamer_card')}
             </button>
           )}
@@ -237,18 +297,32 @@ export default function Header() {
   const isBlogActive = pathname.startsWith(`/${locale}/blog`);
   const isVisitorsActive = pathname.startsWith(`/${locale}/visitors`);
   const isExperienceActive = pathname.startsWith(`/${locale}/experience`);
+  const isWorkActive = pathname.startsWith(`/${locale}/work`);
   const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
   const sectionHref = (id: string) => (isHome ? `#${id}` : `/${locale}#${id}`);
+  // Whole destinations, not funnel sections: the home, the work page and the journey page.
+  const PRIMARY_LINKS = [
+    { key: 'home', href: `/${locale}`, active: isHome },
+    { key: 'projects', href: `/${locale}/work`, active: isWorkActive },
+    { key: 'nav_journey', href: `/${locale}/experience`, active: isExperienceActive },
+  ] as const;
 
   // Closes drawer + card (nav links, backdrop, close button)
-  const closeDrawer = () => { setMobileOpen(false); closeCard(); };
+  const closeDrawer = () => {
+    setMobileOpen(false);
+    closeCard();
+  };
   // Closes only the drawer — card stays open (used when opening card from drawer on mobile)
   const closeDrawerOnly = () => setMobileOpen(false);
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeDrawer(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeDrawer();
+    };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, []);
@@ -258,13 +332,15 @@ export default function Header() {
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     setTimeout(() => closeRef.current?.focus(), 50);
-    return () => { document.body.style.overflow = prev; };
+    return () => {
+      document.body.style.overflow = prev;
+    };
   }, [mobileOpen]);
 
   return (
     <>
       <header
-        className="header-adaptive fixed top-0 left-0 w-full flex items-center px-8 py-4 z-50"
+        className="fixed top-0 left-0 w-full flex items-center px-8 py-4 z-50"
         style={{
           backgroundColor: 'color-mix(in srgb, var(--ds-bg) 60%, transparent)',
           backdropFilter: 'blur(24px)',
@@ -287,18 +363,33 @@ export default function Header() {
           Javier Chi Ortíz
         </Link>
 
-        {/* Centered chip — tablet+ only; on small mobile it's inside the drawer */}
-        <div className="hidden md:block absolute left-1/2 -translate-x-1/2">
-          <LastVisitorChip />
-        </div>
+        {/* Center nav — wide screens only; below xl the same three links lead the menu */}
+        <nav
+          aria-label={t('nav_primary')}
+          className="hidden xl:flex items-center gap-8 absolute left-1/2 -translate-x-1/2"
+        >
+          {PRIMARY_LINKS.map(({ key, href, active }) => (
+            <Link
+              key={key}
+              href={href}
+              aria-current={active ? 'page' : undefined}
+              className="py-1.5 text-sm font-bold tracking-[0.04em] transition-colors duration-200 hover:text-[color:var(--ds-on-surface)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:rounded focus-visible:[outline-color:var(--ds-primary)]"
+              style={{
+                color: active ? 'var(--ds-on-surface)' : 'var(--ds-on-surface-variant)',
+                fontFamily: 'var(--font-manrope), sans-serif',
+                boxShadow: active ? 'inset 0 -2px 0 var(--ds-primary)' : 'none',
+              }}
+            >
+              {t(key)}
+            </Link>
+          ))}
+        </nav>
 
-        {/* Desktop controls */}
-        <div className="hidden xl:flex items-center gap-3 ml-auto">
-          <LanguageSwitcher />
-        </div>
-
-        {/* Mobile controls */}
-        <div className="xl:hidden flex items-center gap-2 ml-auto">
+        {/* Last visitor (tablet+; on phones it lives in the menu), language and the menu */}
+        <div className="flex items-center gap-2 ml-auto">
+          <div className="hidden md:block mr-2">
+            <LastVisitorChip />
+          </div>
           <LanguageSwitcher />
           <button
             className="p-2 rounded"
@@ -309,9 +400,21 @@ export default function Header() {
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
               {mobileOpen ? (
-                <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M6 18L18 6M6 6l12 12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               ) : (
-                <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M4 6h16M4 12h16M4 18h16"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               )}
             </svg>
           </button>
@@ -328,6 +431,7 @@ export default function Header() {
           isBlogActive={isBlogActive}
           isVisitorsActive={isVisitorsActive}
           isExperienceActive={isExperienceActive}
+          isWorkActive={isWorkActive}
           sectionHref={sectionHref}
           isUnlocked={isUnlocked}
           openCard={openCard}

@@ -34,6 +34,7 @@ import {
 } from '@/lib/catLife';
 import { NEUTRAL_POSE, momentPose, momentSeconds, type MomentContext, type MomentKind, type MomentPose } from '@/lib/catMoments';
 import { onShootingStar, type ShootingStar } from '@/lib/skyEvents';
+import { sessionFlag } from '@/lib/sessionFlag';
 
 const EXPO_OUT = cubicBezier(0.16, 1, 0.3, 1);
 const CUBIC_OUT = cubicBezier(0.33, 1, 0.68, 1);
@@ -41,26 +42,8 @@ const CUBIC_OUT = cubicBezier(0.33, 1, 0.68, 1);
 /** Critically damped (damping = 2 * sqrt(stiffness)): glides to the target, never overshoots. */
 const GAZE_SPRING = { stiffness: 120, damping: 21.9, mass: 1, restDelta: 0.01 } as const;
 
-const WELCOME_KEY = 'mantecado-welcomed';
-/** Backup for browsers where sessionStorage throws (private modes, blocked storage). */
-let welcomedInMemory = false;
-
-const hasWelcomed = () => {
-  try {
-    return welcomedInMemory || window.sessionStorage.getItem(WELCOME_KEY) === '1';
-  } catch {
-    return welcomedInMemory;
-  }
-};
-
-const markWelcomed = () => {
-  welcomedInMemory = true;
-  try {
-    window.sessionStorage.setItem(WELCOME_KEY, '1');
-  } catch {
-    // Storage is optional; the in-memory flag covers this page.
-  }
-};
+/** The hello wave plays once per browser session. */
+const welcomed = sessionFlag('mantecado-welcomed');
 
 const BREATH_PERIOD_S = 3.5;
 const SLEEP_BREATH_PERIOD_S = 6;
@@ -91,6 +74,8 @@ export interface MantecadoLife {
   pupilY: MotionValue<number>;
   /** The active moment's pose offsets (neutral when none plays). Added to the life motion. */
   pose: MotionValue<MomentPose>;
+  /** A happy hop, played when the cat is clicked. Does nothing while another moment plays. */
+  cheer: () => void;
   /** Pointer and focus handlers for the cat's button. */
   bind: {
     onPointerEnter: (e: React.PointerEvent) => void;
@@ -133,6 +118,9 @@ export function useMantecadoLife(): MantecadoLife {
   const momentOn = useRef(false);
   /** Set by the effect: waves when the cat is greeted after a long idle. */
   const hoverCue = useRef<(() => void) | null>(null);
+  /** Set by the effect: the click hop. */
+  const cheerCue = useRef<(() => void) | null>(null);
+  const cheer = useCallback(() => cheerCue.current?.(), []);
 
   const syncRise = useCallback(() => {
     const target = hovered.current || focused.current || momentOn.current ? 1 : 0;
@@ -499,19 +487,23 @@ export function useMantecadoLife(): MantecadoLife {
 
     /* Wave hello once per browser session, and again when the cat is greeted after a long idle. */
     const welcome = () => {
-      if (hasWelcomed()) return;
+      if (welcomed.has()) return;
       if (asleep || document.hidden || momentAnim) {
         later(welcome, WAVE_WELCOME_MS);
         return;
       }
-      markWelcomed();
+      welcomed.mark();
       playMoment('wave');
     };
-    if (!hasWelcomed()) later(welcome, WAVE_WELCOME_MS);
+    if (!welcomed.has()) later(welcome, WAVE_WELCOME_MS);
     hoverCue.current = () => {
       if (asleep || momentAnim) return;
       const now = performance.now();
       if (now - lastInput > WAVE_IDLE_MS || now - returnedAt < 400) playMoment('wave');
+    };
+    // The rocket moment with a one-second flight is a plain hop: ears up, jump, happy squint.
+    cheerCue.current = () => {
+      if (!asleep) playMoment('rocket', { ctx: { flight: 1 } });
     };
 
     const passive = { passive: true } as const;
@@ -527,6 +519,7 @@ export function useMantecadoLife(): MantecadoLife {
 
     return () => {
       hoverCue.current = null;
+      cheerCue.current = null;
       offStar();
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerdown', onInput);
@@ -561,6 +554,7 @@ export function useMantecadoLife(): MantecadoLife {
     pupilX,
     pupilY,
     pose,
+    cheer,
     bind,
   };
 }
