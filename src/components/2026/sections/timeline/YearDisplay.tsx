@@ -14,14 +14,14 @@ const yearVariants = {
   },
 };
 
-export default function YearDisplay({ align = 'left', date }: { align?: 'left' | 'right'; date?: string }) {
+export default function YearDisplay({ date }: { date?: string }) {
   const t = useTranslations('common');
   const duration = date ? parseDuration(date, t('duration_yr'), t('duration_mo')) : null;
   const period = date ? date.toUpperCase() : null;
   return (
     <motion.span
       className="font-black leading-none block"
-      style={{ fontFamily: 'var(--font-manrope), sans-serif', textAlign: align }}
+      style={{ fontFamily: 'var(--font-manrope), sans-serif' }}
       variants={yearVariants}
     >
       {period && (

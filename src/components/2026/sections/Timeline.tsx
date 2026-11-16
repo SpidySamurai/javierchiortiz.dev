@@ -19,11 +19,10 @@ const entryVariants = {
   },
 };
 
-/** One row: year on one side of the center line, text on the other (alternating). */
+/** One row: year on one side of the center line, text on the other (alternating sides, always left-aligned). */
 function TimelineRow({ entry, index }: { entry: JourneyEntry; index: number }) {
   const { date } = useEntryMessages(entry);
   const textLeft = index % 2 === 0;
-  const isLead = index === 0;
 
   return (
     <motion.div
@@ -36,8 +35,8 @@ function TimelineRow({ entry, index }: { entry: JourneyEntry; index: number }) {
     >
       {textLeft ? (
         <>
-          <div className="md:text-right md:pr-16 order-2 md:order-1">
-            <EntryContent entry={entry} alignRight isLead={isLead} />
+          <div className="md:pr-16 order-2 md:order-1">
+            <EntryContent entry={entry} />
           </div>
           <div className="relative order-1 md:order-2">
             <div className="pl-0 md:pl-16">
@@ -47,8 +46,8 @@ function TimelineRow({ entry, index }: { entry: JourneyEntry; index: number }) {
         </>
       ) : (
         <>
-          <div className="md:text-right md:pr-16 order-1">
-            <YearDisplay align="right" date={date} />
+          <div className="md:pr-16 order-1">
+            <YearDisplay date={date} />
           </div>
           <div className="order-2 relative">
             <div className="pl-0 md:pl-16">

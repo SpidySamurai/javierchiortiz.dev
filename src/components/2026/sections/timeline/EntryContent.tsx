@@ -1,7 +1,6 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import Chip from '@/components/2026/ui/Chip';
 import type { JourneyEntry } from '@/data/journey';
 
 interface EntryMessages {
@@ -69,12 +68,10 @@ function EntryTitle({
   );
 }
 
-function Metric({ text, alignRight }: { text: string; alignRight: boolean }) {
+function Metric({ text }: { text: string }) {
   return (
     <p
-      className={`flex items-center gap-2 mb-5 text-xl font-bold ${
-        alignRight ? 'md:justify-end' : ''
-      }`}
+      className="flex items-center gap-2 mb-5 text-xl font-bold"
       style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
     >
       <span translate="no" aria-hidden className="material-symbols-outlined text-2xl">
@@ -87,33 +84,23 @@ function Metric({ text, alignRight }: { text: string; alignRight: boolean }) {
 
 interface EntryContentProps {
   entry: JourneyEntry;
-  /** Text aligned to the right on md+ (entries whose text sits left of the center line). */
-  alignRight?: boolean;
-  /** Highlights the tier tag (the latest entry). */
-  isLead?: boolean;
 }
 
-/** Tier tag, title, optional metric and description of one journey entry. */
+/** Title, optional metric and description of one journey entry. */
 export default function EntryContent({
   entry,
-  alignRight = false,
-  isLead = false,
 }: EntryContentProps) {
-  const t = useTranslations('common');
   const item = useEntryMessages(entry);
 
   return (
     <>
-      <Chip variant="tier" active={isLead}>
-        {t(entry.tier)}
-      </Chip>
       <EntryTitle
         url={entry.url}
         className="text-4xl md:text-5xl font-black leading-none tracking-tighter block mb-4"
       >
         {item.title}
       </EntryTitle>
-      {item.metric && <Metric text={item.metric} alignRight={alignRight} />}
+      {item.metric && <Metric text={item.metric} />}
       <Description text={item.description} />
     </>
   );

@@ -147,7 +147,7 @@
     },
     "lab2next": {
       "title": "Founder and developer of Lab2Next",
-      "date": "Feb 2026 - Present",
+      "date": "Nov 2025 - Present",
       "metric": "2,800+ exams with validated results",
       "description": "A SaaS for clinical labs: I translated a lab's real workflows into software, in both the UI and the UX.\n\nOrders, samples, validated results with PDF and QR, Westgard quality control and billing, for several labs and branches. I designed it, built it and keep it running in production."
     },
@@ -327,7 +327,7 @@
   "work_lead": "Products of my own and projects for companies, from the problem to production.",
   "work_kind_product": "Own product",
   "work_lab2next_role": "Founder and developer",
-  "work_lab2next_period": "Feb 2026 - Present",
+  "work_lab2next_period": "Nov 2025 - Present",
   "work_view_live": "View live",
   "work_oss_label": "Open source",
   "work_oss_title": "Open",

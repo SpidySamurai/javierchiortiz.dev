@@ -147,7 +147,7 @@
     },
     "lab2next": {
       "title": "Fundador y desarrollador de Lab2Next",
-      "date": "Feb 2026 - Presente",
+      "date": "Nov 2025 - Presente",
       "metric": "+2,800 exámenes con resultado validado",
       "description": "SaaS para laboratorios clínicos: traduje los flujos reales de un laboratorio a software, en la interfaz y en la experiencia de uso.\n\nÓrdenes, muestras, resultados validados con PDF y QR, control de calidad con reglas Westgard y caja, para varios laboratorios y sucursales. Lo diseñé, lo construí y lo mantengo en producción."
     },
@@ -331,7 +331,7 @@
   "work_lead": "Productos propios y proyectos para empresas, del problema a producción.",
   "work_kind_product": "Producto propio",
   "work_lab2next_role": "Fundador y desarrollador",
-  "work_lab2next_period": "Feb 2026 - Presente",
+  "work_lab2next_period": "Nov 2025 - Presente",
   "work_view_live": "Ver en vivo",
   "work_oss_label": "Open source",
   "work_oss_title": "Código",
