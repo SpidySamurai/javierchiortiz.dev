@@ -26,6 +26,5 @@ export const COMPANIES: readonly Company[] = [
   { name: 'Scandia Manufacturing', url: 'https://scandiamfg.com/', logo: { src: `${LOGOS}/scandia.png`, width: 11.5, height: 40 } },
   { name: 'Saunas.com', url: 'https://www.saunas.com/', logo: { src: `${LOGOS}/saunas.png`, width: 15, height: 32 } },
   { name: 'Sun Valley Salt', url: 'https://sunvalleysalt.com/', logo: { src: `${LOGOS}/sunvalley.png`, width: 29, height: 24 } },
-  { name: 'IOTAM', url: 'https://iotam.com.mx/' },
   { name: 'VezMex', url: 'https://vezmex.dev/', logo: { src: `${LOGOS}/vezmex.svg`, width: 57, height: 28 } },
 ];

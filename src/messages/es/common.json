@@ -10,6 +10,9 @@
   "about_paragraph_1": "Soy ingeniero de software senior y construyo productos con IA. Hoy estoy construyendo Brania, una plataforma impulsada por IA, como Senior Full Stack Engineer: diseño y entrego funcionalidades completas, del frontend al backend.",
   "about_paragraph_2": "En paralelo opero Lab2Next, mi propio SaaS para laboratorios clínicos. Lo diseñé, lo construí y lo lancé por mi cuenta, y lo mantengo en producción, desde el producto y la infraestructura hasta el soporte.",
   "about_paragraph_3": "En más de 6 años he entregado software en producción para clientes de Estados Unidos y Latinoamérica: portales con datos intensivos, plataformas multi-tenant y la migración de BI legacy a Spark + Superset. Trabajo sobre todo con React, Next.js, TypeScript y Node, y me hago cargo del ciclo completo, del spec al mantenimiento después del lanzamiento.",
+  "about_paragraph_personal": "Soy ingeniero de software en Mérida, México, y trabajo con clientes y equipos de Estados Unidos y Latinoamérica. Me gusta estar cerca del problema: entender cómo trabaja la gente que va a usar el software antes de escribir la primera línea, y quedarme después del lanzamiento.",
+  "about_location": "Mérida, México",
+  "about_journey_cta": "Ver mi trayectoria",
   "about_paragraph_4": "Fuera del código practico Karate Shotokan (2° Dan) y juego títulos de exploración y fantasía. El karate y el software me enseñaron lo mismo: claridad, disciplina y mejorar un poco cada día.",
   "about_quote": "No temo al hombre que ha practicado 10,000 patadas una vez, sino al que ha practicado una patada 10,000 veces.",
   "about_quote_author": "Bruce Lee",
@@ -31,6 +34,10 @@
   "tier_enterprise": "Empresa",
   "tier_ecommerce": "E-commerce",
   "tier_startup": "Startup",
+  "tier_contract": "Contrato",
+  "tier_own_agency": "Agencia propia",
+  "tier_own_product": "Producto propio",
+  "tier_education": "Educación",
   "tier_internship": "Pasantía",
   "hero_headline_pre": "Software que ",
   "hero_headline_accent": "escala",
@@ -123,6 +130,29 @@
       "title": "Full Stack Internship en BrightCoders",
       "date": "Feb 2021 - Jul 2021",
       "description": "Programa intensivo de desarrollo profesional con Ruby on Rails: resolución de retos en equipos pequeños y proyecto final colaborativo."
+    }
+  },
+  "journey_items": {
+    "brania": {
+      "title": "Senior Full Stack Engineer en BRANIA",
+      "date": "Jul 2026 - Presente",
+      "description": "Contrato en Bedrock y Foundation, y responsable del sitio brania.ai.\n\nSoy parte de la innovación de un sistema operativo autónomo."
+    },
+    "vezmex": {
+      "title": "Fundador de VezMex",
+      "date": "May 2026 - Presente",
+      "description": "Estoy cimentando VezMex, mi propia agencia de desarrollo: sitios y sistemas para clientes, del problema al producto en producción."
+    },
+    "lab2next": {
+      "title": "Fundador y desarrollador de Lab2Next",
+      "date": "Feb 2026 - Presente",
+      "metric": "+2,800 exámenes con resultado validado",
+      "description": "SaaS para laboratorios clínicos: traduje los flujos reales de un laboratorio a software, en la interfaz y en la experiencia de uso.\n\nÓrdenes, muestras, resultados validados con PDF y QR, control de calidad con reglas Westgard y caja, para varios laboratorios y sucursales. Lo diseñé, lo construí y lo mantengo en producción."
+    },
+    "education": {
+      "title": "Ingeniería de Software",
+      "date": "2017 - 2022",
+      "description": "Universidad Autónoma de Yucatán."
     }
   },
   "project_items": {
