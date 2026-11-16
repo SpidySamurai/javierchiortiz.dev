@@ -8,7 +8,7 @@ My personal site, designed and built from scratch. Live at [**javierchiortiz.dev
 
 I translate Figma designs into production interfaces for a living, so my own site had to be exactly that: my design, my code, pixel by pixel. No template, no theme.
 
-It is also a time machine. Every year I redesign it, but instead of deleting the old version I keep it running: the 2026 redesign lives at `/`, the 2025 one at `/2025`. You can literally browse how my design and my code have evolved. Most portfolios show your best moment; mine also shows the path.
+It is also a time machine. Every year I redesign it, but instead of deleting the old version I keep it running. Each generation is a Mark: Mk1 (2021-2022) lives at [mk1.javierchiortiz.dev](https://mk1.javierchiortiz.dev) with its code in [portfolio-mk1](https://github.com/SpidySamurai/portfolio-mk1), Mk2 (2025) lives at [mk2.javierchiortiz.dev](https://mk2.javierchiortiz.dev) with its code in [portfolio-mk2](https://github.com/SpidySamurai/portfolio-mk2), and Mk3 (2026) is this repo. You can literally browse how my design and my code have evolved. Most portfolios show your best moment; mine also shows the path.
 
 And honestly, it is my playground. Half the features below exist because I wanted to learn something or because building them was fun, not because a portfolio needs a Marvel Rivals stats widget. (It doesn't. I have one anyway.)
 
@@ -44,22 +44,21 @@ Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS v4 (CSS `@them
 
 ## Routes
 
-| Route    | Content                         |
-| -------- | ------------------------------- |
-| `/`      | 2026 redesign                   |
-| `/2025`  | Legacy 2025 design, still alive |
-| `/blog`  | Blog                            |
-| `/admin` | CMS (authenticated)             |
+| Route    | Content                                                                                        |
+| -------- | ---------------------------------------------------------------------------------------------- |
+| `/`      | 2026 redesign                                                                                  |
+| `/2025`  | Redirects to Mk2, the 2025 design, at [mk2.javierchiortiz.dev](https://mk2.javierchiortiz.dev) |
+| `/blog`  | Blog                                                                                           |
+| `/admin` | CMS (authenticated)                                                                            |
 
 ## Where things live
 
 ```
 src/
-  app/[locale]/        # pages: 2026 home at /, legacy design at /2025, blog, experience, visitors
+  app/[locale]/        # pages: home at /, blog, experience, visitors
   app/admin/           # CMS, with its components in _components/
   app/api/             # route handlers (analytics, contact, visitors, Marvel stats)
   components/2026/     # 2026 design: layout/, sections/, ui/ (primitives and motion)
-  components/2025/     # legacy design
   components/providers/
   data/                # static content (projects, experience, stack)
   lib/                 # Supabase queries and pure logic
