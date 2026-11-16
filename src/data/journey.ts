@@ -1,7 +1,7 @@
 /**
  * The 2026 journey (route /experience), newest first by start date. Copy lives in the messages:
  * `journey_items.<id>` for the entries added in 2026, `experience_items.<id>` for the older
- * ones (those strings are shared with the /2025 site and must not change).
+ * ones (those strings come from the 2025 design, which now lives in the portfolio-mk2 repo).
  */
 export type JourneyMessageGroup = 'journey_items' | 'experience_items';
 

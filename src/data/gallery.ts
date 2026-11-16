@@ -2,8 +2,8 @@ import type { DataProject } from '@/types';
 import { projects } from './projects';
 
 /**
- * brania.ai lives only in the 2026 gallery: /2025 lists every entry of
- * `projects`, and that design is kept as it was.
+ * brania.ai is added only here, on top of `projects`, which keeps the list the
+ * 2025 design showed (that design now lives in the portfolio-mk2 repo).
  */
 const brania: DataProject = {
   id: 'brania',
