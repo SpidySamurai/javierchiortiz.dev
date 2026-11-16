@@ -15,6 +15,8 @@ export interface Company {
   /** Official site, opened in a new tab. */
   url: string;
   logo?: CompanyLogo;
+  /** Full-color brand mark, for places that show the brand as is instead of a single-tone mask. */
+  colorLogo?: CompanyLogo;
 }
 
 const LOGOS = '/utils/img/companies';
@@ -24,6 +26,7 @@ export const VEZMEX: Company = {
   name: 'VezMex',
   url: 'https://vezmex.dev/',
   logo: { src: `${LOGOS}/vezmex.svg`, width: 57, height: 28 },
+  colorLogo: { src: `${LOGOS}/vezmex-color.svg`, width: 36, height: 18 },
 };
 
 export const COMPANIES: readonly Company[] = [

@@ -1,8 +1,9 @@
 import type { Company } from '@/data/companies';
 import { LogoMark } from '@/components/2026/ui/LogoMark';
 
-/** "Powered by" credit linking to the company's site, with its mark in the muted footer tone. */
+/** "Powered by" credit linking to the company's site, with its full-color mark when it has one. */
 export function PoweredBy({ company }: { company: Company }) {
+  const { colorLogo, logo } = company;
   return (
     <a
       href={company.url}
@@ -13,7 +14,14 @@ export function PoweredBy({ company }: { company: Company }) {
       style={{ fontFamily: 'var(--font-inter), sans-serif', textDecoration: 'none' }}
     >
       Powered by
-      {company.logo ? <LogoMark logo={company.logo} scale={0.5} /> : company.name}
+      {colorLogo ? (
+        // eslint-disable-next-line @next/next/no-img-element -- tiny static SVG mark, no optimization needed
+        <img src={colorLogo.src} alt="" width={colorLogo.width} height={colorLogo.height} className="block shrink-0" />
+      ) : logo ? (
+        <LogoMark logo={logo} scale={0.5} />
+      ) : (
+        company.name
+      )}
     </a>
   );
 }
