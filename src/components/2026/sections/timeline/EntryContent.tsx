@@ -1,14 +1,8 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { motion } from 'framer-motion';
 import Chip from '@/components/2026/ui/Chip';
 import type { JourneyEntry } from '@/data/journey';
-
-const stackVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' as const, delay: 0.2 } },
-};
 
 interface EntryMessages {
   title: string;
@@ -78,7 +72,9 @@ function EntryTitle({
 function Metric({ text, alignRight }: { text: string; alignRight: boolean }) {
   return (
     <p
-      className={`flex items-center gap-2 mb-5 text-xl font-bold ${alignRight ? 'md:justify-end' : ''}`}
+      className={`flex items-center gap-2 mb-5 text-xl font-bold ${
+        alignRight ? 'md:justify-end' : ''
+      }`}
       style={{ color: 'var(--ds-primary)', fontFamily: 'var(--font-manrope), sans-serif' }}
     >
       <span translate="no" aria-hidden className="material-symbols-outlined text-2xl">
@@ -86,24 +82,6 @@ function Metric({ text, alignRight }: { text: string; alignRight: boolean }) {
       </span>
       {text}
     </p>
-  );
-}
-
-function StackLine({ stack, label }: { stack: readonly string[]; label: string }) {
-  return (
-    <motion.p
-      variants={stackVariants}
-      className="mb-6 text-sm leading-relaxed"
-      style={{ fontFamily: 'var(--font-inter), sans-serif', color: 'var(--ds-on-surface-variant)' }}
-    >
-      <span
-        className="text-[10px] uppercase tracking-[0.28em] font-bold mr-3"
-        style={{ color: 'var(--ds-primary)' }}
-      >
-        {label}
-      </span>
-      {stack.join(' · ')}
-    </motion.p>
   );
 }
 
@@ -115,8 +93,12 @@ interface EntryContentProps {
   isLead?: boolean;
 }
 
-/** Tier tag, title, optional metric, stack line and description of one journey entry. */
-export default function EntryContent({ entry, alignRight = false, isLead = false }: EntryContentProps) {
+/** Tier tag, title, optional metric and description of one journey entry. */
+export default function EntryContent({
+  entry,
+  alignRight = false,
+  isLead = false,
+}: EntryContentProps) {
   const t = useTranslations('common');
   const item = useEntryMessages(entry);
 
@@ -127,14 +109,11 @@ export default function EntryContent({ entry, alignRight = false, isLead = false
       </Chip>
       <EntryTitle
         url={entry.url}
-        className={`text-4xl md:text-5xl font-black leading-none tracking-tighter block ${
-          alignRight ? 'mb-2' : 'mb-4'
-        }`}
+        className="text-4xl md:text-5xl font-black leading-none tracking-tighter block mb-4"
       >
         {item.title}
       </EntryTitle>
       {item.metric && <Metric text={item.metric} alignRight={alignRight} />}
-      {entry.stack.length > 0 && <StackLine stack={entry.stack} label={t('stack')} />}
       <Description text={item.description} />
     </>
   );
