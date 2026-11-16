@@ -19,6 +19,13 @@ export interface Company {
 
 const LOGOS = '/utils/img/companies';
 
+/** Javier's own agency; also credited in the footer. */
+export const VEZMEX: Company = {
+  name: 'VezMex',
+  url: 'https://vezmex.dev/',
+  logo: { src: `${LOGOS}/vezmex.svg`, width: 57, height: 28 },
+};
+
 export const COMPANIES: readonly Company[] = [
   { name: 'BRANIA', url: 'https://www.brania.ai/', logo: { src: `${LOGOS}/brania.png`, width: 26.5, height: 30 } },
   { name: 'ENTI', url: 'https://en-ti.com/', logo: { src: `${LOGOS}/enti.png`, width: 30, height: 30 } },
@@ -26,5 +33,5 @@ export const COMPANIES: readonly Company[] = [
   { name: 'Scandia Manufacturing', url: 'https://scandiamfg.com/', logo: { src: `${LOGOS}/scandia.png`, width: 11.5, height: 40 } },
   { name: 'Saunas.com', url: 'https://www.saunas.com/', logo: { src: `${LOGOS}/saunas.png`, width: 15, height: 32 } },
   { name: 'Sun Valley Salt', url: 'https://sunvalleysalt.com/', logo: { src: `${LOGOS}/sunvalley.png`, width: 29, height: 24 } },
-  { name: 'VezMex', url: 'https://vezmex.dev/', logo: { src: `${LOGOS}/vezmex.svg`, width: 57, height: 28 } },
+  VEZMEX,
 ];

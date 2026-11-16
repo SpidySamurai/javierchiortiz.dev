@@ -2,7 +2,9 @@
 
 import { useTranslations, useLocale } from 'next-intl';
 import VisitorCounter from '@/components/2026/ui/VisitorCounter';
+import { PoweredBy } from '@/components/2026/ui/PoweredBy';
 import { CONTACT_EMAIL } from '@/lib/contact';
+import { VEZMEX } from '@/data/companies';
 
 export default function Footer() {
   const t = useTranslations('common');
@@ -23,19 +25,11 @@ export default function Footer() {
         {/* Identity */}
         <div className="text-center md:text-left">
           <h2
-            className="text-3xl font-extrabold mb-2"
+            className="text-3xl font-extrabold"
             style={{ color: 'var(--ds-on-surface)', fontFamily: 'var(--font-manrope), sans-serif' }}
           >
             Javier Chi Ortíz
           </h2>
-          <p
-            style={{
-              color: 'var(--ds-on-surface-variant)',
-              fontFamily: 'var(--font-inter), sans-serif',
-            }}
-          >
-            {t('footer_available')}
-          </p>
         </div>
 
         {/* Links */}
@@ -64,7 +58,7 @@ export default function Footer() {
           </a>
         </div>
 
-        {/* Copyright + Privacy + Visitor count */}
+        {/* Copyright + Privacy + Powered by + Visitor count */}
         <div className="flex flex-col items-center md:items-end gap-1.5">
           <p
             className="text-[10px] uppercase tracking-widest"
@@ -79,35 +73,9 @@ export default function Footer() {
           >
             {t('privacy')}
           </a>
+          <PoweredBy company={VEZMEX} />
           <VisitorCounter />
         </div>
-      </div>
-
-      {/* Closing signature: the name fills the content width (6.8 = measured width/size ratio). */}
-      <div
-        aria-hidden
-        className="max-w-7xl mx-auto mt-16 select-none"
-        style={{ containerType: 'inline-size' }}
-      >
-        <p
-          style={{
-            margin: 0,
-            fontFamily: 'var(--font-manrope), sans-serif',
-            fontWeight: 800,
-            letterSpacing: '-0.045em',
-            lineHeight: 0.86,
-            fontSize: 'calc(100cqw / 6.8)',
-            whiteSpace: 'nowrap',
-            paddingBottom: '0.08em',
-            backgroundImage: 'linear-gradient(90deg, var(--ds-on-surface), var(--ds-primary))',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            color: 'transparent',
-          }}
-        >
-          Javier Chi Ortíz
-        </p>
       </div>
     </footer>
   );

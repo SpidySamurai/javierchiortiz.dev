@@ -1,4 +1,5 @@
 import type { Company } from '@/data/companies';
+import { LogoMark } from '@/components/2026/ui/LogoMark';
 
 const TONE = 'color-mix(in srgb, var(--ds-on-surface) 55%, transparent)';
 const HAIRLINE = 'color-mix(in srgb, var(--ds-on-surface) 7%, transparent)';
@@ -14,19 +15,7 @@ function CompanyMark({ company, hidden = false }: { company: Company; hidden?: b
       tabIndex={hidden ? -1 : undefined}
       className="company-link inline-flex items-center gap-2.5 shrink-0 whitespace-nowrap rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:[outline-color:var(--ds-primary)]"
     >
-      {logo && (
-        <span
-          aria-hidden
-          className="block shrink-0"
-          style={{
-            width: logo.width,
-            height: logo.height,
-            backgroundColor: 'currentColor',
-            WebkitMask: `url(${logo.src}) center / contain no-repeat`,
-            mask: `url(${logo.src}) center / contain no-repeat`,
-          }}
-        />
-      )}
+      {logo && <LogoMark logo={logo} />}
       {company.name}
     </a>
   );
